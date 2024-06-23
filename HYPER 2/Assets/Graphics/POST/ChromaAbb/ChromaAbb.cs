@@ -11,9 +11,12 @@ public class ChromaAbb : MonoBehaviour
 
 	public void Start() {
         material = new Material(shader);
-
-		material.SetFloat("_ChromaticAberration", 0.01f * chromaticAberration);
+        UpdateMaterialProperties();
 	}
+
+    private void UpdateMaterialProperties() {
+		material.SetFloat("_ChromaticAberration", 0.01f * chromaticAberration);
+    }
 
 	public void OnRenderImage(RenderTexture inTexture, RenderTexture outTexture) {
     	Graphics.Blit(inTexture, outTexture, material);
@@ -21,6 +24,6 @@ public class ChromaAbb : MonoBehaviour
 
     public void OnValidate() {
         if (material == null) return;
-        material.SetFloat("_ChromaticAberration", 0.01f * chromaticAberration);
+        UpdateMaterialProperties();
     }
 }
