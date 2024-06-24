@@ -53,6 +53,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Faster"",
+                    ""type"": ""Button"",
+                    ""id"": ""13972fd3-c24a-4188-8064-4a89adbccbec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LookAccess"",
+                    ""type"": ""Button"",
+                    ""id"": ""21ec34b2-40fc-49c1-a016-e3ede7e7c91a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -273,6 +291,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""XR"",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""032b0c88-dbcf-4d3f-bcda-dded39b815c9"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Faster"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc943265-aab5-4638-89a2-f6fb5fc9fa0f"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""LookAccess"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -863,6 +903,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_Faster = m_Player.FindAction("Faster", throwIfNotFound: true);
+        m_Player_LookAccess = m_Player.FindAction("LookAccess", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -937,6 +979,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_Faster;
+    private readonly InputAction m_Player_LookAccess;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -944,6 +988,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @Faster => m_Wrapper.m_Player_Faster;
+        public InputAction @LookAccess => m_Wrapper.m_Player_LookAccess;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -962,6 +1008,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                @Faster.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFaster;
+                @Faster.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFaster;
+                @Faster.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFaster;
+                @LookAccess.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAccess;
+                @LookAccess.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAccess;
+                @LookAccess.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAccess;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -975,6 +1027,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @Faster.started += instance.OnFaster;
+                @Faster.performed += instance.OnFaster;
+                @Faster.canceled += instance.OnFaster;
+                @LookAccess.started += instance.OnLookAccess;
+                @LookAccess.performed += instance.OnLookAccess;
+                @LookAccess.canceled += instance.OnLookAccess;
             }
         }
     }
@@ -1134,6 +1192,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnFaster(InputAction.CallbackContext context);
+        void OnLookAccess(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

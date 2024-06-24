@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SimpleWire 1
+  m_Name: AdvancedWire
   m_Shader: {fileID: 4800000, guid: 680214a94a4f8e748911f56876d625e0, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

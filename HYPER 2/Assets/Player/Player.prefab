@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 5116079301421470316}
   - component: {fileID: 5116079301421470305}
   - component: {fileID: 5116079301421470318}
-  - component: {fileID: 5116079301421470304}
   m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -31,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5116079301421470312}
   m_LocalRotation: {x: 0.2588191, y: -0, z: -0, w: 0.9659258}
-  m_LocalPosition: {x: 14.123518, y: 16.3286, z: -11.64566}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -195,21 +194,6 @@ MonoBehaviour:
   shader: {fileID: 4800000, guid: ddeea974de6cc7b4f8b62e681456efee, type: 3}
   lineSize: 1.15
   modulo: 2
---- !u!114 &5116079301421470304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5116079301421470312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c80d354d88815343a02cd65f2863b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  looker: {fileID: 0}
-  target: {fileID: 0}
-  lerpSpeed: 6.45
 --- !u!1 &5116079301912019084
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5116079301912019087}
   - component: {fileID: 6867304643466214795}
+  - component: {fileID: 2879844348241484139}
   - component: {fileID: 1080319219865831810}
   m_Layer: 0
   m_Name: Player
@@ -257,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: f054fe7894f35bd49b42bd9371a8b89e, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -321,11 +306,27 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 11e9c21a-793c-4808-afe6-21d8212beefa
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 13972fd3-c24a-4188-8064-4a89adbccbec
+    m_ActionName: Player/Faster[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 5116079301421470314}
+--- !u!114 &2879844348241484139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116079301912019084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6860ae596e4624c49bb696a3427e6a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1080319219865831810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,4 +339,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 700fbd2f9d1a2bb49ad8d78dafddf900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.79
+  player: {fileID: 2879844348241484139}
+  obj: {fileID: 0}
+  dir: {fileID: 5116079301421470317}
+  speed: 6.44
+  multiplier: 1.7
