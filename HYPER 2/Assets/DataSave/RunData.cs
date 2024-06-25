@@ -1,12 +1,7 @@
-using UnityEngine;
+using System;
 
-public class RunData : IData
+[Serializable]
+public class RunData
 {
-    public DataType Type() {
-        return DataType.RUN;
-    }
 
-    public string Path() {
-        return Application.dataPath + System.IO.Path.AltDirectorySeparatorChar + "RunData.json";
-    }
 }

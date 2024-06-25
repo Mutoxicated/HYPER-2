@@ -46,6 +46,13 @@ namespace Helpers {
         }
     }
 
+    public class Vec2 {
+        public static void PushTo(ref Vector2 v, float val) {
+            if (v.x == 0) v.x = val;
+            if (v.y == 0) v.y = val;
+        }
+    }
+
     public class MatType {
         public static string Name(MaterialType mt) {
             switch (mt) {

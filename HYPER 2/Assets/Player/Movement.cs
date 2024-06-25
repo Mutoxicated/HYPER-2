@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Helpers.Vec3;
+using Helpers;
 
 public class Movement : MonoBehaviour
 {
@@ -24,8 +24,8 @@ public class Movement : MonoBehaviour
         obj = obj == null ? transform : obj;
         dir = dir == null ? transform : dir;
 
-        move = player.Input.actions.FindAction("Move", true);
-        faster = player.Input.actions.FindAction("Faster", true);
+        move = player.FindAction("Move");
+        faster = player.FindAction("Faster");
     }
 
     public void Update() {
@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
         }else {
             hypothetical = Vector3.Lerp(obj.position, obj.position+direction*speed, Time.deltaTime);
         }
-        var dist = Vector2.Distance(ToV2XZ(hypothetical), ToV2XZ(player.Manager.Tower.transform.position));
+        var dist = Vector2.Distance(Vec3.ToV2XZ(hypothetical), Vec3.ToV2XZ(player.Manager.Tower.transform.position));
         if (dist < towerRadius && moveVector.y > 0) {
             var diff = dist-towerRadius;
             hypothetical = hypothetical+direction*diff;

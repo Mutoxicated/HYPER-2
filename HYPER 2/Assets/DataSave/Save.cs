@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -11,21 +12,34 @@ public interface IData {
     string Path();
 }
 
-public class RunDataSave : MonoBehaviour
+public class Save : MonoBehaviour
 {
-    public static PlayerData pData;
-    public static RunData rData;
+    public static PlayerData pData = new PlayerData();
+    public static RunData rData = new RunData();
+
+    public static string Path(DataType dt)
+    {
+        if (dt == DataType.RUN) {
+            return Application.dataPath + System.IO.Path.AltDirectorySeparatorChar + "RunData.json";
+        }
+        return Application.dataPath + System.IO.Path.AltDirectorySeparatorChar + "PlayerData.json";
+    }
+
+    public DataType Type()
+    {
+        return DataType.PLAYER;
+    }
 
     private void Awake()
     {
-        if (File.Exists(new RunData().Path()))
+        if (File.Exists(Path(DataType.RUN)))
         {
             UpdateData(DataType.RUN);
         }else {
             CreateData(DataType.RUN);
         }
         
-        if (File.Exists(new PlayerData().Path()))
+        if (File.Exists(Path(DataType.PLAYER)))
         {
             UpdateData(DataType.PLAYER);
         }else {
@@ -33,28 +47,19 @@ public class RunDataSave : MonoBehaviour
         }
     }
 
-    private static IData GetData(DataType dt) {
-        return dt == DataType.RUN? rData : pData;
-    } 
-
     public static void CreateData(DataType dt)
     {
-        if (dt == DataType.RUN)
-            rData = new RunData();
-        else
-            pData = new PlayerData();
         UpdateJsonData(dt);
-        UpdateData(dt);
     }
 
     public static void UpdateJsonData(DataType dt)
     {
-        string savePath = GetData(dt).Path();
+        string savePath = Path(dt);
 
-        //Debug.Log("Saving rData to path: "+ savePath);
+        Debug.Log("Saving data to path: "+ savePath);
 
-        string json = JsonUtility.ToJson(rData);
-        //Debug.Log(json);
+        string json = dt == DataType.RUN? JsonUtility.ToJson(rData) : JsonUtility.ToJson(pData);
+        Debug.Log(json);
 
         using StreamWriter writer = new StreamWriter(savePath);
         writer.Write(json);
@@ -62,14 +67,18 @@ public class RunDataSave : MonoBehaviour
 
     public static void UpdateData(DataType dt)
     {
-        using StreamReader reader = new StreamReader(GetData(dt).Path());
+        using StreamReader reader = new StreamReader(Path(dt));
         string json = reader.ReadToEnd();
 
-        rData = JsonUtility.FromJson<RunData>(json);
+        if (dt == DataType.RUN) {
+            rData = JsonUtility.FromJson<RunData>(json);
+        }else {
+            pData = JsonUtility.FromJson<PlayerData>(json);
+        }
     }
 
     public static void RemoveData(DataType dt){
-        var path = GetData(dt).Path();
+        var path = Path(dt);
         if (File.Exists(path))
             File.Delete(path);
         if (dt == DataType.RUN) {

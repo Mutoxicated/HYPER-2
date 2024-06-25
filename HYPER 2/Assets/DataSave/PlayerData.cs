@@ -1,16 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class PlayerData : IData
+[Serializable]
+public class PlayerData
 {
-    public string Path()
-    {
-        return Application.dataPath + System.IO.Path.AltDirectorySeparatorChar + "PlayerData.json";
+    public float __sensX = 2f;
+    public float SensX {
+        get { return __sensX; }
     }
 
-    public DataType Type()
-    {
-        return DataType.PLAYER;
+    private void cSensX(float val) {
+        __sensX = val;
     }
+
+    private float __sensY = 2f;
+    public float SensY {
+        get { return __sensY; }
+    }
+
+    private void cSensY(float val) {
+        __sensY = val;
+    }
+
+    public PlayerData(float sensX, float sensY) {
+        __sensX = sensX;
+        __sensY = sensY;
+    }
+
+    public PlayerData() {}
+
+    
 }
