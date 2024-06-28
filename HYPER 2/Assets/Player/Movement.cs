@@ -19,8 +19,7 @@ public class Movement : MonoBehaviour
     private InputAction move;
     private InputAction faster;
 
-    private void Start() {
-
+    public void DStart() {
         obj = obj == null ? transform : obj;
         dir = dir == null ? transform : dir;
 
@@ -33,10 +32,11 @@ public class Movement : MonoBehaviour
 
         var forward = dir.transform.forward.normalized;
         forward.y = 0f;
+        forward.Normalize();
+        Debug.Log(forward);
 
         direction = dir.transform.right*moveVector.x+forward*moveVector.y;
 
-        
         if (faster.IsPressed()) {
             hypothetical = Vector3.Lerp(obj.position, obj.position+direction*speed*multiplier, Time.deltaTime);
         }else {
@@ -46,6 +46,10 @@ public class Movement : MonoBehaviour
         if (dist < towerRadius && moveVector.y > 0) {
             var diff = dist-towerRadius;
             hypothetical = hypothetical+direction*diff;
+        }
+        if (dist > player.World.BorderRadius) {
+            var diff = dist-player.World.BorderRadius;
+            hypothetical = hypothetical-direction*diff;
         }
         obj.position = hypothetical;
     }

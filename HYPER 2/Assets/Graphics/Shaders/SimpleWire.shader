@@ -6,7 +6,7 @@ Shader "Mutox/SimpleWire"
         _WireframeAliasing("Wireframe aliasing", float) = 1.5
         _Intact("Intact Range", float) = 0
         _MinDist("Min Distane", float) = 200
-        _MaxDist("Max Distance", float) = 1400
+        _MaxDist("Max Distance", float) = 1800
 
        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Integer) = 2
     }

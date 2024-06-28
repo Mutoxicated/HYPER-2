@@ -23,6 +23,26 @@ public class Option<T> {
 }
 
 namespace Helpers {
+    public enum EditorLayer {
+        DEFAULT,
+        POST,
+        INTERACTABLE_ONE,
+        INTERACTABLE_TWO
+    }
+
+    public static class EditorState {
+        public static Dictionary<EditorLayer, string> Layers = new Dictionary<EditorLayer, string>() {
+            {EditorLayer.DEFAULT, "Default"},
+            {EditorLayer.POST, "Post"},
+            {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
+            {EditorLayer.INTERACTABLE_TWO, "Interactable2"},
+        };
+
+        public static LayerMask GetLayer(EditorLayer et) {
+            return LayerMask.NameToLayer(Layers[et]);
+        }
+    }
+
     public class Vec3 {
         public static void Ceil(ref Vector3 v) {
             v.x = Mathf.Ceil(v.x);

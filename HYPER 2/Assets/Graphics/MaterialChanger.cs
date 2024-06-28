@@ -30,7 +30,7 @@ public class MaterialChanger : MonoBehaviour
         get { return color; }
     }
 
-    void Start()
+    void Awake()
     {
         _renderer = _renderer == null? GetComponent<Renderer>() : _renderer; 
         var res = Rdr.FindMaterial(_renderer, @type);
@@ -40,6 +40,14 @@ public class MaterialChanger : MonoBehaviour
         }
         material = res.Get();
 
+        ChangeColor(color, false);
+    }
+
+    public void ChangeColor(Color color, bool overrideSettings) {
+        if (overrideSettings) {
+            material.color = color;
+            return;
+        }
         if (changeColor) {
             material.color = color;
         }

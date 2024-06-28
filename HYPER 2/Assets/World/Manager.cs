@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField] private GameObject tower;
+    [SerializeField] private World world;
+
+    public void Start() {
+        world.DStart();
+    }
+
+    public World World {
+        get { return world; }
+    }
 
     public GameObject Tower {
-        get { return tower; }
+        get { return world.Tower; }
     }
 }

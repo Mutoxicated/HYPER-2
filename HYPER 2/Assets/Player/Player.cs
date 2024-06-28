@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
     private UnityEngine.InputSystem.PlayerInput input;
     private Manager manager;
+    [SerializeField] private Movement movement;
     private Camera cam;
 
     public UnityEngine.InputSystem.PlayerInput Input {
@@ -13,6 +14,10 @@ public class Player : MonoBehaviour
 
     public Manager Manager {
         get { return manager; }
+    }
+
+    public World World {
+        get { return manager.World; }
     }
 
     public Camera Cam {
@@ -28,5 +33,6 @@ public class Player : MonoBehaviour
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         manager = GameObject.FindWithTag("Manager").GetComponent<Manager>();
+        movement.DStart();
     }
 }
