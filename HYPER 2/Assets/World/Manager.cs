@@ -5,9 +5,10 @@ using UnityEngine;
 public class Manager : MonoBehaviour
 {
     [SerializeField] private World world;
+    [SerializeField] private Player player;
 
     public void Start() {
-        world.DStart();
+        world.DStart(player);
     }
 
     public World World {

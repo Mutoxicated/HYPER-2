@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private Manager manager;
     [SerializeField] private Movement movement;
     private Camera cam;
+    private InputAction debugRefresh;
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -28,10 +29,16 @@ public class Player : MonoBehaviour
         return Input.actions.FindAction(name, true);
     }
 
+    public bool OnDebugRefresh {
+        get { return debugRefresh.WasPerformedThisFrame(); }
+    }
+
     void Awake()
     {
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        input.actions.FindActionMap("Debug", true).Enable();
+        debugRefresh = input.actions.FindAction("DRef");
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         manager = GameObject.FindWithTag("Manager").GetComponent<Manager>();
         movement.DStart();
     }

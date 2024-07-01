@@ -1,69 +1,143 @@
+using System;
+using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
+using TMPro;
 
 public enum Direction {
     RIGHT,
     LEFT,
-    TOP,
-    BOTTOM
+    UP,
+    DOWN,
+    UNKNOWN
 }
 
-public class Neighbor {
-    public Direction direction;
-    public Tile tile;
+public class Neighbor : IComparable<Neighbor> {
+    public Location Location;
+    public Direction Direction;
+    public Tile Tile;
 
-    public Neighbor(Direction direction, Tile tile) {
-        this.direction = direction;
-        this.tile = tile;
+    public Neighbor(Direction direction, Tile tile, Location location) {
+        Direction = direction;
+        Tile = tile;
+        Location = location;
+    }
+
+    int IComparable<Neighbor>.CompareTo(Neighbor nb) {
+        if (Tile.Distance == nb.Tile.Distance) {
+            return 0;
+        }
+
+        return Tile.Distance > nb.Tile.Distance ? 1 : -1;
     }
 }
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IComparable<Tile>
 {
     [SerializeField] private MaterialChanger mc;
+    [SerializeField] private TMP_Text textIndex;
 
-    private readonly Color enabledColor = Color.red;
-    private const float heightOffset = 10f;
+    private bool lit = false;
+    private readonly Color litColor = Color.red;
+    private const float heightOffset = 1f;
 
     private Vector3 initPos;
 
     private WorldGenerator worldGenerator;
     private int layer;
     private int index;
+    private float distanceFromTower;
 
-    public void SetWorldGenerator(WorldGenerator wg) {
+    public int Layer {
+        get { return layer; }
+    }
+
+    public int Index {
+        get { return index; }
+    }
+
+    public float Distance {
+        get { return distanceFromTower; }
+    }
+
+    public bool IsLit() {
+        return lit;
+    }
+
+    public void CStart(WorldGenerator wg, float dist, int layer, int index) {
         worldGenerator = wg;
-    }
-
-    public void SetLayer(int layer) {
+        distanceFromTower = dist;
         this.layer = layer;
-    }
-
-    public void SetIndex(int index) {
         this.index = index;
+        textIndex.text = ""+index;
     }
 
-    public void GetNeighbors() {
+    public List<Neighbor> GetNeighbors() {
+        List<Neighbor> neighbors = new List<Neighbor>();
+        var location = worldGenerator.GetLocationOfIndex(index, layer);
+        var context = new Context(location, Direction.UP);
+        Debug.Log("Index: "+index);
 
+        void AssignDelta(Direction direction) {
+            context.Direction = direction;
+            var delta = worldGenerator.GetLayerDelta(layer, context);
+            if (delta.IsSome()) {
+                var tileLocation = index+delta.Get();
+                Debug.Log("Delta got: "+delta.Get());
+                if (tileLocation < worldGenerator.Tiles.Length && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
+                    neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1], context.Location));
+                }
+            }else {
+                Debug.Log("Ain't got no delta.");
+            }
+        }
+
+        AssignDelta(Direction.UP);
+
+        AssignDelta(Direction.DOWN);
+
+        AssignDelta(Direction.RIGHT);
+
+        AssignDelta(Direction.LEFT);
+
+        neighbors.Sort();
+
+        return neighbors;
     }
+
 
     public void Enable() {
-        Debug.Log("happened");
-        enabled = true;
-        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
-        mc.ChangeColor(enabledColor, true);
+        if (lit) { return; }
+        lit = true;
+        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO);
+        mc.ChangeColor(litColor, true);
     }
 
-    private void Start() {
-        enabled = false;
+    public void Disable() {
+        if (!lit) { return; }
+        lit = false;
+        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+        mc.ChangeColor(true);
+    }
+
+    private void Awake() {
         initPos = transform.position;
     }
 
     private void Update() {
-        if (transform.position.y > initPos.y+heightOffset) {
-            enabled = false;
-            return;
+        if (lit) {
+            transform.position = Vector3.Lerp(transform.position, initPos+Vector3.up*heightOffset, Time.deltaTime);
+        }else {
+            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
         }
-        transform.position = Vector3.Lerp(transform.position, initPos+Vector3.up*heightOffset, Time.deltaTime);
+    }
+
+    int IComparable<Tile>.CompareTo(Tile b)
+    {
+        if (distanceFromTower == b.distanceFromTower) {
+            return 0;
+        }
+
+        return distanceFromTower > b.distanceFromTower ? 1 : -1;
     }
 }

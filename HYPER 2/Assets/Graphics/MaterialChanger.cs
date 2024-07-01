@@ -52,4 +52,8 @@ public class MaterialChanger : MonoBehaviour
             material.color = color;
         }
     }
+
+    public void ChangeColor(bool overrideSettings) {
+        ChangeColor(color, overrideSettings);
+    }
 }

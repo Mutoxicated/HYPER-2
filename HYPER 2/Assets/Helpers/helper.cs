@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Option<T> {
-    private T Value;
-    public bool none = false;
+    private T value;
+    private bool none = false;
 
     public Option(T val) {
-        Value = val;
+        value = val;
         none = true;
     }
     public Option() {}
@@ -17,8 +17,16 @@ public class Option<T> {
         return !none;
     }
 
+    public bool IsSome() {
+        return !IsNone();
+    }
+
     public T Get() {
-        return Value;
+        return value;
+    }
+
+    public static Option<T> None() {
+        return new Option<T>();
     }
 }
 
@@ -43,7 +51,13 @@ namespace Helpers {
         }
     }
 
-    public class Vec3 {
+    public static class General {
+        public static T FiftyFifty<T>(T v1, T v2) {
+            return Seed.Chance(50f) ? v1 : v2;
+        }
+    }
+
+    public static class Vec3 {
         public static void Ceil(ref Vector3 v) {
             v.x = Mathf.Ceil(v.x);
             v.y = Mathf.Ceil(v.y);
@@ -66,14 +80,14 @@ namespace Helpers {
         }
     }
 
-    public class Vec2 {
+    public static class Vec2 {
         public static void PushTo(ref Vector2 v, float val) {
             if (v.x == 0) v.x = val;
             if (v.y == 0) v.y = val;
         }
     }
 
-    public class MatType {
+    public static class MatType {
         public static string Name(MaterialType mt) {
             switch (mt) {
             case MaterialType.BASE:
@@ -88,7 +102,7 @@ namespace Helpers {
         }
     }
 
-    public class Rdr {
+    public static class Rdr {
         public static Option<Material> FindMaterial(Renderer r, MaterialType mt) {
             var name = MatType.Name(mt);
             foreach (Material m in r.materials) {

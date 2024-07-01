@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tower: {fileID: 960169734}
   tilePrefab: {fileID: 4452897457013739927, guid: 6fb7b13ccb150ea4fab5a4a3e4b28bc1, type: 3}
+  pathPrefab: {fileID: 89893645827178099, guid: b4b05d8a98ac77d44a7f9a3fce043c06, type: 3}
   layers: 15
 --- !u!4 &296236249
 Transform:
@@ -245,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 534292236}
+  player: {fileID: 1334546281}
 --- !u!4 &804944156
 Transform:
   m_ObjectHideFlags: 0
@@ -344,6 +346,17 @@ Transform:
   m_Father: {fileID: 2979961338762642098}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334546281 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2879844348241484139, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+  m_PrefabInstance: {fileID: 5116079300459478809}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6860ae596e4624c49bb696a3427e6a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &546052801097870217
 MeshRenderer:
   m_ObjectHideFlags: 0
