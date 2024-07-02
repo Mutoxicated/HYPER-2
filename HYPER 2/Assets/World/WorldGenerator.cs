@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Helpers;
 using UnityEngine;
 
 public enum LocationType {// 0+0, 1+1, 2+2, 3+3
@@ -156,13 +157,13 @@ public class WorldGenerator : MonoBehaviour
             return new Location(LocationType.FIRST, -1, GetLayerSurplus(layer)-1);
         }
 
-        Debug.Log("// Finding location of: "+index);
+        //Debug.Log("// Finding location of: "+index);
         int nth = 4;
         int corner = GetLayerCorner(layer, nth);
         while (index <= corner) {
-            Debug.Log("Corner: "+corner+" ["+nth+"]");
+            //Debug.Log("Corner: "+corner+" ["+nth+"]");
             if (index == corner) {
-                Debug.Log("// Is corner "+ nth);
+                //Debug.Log("// Is corner "+ nth);
                 return new Location((LocationType)((nth)*2), 0, GetLayerSurplus(layer));
             }
             nth--;
@@ -172,7 +173,7 @@ public class WorldGenerator : MonoBehaviour
             corner = GetLayerCorner(layer, nth);
         }
 
-        Debug.Log("Corner: "+corner+" ["+nth+"]");
+        //Debug.Log("Corner: "+corner+" ["+nth+"]");
 
         int corner1Delta, corner2Delta = 0;
         if (nth == 0) {
@@ -197,9 +198,9 @@ public class WorldGenerator : MonoBehaviour
         int delta = LayerAmount(layer)+1;
         int prevDelta = LayerAmount(layer-1)+1;
 
-        Debug.Log("Getting delta ("+delta+")");
-        Debug.Log("- Context:");
-        Debug.Log("-- Location = "+context.Location.Type+", Direction = "+context.Direction);
+        //Debug.Log("Getting delta ("+delta+")");
+        //Debug.Log("- Context:");
+        //Debug.Log("-- Location = "+context.Location.Type+", Direction = "+context.Direction);
 
         switch (context.Direction) {
         case Direction.DOWN:
@@ -229,6 +230,9 @@ public class WorldGenerator : MonoBehaviour
             case LocationType.FIRST:
             case LocationType.LEFT:
             case LocationType.LEFT_BOTTOM:
+                if (layer == 1) {
+                    return Option<int>.None();
+                }
                 return new Option<int>(-1);
             case LocationType.BOTTOM:
                 if (layer == 1) {
@@ -275,6 +279,9 @@ public class WorldGenerator : MonoBehaviour
             case LocationType.BOTTOM_RIGHT:
                 return new Option<int>(-1);
             case LocationType.RIGHT:
+                if (layer == 1) {
+                    return Option<int>.None();
+                }
                 return new Option<int>(-prevDelta-2);
             case LocationType.RIGHT_TOP:
             case LocationType.TOP:
@@ -292,11 +299,11 @@ public class WorldGenerator : MonoBehaviour
     }
 
     private int GetLayerSurplus(int layer) {
-        return 3 + ( layer - 1 )*2;
+        return 3 + ( layer - 1 ) * 2;
     }
 
     private int GetLayerCorner(int layer, int nth) {
-        return GetFirstOfLayer(layer)+( 2*layer + ( nth-1 )*GetLayerSurplus(layer) );
+        return GetFirstOfLayer(layer) + 2*layer + ( nth-1 )*GetLayerSurplus(layer) ;
     }
 
     private int GetLastOfLayer(int layer) {
@@ -381,34 +388,34 @@ public class WorldGenerator : MonoBehaviour
         return range;
     }
 
-    private void EnableFourTiles(List<int> range, int tilesEnabled, ref List<int> enabledTileIndexes) {
-        var modifiedRange = enabledTileIndexes.Count % 2 == 0 ? range.ToArray().Reverse() : range.ToArray();
-        foreach (var index in range.ToArray()) {
-            if (Seed.Chance(4f/range.Count)) {
-                var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
-                var path = instance.GetComponent<Path>();
-                paths.Add(path);
-                path.CStart(this, tiles[index]);
-                enabledTileIndexes.Add(index);
-                range.Remove(index);
-                tilesEnabled++;
-            }
-            if (tilesEnabled > 0) {
-                break;
-            }
-        }
-        if (tilesEnabled < 1) {
-            EnableFourTiles(range, tilesEnabled, ref enabledTileIndexes);
-        }
+    private void InstantiatePath(int index) {
+        var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
+        var path = instance.GetComponent<Path>();
+        paths.Add(path);
+        path.CStart(this, tiles[index]);
     }
 
     private void CreatePaths() {
-        // Enable 4 random tiles from the last layer
-        var range = LayerRange(layers);
-        Debug.Log("Tiles: "+tiles.Count);
-        Debug.Log("Range: {"+range[0]+", "+range[range.Count-1]+"}");
-        var tileIndexes = new List<int>();
-        EnableFourTiles(range, 0, ref tileIndexes);
+        int randomCorner = Random.Range(1,5);
+        int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
+        int randomCorner3 = Num.Wrap(randomCorner+2, 1, 4);
+        Debug.Log("1: "+randomCorner+", 2: "+randomCorner2+", 3: "+randomCorner3);
 
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner));
+    }
+
+    private int GetRandomIndexFromCorners(int layer, int a, int b) {
+        int min, max;
+        if ((a == 1 && b == 4) | (b == 1 && a == 4)) {
+            min = GetFirstOfLayer(layer);
+            max = GetLayerCorner(layer, 4)-4;
+        }else {
+            min = GetLayerCorner(layer, a)+1;
+            max = GetLayerCorner(layer, b)-4;
+        }
+
+        return Random.Range(min, max);
     }
 }

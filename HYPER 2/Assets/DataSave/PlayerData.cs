@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class PlayerData
@@ -30,6 +31,15 @@ public class PlayerData
     
     public void SetFov(float val) {
     	__fov = val;
+    }
+    public Color __uiColor = Color.white;
+    
+    public Color UIColor {
+    	get { return __uiColor; }
+    }
+    
+    public void SetUIColor(Color val) {
+    	__uiColor = val;
     }
     //MACRO_END
 

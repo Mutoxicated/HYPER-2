@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 2095719732482308356}
   - component: {fileID: 7826089734867182009}
   - component: {fileID: 8492274493318259534}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: index
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,13 +195,13 @@ GameObject:
   - component: {fileID: 6654035618970041260}
   - component: {fileID: 3687837571265128891}
   - component: {fileID: 809909398526047902}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3432435994413450528
 RectTransform:
   m_ObjectHideFlags: 0

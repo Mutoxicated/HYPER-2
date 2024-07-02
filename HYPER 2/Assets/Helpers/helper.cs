@@ -57,6 +57,18 @@ namespace Helpers {
         }
     }
 
+    public static class Num {
+        public static int Wrap(int value, int min, int max) {
+            if (value > max) {
+                int length = max-min;
+                int times = Mathf.CeilToInt(value/length); 
+                return length+(length*times-value);
+            }else {
+                return value;
+            }
+        }
+    }
+
     public static class Vec3 {
         public static void Ceil(ref Vector3 v) {
             v.x = Mathf.Ceil(v.x);

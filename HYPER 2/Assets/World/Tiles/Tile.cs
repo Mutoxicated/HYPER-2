@@ -76,19 +76,19 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         List<Neighbor> neighbors = new List<Neighbor>();
         var location = worldGenerator.GetLocationOfIndex(index, layer);
         var context = new Context(location, Direction.UP);
-        Debug.Log("Index: "+index);
+        //Debug.Log("Index: "+index);
 
         void AssignDelta(Direction direction) {
             context.Direction = direction;
             var delta = worldGenerator.GetLayerDelta(layer, context);
             if (delta.IsSome()) {
                 var tileLocation = index+delta.Get();
-                Debug.Log("Delta got: "+delta.Get());
-                if (tileLocation < worldGenerator.Tiles.Length && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
+                //Debug.Log("Delta got: "+delta.Get());
+                if (tileLocation >= 0 && tileLocation <= worldGenerator.Tiles.Length-1 && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
                     neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1], context.Location));
                 }
             }else {
-                Debug.Log("Ain't got no delta.");
+                //Debug.Log("Ain't got no delta.");
             }
         }
 

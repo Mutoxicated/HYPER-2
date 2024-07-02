@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Transform obj;
+    [SerializeField] private Image image;
+    [SerializeField] private Image secondImage;
 
     [Header("Settings")]
     [SerializeField] private bool scalable = true;
@@ -18,6 +21,9 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private void Start() {
         obj = obj == null? transform : obj;
+        if (image == null && secondImage != null) {
+            image = GetComponent<Image>();
+        }
 
         initScale = obj.localScale;
         if (!scalable) {
@@ -26,6 +32,9 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     public void Update() {
+        if (secondImage != null) {
+            secondImage.color = image.color;
+        }
         if (hovering) {
             obj.localScale = Vector3.Lerp(obj.localScale, initScale*scaleMultiplier, Time.deltaTime*lerpSpeed);
         }else {

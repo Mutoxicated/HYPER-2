@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 4561857034760873920}
   - component: {fileID: 4561857034760873927}
   - component: {fileID: 4561857034760873926}
-  - component: {fileID: 4561857034760873922}
-  - component: {fileID: 4561857034760873921}
-  - component: {fileID: 4561857034760873932}
-  - component: {fileID: 4561857034760873923}
+  - component: {fileID: 9100484906520382877}
+  - component: {fileID: 407387752465862917}
+  - component: {fileID: 1223835994713477088}
+  - component: {fileID: 9048282189423877439}
   m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -68,7 +68,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 479
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -88,7 +88,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4561857034760873925}
   m_Enabled: 1
---- !u!114 &4561857034760873922
+--- !u!114 &9100484906520382877
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 4561857034760873920}
+  volumeTrigger: {fileID: 0}
   volumeLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
---- !u!114 &4561857034760873921
+--- !u!114 &407387752465862917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
---- !u!114 &4561857034760873932
+--- !u!114 &1223835994713477088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 974b1c66ae67abd4b9053cdeebf0d8ec, type: 3}
   chromaticAberration: 0.211
---- !u!114 &4561857034760873923
+--- !u!114 &9048282189423877439
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

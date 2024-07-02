@@ -34,10 +34,10 @@ public class Look : MonoBehaviour
         }
 
         var delta = new Vector3(-moveVector.y*4f*Save.pData.SensX, moveVector.x*4f*Save.pData.SensY, 0);
-        var eulerAngles = player.Cam.transform.eulerAngles;
+        var eulerAngles = player.CamRoot.transform.eulerAngles;
 
-        player.Cam.transform.eulerAngles = Vector3.Lerp(eulerAngles, eulerAngles+delta, Time.deltaTime);
-        var clampedX = player.Cam.transform.eulerAngles.x;
+        player.CamRoot.transform.eulerAngles = Vector3.Lerp(eulerAngles, eulerAngles+delta, Time.deltaTime);
+        var clampedX = player.CamRoot.transform.eulerAngles.x;
     
         if (clampedX > xRotationLimit && clampedX < 90f) {
             clampedX = xRotationLimit;
@@ -45,7 +45,7 @@ public class Look : MonoBehaviour
             clampedX = 360-xRotationLimit;
         }
 
-        eulerAngles = player.Cam.transform.eulerAngles;
-        player.Cam.transform.eulerAngles = new Vector3(clampedX, eulerAngles.y, eulerAngles.z);
+        eulerAngles = player.CamRoot.transform.eulerAngles;
+        player.CamRoot.transform.eulerAngles = new Vector3(clampedX, eulerAngles.y, eulerAngles.z);
     }
 }

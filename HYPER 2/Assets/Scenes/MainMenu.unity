@@ -222,6 +222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 4561857034760873927, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
 --- !u!20 &724009479 stripped
@@ -485,12 +489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -618,6 +622,18 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5834
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5834
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5834
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -647,7 +663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -370.81
+      value: -757
       objectReference: {fileID: 0}
     - target: {fileID: 9132116176943847788, guid: 8ee37f595a0b92349a7c4338d0db2937, type: 3}
       propertyPath: m_AnchoredPosition.y

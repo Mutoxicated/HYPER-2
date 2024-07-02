@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
             scrollVector.Normalize();
             direction = forward*scrollVector.y;
 
-            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*40f, Time.deltaTime);
+            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*90f, Time.deltaTime);
         }
         forward.y = 0f;
         forward.Normalize();
@@ -58,12 +58,16 @@ public class Movement : MonoBehaviour
         }
         var dist = Vector2.Distance(Vec3.ToV2XZ(hypothetical), Vec3.ToV2XZ(player.Manager.Tower.transform.position));
         if (dist < towerRadius) {
+            var direction = -hypothetical.normalized;
+            direction.y = 0f;
             var diff = dist-towerRadius;
             hypothetical = hypothetical+direction*diff;
         }
         if (dist > player.World.BorderRadius) {
+            var direction = -hypothetical.normalized;
+            direction.y = 0f;
             var diff = dist-player.World.BorderRadius;
-            hypothetical = hypothetical-direction*diff;
+            hypothetical = hypothetical+direction*diff;
         }
         obj.position = hypothetical;
     }

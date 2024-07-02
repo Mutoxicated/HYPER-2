@@ -17,6 +17,6 @@ public class World : MonoBehaviour
     public void DStart(Player player) {
         worldGenerator.DStart(player);
         borderRadius = worldGenerator.GetLayerRadius();
-        Debug.Log(borderRadius);
+        //Debug.Log(borderRadius);
     }
 }
