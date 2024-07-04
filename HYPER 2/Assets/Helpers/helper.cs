@@ -11,7 +11,7 @@ public class Option<T> {
         value = val;
         none = true;
     }
-    public Option() {}
+    private Option() {}
 
     public bool IsNone() {
         return !none;
@@ -39,7 +39,7 @@ namespace Helpers {
     }
 
     public static class EditorState {
-        public static Dictionary<EditorLayer, string> Layers = new Dictionary<EditorLayer, string>() {
+        private static Dictionary<EditorLayer, string> Layers = new Dictionary<EditorLayer, string>() {
             {EditorLayer.DEFAULT, "Default"},
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
@@ -57,12 +57,48 @@ namespace Helpers {
         }
     }
 
+    public static class Dir {
+        private static Dictionary<Direction, Vector3> directions = new Dictionary<Direction, Vector3>() {
+            { Direction.DOWN, Vector3.back },
+            { Direction.UP, Vector3.forward },
+            { Direction.RIGHT, Vector3.right },
+            { Direction.LEFT, Vector3.left },
+            { Direction.UNKNOWN, Vector3.zero }
+        };
+
+        public static Vector3 ToVec(Direction dir) {
+            return directions[dir];
+        } 
+
+        public static Direction FromVec(Vector3 dir) {
+            dir.Normalize();
+            dir = Vec3.Round(dir);
+
+            Debug.Log(dir);
+
+            if (dir == Vector3.back) {
+                return Direction.DOWN;
+            }else if (dir == Vector3.forward) {
+                return Direction.DOWN;
+            }else if (dir == Vector3.right) {
+                return Direction.RIGHT;
+            }else if (dir == Vector3.left) {
+                return Direction.LEFT;
+            }
+
+            return Direction.UNKNOWN;
+        }
+    }
+
     public static class Num {
         public static int Wrap(int value, int min, int max) {
             if (value > max) {
-                int length = max-min;
+                //Debug.Log("value: "+value);
+                float length = max-min;
+                //Debug.Log("length: "+length);
                 int times = Mathf.CeilToInt(value/length); 
-                return length+(length*times-value);
+                //Debug.Log("times: "+times);
+                return Mathf.FloorToInt(length)*times-value;
             }else {
                 return value;
             }
@@ -89,6 +125,14 @@ namespace Helpers {
 
         public static bool IsNegative(Vector3 v) {
             return !IsPositive(v);
+        }
+
+        public static Vector3 Round(Vector3 v) {
+            v.x = Mathf.Round(v.x);
+            v.y = Mathf.Round(v.y);
+            v.z = Mathf.Round(v.z);
+
+            return v;
         }
     }
 
@@ -122,7 +166,7 @@ namespace Helpers {
                     return new Option<Material>(m);
                 }
             }
-            return new Option<Material>();
+            return Option<Material>.None();
         }
     }
 }

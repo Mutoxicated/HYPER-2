@@ -125,7 +125,7 @@ Shader "Mutox/SimpleWire"
                 // Use the coordinate closest to the edge.
                 float alpha = 1 - min(aliased.x, min(aliased.y, aliased.z));
 
-                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)* i.camDistLinear);
+                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
             }
             ENDCG
         }

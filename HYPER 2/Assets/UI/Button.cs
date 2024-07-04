@@ -36,9 +36,9 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             secondImage.color = image.color;
         }
         if (hovering) {
-            obj.localScale = Vector3.Lerp(obj.localScale, initScale*scaleMultiplier, Time.deltaTime*lerpSpeed);
+            obj.localScale = Vector3.Lerp(obj.localScale, initScale*scaleMultiplier, Time.unscaledDeltaTime*lerpSpeed);
         }else {
-            obj.localScale = Vector3.Lerp(obj.localScale, initScale, Time.deltaTime*lerpSpeed);
+            obj.localScale = Vector3.Lerp(obj.localScale, initScale, Time.unscaledDeltaTime*lerpSpeed);
         }
     }
 

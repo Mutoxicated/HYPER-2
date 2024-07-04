@@ -69,6 +69,9 @@ public class Movement : MonoBehaviour
             var diff = dist-player.World.BorderRadius;
             hypothetical = hypothetical+direction*diff;
         }
+        if (hypothetical.y < 3f) {
+            hypothetical.y = 3f;
+        }
         obj.position = hypothetical;
     }
 }

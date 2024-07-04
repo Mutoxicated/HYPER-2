@@ -5,6 +5,8 @@ Shader "Mutox/AdvancedWire"
         [HDR] [MainColor] _WireframeColor("Wireframe color", color) = (1.0, 1.0, 1.0, 1.0)
         _WireframeAliasing("Wireframe aliasing", float) = 1.5
         _Intact("Intact Range", float) = 0
+        _MinDist("Min Distane", float) = 200
+        _MaxDist("Max Distance", float) = 1800
 
        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Integer) = 2
     }
@@ -13,7 +15,6 @@ Shader "Mutox/AdvancedWire"
     {
         Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
         LOD 100
-
 
         Pass {
             Cull [_Cull]
@@ -41,15 +42,13 @@ Shader "Mutox/AdvancedWire"
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
                 float4 color : COLOR;
-                float camDist : TEXCOORD1;
-                float camDistLinear : TEXCOORD2;
+                float camDistLinear : TEXCOORD1;
             };
 
             struct g2f {
                 float4 pos : SV_POSITION;
                 float3 barycentric : TEXCOORD0;
-                float camDist : TEXCOORD1;
-                float camDistLinear : TEXCOORD2;
+                float camDistLinear : TEXCOORD1;
             };
 
             float random(float2 normal) {
@@ -61,6 +60,8 @@ Shader "Mutox/AdvancedWire"
             }
 
             float _Intact;
+            float _MaxDist;
+            float _MinDist;
 
             v2f vert(appdata v) {
                 v2f o;
@@ -71,12 +72,8 @@ Shader "Mutox/AdvancedWire"
                 float3 worldPos = mul(unity_ObjectToWorld, o.vertex);
                 float3 diff = abs(_WorldSpaceCameraPos-worldPos);
                 float camDist = (diff.x+diff.y+diff.z)*0.333f;
-                o.camDist = invLerp(1400,200,camDist);
-                o.camDistLinear = o.camDist;
-                o.camDist = clamp(o.camDist,0,1);
+                o.camDistLinear = invLerp(_MinDist,_MaxDist,camDist);
                 o.camDistLinear = clamp(o.camDistLinear, 0,1);
-                o.camDist *= o.camDist;
-                o.camDist *= o.camDist;
 
                 o.color = v.color;
                 o.uv = v.uv;
@@ -90,17 +87,14 @@ Shader "Mutox/AdvancedWire"
                 g2f o;
                 o.pos = UnityObjectToClipPos(IN[0].vertex);
                 o.barycentric = IN[0].color;
-                o.camDist = IN[0].camDist;
                 o.camDistLinear = IN[0].camDistLinear;
                 triStream.Append(o);
                 o.pos = UnityObjectToClipPos(IN[1].vertex);
                 o.barycentric = IN[1].color;
-                o.camDist = IN[1].camDist;
                 o.camDistLinear = IN[1].camDistLinear;
                 triStream.Append(o);
                 o.pos = UnityObjectToClipPos(IN[2].vertex);
                 o.barycentric = IN[2].color;
-                o.camDist = IN[2].camDist;
                 o.camDistLinear = IN[2].camDistLinear;
                 triStream.Append(o);                
             }
@@ -116,7 +110,7 @@ Shader "Mutox/AdvancedWire"
                 // Use the coordinate closest to the edge.
                 float alpha = 1 - min(aliased.x, min(aliased.y, aliased.z));
 
-                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1) * i.camDist);
+                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
             }
             ENDCG
             }

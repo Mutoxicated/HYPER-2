@@ -57,7 +57,7 @@ public class Context {
 
 public class WorldGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject tower;
+    [SerializeField] private World world;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject pathPrefab;
     [SerializeField] private int layers = 1;
@@ -68,7 +68,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     public GameObject Tower {
-        get { return tower; }
+        get { return world.Tower; }
     }
 
     // Tile generation
@@ -87,9 +87,10 @@ public class WorldGenerator : MonoBehaviour
     // Path generation
     private List<Path> paths = new List<Path>();
 
-    public void DStart(Player player) {
+    public void DStart(World world, Player player) {
         this.player = player;
-        towerSize = tower.transform.localScale.x*0.5f;
+        this.world = world;
+        towerSize = world.TowerPlatform.transform.localScale.x*0.5f;
         tileSize = tilePrefab.transform.GetChild(0).transform.localScale.x*0.5f;
 
         Layer();
@@ -123,7 +124,7 @@ public class WorldGenerator : MonoBehaviour
         tiles.Add(tile);
         tile.CStart(
             this, 
-            Vector3.Distance(tile.transform.position, tower.transform.position), 
+            Vector3.Distance(tile.transform.position, Tower.transform.position), 
             currentLayer, 
             tiles.Count
         );
@@ -150,6 +151,10 @@ public class WorldGenerator : MonoBehaviour
         if (currentLayer < layers) {
             Layer();
         }
+    }
+
+    public bool IndexBelongsTo(int index, int layer) {
+        return index >= GetFirstOfLayer(layer) && index <= GetLastOfLayer(layer);
     }
 
     public Location GetLocationOfIndex(int index, int layer) {
@@ -227,9 +232,10 @@ public class WorldGenerator : MonoBehaviour
             }
         case Direction.UP:
             switch (context.Location.Type) {
-            case LocationType.FIRST:
             case LocationType.LEFT:
             case LocationType.LEFT_BOTTOM:
+                return new Option<int>(-1);
+            case LocationType.FIRST:
                 if (layer == 1) {
                     return Option<int>.None();
                 }
@@ -392,25 +398,26 @@ public class WorldGenerator : MonoBehaviour
         var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
         var path = instance.GetComponent<Path>();
         paths.Add(path);
-        path.CStart(this, tiles[index]);
+        path.CStart(world, this, tiles[index]);
     }
 
     private void CreatePaths() {
         int randomCorner = Random.Range(1,5);
         int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
-        int randomCorner3 = Num.Wrap(randomCorner+2, 1, 4);
-        Debug.Log("1: "+randomCorner+", 2: "+randomCorner2+", 3: "+randomCorner3);
+        int randomCorner3 = Num.Wrap(randomCorner2+1, 1, 4);
+        int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
+        //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
 
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
-        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
-        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner));
+        //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
+        //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
     }
 
     private int GetRandomIndexFromCorners(int layer, int a, int b) {
         int min, max;
         if ((a == 1 && b == 4) | (b == 1 && a == 4)) {
             min = GetFirstOfLayer(layer);
-            max = GetLayerCorner(layer, 4)-4;
+            max = GetLayerCorner(layer, 1)-1;
         }else {
             min = GetLayerCorner(layer, a)+1;
             max = GetLayerCorner(layer, b)-4;
