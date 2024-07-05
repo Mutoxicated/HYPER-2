@@ -7,14 +7,13 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     [Header("Settings")]
     [SerializeField] private float health = 30f;
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private float damage = 50f;
     [SerializeField] private float speed = 2f;
 
     [Header("Systems")]
     [SerializeField] private Interval damageInterval;
     
-    private Path path;
-    private Path.Branch currentBranch;
+    private Branch currentBranch;
 
     private Vector3 dir;
     private float dist;
@@ -22,9 +21,8 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private Option<IDamageable> currentlyColliding = Option<IDamageable>.None();
 
-    public void CStart(Path path) {
-        this.path = path;
-        currentBranch = path.Root;
+    public void CStart(Branch root) {
+        currentBranch = root;
         dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
         gameObject.SetActive(true);
     }
@@ -38,10 +36,12 @@ public class Enemy : MonoBehaviour, IDamageable
         if (currentBranch.direction == Direction.UP | currentBranch.direction == Direction.DOWN) {
             dist = Mathf.Abs(transform.position.z-currentBranch.end.transform.position.z);
         }else {
+            //Debug.Log(currentBranch.end);
             dist = Mathf.Abs(transform.position.x-currentBranch.end.transform.position.x);
         }
         if (dist < 0.2f) {
             var branch = currentBranch.Next();
+            //Debug.Log(branch);
             dist = 0f;
             if (branch.IsNone()) {
                 last = true;
@@ -59,9 +59,12 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     public void OnCollisionEnter(Collision collision) {
+        //Debug.Log(collision.gameObject.name);
         var damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null) {
+            //Debug.Log("Contains Damageable");
             currentlyColliding = new Option<IDamageable>(damageable);
+            IntervalDamage();
             damageInterval.Enable();
         }
     }
@@ -80,9 +83,16 @@ public class Enemy : MonoBehaviour, IDamageable
         currentlyColliding = Option<IDamageable>.None();
     }
 
+    public void Die() {
+        Destroy(gameObject);
+    }
+
     public void Damage(float amount)
     {
-        if (health < 0) { return; }
+        if (health <= 0) { return; }
         health -= amount;
+        if (health <= 0) {
+            Die();
+        }
     }
 }

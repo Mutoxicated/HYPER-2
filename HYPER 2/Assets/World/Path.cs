@@ -4,39 +4,37 @@ using Helpers;
 using UnityEngine;
 using static Helpers.General;
 
-public class Path : MonoBehaviour
-{
-    public struct Branch {
-        public Direction direction;
-        public Tile end;
+public class Branch {
+    public Direction direction;
+    public Tile end;
+    public List<Branch> branches = new List<Branch>();
 
-        public List<Branch> branches;
+    public Branch(Direction direction, Tile tile) {
+        this.direction = direction;
+        end = tile;
+    }
 
-        public Branch(Direction direction, Tile tile) {
-            this.direction = direction;
-            end = tile;
-            branches = new List<Branch>();
-        }
+    public Branch(Direction direction, Tile tile, Branch parent) {
+        this.direction = direction;
+        end = tile;
+        parent.SetBranch(this);
+    }
 
-        public Branch(Direction direction, Tile tile, Branch parent) {
-            this.direction = direction;
-            end = tile;
-            branches = new List<Branch>();
-            parent.SetBranch(this);
-        }
-
-        public Option<Branch> Next() {
-            if (branches.Count == 0) {
-                return Option<Branch>.None();
-            }else {
-                return new Option<Branch>(branches[0]);
-            }
-        }
-
-        public void SetBranch(Branch branch) {
-            branches.Add(branch);
+    public Option<Branch> Next() {
+        if (branches.Count == 0) {
+            return Option<Branch>.None();
+        }else {
+            return new Option<Branch>(branches[0]);
         }
     }
+
+    public void SetBranch(Branch branch) {
+        branches.Add(branch);
+    }
+}
+
+public class Path : MonoBehaviour
+{
 
     public enum Message {
         ALL_GOOD,
@@ -49,13 +47,13 @@ public class Path : MonoBehaviour
     private WorldGenerator wg;
     private List<Neighbor> neighbors = new List<Neighbor>();
     private Direction mainDirection = Direction.UNKNOWN;
+    private Direction currentDirection = Direction.UNKNOWN;
     private Branch root;
     public Branch Root {
         get { return root; }
     }
     private Option<Branch> currentBranch = Option<Branch>.None();
 
-    private Direction directionToTake = Direction.UNKNOWN;
     private int amount = 0;
 
     private List<Neighbor> buffer = new List<Neighbor>();
@@ -107,20 +105,15 @@ public class Path : MonoBehaviour
         if (interval == null) {
             extend();
         }
-        Debug.Log("amount left: "+amount);
-
-        if (amount != 0) {
-            AddBranch(1);
-        }
 
         var dir = wg.Tower.transform.position-neighbors[neighbors.Count-1].Tile.transform.position;
         var direction = Dir.FromVec(dir);
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+direction);
+        //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+direction);
         if (currentBranch.Get().direction != direction) {
             AddBranch(direction, 1);
         }
 
-        world.InstantiateEnemy(0, neighbors[0].Tile.transform.position+Vector3.up*2f, e => e.CStart(this));
+        world.InstantiateEnemy(0, neighbors[0].Tile.transform.position+Vector3.up*3f, e => e.CStart(root));
     }
 
     private void extend() {
@@ -131,17 +124,13 @@ public class Path : MonoBehaviour
             if (amount > 0) {
                 var leave = false;
                 foreach (var nb in buffer) {
-                    if (nb.Direction == directionToTake) {
+                    if (nb.Direction == currentDirection) {
                         if (EnableNeighbor(nb) != Message.ALL_GOOD) {
                             amount = 0;
-                            directionToTake = Direction.UNKNOWN;
                             leave = true;
                             break;
                         }
                         amount--;
-                        if (amount == 0 | !validForExtending(nb.Tile)) {
-                            AddBranch(1);
-                        }
                         leave = true;
                         break;
                     }
@@ -149,43 +138,50 @@ public class Path : MonoBehaviour
                 if (leave) {
                     continue;
                 }else {
-                    Debug.Log("Didn't find at: "+neighbors[neighbors.Count-1].Tile.Index+" with direction "+directionToTake);
+                    Debug.Log("Didn't find at: "+neighbors[neighbors.Count-1].Tile.Index+" with direction "+currentDirection);
                     if (noFinds > 2) {
                         break;
                     }
                     noFinds++;
-                    directionToTake = Direction.UNKNOWN;
                     amount = 0;
                     DisableNeighbor(neighbors[neighbors.Count-1]);
                     continue;
                 }
             }
-            if (buffer.Count == 0) {
-                break;
-            }
+            // if (buffer.Count == 0) {
+            //     break;
+            // }
 
             var closestToTower = buffer[0];
 
-            if (mainDirection != closestToTower.Direction) {
-                EnableNeighbor(closestToTower);
-                AddBranch();
+            if (currentDirection == Direction.UNKNOWN) {
+                currentDirection = closestToTower.Direction;
+            }
 
+            if (currentDirection == closestToTower.Direction) {
+                EnableNeighbor(closestToTower);
+                continue;
+            }
+
+            EnableNeighbor(closestToTower);
+            AddBranch();
+            currentDirection = closestToTower.Direction;
+
+            if (currentDirection != mainDirection) {
                 var range = closestToTower.Location.CornersRange;
                 //Debug.Log("Range: "+range.a+", "+range.b);
                 range.a = Mathf.Abs(range.a);
                 range.b = Mathf.Abs(range.b);
                 
-                directionToTake = closestToTower.Direction;
                 if (range.a > range.b) {
                     SetAmount(range.a);
                 }else {
                     SetAmount(range.b);
                 }
-                //Debug.Log("Amount: "+amount);
-            }else {
-                EnableNeighbor(closestToTower);
             }
         }
+
+        AddBranch(1);
     }
 
     public void AddBranch(int offset = 0) {
@@ -193,7 +189,7 @@ public class Path : MonoBehaviour
             root = new Branch(neighbors[neighbors.Count-2].Direction, neighbors[neighbors.Count-2+offset].Tile);
             currentBranch = new Option<Branch>(root);
         }else {
-            currentBranch = new Option<Branch>(new Branch(neighbors[neighbors.Count-2].Direction, neighbors[neighbors.Count-2+offset].Tile, currentBranch.Get()));
+            currentBranch = new Option<Branch>(new Branch(neighbors[neighbors.Count-2+offset].Direction, neighbors[neighbors.Count-2+offset].Tile, currentBranch.Get()));
         }
     }
 
@@ -205,71 +201,7 @@ public class Path : MonoBehaviour
             currentBranch = new Option<Branch>(new Branch(dir, neighbors[neighbors.Count-2+offset].Tile, currentBranch.Get()));
         }
     }
-
-    public void ExtendStep() {
-        if (!validForExtending(neighbors[neighbors.Count-1].Tile)) {
-            interval.enabled = false;
-            return;
-        }
-        if (buffer.Count == 0)
-            buffer = neighbors[neighbors.Count-1].Tile.GetNeighbors();
-        if (amount > 0) {
-            var leave = false;
-            foreach (var nb in buffer) {
-                if (nb.Direction == directionToTake) {
-                    if (EnableNeighbor(nb) != Message.ALL_GOOD) {
-                        amount = 0;
-                        directionToTake = Direction.UNKNOWN;
-                        leave = true;
-                        break;
-                    }
-                    amount--;
-                    leave = true;
-                    break;
-                }
-            }
-            if (leave) {
-                return;
-            }else {
-                Debug.Log("Didn't find at: "+neighbors[neighbors.Count-1].Tile.Index+" with direction "+directionToTake);
-                if (noFinds > 2) {
-                    interval.enabled = false;
-                    return;
-                }
-                noFinds++;
-                directionToTake = Direction.UNKNOWN;
-                amount = 0;
-                DisableNeighbor(neighbors[neighbors.Count-1]);
-                return;
-            }
-        }
-        if (buffer.Count == 0) {
-            return;
-        }
-
-        var closestToTower = buffer[0];
-
-        if (mainDirection != closestToTower.Direction) {
-            EnableNeighbor(closestToTower);
-
-            var range = closestToTower.Location.CornersRange;
-            //Debug.Log("Range: "+range.a+", "+range.b);
-            range.a = Mathf.Abs(range.a);
-            range.b = Mathf.Abs(range.b);
-            
-            directionToTake = closestToTower.Direction;
-            if (range.a > range.b) {
-                SetAmount(range.a);
-            }else {
-                SetAmount(range.b);
-            }
-            //Debug.Log("Amount: "+amount);
-        }else {
-            EnableNeighbor(closestToTower);
-        }
-        return;
-    }
-
+    
     private void SetAmount(int value) {
         var min = 3;
 
@@ -306,9 +238,9 @@ public class Path : MonoBehaviour
         }
         //Debug.Log("At "+nb.Tile.Index+", this was no good");
         //Debug.Log("Neighbors it had: ");
-        foreach (var nbr in localNeighbors) {
-            //Debug.Log("  "+nbr.Tile.Index+" | "+nbr.Location.Type+" / "+nbr.Direction);
-        }
+        // foreach (var nbr in localNeighbors) {
+        //     //Debug.Log("  "+nbr.Tile.Index+" | "+nbr.Location.Type+" / "+nbr.Direction);
+        // }
         buffer.Remove(nb);
         return Message.IMPROPER_PLACEMENT;
     All_good:

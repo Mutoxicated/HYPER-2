@@ -78,5 +78,6 @@ public class Player : MonoBehaviour
         manager = GameObject.FindWithTag("Manager").GetComponent<Manager>();
 
         movement.DStart();
+        gui.DStart();
     }
 }

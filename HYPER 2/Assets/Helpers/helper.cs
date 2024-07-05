@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class Option<T> {
     private T value;
-    private bool none = false;
+    private bool none = true;
 
     public Option(T val) {
         value = val;
-        none = true;
+        none = false;
     }
     private Option() {}
 
     public bool IsNone() {
-        return !none;
+        return none;
     }
 
     public bool IsSome() {
@@ -79,7 +79,7 @@ namespace Helpers {
             if (dir == Vector3.back) {
                 return Direction.DOWN;
             }else if (dir == Vector3.forward) {
-                return Direction.DOWN;
+                return Direction.UP;
             }else if (dir == Vector3.right) {
                 return Direction.RIGHT;
             }else if (dir == Vector3.left) {

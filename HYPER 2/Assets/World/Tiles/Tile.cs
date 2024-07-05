@@ -38,7 +38,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     [SerializeField] private TMP_Text textIndex;
 
     private bool lit = false;
-    private readonly Color litColor = Color.red;
+    private readonly Color litColor = new Color(0.9f,0.06f,0.06f);
     private const float heightOffset = 1f;
 
     private Vector3 initPos;

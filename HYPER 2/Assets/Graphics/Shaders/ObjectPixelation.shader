@@ -28,18 +28,18 @@ Shader "Mutox/ObjectPixelation"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
-            fixed4 _Color;
+            float4 _Color;
 
             struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float4 color : COLOR;
             };
 
             struct v2f {
                 float4 position : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float4 color : COLOR;
             };
 
             v2f vert(appdata v) {
@@ -51,7 +51,7 @@ Shader "Mutox/ObjectPixelation"
             }
 
             fixed4 frag(v2f i) : SV_TARGET{
-                fixed4 col = tex2D(_MainTex, i.uv);
+                float4 col = tex2D(_MainTex, i.uv);
                 col *= _Color;
                 return _Color;
             }
@@ -75,14 +75,14 @@ Shader "Mutox/ObjectPixelation"
                 float3 normal : NORMAL;
                 float3 smoothNormal : TEXCOORD3;
                 float4 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float4 color : COLOR;
             };
 
             struct v2f
             {
                 float4 pos : SV_POSITION;
                 float4 uv : TEXCOORD0;
-                fixed4 color : COLOR;
+                float4 color : COLOR;
             };
 
             float _PixelSize;
@@ -91,10 +91,11 @@ Shader "Mutox/ObjectPixelation"
             {
                 v2f o;
 
-                v.pos *= 1.2;
+                v.pos *= 1.2*(_PixelSize*0.1f);
 
                 o.pos = UnityObjectToClipPos(v.pos);
                 o.pos = UnityPixelSnap(o.pos);
+
                 o.uv = ComputeScreenPos(o.pos);
                 o.color = v.color;
                 return o;
@@ -108,14 +109,14 @@ Shader "Mutox/ObjectPixelation"
             float4 frag(v2f IN) : SV_Target
             {
                 float2 steppedUV = IN.uv.xy / IN.uv.w;
-                fixed4 beforeColor = _GrabTransparentTexture.Sample(point_clamp_sampler, steppedUV);
+                float4 beforeColor = _GrabTransparentTexture.Sample(point_clamp_sampler, steppedUV);
                 float thing = _PixelSize / _ScreenParams.xy / _ScreenParams.w;
                 float ogAlpha = _Color.a;
                 steppedUV /= thing;
                 steppedUV = round(steppedUV);
                 steppedUV *= thing;
-                fixed4 col = _GrabTransparentTexture.Sample(point_clamp_sampler, steppedUV);
-                fixed4 finalColor;// = (distance(_Color, col) < 1.3) ? _Color : col;
+                float4 col = _GrabTransparentTexture.Sample(point_clamp_sampler, steppedUV);
+                float4 finalColor;// = (distance(_Color, col) < 1.3) ? _Color : col;
                 
                 if (distance(_Color, col) < 0.1) {
                     finalColor = _Color;

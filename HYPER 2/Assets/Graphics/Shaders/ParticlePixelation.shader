@@ -7,6 +7,9 @@ Shader "Mutox/ParticlePixelation"
         _PixelSize("Pixel Size", Float) = 10
     }
 
+    
+        
+
         SubShader
         {
             Tags{ "Queue" = "AlphaTest+50" "RenderType" = "Transparency"  }
@@ -14,6 +17,7 @@ Shader "Mutox/ParticlePixelation"
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite On
             Cull Back
+
 
             Pass{
                 CGPROGRAM
@@ -28,21 +32,21 @@ Shader "Mutox/ParticlePixelation"
                 struct appdata {
                     float4 vertex : POSITION;
                     float4 uv : TEXCOORD1;
-                    fixed4 custom1 : TEXCOORD0;
+                    float4 custom1 : TEXCOORD0;
                     float4 center : TEXCOORD2;
                 };
 
                 struct v2f {
                     float4 pos : SV_POSITION;
                     float4 uv : TEXCOORD0;
-                    fixed4 color : TEXCOORD1;
+                    float4 color : TEXCOORD1;
                 };
 
                 v2f vert(appdata v) {
                     v2f o;
                     float3 vert = v.vertex - v.center;
 
-                    vert *= 0.9;
+                    vert *= 1;
 
                     v.vertex.xyz = vert + v.center;
                     o.pos = UnityObjectToClipPos(v.vertex);
@@ -64,6 +68,14 @@ Shader "Mutox/ParticlePixelation"
             {
                 CGPROGRAM
 
+                inline float invLerp(float a,float b,float v) {
+                    return (v-a)/(b-a);
+                }
+
+                inline float lerp(float a, float b, float t) {
+                    return a+(b-a)*t;
+                }
+
                 #pragma vertex vert
                 #pragma fragment frag
                 #include "UnityCG.cginc"
@@ -71,17 +83,17 @@ Shader "Mutox/ParticlePixelation"
                 struct appdata {
                     float3 pos : POSITION;
                     float4 uv : TEXCOORD1;
-                    fixed4 custom1 : TEXCOORD0;
-                    float4 center : TEXCOORD2;
+                    float4 custom1 : TEXCOORD0;
+                    float4 center : TEXCOORD2;// xyz, w
                 };
 
                 struct v2f
                 {
                     float4 pos : SV_POSITION;
                     float4 uv : TEXCOORD1;
-                    fixed4 custom1 : TEXCOORD0;
+                    float4 custom1 : TEXCOORD0;
                     float4 center : TEXCOORD2;
-                    float viewZ : TEXCOORD3;
+                    float camDist : TEXCOORD3;
                 };
 
                 v2f vert(appdata v)
@@ -91,26 +103,31 @@ Shader "Mutox/ParticlePixelation"
                     
                     float3 vert = v.pos - v.center.xyz;
 
-                    vert *= 1;
+                    vert *= (1.2*(clamp(invLerp(10,0,v.center.w),0,1)+1));
 
                     v.pos = vert + v.center.xyz;
-
-                    o.viewZ = UnityObjectToViewPos(v.pos).z;
-
                     o.pos = UnityObjectToClipPos(v.pos);
+
+                    float3 worldPos = mul(unity_ObjectToWorld, o.pos);
+                    float3 diff = abs(_WorldSpaceCameraPos-worldPos);
+                    float camDist = (diff.x+diff.y+diff.z)*0.333f;
+                    camDist = invLerp(2.3, 75, camDist);
+                    camDist = clamp(camDist, 0, 1);
+                    o.camDist = camDist;
+
                     o.uv = ComputeScreenPos(o.pos);
                     o.custom1 = v.custom1;
                     return o;
                 }
 
-                inline bool compareColors(float4 color1, float4 color2, float tolerance){
+                inline bool compareColors(float4 color1, float4 color2, float threshold){
                     float4 endcolor;
                     endcolor.r = abs(color1.r-color2.r);
                     endcolor.g = abs(color1.g-color2.g);
                     endcolor.b = abs(color1.b-color2.b);
 
                     float average = (endcolor.r+endcolor.g+endcolor.b)/3;
-                    return (average < tolerance) ? true : false;
+                    return (average < threshold) ? true : false;
                 }
 
                 sampler2D _MainTex;
@@ -121,20 +138,17 @@ Shader "Mutox/ParticlePixelation"
                 {
                     float2 steppedUV = IN.uv.xy/IN.uv.w;
                     float4 beforeColor = _GrabTexture.Sample(point_clamp_sampler, steppedUV);
-                    float thing = (IN.center.w) / _ScreenParams.xy / _ScreenParams.w;// + clamp(IN.viewZ,-1,1);
+                    float thing = (IN.center.w /* * IN.camDist*/) / _ScreenParams.xy / _ScreenParams.w;//;
                     steppedUV /= thing;
                     steppedUV = round(steppedUV);
                     steppedUV *= thing;
                     float4 col = _GrabTexture.Sample(point_clamp_sampler, steppedUV);
                     float4 finalColor;// = (distance(_Color, col) < 1.3) ? _Color : col;
-                    if (compareColors(IN.custom1, col, 0.01)) {
+                    if (distance(IN.custom1, col) < 0.1) {
                         finalColor = IN.custom1;
                     }
                     else {
-                        if (compareColors(IN.custom1, beforeColor, 0.01)) {
-                            finalColor = col;
-                            //finalColor.a = 0;
-                        }
+                        finalColor = (distance(IN.custom1,beforeColor) < 0.1) ? col : beforeColor;
                     }
                     //finalColor = (distance(beforeColor, col) > 0.7) ? col : beforeColor;
                     return finalColor;
