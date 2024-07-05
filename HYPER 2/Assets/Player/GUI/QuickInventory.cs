@@ -28,7 +28,7 @@ public class QuickInventory : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public void CStart(){
+    public void DStart(){
         imageSize = slots[0].transform.localScale.x*0.1f+spacing;
         
         Sort();

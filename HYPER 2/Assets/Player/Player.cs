@@ -7,13 +7,17 @@ public class Player : MonoBehaviour
     private Manager manager;
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
+    [SerializeField] private GameObject[] miniTowerPrefabs;
     private Camera cam;
     private Transform camRoot;
     private InputAction debugRefresh;
+    private InputAction middleButton;
+    private InputAction leftButton;
 
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
+    
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -43,6 +47,13 @@ public class Player : MonoBehaviour
         get { return debugRefresh.WasPerformedThisFrame(); }
     }
 
+    public bool OnMiddleButton {
+        get { return middleButton.IsPressed(); }
+    }
+
+    public bool OnLeftClick {
+        get { return leftButton.WasPerformedThisFrame(); }
+    }
     
     public void DeadMode() {
         UIMode();
@@ -63,10 +74,19 @@ public class Player : MonoBehaviour
         ui.Disable();
     }
 
-    void Awake()
-    {
+    public delegate void MiniTowerConstructor(MiniTower mini);
+
+    public MiniTower InstantiateMiniTower(Vector3 position, int index, MiniTowerConstructor constructor) {
+        var tower = Instantiate(miniTowerPrefabs[index], position, Quaternion.identity).GetComponent<MiniTower>();
+        constructor(tower);
+        return tower;
+    }
+
+    void Awake() {
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         player = input.actions.FindActionMap("Player", true);
+        middleButton = player.FindAction("MiddleButton", true);
+        leftButton = player.FindAction("Fire");
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
         ui = input.actions.FindActionMap("UI", true);
@@ -78,6 +98,6 @@ public class Player : MonoBehaviour
         manager = GameObject.FindWithTag("Manager").GetComponent<Manager>();
 
         movement.DStart();
-        gui.DStart();
+        gui.DStart(this);
     }
 }

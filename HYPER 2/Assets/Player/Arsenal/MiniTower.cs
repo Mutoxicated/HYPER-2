@@ -13,7 +13,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     private float health = 100f;
     private float DOT = .1f;
 
-    private void CStart() {
+    public void CStart() {
         gameObject.SetActive(true);
         DOTInterval.Enable();
     }

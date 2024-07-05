@@ -90,6 +90,23 @@ namespace Helpers {
         }
     }
 
+    public static class Go {
+        public static void SetLayerRecursive(GameObject go, EditorLayer el) {
+            int layer = EditorState.GetLayer(el);
+            go.layer = layer;
+            for (int i = 0; i < go.transform.childCount; i++) {
+                LayerRecurse(go.transform.GetChild(i).gameObject, layer);
+            }
+        }
+
+        private static void LayerRecurse(GameObject go, int layer) {
+            go.layer = layer;
+            for (int i = 0; i < go.transform.childCount; i++) {
+                LayerRecurse(go.transform.GetChild(i).gameObject, layer);
+            }
+        }
+    }
+
     public static class Num {
         public static int Wrap(int value, int min, int max) {
             if (value > max) {

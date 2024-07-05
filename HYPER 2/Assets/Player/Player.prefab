@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5950979555054321684}
   - component: {fileID: 6954566601433983008}
   m_Layer: 0
-  m_Name: UI Camera
+  m_Name: Env Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 479
+    m_Bits: 991
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -206,6 +206,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: efdbbed9-51e7-4e02-8159-062ec2cd3af6
     m_ActionName: Debug/DRef[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ba2e8a74-469d-4a49-997e-e003ae4c24cd
+    m_ActionName: Player/MiddleButton[/Mouse/middleButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -224,6 +228,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 1080319219865831810}
+  gui: {fileID: 0}
+  miniTowerPrefabs:
+  - {fileID: 3710317631712574376, guid: 5f993efe9776ddb49a91ae110aa69d23, type: 3}
 --- !u!114 &1080319219865831810
 MonoBehaviour:
   m_ObjectHideFlags: 0

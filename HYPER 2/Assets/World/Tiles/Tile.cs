@@ -109,14 +109,14 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     public void Enable() {
         if (lit) { return; }
         lit = true;
-        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO);
+        Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.ChangeColor(litColor, true);
     }
 
     public void Disable() {
         if (!lit) { return; }
         lit = false;
-        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+        Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
         mc.ChangeColor(true);
     }
 
