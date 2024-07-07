@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,7 +7,10 @@ public class World : MonoBehaviour
     [SerializeField] private GameObject tower;
     [SerializeField] private GameObject towerPlatform;
     [SerializeField] private WorldGenerator worldGenerator;
-    [SerializeField] private GameObject[] enemyPrefabs;
+    
+    private List<Enemy> enemies = new List<Enemy>();
+    public delegate void ReportDeath(Enemy enemy);
+    private ReportDeath reportDeath;
 
     private float borderRadius;
     public float BorderRadius {
@@ -21,15 +25,17 @@ public class World : MonoBehaviour
         get { return towerPlatform; }
     }
 
-    public delegate void EnemyConstructor(Enemy enemy);
+    public delegate void EnemyConstructor(ReportDeath death, Enemy enemy);
 
-    public Enemy InstantiateEnemy(int index, Vector3 pos, EnemyConstructor es) {
-        var enemy = Instantiate(enemyPrefabs[index], pos, Quaternion.identity).GetComponent<Enemy>();
-        es(enemy);
+    public Enemy InstantiateEnemy(Resources.Enemy enemyType, Vector3 pos, EnemyConstructor es) {
+        var enemy = Instantiate(Resources.GetEnemy(enemyType), pos, Quaternion.identity).GetComponent<Enemy>();
+        enemies.Add(enemy);
+        es(reportDeath, enemy);
         return enemy;
     }
 
     public void DStart(Player player) {
+        reportDeath = new ReportDeath(e => enemies.Remove(e));
         worldGenerator.DStart(this, player);
         borderRadius = worldGenerator.GetLayerRadius();
         //Debug.Log(borderRadius);

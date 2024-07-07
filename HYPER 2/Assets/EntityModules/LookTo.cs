@@ -5,7 +5,7 @@ using UnityEngine;
 public class LookTo : MonoBehaviour
 {
     [SerializeField] private GameObject looker;
-    [SerializeField] private GameObject target;
+    [SerializeField] private Option<GameObject> target;
     [SerializeField,Range(4f,15)] private float lerpSpeed;
 
     private Quaternion lookRotation;
@@ -21,7 +21,10 @@ public class LookTo : MonoBehaviour
     }
 
     private void Update() {
-        lookRotation = Quaternion.LookRotation(target.transform.position-looker.transform.position);
+        if (target.IsNone()) {
+            return;
+        }
+        lookRotation = Quaternion.LookRotation(target.Get().transform.position-looker.transform.position);
         looker.transform.rotation = Quaternion.Lerp(looker.transform.rotation, lookRotation, Time.deltaTime*lerpSpeed);
     }
 }

@@ -4837,6 +4837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8233565666014920145}
   - component: {fileID: 4176176162748544932}
+  - component: {fileID: 7483121074402370019}
   - component: {fileID: 8026403155563357703}
   - component: {fileID: 1246781020043864343}
   m_Layer: 0
@@ -4878,6 +4879,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 3
+--- !u!114 &7483121074402370019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4618620402407156219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalizeds: 000000000100000002000000
+  values:
+  - 1
+  - 1
+  - 1
 --- !u!114 &8026403155563357703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4890,6 +4908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33bdc51a01308e242ba69a741343002e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 7483121074402370019}
   health: 10
   damage: 300
   speed: 7

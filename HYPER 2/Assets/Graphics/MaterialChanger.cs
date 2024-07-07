@@ -7,6 +7,13 @@ public enum MaterialType {
     BASE,
     SIM_WIRE,
     ADV_WIRE,
+    HDR
+}
+
+public enum QueueMode {
+    GEOMETRY = 2000,
+    ALPHA_TEST = 2500,
+    TRANSPARENT = 3000
 }
 
 public class MaterialChanger : MonoBehaviour
@@ -15,6 +22,8 @@ public class MaterialChanger : MonoBehaviour
     [SerializeField] private MaterialType @type;
     [SerializeField] private bool changeColor = true;
     [SerializeField, ColorUsage(true,true)] private Color color = Color.white;
+    [SerializeField] private bool changeQueue = false;
+    [SerializeField] private QueueMode queueMode;
 
     private Material material;
 
@@ -41,6 +50,7 @@ public class MaterialChanger : MonoBehaviour
         material = res.Get();
 
         ChangeColor(color, false);
+        ChangeQueue(queueMode, false);
     }
 
     public void ChangeColor(Color color, bool overrideSettings) {
@@ -55,5 +65,15 @@ public class MaterialChanger : MonoBehaviour
 
     public void ChangeColor(bool overrideSettings) {
         ChangeColor(color, overrideSettings);
+    }
+
+    public void ChangeQueue(QueueMode mode, bool overrideSettings) {
+        if (overrideSettings) {
+            material.renderQueue = (int)mode;
+            return;
+        }
+        if (changeQueue) {
+            material.renderQueue = (int)mode;
+        }
     }
 }

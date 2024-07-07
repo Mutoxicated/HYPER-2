@@ -5,10 +5,11 @@ public class Player : MonoBehaviour
 {
     private UnityEngine.InputSystem.PlayerInput input;
     private Manager manager;
+    [SerializeField] private Stats stats;
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
     [SerializeField] private GameObject[] miniTowerPrefabs;
-    private Camera cam;
+    [SerializeField] private Camera cam;
     private Transform camRoot;
     private InputAction debugRefresh;
     private InputAction middleButton;
@@ -82,7 +83,9 @@ public class Player : MonoBehaviour
         return tower;
     }
 
-    void Awake() {
+    public void DStart(Manager manager) {
+        stats.CStart();
+        
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         player = input.actions.FindActionMap("Player", true);
         middleButton = player.FindAction("MiddleButton", true);
@@ -92,12 +95,12 @@ public class Player : MonoBehaviour
         ui = input.actions.FindActionMap("UI", true);
         debugRefresh = input.actions.FindAction("DRef");
 
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         camRoot = cam.transform.parent;
 
-        manager = GameObject.FindWithTag("Manager").GetComponent<Manager>();
+        this.manager = manager;
 
         movement.DStart();
         gui.DStart(this);
+        gameObject.SetActive(true);
     }
 }

@@ -83,6 +83,14 @@ public class Interval : MonoBehaviour
         enabled = true;
     }
 
+    public void AddEvent(UnityAction action) {
+        onInterval.AddListener(action);
+    }
+
+    public void RemoveEvent(UnityAction action) {
+        onInterval.RemoveListener(action);
+    }
+
     public void Disable() {
         ResetEventless();
         enabled = false;

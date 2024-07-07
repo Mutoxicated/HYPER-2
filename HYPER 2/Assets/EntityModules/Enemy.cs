@@ -5,6 +5,7 @@ using Helpers;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
+    [SerializeField] private Stats stats;
     [Header("Settings")]
     [SerializeField] private float health = 30f;
     [SerializeField] private float damage = 50f;
@@ -20,8 +21,12 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool last;
 
     private Option<IDamageable> currentlyColliding = Option<IDamageable>.None();
+    private World.ReportDeath death;
 
-    public void CStart(Branch root) {
+    public void CStart(World.ReportDeath death, Branch root) {
+        this.death = death;
+        stats.CStart();
+
         currentBranch = root;
         dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
         gameObject.SetActive(true);
@@ -84,6 +89,7 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     public void Die() {
+        death.Invoke(this);
         Destroy(gameObject);
     }
 

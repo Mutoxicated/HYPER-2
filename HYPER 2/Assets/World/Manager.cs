@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
-{
+{   
+    [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
 
-    public void Start() {
+    public void Awake() {
+        resources.DStart();
+        player.DStart(this);
         world.DStart(player);
+
     }
 
     public World World {

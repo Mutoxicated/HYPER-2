@@ -113,7 +113,7 @@ public class Path : MonoBehaviour
             AddBranch(direction, 1);
         }
 
-        world.InstantiateEnemy(0, neighbors[0].Tile.transform.position+Vector3.up*3f, e => e.CStart(root));
+        world.InstantiateEnemy(Resources.Enemy.PROWLER, neighbors[0].Tile.transform.position+Vector3.up*3f, (d, e) => e.CStart(d, root));
     }
 
     private void extend() {

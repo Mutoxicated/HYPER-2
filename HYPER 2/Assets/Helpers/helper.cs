@@ -1,11 +1,62 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
+[CustomPropertyDrawer(typeof(Option<>), true)]
+public class OptionEditor : PropertyDrawer {
+    private SerializedProperty none;
+    private SerializedProperty value;
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+        if (none == null) {
+            none = property.FindPropertyRelative("none");
+        }
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+        position.height = EditorGUIUtility.singleLineHeight;
+        EditorGUI.BeginProperty(position, label, property);
+        EditorGUI.PropertyField(position, none);
+        EditorGUI.EndProperty();
+
+        if (!none.boolValue) {
+            if (value == null) {
+                value = property.FindPropertyRelative("value");
+            }
+            var pos = position.position;
+            pos.y += EditorGUIUtility.singleLineHeight;
+            //position.height += EditorGUIUtility.singleLineHeight;
+            position.position = pos;
+            EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.PropertyField(position, value);
+            EditorGUI.EndProperty();
+        }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (none == null) {
+            none = property.FindPropertyRelative("none");
+        }
+        float totalHeight = EditorGUI.GetPropertyHeight(none, GUIContent.none);
+
+        if (!none.boolValue) {
+            if (value == null) {
+                value = property.FindPropertyRelative("value");
+            }
+            totalHeight += EditorGUI.GetPropertyHeight(value, GUIContent.none);
+        }
+
+        return totalHeight;
+    }
+}
+
+[Serializable]
 public class Option<T> {
-    private T value;
-    private bool none = true;
+    [SerializeField] private T value;
+    [SerializeField] private bool none = true;
 
     public Option(T val) {
         value = val;
@@ -35,7 +86,8 @@ namespace Helpers {
         DEFAULT,
         POST,
         INTERACTABLE_ONE,
-        INTERACTABLE_TWO
+        INTERACTABLE_TWO,
+        MINI_TOWER
     }
 
     public static class EditorState {
@@ -44,6 +96,7 @@ namespace Helpers {
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
             {EditorLayer.INTERACTABLE_TWO, "Interactable2"},
+            {EditorLayer.MINI_TOWER, "MiniTower"}
         };
 
         public static LayerMask GetLayer(EditorLayer et) {
@@ -169,6 +222,8 @@ namespace Helpers {
                 return "SimpleWire";
             case MaterialType.ADV_WIRE:
                 return "AdvancedWire";
+            case MaterialType.HDR:
+                return "HDR";
             default:
                 return "UNKNOWN";
             }

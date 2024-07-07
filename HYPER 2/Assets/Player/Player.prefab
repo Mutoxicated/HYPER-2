@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5116079301912019087}
   - component: {fileID: 6867304643466214795}
+  - component: {fileID: 81356364925706403}
   - component: {fileID: 2879844348241484139}
   - component: {fileID: 1080319219865831810}
   - component: {fileID: 7003523440074354324}
@@ -215,6 +216,24 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 5116079301421470314}
+--- !u!114 &81356364925706403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116079301912019084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalizeds: 00000000010000000200000003000000
+  values:
+  - 1
+  - 1
+  - 1
+  - 1
 --- !u!114 &2879844348241484139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,10 +246,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6860ae596e4624c49bb696a3427e6a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 81356364925706403}
   movement: {fileID: 1080319219865831810}
   gui: {fileID: 0}
   miniTowerPrefabs:
   - {fileID: 3710317631712574376, guid: 5f993efe9776ddb49a91ae110aa69d23, type: 3}
+  cam: {fileID: 5116079301421470314}
 --- !u!114 &1080319219865831810
 MonoBehaviour:
   m_ObjectHideFlags: 0
