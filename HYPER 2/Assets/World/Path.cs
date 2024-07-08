@@ -60,6 +60,8 @@ public class Path : MonoBehaviour
 
     private int noFinds = 0;
 
+    private Manager manager;
+
     public void DestroyPath() {
         foreach (var nb in neighbors) {
             nb.Tile.Disable();
@@ -67,9 +69,10 @@ public class Path : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void CStart(World world, WorldGenerator wg, Tile start) {
-        this.world = world;
-        this.wg = wg;
+    public void CStart(Manager manager, Tile start) {
+        this.manager = manager;
+        world = manager.World;
+        wg = world.WG;
         start.Enable();
         var location = wg.GetLocationOfIndex(start.Index, start.Layer);
         neighbors.Add(new Neighbor(Direction.UNKNOWN, start, location));
@@ -113,7 +116,7 @@ public class Path : MonoBehaviour
             AddBranch(direction, 1);
         }
 
-        world.InstantiateEnemy(Resources.Enemy.PROWLER, neighbors[0].Tile.transform.position+Vector3.up*3f, (d, e) => e.CStart(d, root));
+        world.InstantiateEnemy(Resources.Enemy.PROWLER, neighbors[0].Tile.transform.position+Vector3.up*3f, (d, e) => e.CStart(manager, d, root));
     }
 
     private void extend() {

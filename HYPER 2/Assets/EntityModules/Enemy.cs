@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
+using static Stats.Value;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stats stats;
-    [Header("Settings")]
-    [SerializeField] private float health = 30f;
-    [SerializeField] private float damage = 50f;
-    [SerializeField] private float speed = 2f;
-
     [Header("Systems")]
     [SerializeField] private Interval damageInterval;
+    private health hp;
     
     private Branch currentBranch;
 
@@ -23,9 +20,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private Option<IDamageable> currentlyColliding = Option<IDamageable>.None();
     private World.ReportDeath death;
 
-    public void CStart(World.ReportDeath death, Branch root) {
+    public void CStart(Manager manager, World.ReportDeath death, Branch root) {
         this.death = death;
-        stats.CStart();
+        hp = stats.CStart(manager);
 
         currentBranch = root;
         dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
@@ -33,7 +30,7 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     public void Update() {
-        transform.position = Vector3.Lerp(transform.position, transform.position+dir*speed, Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats.get(SPEED), Time.deltaTime);
         //Debug.Log("Current branch: "+currentBranch.direction);
         if (last) {
             return;
@@ -60,7 +57,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void IntervalDamage() {
         if (currentlyColliding.IsNone()) { return; }
 
-        currentlyColliding.Get().Damage(damage);
+        currentlyColliding.Get().Damage(stats.get(DAMAGE));
     }
 
     public void OnCollisionEnter(Collision collision) {
@@ -95,9 +92,10 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void Damage(float amount)
     {
-        if (health <= 0) { return; }
-        health -= amount;
-        if (health <= 0) {
+        //Debug.Log("["+hp.Current+"] Being damaged: "+amount);
+        if (hp.Current <= 0) { return; }
+        hp.Current -= amount;
+        if (hp.Current <= 0) {
             Die();
         }
     }

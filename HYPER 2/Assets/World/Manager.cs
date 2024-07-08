@@ -23,4 +23,7 @@ public class Manager : MonoBehaviour
         get { return world.Tower; }
     }
 
+    public GameObject PlayerGo {
+        get { return player.gameObject; }
+    }
 }

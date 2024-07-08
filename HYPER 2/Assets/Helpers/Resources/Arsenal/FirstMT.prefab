@@ -202,11 +202,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalizeds: 00000000010000000200000003000000
+  modifiers:
+  - 1
+  - 1
+  - 1
+  - 1
   values:
-  - 1
-  - 1
-  - 1
-  - 1
+  - 100
+  - 7
+  - 30
+  - 4
+  side: 0
 --- !u!114 &231060667793010726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,14 +228,9 @@ MonoBehaviour:
   stats: {fileID: 7800337281580403305}
   firePoint: {fileID: 7267376561310252083}
   DOTInterval: {fileID: 1287294738151058555}
-  shootInterval:
-    value:
-      interval: {fileID: 0}
-      shoot: {fileID: 0}
-    none: 0
-  hp:
-    max: 100
-    Current: 100
+  shootSystem: {fileID: 7449173768195002225}
+  ShootInterval: {fileID: 5874828351615159077}
+  shoot: {fileID: 3541066081156120108}
 --- !u!1 &7449173768195002225
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,7 +249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7267376561310252083
 Transform:
   m_ObjectHideFlags: 0
@@ -284,11 +285,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7449173768195002225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c80d354d88815343a02cd65f2863b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 7800337281580403305}
   looker: {fileID: 7449173768195002225}
   target:
     value: {fileID: 0}
@@ -301,7 +303,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7449173768195002225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
   m_Name: 

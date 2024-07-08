@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
     }
 
     public void DStart(Manager manager) {
-        stats.CStart();
+        stats.CStart(manager);
         
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         player = input.actions.FindActionMap("Player", true);

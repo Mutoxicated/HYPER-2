@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Stats.Value;
 
 // public enum Element {
 //     FIRE,
@@ -29,14 +30,20 @@ public class MiniTower : MonoBehaviour, IDamageable
     [SerializeField] private Stats stats;
     [SerializeField] private Transform firePoint;
     [SerializeField] private Interval DOTInterval;
+    [SerializeField] private GameObject shootSystem;
     [SerializeField] private Interval ShootInterval;
     [SerializeField] private Shoot shoot;
 
-    public health hp = new health(100f);
+    private health hp;
     private float DOT = .1f;
 
-    public void CStart() {
-        stats.CStart();
+    private Manager manager;
+
+    public void CStart(Manager manager) {
+        this.manager = manager;
+        hp = stats.CStart(manager);
+        shootSystem.SetActive(true);
+
         gameObject.SetActive(true);
         DOTInterval.Enable();
         ShootInterval.AddEvent(shootBullet);
@@ -44,7 +51,8 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     private void shootBullet() {
-        shoot.Action(firePoint.position, b => b.CStart(firePoint.rotation));
+        if (stats.TargetIsValid())
+            shoot.Action(firePoint.position, b => b.CStart(manager, firePoint.rotation));
     }
 
     public void DOTIntervalDamage() {

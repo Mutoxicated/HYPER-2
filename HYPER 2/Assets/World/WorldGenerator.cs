@@ -398,7 +398,7 @@ public class WorldGenerator : MonoBehaviour
         var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
         var path = instance.GetComponent<Path>();
         paths.Add(path);
-        path.CStart(world, this, tiles[index]);
+        path.CStart(player.Manager, tiles[index]);
     }
 
     private void CreatePaths() {
