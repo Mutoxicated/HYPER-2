@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3667860942918174959}
   - component: {fileID: 3842374543772792197}
   - component: {fileID: 7483663608436401741}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: prowler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4827,7 +4827,7 @@ GameObject:
   - component: {fileID: 7483121074402370019}
   - component: {fileID: 8026403155563357703}
   - component: {fileID: 1246781020043864343}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ProwlerHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4891,17 +4891,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalizeds: 000000000100000002000000
-  modifiers:
-  - 1
-  - 1
-  - 1
-  - 1
-  values:
-  - 1
-  - 0.92
-  - 1
+  template: {fileID: 11400000, guid: 26cc5b1768bc8ab4fb68ba5a8d18bf09, type: 2}
   side: 0
+  range:
+    value: {fileID: 0}
+    none: 1
 --- !u!114 &8026403155563357703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4916,6 +4910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
   damageInterval: {fileID: 1246781020043864343}
+  XPWorth: 5
 --- !u!114 &1246781020043864343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4963,7 +4958,7 @@ GameObject:
   - component: {fileID: 7642481688034632134}
   - component: {fileID: 8344369386587442711}
   - component: {fileID: 4345266205320978313}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

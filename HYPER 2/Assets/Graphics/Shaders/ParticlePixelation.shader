@@ -144,11 +144,11 @@ Shader "Mutox/ParticlePixelation"
                     steppedUV *= thing;
                     float4 col = _GrabTexture.Sample(point_clamp_sampler, steppedUV);
                     float4 finalColor;// = (distance(_Color, col) < 1.3) ? _Color : col;
-                    if (distance(IN.custom1, col) < 0.1) {
+                    if (compareColors(IN.custom1, col, 0.001)) {
                         finalColor = IN.custom1;
                     }
                     else {
-                        finalColor = (distance(IN.custom1,beforeColor) < 0.1) ? col : beforeColor;
+                        finalColor = (compareColors(IN.custom1,beforeColor, 0.001)) ? col : beforeColor;
                     }
                     //finalColor = (distance(beforeColor, col) > 0.7) ? col : beforeColor;
                     return finalColor;

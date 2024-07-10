@@ -87,6 +87,10 @@ public class WorldGenerator : MonoBehaviour
     // Path generation
     private List<Path> paths = new List<Path>();
 
+    public float TileSize {
+        get { return tileSize; }
+    }
+
     public void DStart(World world, Player player) {
         this.player = player;
         this.world = world;

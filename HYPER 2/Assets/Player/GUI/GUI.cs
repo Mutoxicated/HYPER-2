@@ -20,7 +20,10 @@ public class GUI : MonoBehaviour
         get { return Save.pData.UIColor; }
     }
 
+    //private Player player;
+
     public void DStart(Player player) {
+        //this.player = player;
         selector.DStart(player, player.Manager);
         quickInventory.DStart();
     }

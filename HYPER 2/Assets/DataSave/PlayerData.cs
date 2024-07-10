@@ -41,6 +41,35 @@ public class PlayerData
     public void SetUIColor(Color val) {
     	__uiColor = val;
     }
+    public int __money = 0;
+    
+    public int Money {
+    	get { return __money; }
+    }
+    
+    public void SetMoney(int val) {
+    	__money = val;
+    }
+    public float __xp = 0;
+    
+    public float XP {
+    	get { return __xp; }
+    }
+    
+    public void SetXP(float val) {
+    	__xp = val;
+    }
+
+    public int __lvl = 1;
+    
+    public int Lvl {
+    	get { return __lvl; }
+    }
+    
+    public void SetLvl(int val) {
+    	__lvl = val;
+    }
+
     //MACRO_END
 
     public PlayerData(float sensX, float sensY, float fov) {

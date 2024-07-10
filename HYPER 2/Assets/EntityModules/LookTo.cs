@@ -19,7 +19,6 @@ public class LookTo : MonoBehaviour
 
     private void Update() {
         if (!stats.TargetIsValid()) {
-            stats.SetTarget();
             return;
         }
         lookRotation = Quaternion.LookRotation(stats.Target.transform.position-looker.transform.position);

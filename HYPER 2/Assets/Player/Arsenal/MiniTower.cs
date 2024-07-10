@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Stats.Value;
+using static Stat;
 
 // public enum Element {
 //     FIRE,
@@ -56,18 +56,18 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     public void DOTIntervalDamage() {
-        Damage(DOT);
+        Damage(stats, DOT);
     }
 
-    public void Die() {
-        //destroy
+    public void Die(Stats _) {
+        Destroy(gameObject);
     }
 
-    public void Damage(float amount)
+    public void Damage(Stats stats, float amount)
     {
         hp.Current -= amount;
         if (hp.Current <= 0) {
-            
+            Die(stats);
         }
     }
 }

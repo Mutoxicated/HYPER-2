@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
-using static Stats.Value;
+using static Stat;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stats stats;
     [Header("Systems")]
     [SerializeField] private Interval damageInterval;
+    [Header("Settings")]
+    [SerializeField] private float XPWorth = 5f;
     private health hp;
     
     private Branch currentBranch;
@@ -27,6 +29,10 @@ public class Enemy : MonoBehaviour, IDamageable
         currentBranch = root;
         dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
         gameObject.SetActive(true);
+    }
+
+    public void ReportDeath(World.ReportDeath death) {
+        this.death += death;
     }
 
     public void Update() {
@@ -57,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable
     public void IntervalDamage() {
         if (currentlyColliding.IsNone()) { return; }
 
-        currentlyColliding.Get().Damage(stats.get(DAMAGE));
+        currentlyColliding.Get().Damage(stats, stats.get(DAMAGE));
     }
 
     public void OnCollisionEnter(Collision collision) {
@@ -85,18 +91,23 @@ public class Enemy : MonoBehaviour, IDamageable
         currentlyColliding = Option<IDamageable>.None();
     }
 
-    public void Die() {
+    public void Die(Stats senderStats) {
+        if (senderStats.StatSide == Stats.Side.PLAYER) {
+            Player.IncrementXP(XPWorth);
+        }
         death.Invoke(this);
         Destroy(gameObject);
     }
 
-    public void Damage(float amount)
+    public void Damage(Stats stats, float amount)
     {
         //Debug.Log("["+hp.Current+"] Being damaged: "+amount);
+        //Debug.Log("from "+stats.gameObject.name);
         if (hp.Current <= 0) { return; }
+
         hp.Current -= amount;
         if (hp.Current <= 0) {
-            Die();
+            Die(stats);
         }
     }
 }

@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
-    
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -56,6 +55,20 @@ public class Player : MonoBehaviour
         get { return leftButton.WasPerformedThisFrame(); }
     }
     
+    public static void IncrementXP(float val) {
+        float newXP = Save.pData.XP+val;
+        if (newXP >= MaxXPRequired()) {
+            Save.pData.SetXP(0);
+            Save.pData.SetLvl(Save.pData.Lvl+1);
+            return;
+        }
+        Save.pData.SetXP(newXP);
+    }
+
+    public static float MaxXPRequired() {
+        return Save.pData.Lvl*10f;
+    }
+
     public void DeadMode() {
         UIMode();
         gui.DeadUI();        

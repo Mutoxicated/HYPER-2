@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1113682453117159787}
   - component: {fileID: 5592014939074514789}
-  - component: {fileID: 8286751209233327956}
+  - component: {fileID: 7246149829043903894}
   m_Layer: 0
   m_Name: Path
   m_TagString: Untagged
@@ -45,15 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eaec4ea299a66e458e4fb076504cfb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: {fileID: 0}
---- !u!114 &8286751209233327956
+  spawnInterval: {fileID: 7246149829043903894}
+--- !u!114 &7246149829043903894
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89893645827178099}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
   m_Name: 
@@ -61,14 +61,14 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 0.5
+  interval: 2
   minMaxInterval: {x: 0, y: 0}
   onInterval:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5592014939074514789}
         m_TargetAssemblyTypeName: Path, Assembly-CSharp
-        m_MethodName: ExtendStep
+        m_MethodName: IntervalSpawnEnemy
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

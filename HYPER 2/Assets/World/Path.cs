@@ -41,7 +41,7 @@ public class Path : MonoBehaviour
         IMPROPER_PLACEMENT
     }
 
-    [SerializeField] private Interval interval;
+    [SerializeField] private Interval spawnInterval;
 
     private World world;
     private WorldGenerator wg;
@@ -105,9 +105,7 @@ public class Path : MonoBehaviour
             break;
         }
 
-        if (interval == null) {
-            extend();
-        }
+        extend();
 
         var dir = wg.Tower.transform.position-neighbors[neighbors.Count-1].Tile.transform.position;
         var direction = Dir.FromVec(dir);
@@ -116,6 +114,10 @@ public class Path : MonoBehaviour
             AddBranch(direction, 1);
         }
 
+        spawnInterval.Enable();
+    }
+
+    public void IntervalSpawnEnemy() {
         world.InstantiateEnemy(Resources.Enemy.PROWLER, neighbors[0].Tile.transform.position+Vector3.up*3f, (d, e) => e.CStart(manager, d, root));
     }
 

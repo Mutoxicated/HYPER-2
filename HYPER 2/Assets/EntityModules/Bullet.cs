@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Stats.Value;
+using static Stat;
 
 public class Bullet : MonoBehaviour
 {
-    private const float bulletLength = 120f;
+    private const float bulletLength = 90f;
+    private const float expiration = 5f;
 
     [SerializeField] private Stats stats;
 
@@ -13,6 +14,7 @@ public class Bullet : MonoBehaviour
     private Quaternion lookAt;
 
     private bool DEAD_RIGHT_NOW = false;
+    private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats _) {
         stats.CStart(manager);
@@ -27,8 +29,10 @@ public class Bullet : MonoBehaviour
     }
 
     public void Update() {
-        lookAt = Quaternion.LookRotation(stats.Manager.PlayerGo.transform.position-transform.position);
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, lookAt.eulerAngles.z);
+        t += Time.deltaTime;
+        if (t >= 5f) {
+            DEAD_RIGHT_NOW = true;
+        }
 
         if (DEAD_RIGHT_NOW) {
             scale = transform.localScale;
@@ -52,7 +56,7 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
-        collider.gameObject.GetComponent<IDamageable>()?.Damage(stats.get(DAMAGE));
+        collider.gameObject.GetComponent<IDamageable>()?.Damage(stats, stats.get(DAMAGE));
 
         DEAD_RIGHT_NOW = true;
     }
