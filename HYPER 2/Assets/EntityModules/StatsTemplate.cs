@@ -49,4 +49,8 @@ public class StatsTemplate : ScriptableObject {
     public float[] values = new float[4] {
         100f, 7f, 30f, 5f
     };
+
+    public Stats.Side side;
+    public Stats.Element element;
+    public int worth = 1;
 }

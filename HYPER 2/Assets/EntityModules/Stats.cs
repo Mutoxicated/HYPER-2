@@ -10,9 +10,11 @@ public class Stats : MonoBehaviour
         PLAYER,
         ENEMY
     }
+    public enum Element {
+        WATER,
+    }
     [SerializeField] private StatsTemplate template;
 
-    [SerializeField] private Side side = Side.PLAYER; 
     [SerializeField] private Option<Range> range = Option<Range>.None();
 
     public Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
@@ -32,7 +34,11 @@ public class Stats : MonoBehaviour
     }
 
     public Side StatSide {
-        get { return side; }
+        get { return template.side; }
+    }
+
+    public Element StatElement {
+        get { return template.element; }
     }
 
     private void PrepareValues() {
@@ -47,6 +53,7 @@ public class Stats : MonoBehaviour
     public health CStart(Manager manager) {
         this.manager = manager;
         PrepareValues();
+        range.GetAndThen(v => v.CStart());
 
         return new health(get(Stat.MAX_HEALTH));
     }

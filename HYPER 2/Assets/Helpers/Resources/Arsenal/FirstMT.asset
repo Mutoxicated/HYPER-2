@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 17c3f631c0b5386448f30b22ce16152c, type: 3}
   m_Name: FirstMT
   m_EditorClassIdentifier: Assembly-CSharp::StatsFields
   stats: 00000000010000000200000003000000

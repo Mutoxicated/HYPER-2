@@ -20,6 +20,8 @@ public class Resources : MonoBehaviour
     }
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
+    private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
+    private static Dictionary<Arsenal, Sprite> arsenalSprites;
     private static Dictionary<Enemy, GameObject> enemyPrefabs;
     private static Dictionary<Bullet, GameObject> bulletPrefabs;
 
@@ -44,9 +46,25 @@ public class Resources : MonoBehaviour
         if (bulletPrefabs == null) {
             bulletPrefabs = new Dictionary<Bullet, GameObject>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Bullet");
-            Assert.IsNotNull(gos, "Bullet folder in Helpers/Resources either doesn't exist");
+            Assert.IsNotNull(gos, "Bullet folder in Helpers/Resources doesn't exist");
             for (int i = 0; i < gos.Length; i++) {
                 bulletPrefabs.Add((Bullet)i, gos[i]);
+            }
+        }
+        if (arsenalSprites == null) {
+            arsenalSprites = new Dictionary<Arsenal, Sprite>();
+            var gos = UnityEngine.Resources.LoadAll<Sprite>("Arsenal");
+            Assert.IsNotNull(gos, "Arsenal folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                arsenalSprites.Add((Arsenal)i, gos[i]);
+            }
+        }
+        if (arsenalStats == null) {
+            arsenalStats = new Dictionary<Arsenal, StatsTemplate>();
+            var gos = UnityEngine.Resources.LoadAll<StatsTemplate>("Arsenal");
+            Assert.IsNotNull(gos, "Arsenal folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                arsenalStats.Add((Arsenal)i, gos[i]);
             }
         }
         if (self == null) {
@@ -64,5 +82,13 @@ public class Resources : MonoBehaviour
 
     public static GameObject GetArsenal(Arsenal arsenal) {
         return arsenalPrefabs[arsenal];
+    }
+
+    public static Sprite GetArsenalSprite(Arsenal arsenal) {
+        return arsenalSprites[arsenal];
+    }
+
+    public static StatsTemplate GetStatTemplate(Arsenal arsenal) {
+        return arsenalStats[arsenal];
     }
 }

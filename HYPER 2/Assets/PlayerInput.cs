@@ -89,6 +89,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f122523-4ee9-46ee-871e-76fba7c6f803"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -353,6 +362,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""MiddleButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ec41504-7237-402e-8dbd-7bd0e8c61093"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Delete"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -975,6 +995,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_LookAccess = m_Player.FindAction("LookAccess", throwIfNotFound: true);
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_MiddleButton = m_Player.FindAction("MiddleButton", throwIfNotFound: true);
+        m_Player_Delete = m_Player.FindAction("Delete", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1056,6 +1077,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LookAccess;
     private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_MiddleButton;
+    private readonly InputAction m_Player_Delete;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1067,6 +1089,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @LookAccess => m_Wrapper.m_Player_LookAccess;
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         public InputAction @MiddleButton => m_Wrapper.m_Player_MiddleButton;
+        public InputAction @Delete => m_Wrapper.m_Player_Delete;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1097,6 +1120,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @MiddleButton.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMiddleButton;
                 @MiddleButton.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMiddleButton;
                 @MiddleButton.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMiddleButton;
+                @Delete.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
+                @Delete.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
+                @Delete.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1122,6 +1148,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @MiddleButton.started += instance.OnMiddleButton;
                 @MiddleButton.performed += instance.OnMiddleButton;
                 @MiddleButton.canceled += instance.OnMiddleButton;
+                @Delete.started += instance.OnDelete;
+                @Delete.performed += instance.OnDelete;
+                @Delete.canceled += instance.OnDelete;
             }
         }
     }
@@ -1318,6 +1347,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnLookAccess(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
         void OnMiddleButton(InputAction.CallbackContext context);
+        void OnDelete(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

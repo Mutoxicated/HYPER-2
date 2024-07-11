@@ -7,6 +7,10 @@ public class Tower : MonoBehaviour, IDamageable
     [SerializeField] private Player player;
     [SerializeField] private float health = 200f;
 
+    private void OnCollisionEnter(Collision collision) {
+        Destroy(collision.gameObject);
+    }
+
     public void Die(Stats _) {
         player.DeadMode();
     }

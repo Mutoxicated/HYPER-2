@@ -413,8 +413,8 @@ public class WorldGenerator : MonoBehaviour
         //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
 
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
-        //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
-        //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
     }
 
     private int GetRandomIndexFromCorners(int layer, int a, int b) {

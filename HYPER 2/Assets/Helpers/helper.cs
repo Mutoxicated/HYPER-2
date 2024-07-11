@@ -73,6 +73,17 @@ public class Option<T> {
         return value;
     }
 
+    public delegate void OnAcquisition(T value);
+
+    public bool GetAndThen(OnAcquisition onAcquisition) {
+        if (IsSome()) {
+            onAcquisition(Get());
+            return true;
+        }
+
+        return false;
+    }
+
     public static Option<T> None() {
         return new Option<T>();
     }
@@ -84,7 +95,10 @@ namespace Helpers {
         POST,
         INTERACTABLE_ONE,
         INTERACTABLE_TWO,
-        MINI_TOWER
+        MINI_TOWER,
+        ENEMY,
+        OCCUPIED,
+        DETECTION
     }
 
     public static class EditorState {
@@ -93,7 +107,10 @@ namespace Helpers {
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
             {EditorLayer.INTERACTABLE_TWO, "Interactable2"},
-            {EditorLayer.MINI_TOWER, "MiniTower"}
+            {EditorLayer.MINI_TOWER, "MiniTower"},
+            {EditorLayer.ENEMY, "Enemy"},
+            {EditorLayer.OCCUPIED, "Occupied"},
+            {EditorLayer.DETECTION, "Detection"}
         };
 
         public static LayerMask GetLayer(EditorLayer et) {
@@ -137,6 +154,17 @@ namespace Helpers {
             }
 
             return Direction.UNKNOWN;
+        }
+    }
+
+    public static class Elm {
+        public static string ToString(Stats.Element elm) {
+            switch (elm) {
+            case Stats.Element.WATER:
+                return "<color=#00ffff>Water";
+            default:
+                return "Unknown";
+            }
         }
     }
 

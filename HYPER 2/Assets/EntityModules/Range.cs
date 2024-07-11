@@ -9,14 +9,15 @@ public class Range : MonoBehaviour
 
     private List<Enemy> enemies = new List<Enemy>();
 
-    private void Start() {
+    public void CStart() {
         var tileSize = stats.Manager.World.WG.TileSize;
         transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4, transform.localScale.y, stats.get(RANGE)*tileSize*4);
+        gameObject.SetActive(true);
     }
 
     public void OnTriggerEnter(Collider collider) {
         var enemy = collider.gameObject.GetComponent<Enemy>();
-        enemy.ReportDeath(e => enemies.Remove(e));
+        //enemy.ReportDeath(e => enemies.Remove(e));
         enemies.Add(enemy);
     }
 
@@ -29,6 +30,11 @@ public class Range : MonoBehaviour
         if (enemies.Count == 0) {
             return Option<GameObject>.None();
         }
+        if (enemies[0] == null) {
+            enemies.RemoveAt(0);
+            return Target();
+        }
         return new Option<GameObject>(enemies[0].gameObject);
     }
+
 }

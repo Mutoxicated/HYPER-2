@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GUI : MonoBehaviour
 {
@@ -12,6 +9,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private GameObject playingUI;
     [SerializeField] private QuickInventory quickInventory;
     [SerializeField] private Selector selector;
+    [SerializeField] private Arsenal arsenal;
 
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
@@ -26,6 +24,7 @@ public class GUI : MonoBehaviour
         //this.player = player;
         selector.DStart(player, player.Manager);
         quickInventory.DStart();
+        arsenal.CStart();
     }
 
     public void DeadUI() {

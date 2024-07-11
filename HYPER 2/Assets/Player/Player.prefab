@@ -63,7 +63,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2015
+    m_Bits: 4063
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -211,6 +211,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ba2e8a74-469d-4a49-997e-e003ae4c24cd
     m_ActionName: Player/MiddleButton[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6f122523-4ee9-46ee-871e-76fba7c6f803
+    m_ActionName: Player/Delete[/Keyboard/delete]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -228,18 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalizeds: 00000000010000000200000003000000
-  modifiers:
-  - 1
-  - 1
-  - 1
-  - 1
-  values:
-  - 1
-  - 1
-  - 1
-  - 1
+  template: {fileID: 11400000, guid: b088c1148381a844b8a5bc05bb93114d, type: 2}
   side: 0
+  range:
+    value: {fileID: 0}
+    none: 1
 --- !u!114 &2879844348241484139
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,10 +14,15 @@ public class Player : MonoBehaviour
     private InputAction debugRefresh;
     private InputAction middleButton;
     private InputAction leftButton;
+    private InputAction deleteButton;
 
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
+
+    public Stats Stats {
+        get { return stats; }
+    }
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -54,19 +59,23 @@ public class Player : MonoBehaviour
     public bool OnLeftClick {
         get { return leftButton.WasPerformedThisFrame(); }
     }
+
+    public bool OnDelete {
+        get { return deleteButton.WasPerformedThisFrame(); }
+    }
     
     public static void IncrementXP(float val) {
-        float newXP = Save.pData.XP+val;
+        float newXP = Save.rData.XP+val;
         if (newXP >= MaxXPRequired()) {
-            Save.pData.SetXP(0);
-            Save.pData.SetLvl(Save.pData.Lvl+1);
+            Save.rData.SetXP(0);
+            Save.rData.SetLvl(Save.rData.Lvl+1);
             return;
         }
-        Save.pData.SetXP(newXP);
+        Save.rData.SetXP(newXP);
     }
 
     public static float MaxXPRequired() {
-        return Save.pData.Lvl*10f;
+        return Save.rData.Lvl*10f;
     }
 
     public void DeadMode() {
@@ -103,6 +112,7 @@ public class Player : MonoBehaviour
         player = input.actions.FindActionMap("Player", true);
         middleButton = player.FindAction("MiddleButton", true);
         leftButton = player.FindAction("Fire");
+        deleteButton = player.FindAction("Delete");
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
         ui = input.actions.FindActionMap("UI", true);
