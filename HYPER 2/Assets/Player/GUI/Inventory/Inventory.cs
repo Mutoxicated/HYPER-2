@@ -22,6 +22,7 @@ public class Inventory : MonoBehaviour
     public void RemoveInventoryItem(Resources.Arsenal arsenalType) {
         sorter.RemoveItem(iitems[arsenalType].transform);
         Destroy(iitems[arsenalType].gameObject);
+        iitems.Remove(arsenalType);
         Save.rData.RemoveBoughtArsenal(arsenalType);
     }
 

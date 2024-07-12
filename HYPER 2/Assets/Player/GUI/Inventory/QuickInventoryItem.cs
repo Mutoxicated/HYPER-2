@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class QuickInventoryItem : MonoBehaviour
 {
     private Option<Resources.Arsenal> arsenalType = Option<Resources.Arsenal>.None();
+    private Option<StatsTemplate> template = Option<StatsTemplate>.None();
     [SerializeField] private Image image;
     private int index;
 
@@ -16,6 +17,10 @@ public class QuickInventoryItem : MonoBehaviour
 
     public Option<Resources.Arsenal> ArsenalType {
         get { return arsenalType; }
+    }
+
+    public Option<StatsTemplate> Template {
+        get { return template; }
     }
 
     public void CStart(int index) {
@@ -30,5 +35,9 @@ public class QuickInventoryItem : MonoBehaviour
         }else {
             image.sprite = Resources.GetArsenalSprite(arsenalType.Get());
         }
+    }
+
+    public void SetTemplate(Option<StatsTemplate> template) {
+        this.template = template;
     }
 }

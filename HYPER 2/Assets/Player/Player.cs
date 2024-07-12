@@ -68,9 +68,14 @@ public class Player : MonoBehaviour
         if (newXP >= MaxXPRequired()) {
             Save.rData.SetXP(0);
             Save.rData.SetLvl(Save.rData.Lvl+1);
+            Save.rData.SetMoneyRelative(Save.rData.Lvl*2);
             return;
         }
         Save.rData.SetXP(newXP);
+    }
+
+    public static void SetMoneyRelative(int val) {
+        Save.rData.SetMoneyRelative(val);
     }
 
     public static float MaxXPRequired() {

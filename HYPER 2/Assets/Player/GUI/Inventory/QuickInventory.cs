@@ -25,12 +25,7 @@ public class QuickInventory : MonoBehaviour
     private float imageSize;
     private float length;
 
-    public Message AddNewItem(object obj) {
-        throw new NotImplementedException();
-    }
-
     public Option<Resources.Arsenal> GetSelectedArsenal() {
-
         return selected.ArsenalType;
     }
 

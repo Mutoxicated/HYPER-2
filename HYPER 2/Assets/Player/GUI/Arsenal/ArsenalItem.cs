@@ -27,6 +27,11 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetBought(bool value) {
         bought = value;
+        if (bought) {
+            image.color = Color.green;
+        }else {
+            image.color = Color.white;
+        }
     }
 
     public Resources.Arsenal Type {

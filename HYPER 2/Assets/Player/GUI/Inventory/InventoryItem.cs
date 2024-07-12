@@ -1,45 +1,47 @@
+using Helpers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler {
+public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private Resources.Arsenal arsenalType;
     [SerializeField] private Image image;
+    [SerializeField] private TMP_Text entityName;
     private bool updatePos;
     private Vector3 mousePos;
-    private Vector3 initPos;
+    private Option<Vector3> initPos = Option<Vector3>.None();
+    private RectTransform rt;
 
     public void CStart(Resources.Arsenal arsenalType) {
+        rt = GetComponent<RectTransform>();
         this.arsenalType = arsenalType;
         image.sprite = Resources.GetArsenalSprite(arsenalType);
+        entityName.text = Arsnl.ToName(arsenalType);
     }
-
-    private Vector3 alteredPos;
-    private void UpdatePos(Vector3 wPos){
-        alteredPos = wPos;
-        alteredPos.x = transform.position.x;
-        transform.position = alteredPos;
-    }
-
+    
     private void Update() {
         if (!updatePos) return;
         mousePos = Mouse.current.position.ReadValue();
-        //mousePos.z = (transform.position.x-Camera.main.transform.position.z)*0.07f;
-        UpdatePos(Camera.main.ScreenToWorldPoint(mousePos));
+        mousePos.z = 1f;
+        transform.position = Camera.main.ScreenToWorldPoint(mousePos);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (initPos == null) {
-            initPos = transform.position;
+        //Debug.Log("drag");
+        if (initPos.IsNone()) {
+            Debug.Log("position: "+rt.position);
+            initPos = new Option<Vector3>(rt.position);
         }
         updatePos = true;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
         updatePos = false;
-        transform.position = initPos;
+        rt.position = initPos.Get();
     }
+
 }

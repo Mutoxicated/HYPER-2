@@ -26,6 +26,10 @@ public class RunData
     public void SetMoney(int val) {
     	__money = val;
     }
+
+    public void SetMoneyRelative(int val) {
+        __money += val;
+    }
     [SerializeField] private float __xp = 0;
     
     public float XP {

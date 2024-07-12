@@ -35,6 +35,11 @@ public class Arsenal : MonoBehaviour
     }
 
     public void Buy(ArsenalItem arsenalItem) {
+        if (Save.rData.Money >= arsenalItem.Template.worth) {
+            Player.SetMoneyRelative(-arsenalItem.Template.worth);
+        }else {
+            return;
+        }
         arsenalItem.SetBought(true);
         ai.Unlock();
         ai.Enable(arsenalItem, false);
@@ -42,6 +47,7 @@ public class Arsenal : MonoBehaviour
     }
 
     public void Sell(ArsenalItem arsenalItem) {
+        Player.SetMoneyRelative(arsenalItem.Template.worth/2);
         arsenalItem.SetBought(false);
         ai.Unlock();
         ai.Enable(arsenalItem, false);

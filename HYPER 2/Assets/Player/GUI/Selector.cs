@@ -1,9 +1,11 @@
 using Helpers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class Selector : MonoBehaviour
 {
+    [SerializeField] private InputSystemUIInputModule input;
     [SerializeField] private QuickInventory qi;
     [SerializeField] private LayerMask tileSelectionMask;
     private Player player;
@@ -58,9 +60,18 @@ public class Selector : MonoBehaviour
                 selected = new Option<GameObject>(go);
                 return;
             }
+            if (input.IsPointerOverGameObject(Mouse.current.deviceId)) {
+                return;
+            }
             Debug.Log("Instantiated mini tower", go);
             var arsenal = qi.GetSelectedArsenal();
             arsenal.GetAndThen(a => {
+                var template = Resources.GetStatTemplate(a);
+                if (Save.rData.Money >= template.worth) {
+                    Player.SetMoneyRelative(-template.worth);
+                }else {
+                    return;
+                }
                 go.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
                 player.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
             });

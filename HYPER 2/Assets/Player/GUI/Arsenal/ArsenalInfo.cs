@@ -42,7 +42,7 @@ public class ArsenalInfo : MonoBehaviour
         }
         currentItem = aitem;
         current = aitem.Template;
-        arsenalName.text = String.Format(ufmtName, aitem.name);
+        arsenalName.text = String.Format(ufmtName, Arsnl.ToName(aitem.Type));
         arsenalElement.text = String.Format(ufmtElement, Elm.ToString(current.element));
         for (int i = 0; i < arsenalStats.Count; i++) {
             arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+current.values[i]);

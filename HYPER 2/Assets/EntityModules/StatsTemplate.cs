@@ -10,6 +10,7 @@ public class StatsEditor : Editor {
     SerializedProperty statSide;
     SerializedProperty element;
     SerializedProperty worth;
+    //SerializedProperty entityName;
 
     void OnEnable()
     {
@@ -18,6 +19,7 @@ public class StatsEditor : Editor {
         statSide = serializedObject.FindProperty("side");
         element = serializedObject.FindProperty("element");
         worth = serializedObject.FindProperty("worth");
+        //entityName = serializedObject.FindProperty("entityName");
     }
 
     public override void OnInspectorGUI()
@@ -35,6 +37,7 @@ public class StatsEditor : Editor {
         EditorGUILayout.PropertyField(statSide);
         EditorGUILayout.PropertyField(element);
         EditorGUILayout.PropertyField(worth);
+        //EditorGUILayout.PropertyField(entityName);
         serializedObject.ApplyModifiedProperties();
     }
 }
@@ -63,4 +66,5 @@ public class StatsTemplate : ScriptableObject {
     public Stats.Side side;
     public Stats.Element element;
     public int worth = 1;
+    //public string entityName = "UNKNOWN";
 }

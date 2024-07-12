@@ -105,6 +105,7 @@ public class Option<T> {
 namespace Helpers {
     public enum EditorLayer {
         DEFAULT,
+        UI,
         POST,
         INTERACTABLE_ONE,
         INTERACTABLE_TWO,
@@ -123,7 +124,8 @@ namespace Helpers {
             {EditorLayer.MINI_TOWER, "MiniTower"},
             {EditorLayer.ENEMY, "Enemy"},
             {EditorLayer.OCCUPIED, "Occupied"},
-            {EditorLayer.DETECTION, "Detection"}
+            {EditorLayer.DETECTION, "Detection"},
+            {EditorLayer.UI, "UI"}
         };
 
         public static LayerMask GetLayer(EditorLayer et) {
@@ -179,6 +181,19 @@ namespace Helpers {
                 return "<color=#ffaa00>Fire";
             default:
                 return "Unknown";
+            }
+        }
+    }
+
+    public static class Arsnl {
+        public static string ToName(Resources.Arsenal arsenal) {
+            switch (arsenal) {
+            case Resources.Arsenal.FIRST_MT:
+                return "ICY T.X.";
+            case Resources.Arsenal.SECOND_MT:
+                return "Blame";
+            default:
+                return "UNKNOWN";
             }
         }
     }
