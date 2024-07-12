@@ -108,6 +108,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
     public void Enable() {
         if (lit) { return; }
+        transform.position = initPos+Vector3.up*heightOffset;
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.ChangeColor(litColor, true);
@@ -115,6 +116,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
     public void Disable() {
         if (!lit) { return; }
+        transform.position = initPos;
         lit = false;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
         mc.ChangeColor(true);
@@ -124,13 +126,13 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         initPos = transform.position;
     }
 
-    private void Update() {
-        if (lit) {
-            transform.position = Vector3.Lerp(transform.position, initPos+Vector3.up*heightOffset, Time.deltaTime);
-        }else {
-            transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
-        }
-    }
+    // private void Update() {
+    //     if (lit) {
+    //         transform.position = Vector3.Lerp(transform.position, initPos+Vector3.up*heightOffset, Time.deltaTime);
+    //     }else {
+    //         transform.position = Vector3.Lerp(transform.position, initPos, Time.deltaTime);
+    //     }
+    // }
 
     int IComparable<Tile>.CompareTo(Tile b)
     {

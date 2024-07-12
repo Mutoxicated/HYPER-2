@@ -10,6 +10,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private QuickInventory quickInventory;
     [SerializeField] private Selector selector;
     [SerializeField] private Arsenal arsenal;
+    [SerializeField] private Inventory inventory;
 
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
@@ -24,7 +25,8 @@ public class GUI : MonoBehaviour
         this.player = player;
         selector.DStart(player, player.Manager);
         quickInventory.DStart();
-        arsenal.CStart();
+        inventory.DStart();
+        arsenal.DStart();
     }
 
     public void UIMode(bool freezeTime) {

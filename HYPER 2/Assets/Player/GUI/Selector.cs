@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Selector : MonoBehaviour
 {
+    [SerializeField] private QuickInventory qi;
     [SerializeField] private LayerMask tileSelectionMask;
     private Player player;
     private Ray ray;
@@ -58,8 +59,11 @@ public class Selector : MonoBehaviour
                 return;
             }
             Debug.Log("Instantiated mini tower", go);
-            go.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
-            player.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, 0, m => m.CStart(manager));
+            var arsenal = qi.GetSelectedArsenal();
+            arsenal.GetAndThen(a => {
+                go.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
+                player.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
+            });
         }
 
         hits = new RaycastHit[1];

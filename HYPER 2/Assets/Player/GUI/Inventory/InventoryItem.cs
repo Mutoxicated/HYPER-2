@@ -10,6 +10,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler {
     private Vector3 mousePos;
     private Vector3 initPos;
 
+    public void CStart(Resources.Arsenal arsenalType) {
+        this.arsenalType = arsenalType;
+        image.sprite = Resources.GetArsenalSprite(arsenalType);
+    }
+
     private Vector3 alteredPos;
     private void UpdatePos(Vector3 wPos){
         alteredPos = wPos;

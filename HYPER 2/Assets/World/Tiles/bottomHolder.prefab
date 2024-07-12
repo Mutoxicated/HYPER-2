@@ -386,7 +386,7 @@ MonoBehaviour:
   _renderer: {fileID: 6767629978508940344}
   type: 1
   changeColor: 1
-  color: {r: 0, g: 0.005521527, b: 0.2735849, a: 1}
+  color: {r: 0, g: 0.007277552, b: 0.509434, a: 1}
   changeQueue: 0
   queueMode: 0
 --- !u!65 &2954293069303513892

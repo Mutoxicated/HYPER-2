@@ -25,6 +25,10 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return bought; }
     }
 
+    public void SetBought(bool value) {
+        bought = value;
+    }
+
     public Resources.Arsenal Type {
         get { return @type; }
     }
@@ -36,7 +40,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!selected)
-            ai.Enable(this);
+            ai.Enable(this, false);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -55,14 +59,13 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnSelect(BaseEventData eventData)
     {
-        ai.Lock(this);
+        ai.Enable(this, true);
         selected = true;
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         ai.Unlock();
-        ai.Disable();
         selected = false;
     }
 }

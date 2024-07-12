@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class QuickInventory : MonoBehaviour
@@ -15,11 +16,12 @@ public class QuickInventory : MonoBehaviour
     private const int maxCapacity = 6;
     private const float spacing = 0.01f;
 
-    [SerializeField] private Sprite empty;
-    [SerializeField] private Option<QuickInventoryItem> selected;
+    [SerializeField] private Transform edit;
+    [SerializeField] private Transform selectedImage;
     [SerializeField] private int capacity = 3;
     [SerializeField] private List<QuickInventoryItem> items = new List<QuickInventoryItem>();
 
+    private QuickInventoryItem selected;
     private float imageSize;
     private float length;
 
@@ -28,24 +30,55 @@ public class QuickInventory : MonoBehaviour
     }
 
     public Option<Resources.Arsenal> GetSelectedArsenal() {
-        if (selected.IsNone()) {
-            return Option<Resources.Arsenal>.None();
-        }
 
-        return selected.Get().ArsenalType;
+        return selected.ArsenalType;
     }
 
     public void UpdateSelected(QuickInventoryItem item) {
-        selected = new Option<QuickInventoryItem>(item);
+        selected = item;
+        selectedImage.position = item.transform.position;
+        Save.rData.SetSelectedIndex(item.Index);
     }
 
     public void DStart(){
         imageSize = items[0].transform.localScale.x*0.1f+spacing;
         
         Sort();
-        selected = new Option<QuickInventoryItem>(items[0]);
-        selected.Get().transform.position = items[0].transform.position;
+        edit.position = items[capacity-1].transform.position+Vector3.right*imageSize;
+        selected = items[0];
+        selected.transform.position = items[0].transform.position;
+
+        Save.rData.UpdateQIACapacity(capacity);
+        int index = 0;
+        foreach (var qia in Save.rData.QIAs) {
+            items[index].SetArsenal(qia);
+            index++;
+        }
+        UpdateSelected(items[Save.rData.SelectedIndex]);
         gameObject.SetActive(true);
+    }
+
+    private void Update() {
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(0);
+        }else if (Keyboard.current.digit2Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(1);
+        }else if (Keyboard.current.digit3Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(2);
+        }else if (Keyboard.current.digit4Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(3);
+        }else if (Keyboard.current.digit5Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(4);
+        }else if (Keyboard.current.digit6Key.wasPressedThisFrame) {
+            UpdateSelectedWithIndex(5);
+        }
+    }
+
+    private void UpdateSelectedWithIndex(int index) {
+        if (index >= capacity) {
+            index = capacity-1;
+        }
+        UpdateSelected(items[index]);
     }
 
     private void Sort() {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Resources.Arsenal;
 
 [Serializable]
 public class RunData
@@ -45,7 +46,50 @@ public class RunData
     	__lvl = val;
     }
     //MACRO_END
-    [SerializeField] private List<Resources.Arsenal> enabledArsenals = new List<Resources.Arsenal>() {
-        Resources.Arsenal.FIRST_MT
+    [SerializeField] private List<Resources.Arsenal> boughtArsenals = new List<Resources.Arsenal>() {
+        FIRST_MT
     };
+
+    public void AddBoughtArsenal(Resources.Arsenal arsenal) {
+        boughtArsenals.Add(arsenal);
+    }
+
+    public void RemoveBoughtArsenal(Resources.Arsenal arsenal) {
+        boughtArsenals.Remove(arsenal);
+    }
+
+    public List<Resources.Arsenal> BoughtArsenals {
+        get { return boughtArsenals; }
+    }
+
+    [SerializeField] private List<Option<Resources.Arsenal>> quickInventoryArsenals = new List<Option<Resources.Arsenal>>() {
+        new Option<Resources.Arsenal>(FIRST_MT)
+    };
+
+    public void UpdateQIACapacity(int capacity) {
+        quickInventoryArsenals.Capacity = capacity;
+        for (int i = 0; i < capacity; i++) {
+            if (quickInventoryArsenals.Count < i) {
+                quickInventoryArsenals.Add(Option<Resources.Arsenal>.None());
+            }
+        }
+    }
+
+    public void UpdateQIAIndex(int index, Resources.Arsenal arsenal) {
+        quickInventoryArsenals[index] = new Option<Resources.Arsenal>(arsenal);
+    }
+
+    public List<Option<Resources.Arsenal>> QIAs {
+        get { return quickInventoryArsenals; }
+    }
+
+    [SerializeField] private int selectedIndex = 0;
+
+    public int SelectedIndex {
+        get { return selectedIndex; }
+    }
+
+    public void SetSelectedIndex(int index) {
+        selectedIndex = index;
+    }
 }

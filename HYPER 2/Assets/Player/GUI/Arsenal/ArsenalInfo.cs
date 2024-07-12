@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class ArsenalInfo : MonoBehaviour
 {
+    [SerializeField] private Arsenal arsenal;
     [SerializeField] private TMP_Text arsenalName;
     [SerializeField] private TMP_Text arsenalElement;
     [SerializeField] private List<TMP_Text> arsenalStats = new List<TMP_Text>();
@@ -21,8 +22,9 @@ public class ArsenalInfo : MonoBehaviour
 
     private StatsTemplate current;
     private Option<ArsenalItem> locked = Option<ArsenalItem>.None();
+    private ArsenalItem currentItem;
 
-    public void CStart() {
+    public void DStart() {
         ufmtName = arsenalName.text;
         ufmtElement = arsenalElement.text;
         for (int i = 0; i < arsenalStats.Count; i++) {
@@ -31,10 +33,14 @@ public class ArsenalInfo : MonoBehaviour
         ufmtWorth = arsenalWorth.text;
     }
 
-    public void Enable(ArsenalItem aitem) {
-        if (locked.IsSome()) {
+    public void Enable(ArsenalItem aitem, bool mustLock) {
+        if (locked.IsSome() && !mustLock) {
             return;
         }
+        if (mustLock) {
+            locked = new Option<ArsenalItem>(aitem);
+        }
+        currentItem = aitem;
         current = aitem.Template;
         arsenalName.text = String.Format(ufmtName, aitem.name);
         arsenalElement.text = String.Format(ufmtElement, Elm.ToString(current.element));
@@ -58,12 +64,20 @@ public class ArsenalInfo : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Lock(ArsenalItem aitem) {
-        locked = new Option<ArsenalItem>(aitem);
-    }
-
     public void Unlock() {
         locked = Option<ArsenalItem>.None();
+    }
+
+    public void OnResearch() {
+
+    }
+
+    public void OnBuy() {
+        arsenal.Buy(currentItem);
+    }
+
+    public void OnSell() {
+        arsenal.Sell(currentItem);
     }
 
     public void Disable() {

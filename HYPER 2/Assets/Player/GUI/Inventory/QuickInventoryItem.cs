@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class QuickInventoryItem : MonoBehaviour
 {
     private Option<Resources.Arsenal> arsenalType = Option<Resources.Arsenal>.None();
     [SerializeField] private Image image;
-    [SerializeField] private int index;
+    private int index;
 
     public int Index {
         get { return index; }
@@ -19,9 +20,8 @@ public class QuickInventoryItem : MonoBehaviour
 
     public void CStart(int index) {
         this.index = index;
-        image.sprite = Resources.Empty;
         gameObject.SetActive(true);
-    } 
+    }
 
     public void SetArsenal(Option<Resources.Arsenal> arsenalType) {
         this.arsenalType = arsenalType;

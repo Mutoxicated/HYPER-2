@@ -69,7 +69,7 @@ Material:
     - _Intact: 0
     - _MaxDist: 1.2
     - _Metallic: 0
-    - _MinDist: 65
+    - _MinDist: 106.1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
