@@ -14,7 +14,14 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private Option<Vector3> initPos = Option<Vector3>.None();
     private RectTransform rt;
 
-    public void CStart(Resources.Arsenal arsenalType) {
+    private Inventory inv;
+
+    public Resources.Arsenal ArsenalType {
+        get { return arsenalType; }
+    }
+
+    public void CStart(Inventory inv, Resources.Arsenal arsenalType) {
+        this.inv = inv;
         rt = GetComponent<RectTransform>();
         this.arsenalType = arsenalType;
         image.sprite = Resources.GetArsenalSprite(arsenalType);
@@ -31,6 +38,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public void OnPointerDown(PointerEventData eventData)
     {
         //Debug.Log("drag");
+        inv.currentlyDragged = new Option<InventoryItem>(this);
         if (initPos.IsNone()) {
             Debug.Log("position: "+rt.position);
             initPos = new Option<Vector3>(rt.position);
@@ -40,6 +48,8 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        inv.QuickInventory.CheckCDs();
+        inv.currentlyDragged =  Option<InventoryItem>.None();
         updatePos = false;
         rt.position = initPos.Get();
     }

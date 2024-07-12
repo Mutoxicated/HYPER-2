@@ -12,6 +12,7 @@ public class ArsenalInfo : MonoBehaviour
     [SerializeField] private TMP_Text arsenalElement;
     [SerializeField] private List<TMP_Text> arsenalStats = new List<TMP_Text>();
     [SerializeField] private TMP_Text arsenalWorth;
+    [SerializeField] private UnityEngine.UI.Button research;
     [SerializeField] private UnityEngine.UI.Button buy;
     [SerializeField] private UnityEngine.UI.Button sell;
 

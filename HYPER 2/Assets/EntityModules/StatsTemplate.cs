@@ -66,5 +66,5 @@ public class StatsTemplate : ScriptableObject {
     public Stats.Side side;
     public Stats.Element element;
     public int worth = 1;
-    //public string entityName = "UNKNOWN";
+    public int resaearchRequired;
 }

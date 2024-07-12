@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private InputAction middleButton;
     private InputAction leftButton;
     private InputAction deleteButton;
+    private InputAction uiDeleteButton;
 
     private InputActionMap player;
     private InputActionMap ui;
@@ -45,6 +46,10 @@ public class Player : MonoBehaviour
 
     public InputAction FindAction(string name) {
         return Input.actions.FindAction(name, true);
+    }
+
+    public bool OnUIDelete {
+        get { return uiDeleteButton.WasPerformedThisFrame(); }
     }
 
     public bool OnDebugRefresh {
@@ -121,7 +126,10 @@ public class Player : MonoBehaviour
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
         ui = input.actions.FindActionMap("UI", true);
+        uiDeleteButton = ui.FindAction("Delete");
         debugRefresh = input.actions.FindAction("DRef");
+
+        PlayingMode();
 
         camRoot = cam.transform.parent;
 

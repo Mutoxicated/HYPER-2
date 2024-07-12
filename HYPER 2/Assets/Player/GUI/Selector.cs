@@ -63,7 +63,6 @@ public class Selector : MonoBehaviour
             if (input.IsPointerOverGameObject(Mouse.current.deviceId)) {
                 return;
             }
-            Debug.Log("Instantiated mini tower", go);
             var arsenal = qi.GetSelectedArsenal();
             arsenal.GetAndThen(a => {
                 var template = Resources.GetStatTemplate(a);
@@ -72,6 +71,7 @@ public class Selector : MonoBehaviour
                 }else {
                     return;
                 }
+                Debug.Log("Instantiated mini tower", go);
                 go.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
                 player.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
             });

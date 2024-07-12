@@ -28,32 +28,19 @@ public class health {
 public class MiniTower : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private Transform firePoint;
     [SerializeField] private Interval DOTInterval;
-    [SerializeField] private GameObject shootSystem;
-    [SerializeField] private Interval ShootInterval;
-    [SerializeField] private Shoot shoot;
 
     private health hp;
     private float DOT = .1f;
 
-    private Manager manager;
-
     public void CStart(Manager manager) {
-        this.manager = manager;
         hp = stats.CStart(manager);
-        shootSystem.SetActive(true);
 
         gameObject.SetActive(true);
         DOTInterval.Enable();
-        ShootInterval.AddEvent(shootBullet);
-        ShootInterval.Enable();
     }
 
-    private void shootBullet() {
-        if (stats.TargetIsValid())
-            shoot.Action(firePoint.position, b => b.CStart(manager, firePoint.rotation));
-    }
+
 
     public void DOTIntervalDamage() {
         Damage(stats, DOT);

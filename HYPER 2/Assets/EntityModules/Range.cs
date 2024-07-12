@@ -22,7 +22,7 @@ public class Range : MonoBehaviour
         OnEnter = new OnEnemy(e => enemies.Add(e));
         OnExit = new OnEnemy(e => enemies.Remove(e));
         var tileSize = stats.Manager.World.WG.TileSize;
-        transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4, transform.localScale.y, stats.get(RANGE)*tileSize*4);
+        transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4-tileSize, transform.localScale.y, stats.get(RANGE)*tileSize*4-tileSize);
         gameObject.SetActive(true);
     }
 

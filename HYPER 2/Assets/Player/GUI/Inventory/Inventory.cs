@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private QuickInventory qi;
     [SerializeField] private GameObject inventoryItemPrefab;
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private ItemSorter sorter;
 
     private Dictionary<Resources.Arsenal, InventoryItem> iitems = new Dictionary<Resources.Arsenal, InventoryItem>();
+    [HideInInspector] public Option<InventoryItem> currentlyDragged;
+
+    public QuickInventory QuickInventory {
+        get { return qi; }
+    }
 
     public void NewInventoryItem(Resources.Arsenal arsenalType) {
         var instance = Instantiate(inventoryItemPrefab, transform, false);
         var iitem = instance.GetComponent<InventoryItem>();
-        iitem.CStart(arsenalType);
+        iitem.CStart(this, arsenalType);
         iitems.Add(arsenalType, iitem);
         Save.rData.AddBoughtArsenal(arsenalType);
         sorter.AddItem(iitem.transform);
@@ -29,7 +35,7 @@ public class Inventory : MonoBehaviour
     public void DStart() {
         foreach (var bought in Save.rData.BoughtArsenals) {
             var iitem = Instantiate(inventoryItemPrefab, transform, false).GetComponent<InventoryItem>();
-            iitem.CStart(bought);
+            iitem.CStart(this, bought);
             iitems.Add(bought, iitem);
             sorter.AddItem(iitem.transform);
         }

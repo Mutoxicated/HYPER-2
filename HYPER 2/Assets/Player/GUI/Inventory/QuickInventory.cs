@@ -21,9 +21,14 @@ public class QuickInventory : MonoBehaviour
     [SerializeField] private int capacity = 3;
     [SerializeField] private List<QuickInventoryItem> items = new List<QuickInventoryItem>();
 
+    private List<QuickInventoryItem> Items {
+        get { return items; }
+    }
     private QuickInventoryItem selected;
     private float imageSize;
     private float length;
+
+    private Player player;
 
     public Option<Resources.Arsenal> GetSelectedArsenal() {
         return selected.ArsenalType;
@@ -35,7 +40,14 @@ public class QuickInventory : MonoBehaviour
         Save.rData.SetSelectedIndex(item.Index);
     }
 
-    public void DStart(){
+    public void CheckCDs() {
+        for (int i = 0; i < capacity; i++) {
+            items[i].CheckCD();
+        }
+    }
+
+    public void DStart(Player player){
+        this.player = player;
         imageSize = items[0].transform.localScale.x*0.1f+spacing;
         
         Sort();
@@ -53,7 +65,26 @@ public class QuickInventory : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public void UpdateQI(int index, Resources.Arsenal arsenal) {
+        for (int i = 0; i < capacity; i++) {
+            if (i == index) {
+                items[index].SetArsenal(new Option<Resources.Arsenal>(arsenal));
+                continue;
+            }
+            if (items[i].ArsenalType.IsNone()) {
+                continue;
+            }
+            if (items[i].ArsenalType.Get() == arsenal) {
+                items[i].SetArsenal(Option<Resources.Arsenal>.None());
+            }
+        }
+    }
+
     private void Update() {
+        
+        if (player.OnUIDelete) {
+            selected.SetArsenal(Option<Resources.Arsenal>.None());
+        }
         if (Keyboard.current.digit1Key.wasPressedThisFrame) {
             UpdateSelectedWithIndex(0);
         }else if (Keyboard.current.digit2Key.wasPressedThisFrame) {
@@ -80,7 +111,7 @@ public class QuickInventory : MonoBehaviour
         length = imageSize*capacity;
 
         for (int i = 0; i < capacity; i++) {
-            items[i].CStart(i);
+            items[i].CStart(this, i);
         }
         // for (int i = capacity; i < items.Count; i++) {
         //     items[i].gameObject.SetActive(false);

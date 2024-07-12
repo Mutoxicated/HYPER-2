@@ -24,7 +24,7 @@ public class GUI : MonoBehaviour
     public void DStart(Player player) {
         this.player = player;
         selector.DStart(player, player.Manager);
-        quickInventory.DStart();
+        quickInventory.DStart(player);
         inventory.DStart();
         arsenal.DStart();
     }

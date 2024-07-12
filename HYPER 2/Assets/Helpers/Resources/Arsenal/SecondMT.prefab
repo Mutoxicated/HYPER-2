@@ -88,8 +88,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2680666174658093250}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.363, z: 0}
-  m_LocalScale: {x: 60, y: 60, z: 24.6}
+  m_LocalPosition: {x: 0, y: 0.576, z: 0}
+  m_LocalScale: {x: 90, y: 90, z: 38.46336}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7802898864057010206}
@@ -211,7 +211,7 @@ MonoBehaviour:
   _renderer: {fileID: 5725322676787786087}
   type: 1
   changeColor: 1
-  color: {r: 0, g: 1, b: 0.94670725, a: 1}
+  color: {r: 1, g: 0.22172387, b: 0, a: 1}
   changeQueue: 0
   queueMode: 0
 --- !u!1 &3710317631712574376
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: 85613ce15ea0ba54dbd6da4bc9f179ba, type: 2}
+  template: {fileID: 11400000, guid: 48af9652b53f0bb4984b6d9a7ced322b, type: 2}
   range:
     value: {fileID: 7210569018229574125}
     none: 0
@@ -278,8 +278,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7800337281580403305}
-  firePoint: {fileID: 0}
   DOTInterval: {fileID: 1287294738151058555}
-  shootSystem: {fileID: 0}
-  ShootInterval: {fileID: 0}
-  shoot: {fileID: 0}
