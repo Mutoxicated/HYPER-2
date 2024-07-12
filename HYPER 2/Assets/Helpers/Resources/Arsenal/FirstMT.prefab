@@ -418,7 +418,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 85613ce15ea0ba54dbd6da4bc9f179ba, type: 2}
-  side: 0
   range:
     value: {fileID: 7210569018229574125}
     none: 0

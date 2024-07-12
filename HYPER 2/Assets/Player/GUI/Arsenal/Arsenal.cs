@@ -8,6 +8,10 @@ public class Arsenal : MonoBehaviour
     [SerializeField] private ItemSorter sorter;
     [SerializeField] private ArsenalInfo ai;
 
+    public ArsenalItem[] AItems {
+        get { return aitems; }
+    }
+
     public void CStart() {
         ai.CStart();
         sorter.PrepareValues();
@@ -20,7 +24,7 @@ public class Arsenal : MonoBehaviour
         }
     }
 
-    private void OnDisable() {
+    public void Disable() {
         sorter.RevertItemScaling();
         foreach(var item in aitems) {
             item.gameObject.SetActive(false);

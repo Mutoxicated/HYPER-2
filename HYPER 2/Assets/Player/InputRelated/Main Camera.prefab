@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 974b1c66ae67abd4b9053cdeebf0d8ec, type: 3}
-  chromaticAberration: 0.211
+  chromaticAberration: 0.137
 --- !u!114 &9048282189423877439
 MonoBehaviour:
   m_ObjectHideFlags: 0

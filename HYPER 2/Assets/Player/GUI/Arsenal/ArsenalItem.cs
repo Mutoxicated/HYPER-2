@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private ArsenalInfo ai;
-    [SerializeField] private Resources.Arsenal @Type;
+    [SerializeField] private Resources.Arsenal @type;
     [SerializeField] private bool bought;
-    private UnityEngine.UI.Button button;
     [SerializeField] private Image image;
+    [SerializeField] private Image internalImage;
+    [SerializeField] private Text itemName;
 
     private StatsTemplate template;
     private bool selected;
@@ -23,9 +25,12 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return bought; }
     }
 
+    public Resources.Arsenal Type {
+        get { return @type; }
+    }
+
     public void OnSelect() {
         selected = false;
-        
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -41,6 +46,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     private void Start() {
+        internalImage.sprite = Resources.GetArsenalSprite(type);
         template = Resources.GetStatTemplate(Type);
         if (bought) {
             image.color = Color.green;

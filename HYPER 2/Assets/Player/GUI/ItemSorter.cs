@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//[ExecuteInEditMode]
 public class ItemSorter : MonoBehaviour
 {
     [SerializeField] private Transform[] Frame;
@@ -9,8 +10,8 @@ public class ItemSorter : MonoBehaviour
     [SerializeField] private List<Transform> items = new List<Transform>();
     [SerializeField] private Vector2 direction = new Vector2(1,-1);
 
-    [SerializeField] private float scaleMod = 1f;
-    [SerializeField] private float transformScaleMod = 1f;
+    [SerializeField] private float offsetScaleMod = 1f;
+    [SerializeField] private float itemScaleMod = 1f;
     [SerializeField] private float radiusReference = 3.5f;
     [SerializeField] private float maxSize = 8f;
 
@@ -28,6 +29,9 @@ public class ItemSorter : MonoBehaviour
 
     private Vector3 alteredPos;
     private Vector3 initScale;
+
+    private bool exectuteInEditMode = false;
+    private bool executed = false;
 
     private void FindSmallestLineGenerationAvailable(){
 
@@ -51,7 +55,36 @@ public class ItemSorter : MonoBehaviour
         }
     }
 
+    #if UNITY_EDITOR
+    [ContextMenu("Toggle exec in edit mode")]
+    private void ToggleExecInEditMode() {
+        exectuteInEditMode = !exectuteInEditMode;
+        Debug.Log(exectuteInEditMode);
+        if (executed) {
+            RevertItemScaling();
+            executed = false;
+        }
+        OnEnable();
+    }
+
+    [ContextMenu("Execute")]
+    private void Execute() {
+        if (exectuteInEditMode) {
+            RevertItemScaling();
+            OnEnable();
+        }
+    }
+    
+    private void OnValidate() {
+        Execute();
+    }
+    #endif
+
     private void OnEnable(){
+        #if UNITY_EDITOR 
+            if (!exectuteInEditMode) { return; }
+            executed = true;
+        #endif
         if (items.Count == 0)
             return;
         PrepareValues();
@@ -68,15 +101,15 @@ public class ItemSorter : MonoBehaviour
 
         //apply scaling
         float t = Mathf.InverseLerp(0f,radiusReference,Mathf.Abs(yIncrement*0.5f));
-        items[itemIndex].localScale = initScale*t*scaleOffset*transformScaleMod;
+        items[itemIndex].localScale = initScale*t*scaleOffset*itemScaleMod;
         //Debug.Log("Scale: "+items[itemIndex].localScale.x);
         //apply scalling offset
         alteredPos.x += direction.x*(yIncrement*0.5f);
         alteredPos.y += direction.y*(yIncrement*0.5f);
 
         //apply offset based on current line index and current column index
-        alteredPos.x += direction.x*yIncrement*(columnIndex-1)*scaleMod;
-        alteredPos.y += direction.y*yIncrement*(lineIndex-1)*scaleMod;
+        alteredPos.x += direction.x*yIncrement*(columnIndex-1)*offsetScaleMod;
+        alteredPos.y += direction.y*yIncrement*(lineIndex-1)*offsetScaleMod;
 
         items[itemIndex].localPosition = alteredPos;
     }

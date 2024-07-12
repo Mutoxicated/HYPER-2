@@ -16,10 +16,9 @@ public class QuickInventory : MonoBehaviour
     private const float spacing = 0.01f;
 
     [SerializeField] private Sprite empty;
-    [SerializeField] private GameObject selectObj;
+    [SerializeField] private Option<QuickInventoryItem> selected;
     [SerializeField] private int capacity = 3;
-    [SerializeField] private List<GameObject> slots = new List<GameObject>();
-    [SerializeField] private List<Image> images = new List<Image>();
+    [SerializeField] private List<QuickInventoryItem> items = new List<QuickInventoryItem>();
 
     private float imageSize;
     private float length;
@@ -28,11 +27,24 @@ public class QuickInventory : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    public Option<Resources.Arsenal> GetSelectedArsenal() {
+        if (selected.IsNone()) {
+            return Option<Resources.Arsenal>.None();
+        }
+
+        return selected.Get().ArsenalType;
+    }
+
+    public void UpdateSelected(QuickInventoryItem item) {
+        selected = new Option<QuickInventoryItem>(item);
+    }
+
     public void DStart(){
-        imageSize = slots[0].transform.localScale.x*0.1f+spacing;
+        imageSize = items[0].transform.localScale.x*0.1f+spacing;
         
         Sort();
-        UpdateSelected();
+        selected = new Option<QuickInventoryItem>(items[0]);
+        selected.Get().transform.position = items[0].transform.position;
         gameObject.SetActive(true);
     }
 
@@ -40,23 +52,19 @@ public class QuickInventory : MonoBehaviour
         length = imageSize*capacity;
 
         for (int i = 0; i < capacity; i++) {
-            slots[i].gameObject.SetActive(true);
+            items[i].CStart(i);
         }
-        for (int i = capacity; i < slots.Count; i++) {
-            slots[i].gameObject.SetActive(false);
-        }
+        // for (int i = capacity; i < items.Count; i++) {
+        //     items[i].gameObject.SetActive(false);
+        // }
 
         var step = length/(capacity-1);
 
         var index = 0;
         for (float i = -length/2; i <= length/2; i += step) {
-            slots[index].transform.position = transform.position+Vector3.right*i;
+            items[index].transform.position = transform.position+Vector3.right*i;
             index++;
         }
-    }
-
-    private void UpdateSelected(){
-        selectObj.transform.position = slots[0].transform.position;
     }
 
     // private void Update(){

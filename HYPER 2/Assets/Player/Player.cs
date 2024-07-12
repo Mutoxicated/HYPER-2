@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Stats stats;
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
-    [SerializeField] private GameObject[] miniTowerPrefabs;
     [SerializeField] private Camera cam;
     private Transform camRoot;
     private InputAction debugRefresh;
@@ -79,12 +78,13 @@ public class Player : MonoBehaviour
     }
 
     public void DeadMode() {
-        UIMode();
+        UIMode(true);
         gui.DeadUI();        
     }
 
-    public void UIMode() {
-        Time.timeScale = 0f;
+    public void UIMode(bool freezeTime) {
+        if (freezeTime)
+            Time.timeScale = 0f;
         player.Disable();
         debug.Disable();
         ui.Enable();
@@ -99,8 +99,8 @@ public class Player : MonoBehaviour
 
     public delegate void MiniTowerConstructor(MiniTower mini);
 
-    public MiniTower InstantiateMiniTower(Vector3 position, int index, MiniTowerConstructor constructor) {
-        var tower = Instantiate(miniTowerPrefabs[index], position, Quaternion.identity).GetComponent<MiniTower>();
+    public MiniTower InstantiateMiniTower(Vector3 position, Resources.Arsenal arsenal, MiniTowerConstructor constructor) {
+        var tower = Instantiate(Resources.GetArsenal(arsenal), position, Quaternion.identity).GetComponent<MiniTower>();
         constructor(tower);
         return tower;
     }

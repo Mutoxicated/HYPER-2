@@ -1,16 +1,23 @@
 using UnityEngine;
-using UnityEditor;
 
+#if UNITY_EDITOR
+using UnityEditor;
 [CustomEditor(typeof(StatsTemplate))]
 //[CanEditMultipleObjects]
 public class StatsEditor : Editor {
     SerializedProperty stats;
     SerializedProperty values;
+    SerializedProperty statSide;
+    SerializedProperty element;
+    SerializedProperty worth;
 
     void OnEnable()
     {
         stats = serializedObject.FindProperty("stats");
         values = serializedObject.FindProperty("values");
+        statSide = serializedObject.FindProperty("side");
+        element = serializedObject.FindProperty("element");
+        worth = serializedObject.FindProperty("worth");
     }
 
     public override void OnInspectorGUI()
@@ -25,10 +32,13 @@ public class StatsEditor : Editor {
             GUILayout.EndHorizontal();
         }
         EditorGUILayout.EndVertical();
-
+        EditorGUILayout.PropertyField(statSide);
+        EditorGUILayout.PropertyField(element);
+        EditorGUILayout.PropertyField(worth);
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif
 
 public enum Stat {
     MAX_HEALTH,

@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 0}
-  Type: 0
+  type: 0
   bought: 0
-  image: {fileID: 6387830525703577378}
+  image: {fileID: 33364721475191038}
+  internalImage: {fileID: 6387830525703577378}

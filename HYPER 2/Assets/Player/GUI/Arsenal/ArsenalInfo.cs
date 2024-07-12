@@ -32,6 +32,9 @@ public class ArsenalInfo : MonoBehaviour
     }
 
     public void Enable(ArsenalItem aitem) {
+        if (locked.IsSome()) {
+            return;
+        }
         current = aitem.Template;
         arsenalName.text = String.Format(ufmtName, aitem.name);
         arsenalElement.text = String.Format(ufmtElement, Elm.ToString(current.element));
@@ -39,12 +42,18 @@ public class ArsenalInfo : MonoBehaviour
             arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+current.values[i]);
         }
         arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+current.worth);
+        if (aitem.Type == Resources.Arsenal.FIRST_MT) {
+            gameObject.SetActive(true);
+            sell.gameObject.SetActive(false);
+            buy.gameObject.SetActive(false);
+            return;
+        }
         if (aitem.Bought) {
             sell.gameObject.SetActive(true);
-            buy.gameObject.SetActive(true);
+            buy.gameObject.SetActive(false);
         }else {
             buy.gameObject.SetActive(true);
-            sell.gameObject.SetActive(true);
+            sell.gameObject.SetActive(false);
         }
         gameObject.SetActive(true);
     }

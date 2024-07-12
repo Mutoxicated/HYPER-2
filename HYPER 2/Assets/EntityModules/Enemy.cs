@@ -66,6 +66,10 @@ public class Enemy : MonoBehaviour, IDamageable
         currentlyColliding.Get().Damage(stats, stats.get(DAMAGE));
     }
 
+    public void ReceiveBacteria() {
+
+    }
+
     public void OnCollisionEnter(Collision collision) {
         //Debug.Log(collision.gameObject.name);
         var damageable = collision.gameObject.GetComponent<IDamageable>();

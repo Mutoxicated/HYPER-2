@@ -9,7 +9,18 @@ public class Range : MonoBehaviour
 
     private List<Enemy> enemies = new List<Enemy>();
 
+    public List<Enemy> Enemies {
+        get { return enemies; }
+    }
+
+    public delegate void OnEnemy(Enemy e);
+
+    public OnEnemy OnEnter;
+    public OnEnemy OnExit;
+
     public void CStart() {
+        OnEnter = new OnEnemy(e => enemies.Add(e));
+        OnExit = new OnEnemy(e => enemies.Remove(e));
         var tileSize = stats.Manager.World.WG.TileSize;
         transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4, transform.localScale.y, stats.get(RANGE)*tileSize*4);
         gameObject.SetActive(true);
@@ -17,13 +28,13 @@ public class Range : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider) {
         var enemy = collider.gameObject.GetComponent<Enemy>();
-        //enemy.ReportDeath(e => enemies.Remove(e));
-        enemies.Add(enemy);
+        enemy.ReportDeath(e => OnExit.Invoke(e));
+        OnEnter.Invoke(enemy);
     }
 
     public void OnTriggerExit(Collider collider) {
         var enemy = collider.gameObject.GetComponent<Enemy>();
-        enemies.Remove(enemy);
+        OnExit.Invoke(enemy);
     }
 
     public Option<GameObject> Target() {

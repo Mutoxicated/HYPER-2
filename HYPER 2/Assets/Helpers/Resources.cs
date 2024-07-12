@@ -8,7 +8,8 @@ public class Resources : MonoBehaviour
     public static Resources self;
 
     public enum Arsenal {
-        FIRST_MT = 0
+        FIRST_MT = 0,
+        SECOND_MT
     }
 
     public enum Enemy {
@@ -24,6 +25,12 @@ public class Resources : MonoBehaviour
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
     private static Dictionary<Enemy, GameObject> enemyPrefabs;
     private static Dictionary<Bullet, GameObject> bulletPrefabs;
+
+    [SerializeField] private Sprite empty;
+
+    public static Sprite Empty {
+        get { return self.empty; }
+    }
 
     public void DStart() {
         if (arsenalPrefabs == null) {

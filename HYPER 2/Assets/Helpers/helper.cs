@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
 [CustomPropertyDrawer(typeof(Option<>), true)]
 public class OptionEditor : PropertyDrawer {
     private SerializedProperty none;
@@ -49,6 +50,7 @@ public class OptionEditor : PropertyDrawer {
         return totalHeight;
     }
 }
+#endif
 
 [Serializable]
 public class Option<T> {
@@ -82,6 +84,17 @@ public class Option<T> {
         }
 
         return false;
+    }
+
+    public delegate void OnFail();
+
+    public bool TryGetOr(OnFail fail) {
+        if (IsNone()) {
+            fail();
+            return false;
+        }
+
+        return true;
     }
 
     public static Option<T> None() {
@@ -162,6 +175,8 @@ namespace Helpers {
             switch (elm) {
             case Stats.Element.WATER:
                 return "<color=#00ffff>Water";
+            case Stats.Element.FIRE:
+                return "<color=#ffaa00>Fire";
             default:
                 return "Unknown";
             }

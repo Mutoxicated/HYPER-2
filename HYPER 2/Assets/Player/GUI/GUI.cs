@@ -18,13 +18,23 @@ public class GUI : MonoBehaviour
         get { return Save.pData.UIColor; }
     }
 
-    //private Player player;
+    private Player player;
 
     public void DStart(Player player) {
-        //this.player = player;
+        this.player = player;
         selector.DStart(player, player.Manager);
         quickInventory.DStart();
         arsenal.CStart();
+    }
+
+    public void UIMode(bool freezeTime) {
+        player.UIMode(freezeTime);
+        selector.gameObject.SetActive(false);
+    }
+
+    public void PlayingMode() {
+        player.PlayingMode();
+        selector.gameObject.SetActive(true);
     }
 
     public void DeadUI() {

@@ -12,6 +12,7 @@ public class Stats : MonoBehaviour
     }
     public enum Element {
         WATER,
+        FIRE
     }
     [SerializeField] private StatsTemplate template;
 
@@ -39,6 +40,10 @@ public class Stats : MonoBehaviour
 
     public Element StatElement {
         get { return template.element; }
+    }
+
+    public Option<Range> Range {
+        get { return range; }
     }
 
     private void PrepareValues() {
