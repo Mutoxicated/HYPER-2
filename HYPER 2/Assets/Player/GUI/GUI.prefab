@@ -608,6 +608,7 @@ MonoBehaviour:
   - {fileID: 4218835470197109666}
   - {fileID: 9132212676870356644}
   arsenalWorth: {fileID: 3209192055769825363}
+  research: {fileID: 4851310146657548723}
   buy: {fileID: 5775694578058629184}
   sell: {fileID: 3927148308314166113}
 --- !u!1 &2422413076770756645
@@ -1345,7 +1346,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1020769840115033033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4062,6 +4063,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7c44a6057763764b82945c530683538, type: 3}
+--- !u!114 &4851310146657548723 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6458534084102093062, guid: e7c44a6057763764b82945c530683538, type: 3}
+  m_PrefabInstance: {fileID: 1941617034486677685}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7432003379794354124 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9066245044839128953, guid: e7c44a6057763764b82945c530683538, type: 3}

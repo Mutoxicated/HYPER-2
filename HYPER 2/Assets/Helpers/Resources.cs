@@ -27,9 +27,14 @@ public class Resources : MonoBehaviour
     private static Dictionary<Bullet, GameObject> bulletPrefabs;
 
     [SerializeField] private Sprite empty;
+    [SerializeField] private Sprite locked;
 
     public static Sprite Empty {
         get { return self.empty; }
+    }
+
+    public static Sprite Locked {
+        get { return self.locked; }
     }
 
     public void DStart() {

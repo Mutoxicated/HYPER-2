@@ -12,7 +12,7 @@ public class ArsenalInfo : MonoBehaviour
     [SerializeField] private TMP_Text arsenalElement;
     [SerializeField] private List<TMP_Text> arsenalStats = new List<TMP_Text>();
     [SerializeField] private TMP_Text arsenalWorth;
-    [SerializeField] private UnityEngine.UI.Button research;
+    //[SerializeField] private UnityEngine.UI.Button research;
     [SerializeField] private UnityEngine.UI.Button buy;
     [SerializeField] private UnityEngine.UI.Button sell;
 
@@ -41,8 +41,21 @@ public class ArsenalInfo : MonoBehaviour
         if (mustLock) {
             locked = new Option<ArsenalItem>(aitem);
         }
+
         currentItem = aitem;
         current = aitem.Template;
+        if (aitem.Locked) {
+            sell.gameObject.SetActive(false);
+            buy.gameObject.SetActive(false);
+            arsenalName.text = "???";
+            arsenalElement.text = "Unlock at lvl "+current.unlockAt;
+            for (int i = 0; i < arsenalStats.Count; i++) {
+                arsenalStats[i].text = "";
+            }
+            arsenalWorth.text = "";
+            gameObject.SetActive(true);
+            return;
+        }
         arsenalName.text = String.Format(ufmtName, Arsnl.ToName(aitem.Type));
         arsenalElement.text = String.Format(ufmtElement, Elm.ToString(current.element));
         for (int i = 0; i < arsenalStats.Count; i++) {

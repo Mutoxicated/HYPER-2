@@ -25,14 +25,21 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return bought; }
     }
 
+    private bool locked;
+
+    public bool Locked {
+        get { return locked; }
+    }
+
     public void SetBought(bool value) {
         bought = value;
-        if (bought) {
-            image.color = Color.green;
-        }else {
-            image.color = Color.white;
-        }
+        SetImageColor();
     }
+
+    // public void SetResearched(bool value) {
+    //     researched = value;
+    //     SetImageColor();
+    // }
 
     public Resources.Arsenal Type {
         get { return @type; }
@@ -54,11 +61,37 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             ai.Disable();
     }
 
-    private void Start() {
+    public void Enable() {
         internalImage.sprite = Resources.GetArsenalSprite(type);
         template = Resources.GetStatTemplate(Type);
+        SetImageColor();
+        UpdateLockState();
+        gameObject.SetActive(true);
+    }
+
+    public void UpdateLockState() {
+        if (Save.rData.Lvl >= Template.unlockAt) {
+            locked = false;
+            internalImage.sprite = Resources.GetArsenalSprite(type);
+        }else {
+            locked = true;
+            internalImage.sprite = Resources.Locked;
+        }
+    }
+
+    public void SetImageColor() {
+        // if (researched) {
+        //     image.color = Color.cyan;
+        // }else {
+        //     image.color = Color.white;
+        // }
+        // if (bought) {
+        //     image.color = Color.green;
+        // }
         if (bought) {
             image.color = Color.green;
+        }else {
+            image.color = Color.white;
         }
     }
 

@@ -96,4 +96,20 @@ public class RunData
     public void SetSelectedIndex(int index) {
         selectedIndex = index;
     }
+
+    // [SerializeField] private List<Resources.Arsenal> researchedArsenals = new List<Resources.Arsenal>() {
+    //     FIRST_MT
+    // };
+
+    // public void AddResearchedArsenal(Resources.Arsenal arsenal) {
+    //     boughtArsenals.Add(arsenal);
+    // }
+
+    // public void RemoveResearchedArsenal(Resources.Arsenal arsenal) {
+    //     boughtArsenals.Remove(arsenal);
+    // }
+
+    // public List<Resources.Arsenal> ResearchedArsenals {
+    //     get { return researchedArsenals; }
+    // }
 }

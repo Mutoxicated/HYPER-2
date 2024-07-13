@@ -30,7 +30,7 @@ public class Arsenal : MonoBehaviour
                     break;
                 }
             }
-            item.gameObject.SetActive(true);
+            item.Enable();
         }
     }
 
