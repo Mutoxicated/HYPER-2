@@ -49,9 +49,6 @@ public class Bacteria : MonoBehaviour
             emission.rateOverTimeMultiplier += rateStep;
         });
         this.immune = immune;
-    }
-
-    public void CEnable() {
         gameObject.SetActive(true);
     }
 

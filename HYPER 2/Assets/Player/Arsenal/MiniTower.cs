@@ -29,9 +29,14 @@ public class MiniTower : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Interval DOTInterval;
+    [SerializeField] private Resources.Arsenal arsenal;
 
     private health hp;
     private float DOT = .1f;
+
+    public Resources.Arsenal ArsenalType {
+        get { return arsenal; }
+    }
 
     public void CStart(Manager manager) {
         hp = stats.CStart(manager);
@@ -40,10 +45,12 @@ public class MiniTower : MonoBehaviour, IDamageable
         DOTInterval.Enable();
     }
 
-
-
     public void DOTIntervalDamage() {
         Damage(stats, DOT);
+    }
+
+    public void RestoreHP() {
+        hp.Current = hp.Max;
     }
 
     public void Die(Option<Stats> _) {

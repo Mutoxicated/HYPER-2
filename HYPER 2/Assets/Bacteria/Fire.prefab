@@ -51,6 +51,7 @@ MonoBehaviour:
   bt: 1
   lifetime: 2
   ps: {fileID: 224420990770183751}
+  population: 1
 --- !u!114 &8967658091285920187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +124,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 402617a65a17ff94d880b3ed67042a0c, type: 2}
+  - {fileID: 2100000, guid: 8405ada5136f133449bbbc48f014619d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

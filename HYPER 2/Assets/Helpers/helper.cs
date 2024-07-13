@@ -306,6 +306,8 @@ namespace Helpers {
                 return "AdvancedWire";
             case MaterialType.HDR:
                 return "HDR";
+            case MaterialType.SELECTION:
+                return "Selection";
             default:
                 return "UNKNOWN";
             }
