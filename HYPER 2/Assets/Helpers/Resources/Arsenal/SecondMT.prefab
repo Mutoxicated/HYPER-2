@@ -225,6 +225,9 @@ GameObject:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 7800337281580403305}
   - component: {fileID: 231060667793010726}
+  - component: {fileID: 8938896505249635808}
+  - component: {fileID: 5161669399869190583}
+  - component: {fileID: 2159686960475984556}
   m_Layer: 9
   m_Name: SecondMT
   m_TagString: Untagged
@@ -279,3 +282,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 7800337281580403305}
   DOTInterval: {fileID: 1287294738151058555}
+--- !u!114 &8938896505249635808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 7800337281580403305}
+--- !u!114 &5161669399869190583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f0969d881d97e4490981f92302159c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 7800337281580403305}
+  bt: 1
+--- !u!114 &2159686960475984556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useUnscaledTime: 0
+  dontResetTime: 0
+  chance: 100
+  interval: 1
+  minMaxInterval: {x: 0, y: 0}
+  onInterval:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5161669399869190583}
+        m_TargetAssemblyTypeName: AoE, Assembly-CSharp
+        m_MethodName: IntervalDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  destroyUponEvent: 0
+  t: 0
+  time: 0
+  isPlaying: 0

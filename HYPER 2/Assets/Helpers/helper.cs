@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static PoolID;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -194,6 +195,32 @@ namespace Helpers {
                 return "Blame";
             default:
                 return "UNKNOWN";
+            }
+        }
+    }
+
+    public static class Pool {
+        public static string ToName(PoolID id) {
+            switch (id) {
+            case WaterBacteria:
+                return "WaterBacteria";
+            case FireBacteria:
+                return "FireBacteria";
+            case NRM:
+                return "NRM";
+            default: 
+                return "Unknown";
+            } 
+        }
+
+        public static Option<ObjectPool> FromBT(Manager manager, BacteriaType bt) {
+            switch (bt) {
+            case BacteriaType.Fire:
+                return new Option<ObjectPool>(manager.Pools.Get(FireBacteria));
+            case BacteriaType.Water:
+                return new Option<ObjectPool>(manager.Pools.Get(WaterBacteria));
+            default:
+                return Option<ObjectPool>.None();
             }
         }
     }

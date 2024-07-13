@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 
 public enum PoolID {
-    FireBacteria
+    WaterBacteria,
+    FireBacteria,
+    NRM
 }
 
 public class ObjectPool : MonoBehaviour
@@ -21,14 +24,18 @@ public class ObjectPool : MonoBehaviour
         return poolID;
     }
 
+    public void SetInstanceName(ref GameObject instance) {
+        instance.name = Pool.ToName(poolID)+(outsideGos.Count+transform.childCount);
+    }
+
     public GameObject SendObject(GameObject receiver)
     {
         if (transform.childCount == 0){
             prefab.SetActive(false);
             var instance = Instantiate(prefab);
+            SetInstanceName(ref instance);
             outsideGos.Add(instance);
             instance.transform.SetParent(receiver.transform, false);
-            //instance.name = poolID;
             if (enableOnUse)
                 instance.SetActive(true);
             return instance;
@@ -47,6 +54,7 @@ public class ObjectPool : MonoBehaviour
         if (transform.childCount == 0)
         {
             var instance = Instantiate(prefab, position, rotation);
+            SetInstanceName(ref instance);
             outsideGos.Add(instance);
             if (enableOnInstance)
                 instance.SetActive(true);
@@ -72,6 +80,7 @@ public class ObjectPool : MonoBehaviour
         if (transform.childCount == 0)
         {
             var instance = Instantiate(prefab, position, rotation);
+            SetInstanceName(ref instance);
             outsideGos.Add(instance);
             if (enableOnInstance)
                 instance.SetActive(true);

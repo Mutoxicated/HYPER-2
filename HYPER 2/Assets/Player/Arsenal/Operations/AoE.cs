@@ -4,7 +4,7 @@ using static Stat;
 public class AoE : MonoBehaviour
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private Interval damageInterval;
+    [SerializeField] private BacteriaType bt;
 
     private Range range;
 
@@ -22,7 +22,7 @@ public class AoE : MonoBehaviour
     public void IntervalDamage() {
         foreach (var e in range.Enemies) {
             if (e != null) {
-                e.Damage(stats, stats.get(DAMAGE));
+                e.GetComponent<IInfectable>().Infect(bt);
             }
         }
     }

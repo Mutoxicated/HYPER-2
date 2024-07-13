@@ -46,7 +46,7 @@ public class MiniTower : MonoBehaviour, IDamageable
         Damage(stats, DOT);
     }
 
-    public void Die(Stats _) {
+    public void Die(Option<Stats> _) {
         Destroy(gameObject);
     }
 
@@ -54,7 +54,14 @@ public class MiniTower : MonoBehaviour, IDamageable
     {
         hp.Current -= amount;
         if (hp.Current <= 0) {
-            Die(stats);
+            Die(Option<Stats>.None());
+        }
+    }
+
+    public void BacteriaDamage(BacteriaType bt, float amount) {
+        hp.Current -= amount;
+        if (hp.Current <= 0) {
+            Die(Option<Stats>.None());
         }
     }
 }

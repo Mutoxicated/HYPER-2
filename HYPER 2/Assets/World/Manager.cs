@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {   
+    [SerializeField] private PublicPools pps;
     [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
 
     public void Awake() {
+        pps.DStart();
         resources.DStart();
         player.DStart(this);
         world.DStart(player);
-
     }
 
     public World World {
@@ -25,5 +26,9 @@ public class Manager : MonoBehaviour
 
     public GameObject PlayerGo {
         get { return player.gameObject; }
+    }
+
+    public PublicPools Pools {
+        get { return pps; }
     }
 }

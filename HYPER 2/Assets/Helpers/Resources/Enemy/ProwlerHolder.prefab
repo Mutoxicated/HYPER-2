@@ -4827,6 +4827,7 @@ GameObject:
   - component: {fileID: 7483121074402370019}
   - component: {fileID: 8026403155563357703}
   - component: {fileID: 1246781020043864343}
+  - component: {fileID: 7654643070103954848}
   m_Layer: 10
   m_Name: ProwlerHolder
   m_TagString: Untagged
@@ -4892,7 +4893,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 26cc5b1768bc8ab4fb68ba5a8d18bf09, type: 2}
-  side: 0
   range:
     value: {fileID: 0}
     none: 1
@@ -4947,6 +4947,19 @@ MonoBehaviour:
   t: 0
   time: 0
   isPlaying: 0
+--- !u!114 &7654643070103954848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4618620402407156219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 7483121074402370019}
 --- !u!1 &6743281814057010050
 GameObject:
   m_ObjectHideFlags: 0

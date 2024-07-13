@@ -11,7 +11,7 @@ public class Tower : MonoBehaviour, IDamageable
         Destroy(collision.gameObject);
     }
 
-    public void Die(Stats _) {
+    public void Die(Option<Stats> _) {
         player.DeadMode();
     }
 
@@ -19,7 +19,15 @@ public class Tower : MonoBehaviour, IDamageable
         if (health < 0) { return; }
         health -= amount;
         if (health < 0) {
-            Die(_);
+            Die(Option<Stats>.None());
+        }
+    }
+
+    public void BacteriaDamage(BacteriaType bt, float amount) {
+          if (health < 0) { return; }
+        health -= amount;
+        if (health < 0) {
+            Die(Option<Stats>.None());
         }
     }
 }

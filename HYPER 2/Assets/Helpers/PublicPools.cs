@@ -7,7 +7,7 @@ public class PublicPools : MonoBehaviour
     private Dictionary<PoolID, ObjectPool> pools = new Dictionary<PoolID, ObjectPool>();
     [SerializeField] private List<ObjectPool> poolList = new List<ObjectPool>();
 
-    private void DStart()
+    public void DStart()
     {
         foreach (var pool in poolList) {
             pools.Add(pool.GetID(), pool);

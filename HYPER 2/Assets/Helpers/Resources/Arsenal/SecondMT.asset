@@ -21,3 +21,4 @@ MonoBehaviour:
   side: 0
   element: 1
   worth: 5
+  unlockAt: 3

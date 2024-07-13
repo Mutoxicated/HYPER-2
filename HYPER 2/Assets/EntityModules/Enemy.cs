@@ -95,8 +95,13 @@ public class Enemy : MonoBehaviour, IDamageable
         currentlyColliding = Option<IDamageable>.None();
     }
 
-    public void Die(Stats senderStats) {
-        if (senderStats.StatSide == Stats.Side.PLAYER) {
+    public void Die(Option<Stats> senderStats) {
+        if (senderStats.IsNone()) {
+            death.Invoke(this);
+            Destroy(gameObject);
+            return;
+        }
+        if (senderStats.Get().StatSide == Stats.Side.PLAYER) {
             Player.IncrementXP(XPWorth);
         }
         death.Invoke(this);
@@ -111,7 +116,16 @@ public class Enemy : MonoBehaviour, IDamageable
 
         hp.Current -= amount;
         if (hp.Current <= 0) {
-            Die(stats);
+            Die(new Option<Stats>(stats));
+        }
+    }
+
+    public void BacteriaDamage(BacteriaType bt, float amount) {
+        if (hp.Current <= 0) { return; }
+
+        hp.Current -= amount;
+        if (hp.Current <= 0) {
+            Die(Option<Stats>.None());
         }
     }
 }
