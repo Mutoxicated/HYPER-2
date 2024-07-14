@@ -81,6 +81,7 @@ public class Selector : MonoBehaviour
 
         if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
             selected = new Option<GameObject>(go.transform.parent.gameObject);
+            selection.Disable();
         }else if (!selectedArsenalInfo.Locked){
             selected = Option<GameObject>.None();
         }

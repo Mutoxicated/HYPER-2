@@ -180,7 +180,7 @@ MonoBehaviour:
   onInterval:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4299960412280213781}
         m_TargetAssemblyTypeName: MiniTower, Assembly-CSharp
         m_MethodName: DOTIntervalDamage
         m_Mode: 1

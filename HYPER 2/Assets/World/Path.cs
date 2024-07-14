@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Helpers;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Helpers.General;
 
@@ -158,6 +159,32 @@ public class Path : MonoBehaviour
             // }
 
             var closestToTower = buffer[0];
+            if (wg.IndexBelongsTo(neighbors[neighbors.Count-1].Tile.Index, 1)) {
+                Option<Neighbor> a = Option<Neighbor>.None(), b = Option<Neighbor>.None();
+                Direction perpendicular = Direction.UNKNOWN, perpendicular2 = Direction.UNKNOWN;
+                if (neighbors[1].Location.Type == LocationType.FIRST | neighbors[1].Location.Type == LocationType.BOTTOM | neighbors[1].Location.Type == LocationType.TOP) {
+                    perpendicular = Direction.LEFT;
+                    perpendicular2 = Direction.RIGHT;
+                } else {
+                    perpendicular = Direction.UP;
+                    perpendicular2 = Direction.DOWN;
+                }
+                foreach (var nb in buffer) {
+                    if (nb.Direction == perpendicular) {
+                        a = new Option<Neighbor>(nb);
+                    }else if (nb.Direction == perpendicular2) {
+                        b = new Option<Neighbor>(nb);
+                    }
+                }
+
+                if (a.IsNone() && b.IsSome()) {
+                    closestToTower = b.Get();
+                }else if (b.IsNone() && a.IsSome()) {
+                    closestToTower = a.Get();
+                }else if (b.IsSome() && a.IsSome()) {
+                    closestToTower = a.Get().Tile.Distance > b.Get().Tile.Distance ? b.Get() : a.Get();
+                }
+            }
 
             if (currentDirection == Direction.UNKNOWN) {
                 currentDirection = closestToTower.Direction;
@@ -167,7 +194,6 @@ public class Path : MonoBehaviour
                 EnableNeighbor(closestToTower);
                 continue;
             }
-
             EnableNeighbor(closestToTower);
             AddBranch();
             currentDirection = closestToTower.Direction;

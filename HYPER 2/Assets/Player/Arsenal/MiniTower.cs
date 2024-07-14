@@ -34,6 +34,14 @@ public class MiniTower : MonoBehaviour, IDamageable
     private health hp;
     private float DOT = .1f;
 
+    public Stats Stats {
+        get { return stats; }
+    }
+
+    public health HP {
+        get { return hp; }
+    }
+
     public Resources.Arsenal ArsenalType {
         get { return arsenal; }
     }

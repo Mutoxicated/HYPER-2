@@ -27,6 +27,10 @@ public class Stats : MonoBehaviour
         get { return manager; }
     }
 
+    public StatsTemplate Template {
+        get { return template; }
+    }
+
     /// <summary>
     /// Access this only if you are sure that there are targets to choose
     /// </summary>
