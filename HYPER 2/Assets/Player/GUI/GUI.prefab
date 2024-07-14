@@ -5666,23 +5666,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5359182992232304534}
+      objectReference: {fileID: 4162367389924523030}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnDeselect
+      value: Disable
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Selector, Assembly-CSharp
+      value: SelectedArsenalInfo, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -7178,7 +7182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6458534084102093062, guid: e7c44a6057763764b82945c530683538, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnDestroy
+      value: Destroy
       objectReference: {fileID: 0}
     - target: {fileID: 6458534084102093062, guid: e7c44a6057763764b82945c530683538, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

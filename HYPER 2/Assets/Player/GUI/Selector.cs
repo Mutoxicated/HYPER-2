@@ -28,10 +28,10 @@ public class Selector : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Delete() {
-        Debug.Log("Delete", hits[0].collider.gameObject);
-        var towerPos = selected.Get().transform.parent.position;
-        Destroy(selected.Get().transform.parent.gameObject);
+    public void Delete(GameObject go) {
+        Debug.Log("Delete", go);
+        var towerPos = go.transform.position;
+        Destroy(go);
         selected = Option<GameObject>.None();
 
         var direction = (towerPos-player.Cam.transform.position).normalized;
@@ -39,7 +39,7 @@ public class Selector : MonoBehaviour
         direction.z = 0f;
 
         stored = Physics.RaycastNonAlloc(new Ray(towerPos, direction),hits,Mathf.Infinity, tileSelectionMask);
-        hits[0].collider.gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+        go.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
     }
 
     public void Update() {
@@ -49,16 +49,19 @@ public class Selector : MonoBehaviour
         ray = player.Cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         //Debug.Log(ray.direction);
         stored = Physics.RaycastNonAlloc(ray,hits,Mathf.Infinity, tileSelectionMask);
-        if (stored == 0) {
+        if (stored == 0 | input.IsPointerOverGameObject(Mouse.current.deviceId)) {
             currentStat = Option<StatsTemplate>.None();
             selection.Disable();
+            selectedArsenalInfo.Disable(false);
+            if (!selectedArsenalInfo.Locked)
+                selected = Option<GameObject>.None();
             return;
         }
         //Debug.Log("stored");
 
         if (selected.IsSome()) {
             if (player.OnDelete) {
-                Delete();
+                Delete(hits[0].collider.gameObject.transform.parent.gameObject);
             }else {
                 if (!selectedArsenalInfo.gameObject.activeInHierarchy) {
                     selectedArsenalInfo.Enable(selected.Get().GetComponent<MiniTower>());
@@ -66,40 +69,42 @@ public class Selector : MonoBehaviour
             }
         }else {
             if (selectedArsenalInfo.gameObject.activeInHierarchy) {
-                selectedArsenalInfo.Disable();
+                selectedArsenalInfo.Disable(true);
             }
-            var arsenal = qi.GetSelectedArsenal();
-            bool got = arsenal.GetAndThen(a => {
-                currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
-                selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().values[3]);
-            });
-            if (!got) {
-                currentStat = Option<StatsTemplate>.None();
-                selection.Disable();
-            }
+            UpdateSelection();
+        }
+        if (selectedArsenalInfo.Locked && hits[0].transform.parent.gameObject != selected.Get()) {
+            UpdateSelection();
+        }
+
+        var go = hits[0].collider.gameObject;
+
+        if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
+            selected = new Option<GameObject>(go.transform.parent.gameObject);
+        }else if (!selectedArsenalInfo.Locked){
+            selected = Option<GameObject>.None();
         }
 
         if (player.OnLeftClick) {
             Debug.Log("Clicked");
-            var go = hits[0].collider.gameObject;
             if (go.layer == EditorState.GetLayer(EditorLayer.OCCUPIED)) {
                 Debug.Log("Object is occupied ("+go.name+")", go);
                 selected = Option<GameObject>.None();
                 return;
             }else if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
                 Debug.Log("Object is mini tower ("+go.name+")", go);
-                selected = new Option<GameObject>(go);
+                selected = new Option<GameObject>(go.transform.parent.gameObject);
+                selectedArsenalInfo.Lock();
                 return;
             }
-            if (input.IsPointerOverGameObject(Mouse.current.deviceId)) {
-                return;
-            }
+            
             var arsenal = qi.GetSelectedArsenal();
             arsenal.GetAndThen(a => {
                 var template = Resources.GetStatTemplate(a);
                 if (Save.rData.Money >= template.worth) {
                     Player.SetMoneyRelative(-template.worth);
                 }else {
+                    Debug.Log("bbnomoney");
                     return;
                 }
                 Debug.Log("Instantiated mini tower", go);
@@ -110,6 +115,18 @@ public class Selector : MonoBehaviour
         }
 
         hits = new RaycastHit[1];
+    }
+
+    private void UpdateSelection() {
+        var arsenal = qi.GetSelectedArsenal();
+        bool got = arsenal.GetAndThen(a => {
+            currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
+            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().values[3]);
+        });
+        if (!got) {
+            currentStat = Option<StatsTemplate>.None();
+            selection.Disable();
+        }
     }
 
     public void OnDeselect() {

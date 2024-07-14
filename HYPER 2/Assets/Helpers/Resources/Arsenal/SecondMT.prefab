@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 6422483667625648279}
   - component: {fileID: 1287294738151058555}
   - component: {fileID: 4605116146630272502}
+  - component: {fileID: 8287966136013521589}
   m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
@@ -180,7 +181,7 @@ MonoBehaviour:
   onInterval:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 231060667793010726}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MiniTower, Assembly-CSharp
         m_MethodName: DOTIntervalDamage
         m_Mode: 1
@@ -214,6 +215,20 @@ MonoBehaviour:
   color: {r: 1, g: 0.22172387, b: 0, a: 1}
   changeQueue: 0
   queueMode: 0
+  offset: 0
+--- !u!114 &8287966136013521589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680666174658093250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 7800337281580403305}
 --- !u!1 &3710317631712574376
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,10 +239,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 7800337281580403305}
-  - component: {fileID: 231060667793010726}
-  - component: {fileID: 8938896505249635808}
   - component: {fileID: 5161669399869190583}
   - component: {fileID: 2159686960475984556}
+  - component: {fileID: 6357530675397054155}
   m_Layer: 9
   m_Name: SecondMT
   m_TagString: Untagged
@@ -268,33 +282,6 @@ MonoBehaviour:
   range:
     value: {fileID: 7210569018229574125}
     none: 0
---- !u!114 &231060667793010726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710317631712574376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d18cba1b5fbd4ef49b8c14a5d4463081, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 7800337281580403305}
-  DOTInterval: {fileID: 1287294738151058555}
---- !u!114 &8938896505249635808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710317631712574376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 7800337281580403305}
 --- !u!114 &5161669399869190583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,3 +332,18 @@ MonoBehaviour:
   t: 0
   time: 0
   isPlaying: 0
+--- !u!114 &6357530675397054155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18cba1b5fbd4ef49b8c14a5d4463081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 7800337281580403305}
+  DOTInterval: {fileID: 1287294738151058555}
+  arsenal: 1

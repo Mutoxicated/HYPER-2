@@ -17,6 +17,11 @@ public class SelectedArsenalInfo : MonoBehaviour
     private string ufmtName;
     private string ufmtElement;
     private List<string> ufmtStats = new List<string>();
+    private bool locked = false;
+
+    public bool Locked {
+        get { return locked; }
+    }
 
     public void DStart() {
         ufmtName = arsenalName.text;
@@ -38,16 +43,23 @@ public class SelectedArsenalInfo : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Disable() {
+    public void Lock() {
+        locked = true;
+    }
+
+    public void Disable(bool must) {
+        if (!must && locked) { return; }
+        selector.OnDeselect();
         gameObject.SetActive(false);
+        locked = false;
     }
 
     public void OnRestoreHP() {
         mt.RestoreHP();
     }
 
-    public void OnDestroy() {
-        selector.Delete();
-        Disable();
+    public void Destroy() {
+        selector.Delete(mt.gameObject);
+        Disable(true);
     }
 }
