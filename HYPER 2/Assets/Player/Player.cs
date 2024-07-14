@@ -137,6 +137,13 @@ public class Player : MonoBehaviour
 
         movement.DStart();
         gui.DStart(this);
+
+        foreach (var state in Save.rData.MTs) {
+            InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(manager, state));
+        }
+
+        Save.rData.MTs.Clear();
+
         gameObject.SetActive(true);
     }
 }

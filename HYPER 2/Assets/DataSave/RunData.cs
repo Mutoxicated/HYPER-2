@@ -112,4 +112,16 @@ public class RunData
     // public List<Resources.Arsenal> ResearchedArsenals {
     //     get { return researchedArsenals; }
     // }
+
+    [SerializeField] private List<MTState> mts = new List<MTState>();
+
+    public void AddMTState(MTState state) {
+        mts.Add(state);
+    }
+
+    public List<MTState> MTs {
+        get { return mts; }
+    }
+
+    [SerializeField] private List<Branch> paths = new List<Branch>();
 }

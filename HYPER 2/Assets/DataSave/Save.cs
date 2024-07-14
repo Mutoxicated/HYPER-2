@@ -67,6 +67,7 @@ public class Save : MonoBehaviour
 
     public static void UpdateData(DataType dt)
     {
+        Debug.Log("Reading data");
         using StreamReader reader = new StreamReader(Path(dt));
         string json = reader.ReadToEnd();
 

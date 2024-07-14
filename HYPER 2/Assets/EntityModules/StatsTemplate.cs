@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -43,6 +45,7 @@ public class StatsEditor : Editor {
 }
 #endif
 
+[Serializable]
 public enum Stat {
     MAX_HEALTH,
     SPEED,

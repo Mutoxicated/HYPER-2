@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class Resources : MonoBehaviour
 {
     public static Resources self;
 
+    [Serializable]
     public enum Arsenal {
         FIRST_MT = 0,
         SECOND_MT

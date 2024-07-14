@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 using static Stat;
 
@@ -25,6 +26,24 @@ public class health {
     }
 }
 
+[Serializable]
+public class MTState {
+    public List<Stat> modkey = new List<Stat>();
+    public List<float> modVal = new List<float>();
+    public Vector3 position;
+    public health hp;
+    public Resources.Arsenal arsenal;
+
+    public MTState(Dictionary<Stat, float> mod, Vector3 pos, health hp, Resources.Arsenal arsenal) {
+        (List<Stat>, List<float>) partition = General.DictToList(mod);
+        modkey = partition.Item1;
+        modVal = partition.Item2;
+        position = pos;
+        this.hp = hp;
+        this.arsenal = arsenal;
+    }
+}
+
 public class MiniTower : MonoBehaviour, IDamageable
 {
     [SerializeField] private Stats stats;
@@ -46,8 +65,25 @@ public class MiniTower : MonoBehaviour, IDamageable
         get { return arsenal; }
     }
 
+    private void StoreMTState(RunData r) {
+        r.AddMTState(new MTState(Stats.mod, transform.position, hp, arsenal));
+    }
+
     public void CStart(Manager manager) {
+        PublicEvent.onSaveRun += StoreMTState;
         hp = stats.CStart(manager);
+
+        gameObject.SetActive(true);
+        DOTInterval.Enable();
+    }
+
+    public void CStart(Manager manager, MTState state) {
+        PublicEvent.onSaveRun += StoreMTState;
+        stats.CStart(manager);
+
+        hp = state.hp;
+        stats.mod = General.ListToDict(state.modkey, state.modVal);
+        //transform.position = state.position;
 
         gameObject.SetActive(true);
         DOTInterval.Enable();
@@ -62,6 +98,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     public void Die(Option<Stats> _) {
+        PublicEvent.onSaveRun -= StoreMTState;
         Destroy(gameObject);
     }
 

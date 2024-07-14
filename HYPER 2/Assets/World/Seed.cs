@@ -12,6 +12,12 @@ public class Seed : MonoBehaviour
         random = new System.Random(Save.rData.Seed);
     }
 
+    public static int IntRange(int min, int max) {
+        int minINT = Mathf.RoundToInt(min*100f);
+        int maxINT = Mathf.RoundToInt(max*100f);
+        return random.Next(minINT, maxINT)/100;
+    }
+
     public static float NextFloat(float min, float max){
         int minINT = Mathf.RoundToInt(min*100f);
         int maxINT = Mathf.RoundToInt(max*100f);

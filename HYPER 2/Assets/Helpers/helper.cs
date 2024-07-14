@@ -138,6 +138,26 @@ namespace Helpers {
         public static T FiftyFifty<T>(T v1, T v2) {
             return Seed.Chance(50f) ? v1 : v2;
         }
+
+        public static Dictionary<T, E> ListToDict<T,E>(List<T> list1, List<E> list2) {
+            Dictionary<T, E> dict = new Dictionary<T, E>();
+            for (int i = 0; i < list1.Count; i++) {
+                dict.Add(list1[i], list2[i]);
+            }
+
+            return dict;
+        }
+
+        public static (List<T>, List<E>) DictToList<T,E>(Dictionary<T, E> dict) {
+            List<T> list1 = new List<T>();
+            List<E> list2 = new List<E>();
+            foreach (var key in dict.Keys) {
+                list1.Add(key);
+                list2.Add(dict[key]);
+            }
+
+            return (list1, list2);
+        }
     }
 
     public static class Dir {

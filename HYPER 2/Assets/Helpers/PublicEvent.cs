@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class PublicEvent : MonoBehaviour
+{
+    public delegate void OnSaveRun(RunData data);
+
+    private static OnSaveRun saveRun = new OnSaveRun(r => {
+        onSaveRun.Invoke(r);
+        Save.UpdateJsonData(DataType.RUN);
+    });
+    public static OnSaveRun onSaveRun = new OnSaveRun(r => {});
+
+    public static void SaveRun() {
+        saveRun.Invoke(Save.rData);
+    }
+
+    public void OnApplicationQuit() {
+        SaveRun();
+    }
+
+    public void ClearAll() {
+        onSaveRun = new OnSaveRun(r => {});
+    }
+}

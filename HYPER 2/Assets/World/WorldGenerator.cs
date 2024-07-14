@@ -406,7 +406,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     private void CreatePaths() {
-        int randomCorner = Random.Range(1,5);
+        int randomCorner = Seed.IntRange(1,5);
         int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
         int randomCorner3 = Num.Wrap(randomCorner2+1, 1, 4);
         int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
@@ -427,6 +427,6 @@ public class WorldGenerator : MonoBehaviour
             max = GetLayerCorner(layer, b)-4;
         }
 
-        return Random.Range(min, max);
+        return Seed.IntRange(min, max);
     }
 }
