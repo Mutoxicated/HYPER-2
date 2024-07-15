@@ -23,7 +23,7 @@ public class Tower : MonoBehaviour, IDamageable
         }
     }
 
-    public void BacteriaDamage(BacteriaType bt, float amount) {
+    public void BacteriaDamage(Element bt, float amount) {
           if (health < 0) { return; }
         health -= amount;
         if (health < 0) {

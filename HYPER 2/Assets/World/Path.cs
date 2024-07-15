@@ -241,10 +241,10 @@ public class Path : MonoBehaviour
             max = 6;
         }
         if (min > max) {
-            min = 1;
+            min = max;
         }
 
-        amount = Random.Range(min, max);
+        amount = Seed.IntRange(min, max);
     }
 
     private void debugExtend() {

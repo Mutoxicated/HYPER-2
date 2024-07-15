@@ -5,7 +5,6 @@ public class Player : MonoBehaviour
 {
     private UnityEngine.InputSystem.PlayerInput input;
     private Manager manager;
-    [SerializeField] private Stats stats;
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
     [SerializeField] private Camera cam;
@@ -19,10 +18,6 @@ public class Player : MonoBehaviour
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
-
-    public Stats Stats {
-        get { return stats; }
-    }
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -116,8 +111,6 @@ public class Player : MonoBehaviour
     }
 
     public void DStart(Manager manager) {
-        stats.CStart(manager);
-        
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         player = input.actions.FindActionMap("Player", true);
         middleButton = player.FindAction("MiddleButton", true);

@@ -6,6 +6,7 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField] private Resources.Bullet bullet;
     [SerializeField] private Stats stats;
+    [SerializeField] private bool inherit = false;
     [SerializeField] private Interval shootInterval;
     [SerializeField] private Transform firePoint;
 
@@ -16,7 +17,11 @@ public class Shoot : MonoBehaviour
     }
 
     private void shootBullet() {
-        if (stats.TargetIsValid())
+        if (!stats.TargetIsValid()) { return; }
+
+        if (inherit) 
+            Action(firePoint.position, b => b.CStart(stats.Manager, firePoint.rotation, stats));
+        else
             Action(firePoint.position, b => b.CStart(stats.Manager, firePoint.rotation));
     }
     

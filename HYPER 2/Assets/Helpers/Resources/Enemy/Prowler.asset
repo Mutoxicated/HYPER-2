@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c3f631c0b5386448f30b22ce16152c, type: 3}
   m_Name: Prowler
   m_EditorClassIdentifier: 
+  statsBase: {fileID: 11400000, guid: baf7b0142a5c56e49ae9e7c823e9e9c7, type: 2}
   stats: 00000000010000000200000003000000
-  values:
-  - 10
-  - 2.7
-  - 30
-  - 0
-  side: 0
+  modifiers:
+  - 1
+  - 1
+  - 1
+  - 1
   element: 0
   worth: 1
+  unlockAt: 1

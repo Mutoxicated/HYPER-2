@@ -59,7 +59,7 @@ public class ArsenalInfo : MonoBehaviour
         arsenalName.text = String.Format(ufmtName, Arsnl.ToName(aitem.Type));
         arsenalElement.text = String.Format(ufmtElement, Elm.ToString(current.element));
         for (int i = 0; i < arsenalStats.Count; i++) {
-            arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+current.values[i]);
+            arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+Mathf.RoundToInt(current.statsBase.values[i]*current.modifiers[i]));
         }
         arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+current.worth);
         if (aitem.Type == Resources.Arsenal.FIRST_MT) {

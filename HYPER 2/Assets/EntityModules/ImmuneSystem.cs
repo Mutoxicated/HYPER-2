@@ -4,15 +4,15 @@ using Helpers;
 using UnityEngine;
 
 public interface IInfectable {
-    void Infect(BacteriaType bt);
+    void Infect(Element bt);
 }
 
 public class ImmuneSystem : MonoBehaviour, IInfectable
 {
     [SerializeField] private Stats stats;
-    private Dictionary<BacteriaType, Bacteria> bacterias = new  Dictionary<BacteriaType, Bacteria>();
+    private Dictionary<Element, Bacteria> bacterias = new  Dictionary<Element, Bacteria>();
 
-    public void Infect(BacteriaType bt) {
+    public void Infect(Element bt) {
         if (bacterias.ContainsKey(bt)) {
             bacterias[bt].onPopulationIncrease.Invoke();
             return;

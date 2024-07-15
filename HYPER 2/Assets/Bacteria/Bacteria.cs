@@ -4,16 +4,11 @@ using Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum BacteriaType {
-    Water,
-    Fire
-}
-
 public class Bacteria : MonoBehaviour
 {
     private const float rateStep = 0.05f;
 
-    [SerializeField] private BacteriaType bt;
+    [SerializeField] private Element @type;
     [SerializeField] private float lifetime = 1f;
     [SerializeField] private ParticleSystem ps;
 
@@ -30,8 +25,8 @@ public class Bacteria : MonoBehaviour
         get { return immune; }
     }
 
-    public BacteriaType Type {
-        get { return bt; }
+    public Element Type {
+        get { return @type; }
     }
 
     public void CStart(ImmuneSystem immune, BacteriaDeath onDeath) {

@@ -122,7 +122,7 @@ public class Selector : MonoBehaviour
         var arsenal = qi.GetSelectedArsenal();
         bool got = arsenal.GetAndThen(a => {
             currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
-            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().values[3]);
+            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().statsBase.values[3]);
         });
         if (!got) {
             currentStat = Option<StatsTemplate>.None();

@@ -4,7 +4,7 @@ using static Stat;
 public class AoE : MonoBehaviour
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private BacteriaType bt;
+    [SerializeField] private Element bt;
 
     private Range range;
 

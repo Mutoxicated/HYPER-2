@@ -120,7 +120,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
     }
 
-    public void BacteriaDamage(BacteriaType bt, float amount) {
+    public void BacteriaDamage(Element bt, float amount) {
         if (hp.Current <= 0) { return; }
 
         hp.Current -= amount;

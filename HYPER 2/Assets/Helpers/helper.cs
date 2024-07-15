@@ -194,11 +194,11 @@ namespace Helpers {
     }
 
     public static class Elm {
-        public static string ToString(Stats.Element elm) {
+        public static string ToString(Element elm) {
             switch (elm) {
-            case Stats.Element.WATER:
+            case Element.WATER:
                 return "<color=#00ffff>Water";
-            case Stats.Element.FIRE:
+            case Element.FIRE:
                 return "<color=#ffaa00>Fire";
             default:
                 return "Unknown";
@@ -233,11 +233,11 @@ namespace Helpers {
             } 
         }
 
-        public static Option<ObjectPool> FromBT(Manager manager, BacteriaType bt) {
+        public static Option<ObjectPool> FromBT(Manager manager, Element bt) {
             switch (bt) {
-            case BacteriaType.Fire:
+            case Element.FIRE:
                 return new Option<ObjectPool>(manager.Pools.Get(FireBacteria));
-            case BacteriaType.Water:
+            case Element.WATER:
                 return new Option<ObjectPool>(manager.Pools.Get(WaterBacteria));
             default:
                 return Option<ObjectPool>.None();

@@ -16,8 +16,9 @@ public class Bullet : MonoBehaviour
     private bool DEAD_RIGHT_NOW = false;
     private float t;
 
-    public void CStart(Manager manager, Quaternion direction, Stats _) {
+    public void CStart(Manager manager, Quaternion direction, Stats other) {
         stats.CStart(manager);
+        stats.Inherit(other);
         transform.rotation = direction;
         gameObject.SetActive(true);
     }

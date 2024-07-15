@@ -347,3 +347,4 @@ MonoBehaviour:
   stats: {fileID: 7800337281580403305}
   DOTInterval: {fileID: 1287294738151058555}
   arsenal: 1
+  DOT: 0.1

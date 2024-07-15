@@ -4,24 +4,32 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+public enum Element {
+    WATER,
+    FIRE,
+    RADIATION
+}
+
 public class Stats : MonoBehaviour
 {
     public enum Side {
         PLAYER,
         ENEMY
     }
-    public enum Element {
-        WATER,
-        FIRE
-    }
+
     [SerializeField] private StatsTemplate template;
 
     [SerializeField] private Option<Range> range = Option<Range>.None();
 
-    public Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
-    public Dictionary<Stat, float> val = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> val = new Dictionary<Stat, float>();
 
     private Manager manager; // IMMUTABLE
+
+    public Dictionary<Stat, float> Mod {
+        set { mod = value; }
+        get { return mod; }
+    }
 
     public Manager Manager {
         get { return manager; }
@@ -39,7 +47,7 @@ public class Stats : MonoBehaviour
     }
 
     public Side StatSide {
-        get { return template.side; }
+        get { return template.statsBase.side; }
     }
 
     public Element StatElement {
@@ -52,10 +60,10 @@ public class Stats : MonoBehaviour
 
     private void PrepareValues() {
         for (int i = 0; i < template.stats.Length; i++) {
-            mod.Add(template.stats[i], 1f);
+            mod.Add(template.stats[i], template.modifiers[i]);
         }
         for (int i = 0; i < template.stats.Length; i++) {
-            val.Add(template.stats[i], template.values[i]);
+            val.Add(template.stats[i], template.statsBase.values[i]);
         }
     }
 
@@ -76,5 +84,9 @@ public class Stats : MonoBehaviour
             return false;
         }
         return range.Get().Target().IsSome();
+    }
+
+    public void Inherit(Stats other) {
+        val = other.val;
     }
 }

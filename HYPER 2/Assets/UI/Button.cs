@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private Transform obj;
     [SerializeField] private Image image;
@@ -12,6 +12,7 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [Header("Settings")]
     [SerializeField] private bool scalable = true;
+    [SerializeField] private bool playSound = false;
     
     private const float lerpSpeed = 15f;
     private const float scaleMultiplier = 1.2f;
@@ -44,11 +45,19 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (playSound)
+            SoundCollection.Play(Audio.BOOP);
         hovering = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (playSound)
+            SoundCollection.Play(Audio.BEEP);
     }
 }

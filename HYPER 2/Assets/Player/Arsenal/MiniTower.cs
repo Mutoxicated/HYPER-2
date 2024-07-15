@@ -49,9 +49,9 @@ public class MiniTower : MonoBehaviour, IDamageable
     [SerializeField] private Stats stats;
     [SerializeField] private Interval DOTInterval;
     [SerializeField] private Resources.Arsenal arsenal;
+    [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
 
     private health hp;
-    private float DOT = .1f;
 
     public Stats Stats {
         get { return stats; }
@@ -66,7 +66,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     private void StoreMTState(RunData r) {
-        r.AddMTState(new MTState(Stats.mod, transform.position, hp, arsenal));
+        r.AddMTState(new MTState(Stats.Mod, transform.position, hp, arsenal));
     }
 
     public void CStart(Manager manager) {
@@ -82,7 +82,7 @@ public class MiniTower : MonoBehaviour, IDamageable
         stats.CStart(manager);
 
         hp = state.hp;
-        stats.mod = General.ListToDict(state.modkey, state.modVal);
+        stats.Mod = General.ListToDict(state.modkey, state.modVal);
         //transform.position = state.position;
 
         gameObject.SetActive(true);
@@ -110,7 +110,7 @@ public class MiniTower : MonoBehaviour, IDamageable
         }
     }
 
-    public void BacteriaDamage(BacteriaType bt, float amount) {
+    public void BacteriaDamage(Element bt, float amount) {
         hp.Current -= amount;
         if (hp.Current <= 0) {
             Die(Option<Stats>.None());

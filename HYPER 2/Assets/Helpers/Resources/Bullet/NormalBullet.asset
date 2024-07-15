@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c3f631c0b5386448f30b22ce16152c, type: 3}
   m_Name: NormalBullet
   m_EditorClassIdentifier: 
+  statsBase: {fileID: 11400000, guid: ff4b9cc740ec430429157d249af0914b, type: 2}
   stats: 00000000010000000200000003000000
-  values:
+  modifiers:
   - 1
-  - 45
-  - 10
-  - 0
-  side: 0
+  - 1
+  - 1
+  - 1
   element: 0
   worth: 1
+  unlockAt: 1
