@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public static Player self;
+
     private UnityEngine.InputSystem.PlayerInput input;
     private Manager manager;
     [SerializeField] private Movement movement;
@@ -18,6 +20,8 @@ public class Player : MonoBehaviour
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
+
+    private bool dead = false;
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
@@ -62,12 +66,19 @@ public class Player : MonoBehaviour
     public bool OnDelete {
         get { return deleteButton.WasPerformedThisFrame(); }
     }
+
+    public bool Dead {
+        get { return dead; }
+    }
     
     public static void IncrementXP(float val) {
         float newXP = Save.rData.XP+val;
         if (newXP >= MaxXPRequired()) {
             Save.rData.SetXP(0);
             Save.rData.SetLvl(Save.rData.Lvl+1);
+            if (Save.rData.Lvl == Gameplay.unlock4thPath) {
+                self.World.WG.Create4thPath();
+            }
             Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl)));
             return;
         }
@@ -83,8 +94,9 @@ public class Player : MonoBehaviour
     }
 
     public void DeadMode() {
+        dead = true;
         UIMode(true);
-        gui.DeadUI();        
+        gui.DeadUI();
     }
 
     public void UIMode(bool freezeTime) {
@@ -111,6 +123,7 @@ public class Player : MonoBehaviour
     }
 
     public void DStart(Manager manager) {
+        self = this;
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         player = input.actions.FindActionMap("Player", true);
         middleButton = player.FindAction("MiddleButton", true);
@@ -130,12 +143,6 @@ public class Player : MonoBehaviour
 
         movement.DStart();
         gui.DStart(this);
-
-        foreach (var state in Save.rData.MTs) {
-            InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(manager, state));
-        }
-
-        Save.rData.MTs.Clear();
 
         gameObject.SetActive(true);
     }

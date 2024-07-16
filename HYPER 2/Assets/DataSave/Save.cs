@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Helpers;
 using UnityEngine;
 
 public enum DataType {
@@ -30,7 +31,7 @@ public class Save : MonoBehaviour
         return DataType.PLAYER;
     }
 
-    private void Awake()
+    public void DStart()
     {
         if (File.Exists(Path(DataType.RUN)))
         {
@@ -49,6 +50,11 @@ public class Save : MonoBehaviour
 
     public static void CreateData(DataType dt)
     {
+        if (dt == DataType.RUN) {
+            rData = new RunData();
+        }else {
+            pData = new PlayerData();
+        }
         UpdateJsonData(dt);
     }
 

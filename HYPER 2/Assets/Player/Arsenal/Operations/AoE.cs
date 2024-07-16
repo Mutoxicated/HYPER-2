@@ -22,7 +22,7 @@ public class AoE : MonoBehaviour
     public void IntervalDamage() {
         foreach (var e in range.Enemies) {
             if (e != null) {
-                e.GetComponent<IInfectable>().Infect(bt);
+                e.GetComponent<IInfectable>()?.Infect(bt);
             }
         }
     }

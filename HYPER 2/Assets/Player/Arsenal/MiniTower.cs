@@ -79,10 +79,9 @@ public class MiniTower : MonoBehaviour, IDamageable
 
     public void CStart(Manager manager, MTState state) {
         PublicEvent.onSaveRun += StoreMTState;
-        stats.CStart(manager);
-
         hp = state.hp;
-        stats.Mod = General.ListToDict(state.modkey, state.modVal);
+        stats.CStart(manager, state);
+
         //transform.position = state.position;
 
         gameObject.SetActive(true);
@@ -97,8 +96,11 @@ public class MiniTower : MonoBehaviour, IDamageable
         hp.Current = hp.Max;
     }
 
-    public void Die(Option<Stats> _) {
+    public void OnDestroy() {
         PublicEvent.onSaveRun -= StoreMTState;
+    }
+
+    public void Die(Option<Stats> _) {
         Destroy(gameObject);
     }
 

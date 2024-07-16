@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Helpers;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -91,6 +92,15 @@ public class World : MonoBehaviour
     public void DStart(Player player) {
         reportDeath = new ReportDeath(e => enemies.Remove(e));
         worldGenerator.DStart(this, player);
+        
+        foreach (var state in Save.rData.MTs) {
+            RaycastHit info;
+            Physics.Raycast(state.position, Vector3.down, out info, Mathf.Infinity);
+            info.collider.gameObject.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
+            player.InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
+        }
+
+        Save.rData.MTs.Clear();
         borderRadius = worldGenerator.GetLayerRadius();
         //Debug.Log(borderRadius);
     }

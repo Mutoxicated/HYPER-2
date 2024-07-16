@@ -30,8 +30,10 @@ public class ItemSorter : MonoBehaviour
     private Vector3 alteredPos;
     private Vector3 initScale;
 
+    #if UNITY_EDITOR 
     private bool exectuteInEditMode = false;
     private bool executed = false;
+    #endif
 
     private void FindSmallestLineGenerationAvailable(){
 
@@ -64,14 +66,14 @@ public class ItemSorter : MonoBehaviour
             RevertItemScaling();
             executed = false;
         }
-        OnEnable();
+        Enable();
     }
 
     [ContextMenu("Execute")]
     private void Execute() {
         if (exectuteInEditMode) {
             RevertItemScaling();
-            OnEnable();
+            Enable();
         }
     }
     
@@ -80,7 +82,7 @@ public class ItemSorter : MonoBehaviour
     }
     #endif
 
-    private void OnEnable(){
+    private void Enable(){
         #if UNITY_EDITOR 
             if (!exectuteInEditMode) { return; }
             executed = true;
@@ -95,6 +97,7 @@ public class ItemSorter : MonoBehaviour
     }
 
     private void SortItem(int lineIndex,int columnIndex, int itemIndex){
+        Debug.Log("Sorting items ("+ initScale+")");
         items[itemIndex].position = Frame[0].position;
 
         alteredPos = items[itemIndex].localPosition;
@@ -115,7 +118,10 @@ public class ItemSorter : MonoBehaviour
     }
 
     public void RevertItemScaling() {
+        if (items.Count == 0) { return; }
+        Debug.Log("Reverting item scaling:");
         foreach (var item in items) {
+            Debug.Log("  Item "+item.localScale+" become "+initScale);
             item.localScale = initScale;
         }
     }
@@ -150,7 +156,8 @@ public class ItemSorter : MonoBehaviour
     }
 
     public void PrepareValues(){
-        if (items.Count == 0) return;
+        Debug.Log("Preparing values");
+
         initScale = items[0].localScale;
         heightAvailable = Frame[1].localPosition.y-Frame[0].localPosition.y;
         widthAvailable = Frame[1].localPosition.x-Frame[0].localPosition.x;

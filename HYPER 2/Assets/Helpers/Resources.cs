@@ -11,6 +11,7 @@ public class Resources : MonoBehaviour
     [Serializable]
     public enum Arsenal {
         FIRST_MT = 0,
+        RADMOL,
         SECOND_MT
     }
 
@@ -19,7 +20,8 @@ public class Resources : MonoBehaviour
     }
 
     public enum Bullet {
-        NORMAL = 0
+        NORMAL = 0,
+        RADIATING
     }
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;

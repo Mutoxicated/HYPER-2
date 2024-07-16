@@ -82,6 +82,8 @@ public class Selector : MonoBehaviour
         if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
             selected = new Option<GameObject>(go.transform.parent.gameObject);
             selection.Disable();
+        }else if (go.layer == EditorState.GetLayer(EditorLayer.OCCUPIED)) {
+            selection.Disable();
         }else if (!selectedArsenalInfo.Locked){
             selected = Option<GameObject>.None();
         }
@@ -122,7 +124,7 @@ public class Selector : MonoBehaviour
         var arsenal = qi.GetSelectedArsenal();
         bool got = arsenal.GetAndThen(a => {
             currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
-            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().statsBase.values[3]);
+            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().statsBase.values[3]*currentStat.Get().modifiers[3]);
         });
         if (!got) {
             currentStat = Option<StatsTemplate>.None();

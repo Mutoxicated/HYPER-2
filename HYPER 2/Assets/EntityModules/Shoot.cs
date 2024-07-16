@@ -6,23 +6,31 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField] private Resources.Bullet bullet;
     [SerializeField] private Stats stats;
+    [SerializeField] private int shootAmount = 1;
     [SerializeField] private bool inherit = false;
     [SerializeField] private Interval shootInterval;
     [SerializeField] private Transform firePoint;
 
     public delegate void BulletConstructor(Bullet bullet);
 
+    private List<GameObject> enemies = new List<GameObject>();
+
     private void OnEnable() {
         shootInterval.AddEvent(shootBullet);
     }
 
     private void shootBullet() {
-        if (!stats.TargetIsValid()) { return; }
+        for (int i = 0; i < shootAmount; i++) {
+            if (!stats.TargetIsValid(i)) { return; }
 
-        if (inherit) 
-            Action(firePoint.position, b => b.CStart(stats.Manager, firePoint.rotation, stats));
-        else
-            Action(firePoint.position, b => b.CStart(stats.Manager, firePoint.rotation));
+            var rotation = Quaternion.LookRotation(stats.Target(i).Get().transform.position-firePoint.position);
+
+            if (inherit) 
+                Action(firePoint.position, b => b.CStart(stats.Manager, rotation, stats));
+            else
+                Action(firePoint.position, b => b.CStart(stats.Manager, rotation));
+        }
+        enemies.Clear();
     }
     
     public Bullet Action(Vector3 postion, BulletConstructor bc) {

@@ -14,6 +14,7 @@ public class SelectedArsenalInfo : MonoBehaviour
     [SerializeField] private List<TMP_Text> arsenalStats = new List<TMP_Text>();
     [SerializeField] private TMP_Text hpCurrentMax;
     [SerializeField] private Image hpBar;
+    [SerializeField] private TMP_Text hpRestoreCost;
     private Option<MiniTower> mt = Option<MiniTower>.None();
     private Stats stats;
 
@@ -21,6 +22,7 @@ public class SelectedArsenalInfo : MonoBehaviour
     private string ufmtElement;
     private List<string> ufmtStats = new List<string>();
     private string ufmtCurrentMax;
+    private string ufmtRestoreCost;
     private bool locked = false;
 
     public bool Locked {
@@ -34,6 +36,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             ufmtStats.Add(arsenalStats[i].text);
         }
         ufmtCurrentMax = hpCurrentMax.text;
+        ufmtRestoreCost = hpRestoreCost.text;
     }
 
     public void Enable(MiniTower mt) {
@@ -51,6 +54,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             }
             hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP.Current), m.HP.Max);
             hpBar.fillAmount = m.HP.Current/m.HP.Max;
+            hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(Gameplay.linearT*15)+"*");
             gameObject.SetActive(true);
         });
     }
@@ -68,7 +72,7 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void OnRestoreHP() {
-        if (Save.rData.Money < Gameplay.linearT*15) {
+        if (Save.rData.Money < Mathf.RoundToInt(Gameplay.linearT*15)) {
             return;
         }
         Player.SetMoneyRelative(-Mathf.RoundToInt(Gameplay.linearT*15));

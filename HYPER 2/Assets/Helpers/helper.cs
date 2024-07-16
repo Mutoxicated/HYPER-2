@@ -200,6 +200,8 @@ namespace Helpers {
                 return "<color=#00ffff>Water";
             case Element.FIRE:
                 return "<color=#ffaa00>Fire";
+            case Element.RADIATION:
+                return "<color=#00ff11>Radiation";
             default:
                 return "Unknown";
             }
@@ -211,6 +213,8 @@ namespace Helpers {
             switch (arsenal) {
             case Resources.Arsenal.FIRST_MT:
                 return "ICY T.X.";
+            case Resources.Arsenal.RADMOL:
+                return "Radmole";
             case Resources.Arsenal.SECOND_MT:
                 return "Blame";
             default:

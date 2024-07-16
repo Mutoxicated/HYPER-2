@@ -37,15 +37,15 @@ public class Range : MonoBehaviour
         OnExit.Invoke(enemy);
     }
 
-    public Option<GameObject> Target() {
-        if (enemies.Count == 0) {
+    public Option<GameObject> Target(int offset = 0) {
+        if (enemies.Count < offset+1) {
             return Option<GameObject>.None();
         }
-        if (enemies[0] == null) {
-            enemies.RemoveAt(0);
+        if (enemies[offset] == null) {
+            enemies.RemoveAt(offset);
             return Target();
         }
-        return new Option<GameObject>(enemies[0].gameObject);
+        return new Option<GameObject>(enemies[offset].gameObject);
     }
 
 }

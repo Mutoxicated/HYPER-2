@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -39,11 +40,8 @@ public class Stats : MonoBehaviour
         get { return template; }
     }
 
-    /// <summary>
-    /// Access this only if you are sure that there are targets to choose
-    /// </summary>
-    public GameObject Target {
-        get { return range.Get().Target().Get(); }
+    public Option<GameObject> Target(int offset = 0) {
+        return range.Get().Target(offset);
     }
 
     public Side StatSide {
@@ -75,18 +73,33 @@ public class Stats : MonoBehaviour
         return new health(get(Stat.MAX_HEALTH));
     }
 
+    public void CStart(Manager manager, MTState state) {
+        this.manager = manager;
+        mod = General.ListToDict(state.modkey, state.modVal);
+        for (int i = 0; i < template.stats.Length; i++) {
+            val.Add(template.stats[i], template.statsBase.values[i]);
+        }
+        range.GetAndThen(v => v.CStart());
+    }
+
     public float get(Stat value) {
         return val[value]*mod[value];
     }
 
-    public bool TargetIsValid() {
+    public void inc(Stat stat, float value) {
+        mod[stat] += value;
+    }
+
+    public bool TargetIsValid(int offset = 0) {
         if (range.IsNone()) {
             return false;
         }
-        return range.Get().Target().IsSome();
+        return range.Get().Target(offset).IsSome();
     }
 
     public void Inherit(Stats other) {
-        val = other.val;
+        foreach (var k in mod.Keys) {
+            mod[k] *= other.mod[k];
+        }
     }
 }

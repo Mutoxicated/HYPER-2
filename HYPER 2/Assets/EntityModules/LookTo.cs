@@ -21,7 +21,7 @@ public class LookTo : MonoBehaviour
         if (!stats.TargetIsValid()) {
             return;
         }
-        lookRotation = Quaternion.LookRotation(stats.Target.transform.position-looker.transform.position);
+        lookRotation = Quaternion.LookRotation(stats.Target().Get().transform.position-looker.transform.position);
         looker.transform.rotation = Quaternion.Lerp(looker.transform.rotation, lookRotation, Time.deltaTime*lerpSpeed);
     }
 

@@ -86,6 +86,7 @@ public class WorldGenerator : MonoBehaviour
 
     // Path generation
     private List<Path> paths = new List<Path>();
+    private int lastRandomCorner;
 
     public float TileSize {
         get { return tileSize; }
@@ -100,6 +101,9 @@ public class WorldGenerator : MonoBehaviour
         Layer();
 
         CreatePaths();
+        if (Save.rData.Lvl > Gameplay.unlock4thPath) {
+            Create4thPath();
+        }
     }
 
     public void Update() {
@@ -410,11 +414,18 @@ public class WorldGenerator : MonoBehaviour
         int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
         int randomCorner3 = Num.Wrap(randomCorner2+1, 1, 4);
         int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
+        lastRandomCorner = randomCorner4;
         //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
 
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
+    }
+
+    public void Create4thPath() {
+        int next = Num.Wrap(lastRandomCorner+1, 1, 4);
+
+        InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next));
     }
 
     private int GetRandomIndexFromCorners(int layer, int a, int b) {

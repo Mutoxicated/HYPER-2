@@ -8,6 +8,10 @@ public class PublicEvent : MonoBehaviour
     public delegate void OnSaveRun(RunData data);
 
     private static OnSaveRun saveRun = new OnSaveRun(r => {
+        if (Player.self.Dead) {
+            Save.RemoveData(DataType.RUN);
+            return;
+        }
         onSaveRun.Invoke(r);
         Save.UpdateJsonData(DataType.RUN);
     });
