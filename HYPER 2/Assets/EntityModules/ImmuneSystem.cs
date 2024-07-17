@@ -13,6 +13,9 @@ public class ImmuneSystem : MonoBehaviour, IInfectable
     private Dictionary<Element, Bacteria> bacterias = new  Dictionary<Element, Bacteria>();
 
     public void Infect(Element bt) {
+        if (stats.StatElmImmunities.Contains(bt)) {
+            return;
+        }
         if (bacterias.ContainsKey(bt)) {
             bacterias[bt].onPopulationIncrease.Invoke();
             return;

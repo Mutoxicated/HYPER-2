@@ -411,6 +411,18 @@ namespace Helpers {
                 return value;
             }
         }
+
+        public static float SafeDiv(float val, float val2) {
+            if (IsZero(val) | IsZero(val2)) {
+                return 0;
+            }
+
+            return val/val2;
+        }
+
+        public static bool IsZero(float val) {
+            return val < 0.01f && val > -0.01f;
+        }
     }
 
     public static class Vec3 {

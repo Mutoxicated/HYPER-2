@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+
 
 
 #if UNITY_EDITOR
@@ -11,6 +13,7 @@ public class StatsEditor : Editor {
     SerializedProperty statsBase;
     SerializedProperty mods;
     SerializedProperty element;
+    SerializedProperty elementImmunities;
     SerializedProperty worth;
     SerializedProperty unlockAt;
 
@@ -22,6 +25,7 @@ public class StatsEditor : Editor {
         element = serializedObject.FindProperty("element");
         worth = serializedObject.FindProperty("worth");
         unlockAt = serializedObject.FindProperty("unlockAt");
+        elementImmunities = serializedObject.FindProperty("elementImmunities");
     }
 
     public override void OnInspectorGUI()
@@ -38,6 +42,13 @@ public class StatsEditor : Editor {
         }
         EditorGUILayout.EndVertical();
         EditorGUILayout.PropertyField(element);
+        EditorGUILayout.PropertyField(elementImmunities);
+        // for (int i = 0; i < elementImmunities.arraySize; i++) {
+        //     if (elementImmunities.GetArrayElementAtIndex(i).enumValueIndex == element.enumValueIndex) {
+        //         elementImmunities.DeleteArrayElementAtIndex(i);
+        //         break;
+        //     }
+        // }
         EditorGUILayout.PropertyField(worth);
         EditorGUILayout.PropertyField(unlockAt);
         serializedObject.ApplyModifiedProperties();
@@ -68,6 +79,7 @@ public class StatsTemplate : ScriptableObject {
     };
 
     public Element element;
+    public List<Element> elementImmunities = new List<Element>();
     public int worth = 1;
     public int unlockAt = 1;
 }

@@ -52,6 +52,10 @@ public class Stats : MonoBehaviour
         get { return template.element; }
     }
 
+    public List<Element> StatElmImmunities {
+        get { return template.elementImmunities; }
+    }
+
     public Option<InterfaceReference<IRange, MonoBehaviour>> Range {
         get { return range; }
     }

@@ -25,11 +25,14 @@ public class SelectedArsenalInfo : MonoBehaviour
     private string ufmtRestoreCost;
     private bool locked = false;
 
+    private Gameplay gamePlay;
+
     public bool Locked {
         get { return locked; }
     }
 
-    public void DStart() {
+    public void DStart(Gameplay gameplay) {
+        this.gamePlay = gameplay;
         ufmtName = arsenalName.text;
         ufmtElement = arsenalElement.text;
         for (int i = 0; i < arsenalStats.Count; i++) {
@@ -54,7 +57,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             }
             hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP.Current), m.HP.Max);
             hpBar.fillAmount = m.HP.Current/m.HP.Max;
-            hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(Gameplay.linearT*15)+"*");
+            hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(gamePlay.LinearT*15)+"*");
             gameObject.SetActive(true);
         });
     }
@@ -72,10 +75,10 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void OnRestoreHP() {
-        if (Save.rData.Money < Mathf.RoundToInt(Gameplay.linearT*15)) {
+        if (Save.rData.Money < Mathf.RoundToInt(gamePlay.LinearT*15)) {
             return;
         }
-        Player.SetMoneyRelative(-Mathf.RoundToInt(Gameplay.linearT*15));
+        Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.LinearT*15));
         mt.Get().RestoreHP();
     }
 

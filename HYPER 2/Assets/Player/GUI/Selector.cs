@@ -24,7 +24,7 @@ public class Selector : MonoBehaviour
         this.manager = manager;
         this.player = player;
         wg = manager.World.WG;
-        selectedArsenalInfo.DStart();
+        selectedArsenalInfo.DStart(manager.GP);
         gameObject.SetActive(true);
     }
 
@@ -39,7 +39,7 @@ public class Selector : MonoBehaviour
         direction.z = 0f;
 
         stored = Physics.RaycastNonAlloc(new Ray(towerPos, direction),hits,Mathf.Infinity, tileSelectionMask);
-        go.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+        go.GetComponent<Tile>().Deoccupy();
     }
 
     public void Update() {
@@ -111,8 +111,8 @@ public class Selector : MonoBehaviour
                     return;
                 }
                 Debug.Log("Instantiated mini tower", go);
-                go.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
                 var mt = manager.World.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
+                go.GetComponent<Tile>().Occupy(mt.gameObject);
                 selected = new Option<GameObject>(mt.gameObject);
             });
         }

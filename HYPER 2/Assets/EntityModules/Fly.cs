@@ -32,11 +32,14 @@ public class Fly : MonoBehaviour
 
             look = Quaternion.LookRotation(target.transform.position+Vector3.up*5f-transform.position);
             transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime*0.5f);
+            Debug.Log("1:" +transform.eulerAngles);
+            Debug.Log("2:" +look.eulerAngles);
             var uh = new Vector3(
-                look.eulerAngles.x/transform.eulerAngles.x,
-                look.eulerAngles.y/transform.eulerAngles.y,
-                look.eulerAngles.z/transform.eulerAngles.z
+                Num.SafeDiv(transform.eulerAngles.x, look.eulerAngles.x),
+                Num.SafeDiv(transform.eulerAngles.y, look.eulerAngles.y),
+                Num.SafeDiv(transform.eulerAngles.z, look.eulerAngles.z)
             );
+            Debug.Log("C: "+uh);
             Vec3.Abs(ref uh);
             delta = (uh.x+uh.y+uh.z)/3f;
             Debug.Log(delta);

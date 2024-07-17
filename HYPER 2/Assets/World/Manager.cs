@@ -33,4 +33,8 @@ public class Manager : MonoBehaviour
     public PublicPools Pools {
         get { return pps; }
     }
+
+    public Gameplay GP {
+        get { return gp; }
+    }
 }

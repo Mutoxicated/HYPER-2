@@ -38,6 +38,8 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     [SerializeField] private TMP_Text textIndex;
 
     private bool lit = false;
+    private bool occupied = false;
+    private Option<GameObject> occupiedWith;
     private readonly Color litColor = new Color(0.9f,0.06f,0.06f);
     private const float heightOffset = 1f;
 
@@ -105,6 +107,17 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         return neighbors;
     }
 
+    public void Occupy(GameObject go) {
+        occupied = true;
+        occupiedWith = new Option<GameObject>(go);
+        gameObject.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
+    }
+
+    public void Deoccupy() {
+        occupied = false;
+        occupiedWith = Option<GameObject>.None();
+        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+    }
 
     public void Enable() {
         if (lit) { return; }

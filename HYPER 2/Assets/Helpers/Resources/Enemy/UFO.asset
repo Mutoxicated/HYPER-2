@@ -20,5 +20,6 @@ MonoBehaviour:
   - 2
   - 1.5
   element: 3
+  elementImmunities: 02000000
   worth: 1
   unlockAt: 5

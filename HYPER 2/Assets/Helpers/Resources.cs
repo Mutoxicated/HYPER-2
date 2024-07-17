@@ -16,7 +16,8 @@ public class Resources : MonoBehaviour
     }
 
     public enum Enemy {
-        PROWLER = 0,
+        MOG = 0,
+        PROWLER,
         UFO
     }
 
@@ -29,6 +30,7 @@ public class Resources : MonoBehaviour
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
     private static Dictionary<Enemy, GameObject> enemyPrefabs;
+    private static Dictionary<Enemy, EnemyStats> enemyStats;
     private static Dictionary<Bullet, GameObject> bulletPrefabs;
 
     [SerializeField] private Sprite empty;
@@ -53,6 +55,15 @@ public class Resources : MonoBehaviour
         }
         if (enemyPrefabs == null) {
             enemyPrefabs = new Dictionary<Enemy, GameObject>();
+            var gos = UnityEngine.Resources.LoadAll<GameObject>("Enemy");
+            Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
+            Debug.Log("Uh "+gos.Length);
+            for (int i = 0; i < gos.Length; i++) {
+                enemyPrefabs.Add((Enemy)i, gos[i]);
+            } 
+        }
+        if (enemyStats == null) {
+            enemyStats = new Dictionary<Enemy, EnemyStats>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Enemy");
             Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
             Debug.Log("Uh "+gos.Length);
@@ -107,5 +118,13 @@ public class Resources : MonoBehaviour
 
     public static StatsTemplate GetStatTemplate(Arsenal arsenal) {
         return arsenalStats[arsenal];
+    }
+
+    public static EnemyStats GetEnemyStats(Enemy enemy) {
+        return enemyStats[enemy];
+    }
+    
+    public static IEnumerator<KeyValuePair<Enemy, EnemyStats>> IterEnemyStats() {
+        return enemyStats.GetEnumerator();
     }
 }

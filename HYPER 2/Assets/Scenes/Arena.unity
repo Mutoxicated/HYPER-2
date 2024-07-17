@@ -439,6 +439,7 @@ GameObject:
   - component: {fileID: 568595622}
   - component: {fileID: 568595621}
   - component: {fileID: 568595620}
+  - component: {fileID: 568595623}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Untagged
@@ -453,7 +454,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568595619}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
   m_Name: 
@@ -461,14 +462,14 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 2
+  interval: 10
   minMaxInterval: {x: 0, y: 0}
   onInterval:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 568595621}
         m_TargetAssemblyTypeName: Gameplay, Assembly-CSharp
-        m_MethodName: IntervalUFOSpawn
+        m_MethodName: IntervalStartWave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -494,7 +495,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0cee40de9244f24a93fab8c24b6fe53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ufoSpawnInterval: {fileID: 568595620}
+  enemiesAmount: 10
+  quantitativeRound: {fileID: 568595623}
+  waitInterval: {fileID: 568595620}
 --- !u!4 &568595622
 Transform:
   m_ObjectHideFlags: 0
@@ -510,6 +513,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &568595623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568595619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44b5185bcde309439f2eb4a121521d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameplay: {fileID: 568595621}
 --- !u!1 &804944154
 GameObject:
   m_ObjectHideFlags: 0
