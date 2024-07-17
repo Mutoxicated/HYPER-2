@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
 
     private bool dead = false;
 
+    public delegate void LvlUp(int lvl);
+    public LvlUp onLvlUp = new LvlUp(lvl => {});
+
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
     }
@@ -71,14 +74,16 @@ public class Player : MonoBehaviour
         get { return dead; }
     }
     
+    public void AddLvlUpListener(LvlUp fn) {
+        onLvlUp += fn;
+    }
+
     public static void IncrementXP(float val) {
         float newXP = Save.rData.XP+val;
         if (newXP >= MaxXPRequired()) {
             Save.rData.SetXP(0);
             Save.rData.SetLvl(Save.rData.Lvl+1);
-            if (Save.rData.Lvl == Gameplay.unlock4thPath) {
-                self.World.WG.Create4thPath();
-            }
+            self.onLvlUp.Invoke(Save.rData.Lvl);
             Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl)));
             return;
         }
@@ -112,14 +117,6 @@ public class Player : MonoBehaviour
         player.Enable();
         debug.Enable();
         ui.Disable();
-    }
-
-    public delegate void MiniTowerConstructor(MiniTower mini);
-
-    public MiniTower InstantiateMiniTower(Vector3 position, Resources.Arsenal arsenal, MiniTowerConstructor constructor) {
-        var tower = Instantiate(Resources.GetArsenal(arsenal), position, Quaternion.identity).GetComponent<MiniTower>();
-        constructor(tower);
-        return tower;
     }
 
     public void DStart(Manager manager) {

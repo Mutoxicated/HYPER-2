@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5950979555054321684}
   - component: {fileID: 6954566601433983008}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Env Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 7003523440074354324}
   - component: {fileID: 6146765910037583577}
   - component: {fileID: 7176966811332623543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7478444468263295430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,6 +384,10 @@ PrefabInstance:
     - target: {fileID: 4561857034760873925, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 4561857034760873925, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4561857034760873927, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
       propertyPath: m_Depth

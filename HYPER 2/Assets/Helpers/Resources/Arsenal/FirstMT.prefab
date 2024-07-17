@@ -55,7 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 228954966865899100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb4e8b44b37d748836f1cdab3b712b, type: 3}
+  m_Script: {fileID: 11500000, guid: d6f5449394ebbc243bce35c62fd702db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7800337281580403305}
@@ -266,7 +266,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 85613ce15ea0ba54dbd6da4bc9f179ba, type: 2}
   range:
-    value: {fileID: 7210569018229574125}
+    value:
+      _underlyingValue: {fileID: 7210569018229574125}
     none: 0
 --- !u!114 &4299960412280213781
 MonoBehaviour:
@@ -345,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: 0
   stats: {fileID: 7800337281580403305}
+  shootAmount: 1
   inherit: 0
   shootInterval: {fileID: 5874828351615159077}
   firePoint: {fileID: 7267376561310252083}

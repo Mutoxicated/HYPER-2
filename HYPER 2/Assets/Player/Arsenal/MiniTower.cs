@@ -44,7 +44,7 @@ public class MTState {
     }
 }
 
-public class MiniTower : MonoBehaviour, IDamageable
+public class MiniTower : MonoBehaviour, IDamageable, ISideBelonger<MiniTower>
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Interval DOTInterval;
@@ -52,6 +52,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
 
     private health hp;
+    private World.ReportDeath<MiniTower> death;
 
     public Stats Stats {
         get { return stats; }
@@ -70,6 +71,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     public void CStart(Manager manager) {
+        death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         hp = stats.CStart(manager);
 
@@ -78,6 +80,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     public void CStart(Manager manager, MTState state) {
+        death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         hp = state.hp;
         stats.CStart(manager, state);
@@ -101,6 +104,7 @@ public class MiniTower : MonoBehaviour, IDamageable
     }
 
     public void Die(Option<Stats> _) {
+        death.Invoke(this);
         Destroy(gameObject);
     }
 
@@ -117,5 +121,24 @@ public class MiniTower : MonoBehaviour, IDamageable
         if (hp.Current <= 0) {
             Die(Option<Stats>.None());
         }
+    }
+
+    public Stats.Side Side()
+    {
+        return stats.StatSide;
+    }
+
+    public GameObject Go()
+    {
+        return gameObject;
+    }
+
+    public bool IsNull() {
+        return this == null;
+    }
+
+
+    public ref World.ReportDeath<MiniTower> GetReportDeath() {
+        return ref death;
     }
 }

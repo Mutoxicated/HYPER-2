@@ -4826,8 +4826,8 @@ GameObject:
   - component: {fileID: 4624260273291207302}
   - component: {fileID: 7483121074402370019}
   - component: {fileID: 8026403155563357703}
-  - component: {fileID: 1246781020043864343}
   - component: {fileID: 7654643070103954848}
+  - component: {fileID: 6559550893485662021}
   m_Layer: 10
   m_Name: ProwlerHolder
   m_TagString: Untagged
@@ -4894,7 +4894,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 26cc5b1768bc8ab4fb68ba5a8d18bf09, type: 2}
   range:
-    value: {fileID: 0}
+    value:
+      _underlyingValue: {fileID: 0}
     none: 1
 --- !u!114 &8026403155563357703
 MonoBehaviour:
@@ -4909,44 +4910,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
-  damageInterval: {fileID: 1246781020043864343}
+  followPath: 1
   XPWorth: 5
---- !u!114 &1246781020043864343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4618620402407156219}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useUnscaledTime: 0
-  dontResetTime: 0
-  chance: 100
-  interval: 0.5
-  minMaxInterval: {x: 0, y: 0}
-  onInterval:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8026403155563357703}
-        m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
-        m_MethodName: IntervalDamage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  destroyUponEvent: 0
-  t: 0
-  time: 0
-  isPlaying: 0
 --- !u!114 &7654643070103954848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4959,6 +4924,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 7483121074402370019}
+--- !u!114 &6559550893485662021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4618620402407156219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0b216a58758b3489f00e441f6087a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 8026403155563357703}
   stats: {fileID: 7483121074402370019}
 --- !u!1 &6743281814057010050
 GameObject:

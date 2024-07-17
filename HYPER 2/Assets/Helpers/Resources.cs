@@ -16,7 +16,8 @@ public class Resources : MonoBehaviour
     }
 
     public enum Enemy {
-        PROWLER = 0
+        PROWLER = 0,
+        UFO
     }
 
     public enum Bullet {

@@ -55,7 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 228954966865899100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb4e8b44b37d748836f1cdab3b712b, type: 3}
+  m_Script: {fileID: 11500000, guid: a31c2f7c73af77645995a932949203ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7800337281580403305}
@@ -235,7 +235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7802898864057010206
 Transform:
   m_ObjectHideFlags: 0
@@ -267,7 +267,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: 48af9652b53f0bb4984b6d9a7ced322b, type: 2}
   range:
-    value: {fileID: 7210569018229574125}
+    value:
+      _underlyingValue: {fileID: 7210569018229574125}
     none: 0
 --- !u!114 &5161669399869190583
 MonoBehaviour:

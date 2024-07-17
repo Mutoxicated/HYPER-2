@@ -91,7 +91,7 @@ Shader "Mutox/ObjectPixelation"
             {
                 v2f o;
 
-                v.pos *= 1.2*(_PixelSize*0.1f);
+                v.pos *= 1.2*(_PixelSize*0.12f);
 
                 o.pos = UnityObjectToClipPos(v.pos);
                 o.pos = UnityPixelSnap(o.pos);

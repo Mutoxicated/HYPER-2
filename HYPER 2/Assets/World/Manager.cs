@@ -8,12 +8,14 @@ public class Manager : MonoBehaviour
     [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
+    [SerializeField] private Gameplay gp;
 
     public void Awake() {
         pps.DStart();
         resources.DStart();
         player.DStart(this);
         world.DStart(player);
+        gp.DStart(player, this);
     }
 
     public World World {

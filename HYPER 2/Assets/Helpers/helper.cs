@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static PoolID;
+using Unity.VisualScripting;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,6 +48,69 @@ public class OptionEditor : PropertyDrawer {
                 value = property.FindPropertyRelative("value");
             }
             totalHeight += EditorGUI.GetPropertyHeight(value, GUIContent.none);
+        }
+
+        return totalHeight;
+    }
+}
+[CustomPropertyDrawer(typeof(Select<,>), true)]
+public class SelectEditor : PropertyDrawer {
+    private SerializedProperty type;
+    private SerializedProperty value1;
+    private SerializedProperty value2;
+
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+        if (type == null) {
+            type = property.FindPropertyRelative("none");
+        }
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+        position.height = EditorGUIUtility.singleLineHeight;
+        EditorGUI.BeginProperty(position, label, property);
+        EditorGUI.PropertyField(position, type);
+        EditorGUI.EndProperty();
+
+        if (type.enumValueIndex == 0) {
+            if (value1 == null) {
+                value1 = property.FindPropertyRelative("value1");
+            }
+            var pos = position.position;
+            pos.y += EditorGUIUtility.singleLineHeight;
+            //position.height += EditorGUIUtility.singleLineHeight;
+            position.position = pos;
+            EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.PropertyField(position, value1);
+            EditorGUI.EndProperty();
+        }else {
+            if (value2 == null) {
+                value2 = property.FindPropertyRelative("value2");
+            }
+            var pos = position.position;
+            pos.y += EditorGUIUtility.singleLineHeight;
+            //position.height += EditorGUIUtility.singleLineHeight;
+            position.position = pos;
+            EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.PropertyField(position, value2);
+            EditorGUI.EndProperty();
+        }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (type == null) {
+            type = property.FindPropertyRelative("none");
+        }
+        float totalHeight = EditorGUI.GetPropertyHeight(type, GUIContent.none);
+
+        if (type.enumValueIndex == 0) {
+            if (value1 == null) {
+                value1 = property.FindPropertyRelative("value1");
+            }
+            totalHeight += EditorGUI.GetPropertyHeight(value1, GUIContent.none);
+        }else {
+            if (value2 == null) {
+                value2 = property.FindPropertyRelative("value2");
+            }
+            totalHeight += EditorGUI.GetPropertyHeight(value2, GUIContent.none);
         }
 
         return totalHeight;
@@ -103,6 +168,71 @@ public class Option<T> {
     }
 }
 
+[Serializable]
+public class Select<T, E> {
+    public enum Type {
+        FIRST,
+        SECOND
+    }
+    [SerializeField] private T value1;
+    [SerializeField] private E value2;
+    [SerializeField] private Type contains = Type.FIRST;
+
+    public Select(T val) {
+        value1 = val;
+    }
+    public Select(E val) {
+        value2 = val;
+        contains = Type.SECOND;
+    }
+
+    public bool IsFirst() {
+        return contains == Type.FIRST;
+    }
+
+    public bool IsSecond() {
+        return contains == Type.SECOND;
+    }
+
+    public T First() {
+        return value1;
+    }
+
+    public E Second() {
+        return value2;
+    }
+
+    public delegate void OnAcquisition(T value);
+
+    public bool FirstAndThen(OnAcquisition onAcquisition) {
+        if (IsFirst()) {
+            onAcquisition(First());
+            return true;
+        }
+
+        return false;
+    }
+
+    public delegate void OnFail();
+
+    public bool TryFirstOr(OnFail fail) {
+        if (IsSecond()) {
+            fail();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static Select<T, E> NewFirst(T val) {
+        return new Select<T, E>(val);
+    }
+
+    public static Select<T, E> NewSecond(E val) {
+        return new Select<T, E>(val);
+    }
+}
+
 namespace Helpers {
     public enum EditorLayer {
         DEFAULT,
@@ -113,7 +243,8 @@ namespace Helpers {
         MINI_TOWER,
         ENEMY,
         OCCUPIED,
-        DETECTION
+        ENEMY_DETECTION,
+        PLAYER_DETECTION
     }
 
     public static class EditorState {
@@ -125,7 +256,8 @@ namespace Helpers {
             {EditorLayer.MINI_TOWER, "MiniTower"},
             {EditorLayer.ENEMY, "Enemy"},
             {EditorLayer.OCCUPIED, "Occupied"},
-            {EditorLayer.DETECTION, "Detection"},
+            {EditorLayer.ENEMY_DETECTION, "EnemyDetection"},
+            {EditorLayer.PLAYER_DETECTION, "PlayerDetection"},
             {EditorLayer.UI, "UI"}
         };
 
@@ -310,6 +442,12 @@ namespace Helpers {
 
             return v;
         }
+
+        public static void Abs(ref Vector3 v) {
+            v.x = Mathf.Abs(v.x);
+            v.y = Mathf.Abs(v.y);
+            v.z = Mathf.Abs(v.z);
+        }
     }
 
     public static class Vec2 {
@@ -332,6 +470,8 @@ namespace Helpers {
                 return "HDR";
             case MaterialType.SELECTION:
                 return "Selection";
+            case MaterialType.PIXEL_OBJECT:
+                return "PixelObject";
             default:
                 return "UNKNOWN";
             }

@@ -111,6 +111,9 @@ public class AdvancedWire : MonoBehaviour
             Vertex vert1 = new Vertex(vertices[unparsedTriangles[i]], unparsedTriangles[i], 0, Color.red);
             Vertex vert2 = new Vertex(vertices[unparsedTriangles[i+1]], unparsedTriangles[i+1], 1, Color.green);
             Vertex vert3 = new Vertex(vertices[unparsedTriangles[i+2]], unparsedTriangles[i+2], 2, Color.blue);
+            // if (vert1.pos == vert2.pos | vert2.pos == vert3.pos | vert1.pos == vert3.pos) {
+            //     Debug.Log("not good");
+            // }
 
             Triangle tri = new Triangle(
                 vert1,
@@ -182,21 +185,22 @@ public class AdvancedWire : MonoBehaviour
         colors[idx3] = Color.blue;
     }
 
-    private Vertex getVertexByPosition(Triangle tri, Vector3 pos) {
-        if (tri.vertices[0].pos == pos) {
-            return tri.vertices[0];
-        }else if (tri.vertices[1].pos == pos) {
-            return tri.vertices[1];
-        }else if (tri.vertices[2].pos == pos) {
-            return tri.vertices[2];
-        }else {
-            Debug.LogWarning("Couldn't find vertex");
-            return Vertex.NA;
+    private Vertex getVertexByPosition(Triangle tri, Vector3 pos, Option<int> blacklistedIndex) {
+        for (int i = 0; i <= 2; i++) {
+            if (blacklistedIndex.IsSome() && blacklistedIndex.Get() == i) {
+                continue;
+            }
+            if (tri.vertices[i].pos == pos)  {
+                return tri.vertices[i];
+            }
         }
+        Debug.LogWarning("Couldn't find vertex");
+        return Vertex.NA;
     }
 
     private void hideEdge(Triangle tri, (Vertex, Vertex) edge) {
         int other = 3-edge.Item1.relativeIndex-edge.Item2.relativeIndex;
+        //Debug.Log("Hiding edge: "+other);
 
         edge.Item1.hide(tri.vertices[other].color);
         colors[edge.Item1.absoluteIndex] = edge.Item1.color;
@@ -240,11 +244,11 @@ public class AdvancedWire : MonoBehaviour
 
         if (diff.x < sensitivity && diff.y < sensitivity && diff.z < sensitivity) { // normal continuity
             // Debug.Log("[-[-[-[-[ CONTINUITY FOUND: ");
-            Vertex Avert1 = getVertexByPosition(tri, key.Item1);
-            Vertex Avert2 = getVertexByPosition(tri, key.Item2);
+            Vertex Avert1 = getVertexByPosition(tri, key.Item1, Option<int>.None());
+            Vertex Avert2 = getVertexByPosition(tri, key.Item2, new Option<int>(Avert1.relativeIndex));
             hideEdge(tri, (Avert1, Avert2));
-            Vertex Bvert1 = getVertexByPosition(nextTri, key.Item1);
-            Vertex Bvert2 = getVertexByPosition(nextTri, key.Item2);
+            Vertex Bvert1 = getVertexByPosition(nextTri, key.Item1, Option<int>.None());
+            Vertex Bvert2 = getVertexByPosition(nextTri, key.Item2, new Option<int>(Bvert1.relativeIndex));
             hideEdge(nextTri, (Bvert1, Bvert2)); 
         }
     }

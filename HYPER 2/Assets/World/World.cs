@@ -11,8 +11,10 @@ public class World : MonoBehaviour
     [SerializeField] private WorldGenerator worldGenerator;
     
     private List<Enemy> enemies = new List<Enemy>();
-    public delegate void ReportDeath(Enemy enemy);
-    private ReportDeath reportDeath;
+    private List<MiniTower> mts = new List<MiniTower>();
+    public delegate void ReportDeath<T>(T enemy) where T: ISideBelonger<T>;
+    private ReportDeath<Enemy> reportEnemyDeath;
+    private ReportDeath<MiniTower> reportPlayerDeath;
 
     private float borderRadius;
     public float BorderRadius {
@@ -31,13 +33,20 @@ public class World : MonoBehaviour
         get { return worldGenerator; }
     }
 
-    public delegate void EnemyConstructor(ReportDeath death, Enemy enemy);
+    public delegate void EnemyConstructor(ReportDeath<Enemy> death, Enemy enemy);
 
     public Enemy InstantiateEnemy(Resources.Enemy enemyType, Vector3 pos, EnemyConstructor es) {
         var enemy = Instantiate(Resources.GetEnemy(enemyType), pos, Quaternion.identity).GetComponent<Enemy>();
         enemies.Add(enemy);
-        es(reportDeath, enemy);
+        es(reportEnemyDeath, enemy);
         return enemy;
+    }
+
+    public delegate void MiniTowerConstructor(MiniTower mini);
+    public MiniTower InstantiateMiniTower(Vector3 position, Resources.Arsenal arsenal, MiniTowerConstructor constructor) {
+        var tower = Instantiate(Resources.GetArsenal(arsenal), position, Quaternion.identity).GetComponent<MiniTower>();
+        constructor(tower);
+        return tower;
     }
 
     private Dictionary<int,float> info = new Dictionary<int,float>();
@@ -90,14 +99,20 @@ public class World : MonoBehaviour
     }
 
     public void DStart(Player player) {
-        reportDeath = new ReportDeath(e => enemies.Remove(e));
+        reportEnemyDeath = new ReportDeath<Enemy>(v => {
+            enemies.Remove(v);
+        });
+        reportPlayerDeath = new ReportDeath<MiniTower>(v => {
+            mts.Remove(v);
+        });
+
         worldGenerator.DStart(this, player);
         
         foreach (var state in Save.rData.MTs) {
             RaycastHit info;
             Physics.Raycast(state.position, Vector3.down, out info, Mathf.Infinity);
             info.collider.gameObject.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
-            player.InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
+            InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
         }
 
         Save.rData.MTs.Clear();

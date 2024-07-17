@@ -18,8 +18,8 @@ TagManager:
   - MiniTower
   - Enemy
   - Occupied
-  - Detection
-  - 
+  - PlayerDetection
+  - EnemyDetection
   - 
   - 
   - 

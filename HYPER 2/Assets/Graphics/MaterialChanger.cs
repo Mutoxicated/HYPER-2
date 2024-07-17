@@ -8,7 +8,8 @@ public enum MaterialType {
     SIM_WIRE,
     ADV_WIRE,
     HDR,
-    SELECTION
+    SELECTION,
+    PIXEL_OBJECT
 }
 
 public enum QueueMode {

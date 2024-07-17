@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Helpers;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using AYellowpaper;
 
 public enum Element {
     WATER,
     FIRE,
-    RADIATION
+    RADIATION,
+    AIR
 }
 
 public class Stats : MonoBehaviour
@@ -20,7 +20,7 @@ public class Stats : MonoBehaviour
 
     [SerializeField] private StatsTemplate template;
 
-    [SerializeField] private Option<Range> range = Option<Range>.None();
+    [SerializeField] private Option<InterfaceReference<IRange, MonoBehaviour>> range;
 
     private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> val = new Dictionary<Stat, float>();
@@ -41,7 +41,7 @@ public class Stats : MonoBehaviour
     }
 
     public Option<GameObject> Target(int offset = 0) {
-        return range.Get().Target(offset);
+        return range.Get().Value.Target(offset);
     }
 
     public Side StatSide {
@@ -52,7 +52,7 @@ public class Stats : MonoBehaviour
         get { return template.element; }
     }
 
-    public Option<Range> Range {
+    public Option<InterfaceReference<IRange, MonoBehaviour>> Range {
         get { return range; }
     }
 
@@ -68,7 +68,7 @@ public class Stats : MonoBehaviour
     public health CStart(Manager manager) {
         this.manager = manager;
         PrepareValues();
-        range.GetAndThen(v => v.CStart());
+        range.GetAndThen(v => v.Value.CStart());
 
         return new health(get(Stat.MAX_HEALTH));
     }
@@ -79,7 +79,7 @@ public class Stats : MonoBehaviour
         for (int i = 0; i < template.stats.Length; i++) {
             val.Add(template.stats[i], template.statsBase.values[i]);
         }
-        range.GetAndThen(v => v.CStart());
+        range.GetAndThen(v => v.Value.CStart());
     }
 
     public float get(Stat value) {
@@ -94,7 +94,7 @@ public class Stats : MonoBehaviour
         if (range.IsNone()) {
             return false;
         }
-        return range.Get().Target(offset).IsSome();
+        return range.Get().Value.Target(offset).IsSome();
     }
 
     public void Inherit(Stats other) {

@@ -1,3 +1,4 @@
+using AYellowpaper;
 using UnityEngine;
 using static Stat;
 
@@ -6,7 +7,7 @@ public class AoE : MonoBehaviour
     [SerializeField] private Stats stats;
     [SerializeField] private Element bt;
 
-    private Range range;
+    private InterfaceReference<IRange, MonoBehaviour> range;
 
     private void Start() {
         stats.Range.TryGetOr(() => { 
@@ -20,11 +21,9 @@ public class AoE : MonoBehaviour
     }
 
     public void IntervalDamage() {
-        foreach (var e in range.Enemies) {
-            if (e != null) {
-                e.GetComponent<IInfectable>()?.Infect(bt);
-            }
-        }
+        range.Value.Foreach(g => {
+            g.GetComponent<IInfectable>()?.Infect(bt);
+        });
     }
 
     // private void OnDestroy(){

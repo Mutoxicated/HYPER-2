@@ -4,12 +4,11 @@ using UnityEngine;
 using Helpers;
 using static Stat;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;
-    [Header("Systems")]
-    [SerializeField] private Interval damageInterval;
     [Header("Settings")]
+    [SerializeField] private bool followPath;
     [SerializeField] private float XPWorth = 5f;
     private health hp;
     
@@ -19,10 +18,9 @@ public class Enemy : MonoBehaviour, IDamageable
     private float dist;
     private bool last;
 
-    private Option<IDamageable> currentlyColliding = Option<IDamageable>.None();
-    private World.ReportDeath death;
+    private World.ReportDeath<Enemy> death;
 
-    public void CStart(Manager manager, World.ReportDeath death, Branch root) {
+    public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root) {
         this.death = death;
         hp = stats.CStart(manager);
 
@@ -31,11 +29,15 @@ public class Enemy : MonoBehaviour, IDamageable
         gameObject.SetActive(true);
     }
 
-    public void ReportDeath(World.ReportDeath death) {
-        this.death += death;
+    public void CStart(Manager manager, World.ReportDeath<Enemy> death) {
+        this.death = death;
+        hp = stats.CStart(manager);
+
+        gameObject.SetActive(true);
     }
 
     public void Update() {
+        if (!followPath) { return; }
         transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats.get(SPEED), Time.deltaTime);
         //Debug.Log("Current branch: "+currentBranch.direction);
         if (last) {
@@ -58,41 +60,6 @@ public class Enemy : MonoBehaviour, IDamageable
                 dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
             }
         }
-    }
-
-    public void IntervalDamage() {
-        if (currentlyColliding.IsNone()) { return; }
-
-        currentlyColliding.Get().Damage(stats, stats.get(DAMAGE));
-    }
-
-    public void ReceiveBacteria() {
-
-    }
-
-    public void OnCollisionEnter(Collision collision) {
-        //Debug.Log(collision.gameObject.name);
-        var damageable = collision.gameObject.GetComponent<IDamageable>();
-        if (damageable != null) {
-            //Debug.Log("Contains Damageable");
-            currentlyColliding = new Option<IDamageable>(damageable);
-            IntervalDamage();
-            damageInterval.Enable();
-        }
-    }
-
-    // public void OnCollisionStay(Collision collision) {
-    //     if (currentlyColliding.IsSome()) { return; }
-        
-    //     var damageable = collision.gameObject.GetComponent<IDamageable>();
-    //     if (damageable != null) {
-    //         currentlyColliding = new Option<IDamageable>(damageable);
-    //     }
-    // }
-
-    public void OnCollisionExit() {
-        damageInterval.Disable();
-        currentlyColliding = Option<IDamageable>.None();
     }
 
     public void Die(Option<Stats> senderStats) {
@@ -127,5 +94,23 @@ public class Enemy : MonoBehaviour, IDamageable
         if (hp.Current <= 0) {
             Die(Option<Stats>.None());
         }
+    }
+
+    public Stats.Side Side()
+    {
+        return stats.StatSide;
+    }
+
+    public GameObject Go()
+    {
+        return gameObject;
+    }
+
+    public bool IsNull() {
+        return this == null;
+    }
+
+    public ref World.ReportDeath<Enemy> GetReportDeath() {
+        return ref death;
     }
 }

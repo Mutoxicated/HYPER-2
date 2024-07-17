@@ -92,6 +92,10 @@ public class WorldGenerator : MonoBehaviour
         get { return tileSize; }
     }
 
+    public int LastLayer {
+        get { return layers; }
+    }
+
     public void DStart(World world, Player player) {
         this.player = player;
         this.world = world;
@@ -101,9 +105,6 @@ public class WorldGenerator : MonoBehaviour
         Layer();
 
         CreatePaths();
-        if (Save.rData.Lvl > Gameplay.unlock4thPath) {
-            Create4thPath();
-        }
     }
 
     public void Update() {
@@ -392,7 +393,7 @@ public class WorldGenerator : MonoBehaviour
         return GetLastOfLayer(layer-1)+1;   // 0, 1,  2,  3,  4
     }
 
-    private List<int> LayerRange(int layer) {
+    public List<int> LayerRange(int layer) {
         var first = GetFirstOfLayer(layer);
         var last = GetLastOfLayer(layer);
         var range = new List<int>();
@@ -413,19 +414,20 @@ public class WorldGenerator : MonoBehaviour
         int randomCorner = Seed.IntRange(1,5);
         int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
         int randomCorner3 = Num.Wrap(randomCorner2+1, 1, 4);
-        int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
-        lastRandomCorner = randomCorner4;
+        //int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
+        lastRandomCorner = randomCorner3;
         //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
 
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
         InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
-        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
+        //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
     }
 
-    public void Create4thPath() {
+    public void CreateNextPath() {
         int next = Num.Wrap(lastRandomCorner+1, 1, 4);
 
         InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next));
+        lastRandomCorner = next;
     }
 
     private int GetRandomIndexFromCorners(int layer, int a, int b) {
