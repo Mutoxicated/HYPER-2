@@ -50,7 +50,7 @@ MonoBehaviour:
   range:
     value:
       _underlyingValue: {fileID: 0}
-    none: 1
+    none: 0
 --- !u!114 &8813299966052488670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,8 +64,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 597442823549275407}
-  followPath: 0
-  XPWorth: 5
+  enemyType: 2
+  followPath: 1
+  XPWorth: 15
 --- !u!1 &3459381392782159264
 GameObject:
   m_ObjectHideFlags: 0

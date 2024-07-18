@@ -13,9 +13,8 @@ public class Gameplay : MonoBehaviour
     public float AsymT {
         get { return Mathf.Sqrt(linearT); }
     }
-    private int waves = 0;
-    public int waveT {
-        get { return waves; }
+    public int IntAsymT {
+        get { return Mathf.CeilToInt(Mathf.Sqrt(linearT)); }
     }
 
     // Settings
@@ -35,6 +34,10 @@ public class Gameplay : MonoBehaviour
     // Dependencies
     private Manager manager;
     private World world;
+    public World World {
+        get { return world; }
+    }
+
     public void DStart(Player player, Manager manager) {
         self = this;
         this.manager = manager;
@@ -67,13 +70,19 @@ public class Gameplay : MonoBehaviour
                 }
             }
         }
+
+        waitInterval.Enable();
     }
 
-    public void SpawnEnemy() {
+    public Enemy SpawnEnemy(Vector3 pos, Branch root) {
+        var diff = IntAsymT;
+        return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
+            e.CStart(manager, r, root);
+        });
     }
 
     public void IntervalStartWave() {
-        waves++;
+        Save.rData.IncrementWaves();
         quantitativeRound.Enable();
         waitInterval.Disable();
     }

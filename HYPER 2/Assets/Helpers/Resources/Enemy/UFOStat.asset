@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: UFOStat
   m_EditorClassIdentifier: 
   difficulty: 4
+  verticality: 3

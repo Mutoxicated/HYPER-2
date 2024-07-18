@@ -53,7 +53,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             arsenalName.text = String.Format(ufmtName, Arsnl.ToName(m.ArsenalType));
             arsenalElement.text = String.Format(ufmtElement, Elm.ToString(stats.StatElement));
             for (int i = 0; i < arsenalStats.Count; i++) {
-                arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+stats.Template.statsBase.values[i]+"<color=#999999> * "+stats.Mod[stats.Template.stats[i]]);
+                arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+stats.Template.statsBase.values[i]+"<color=#999999> * "+stats.Mod[Stt.EnumValues[i]]);
             }
             hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP.Current), m.HP.Max);
             hpBar.fillAmount = m.HP.Current/m.HP.Max;

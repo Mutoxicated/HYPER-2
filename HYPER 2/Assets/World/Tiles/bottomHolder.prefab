@@ -389,6 +389,7 @@ MonoBehaviour:
   color: {r: 0, g: 0.007277552, b: 0.509434, a: 1}
   changeQueue: 0
   queueMode: 0
+  offset: 0
 --- !u!65 &2954293069303513892
 BoxCollider:
   m_ObjectHideFlags: 0

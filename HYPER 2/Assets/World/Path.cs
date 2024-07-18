@@ -62,6 +62,7 @@ public class Path : MonoBehaviour
     private int noFinds = 0;
 
     private Manager manager;
+    private IRound round;
 
     public void DestroyPath() {
         foreach (var nb in neighbors) {
@@ -114,12 +115,21 @@ public class Path : MonoBehaviour
         if (currentBranch.Get().direction != direction) {
             AddBranch(direction, 1);
         }
+    }
 
+    public Interval StartSpawning(IRound round) {
+        this.round = round;
         spawnInterval.Enable();
+        spawnInterval.ResetEarly();
+        return spawnInterval;
+    }
+
+    public void StopSpawning() {
+        spawnInterval.Disable();
     }
 
     public void IntervalSpawnEnemy() {
-        world.InstantiateEnemy(Resources.Enemy.PROWLER, neighbors[0].Tile.transform.position+Vector3.up*3f, (d, e) => e.CStart(manager, d, root));
+        round.Spawn(root, neighbors[0].Tile.transform.position+Vector3.up*2.5f);
     }
 
     private void extend() {

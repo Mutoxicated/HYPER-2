@@ -50,6 +50,20 @@ public class RunData
     	__lvl = val;
     }
     //MACRO_END
+    [SerializeField] private int __waves = 0;
+
+    public int Waves {
+        get { return __waves; }
+    }
+
+    public void SetWaves(int waves) {
+        __waves = waves;
+    }
+
+    public void IncrementWaves() {
+        __waves++;
+    }
+
     [SerializeField] private List<Resources.Arsenal> boughtArsenals = new List<Resources.Arsenal>() {
         FIRST_MT
     };
@@ -122,6 +136,4 @@ public class RunData
     public List<MTState> MTs {
         get { return mts; }
     }
-
-    [SerializeField] private List<Branch> paths = new List<Branch>();
 }

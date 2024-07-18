@@ -4910,6 +4910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
+  enemyType: 1
   followPath: 1
   XPWorth: 5
 --- !u!114 &7654643070103954848

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 using AYellowpaper;
+using Unity.VisualScripting;
 
 public enum Element {
     WATER,
@@ -61,11 +62,14 @@ public class Stats : MonoBehaviour
     }
 
     private void PrepareValues() {
-        for (int i = 0; i < template.stats.Length; i++) {
-            mod.Add(template.stats[i], template.modifiers[i]);
+        for (int i = 0; i < Stt.EnumValues.Length; i++) {
+            if (i >= template.modifiers.Count) {
+                template.modifiers.Add(1f);
+            }
+            mod.Add(Stt.EnumValues[i], template.modifiers[i]);
         }
-        for (int i = 0; i < template.stats.Length; i++) {
-            val.Add(template.stats[i], template.statsBase.values[i]);
+        for (int i = 0; i < Stt.EnumValues.Length; i++) {
+            val.Add(Stt.EnumValues[i], template.statsBase.values[i]);
         }
     }
 
@@ -80,8 +84,8 @@ public class Stats : MonoBehaviour
     public void CStart(Manager manager, MTState state) {
         this.manager = manager;
         mod = General.ListToDict(state.modkey, state.modVal);
-        for (int i = 0; i < template.stats.Length; i++) {
-            val.Add(template.stats[i], template.statsBase.values[i]);
+        for (int i = 0; i < Stt.EnumValues.Length; i++) {
+            val.Add(Stt.EnumValues[i], template.statsBase.values[i]);
         }
         range.GetAndThen(v => v.Value.CStart());
     }

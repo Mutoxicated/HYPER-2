@@ -38,15 +38,16 @@ public class BaseStatsEditor : Editor {
 
 [CreateAssetMenu(fileName = "Stats Base", menuName = "Mutox/Stats Base", order = 1)]
 public class StatsBase : ScriptableObject {
-    public Stat[] stats = new Stat[4] {
+    public Stat[] stats = new Stat[5] {
         Stat.MAX_HEALTH,
         Stat.SPEED,
         Stat.DAMAGE,
-        Stat.RANGE
+        Stat.RANGE,
+        Stat.RATE
     };
 
-    public float[] values = new float[4] {
-        100f, 7f, 30f, 5f
+    public float[] values = new float[5] {
+        100f, 7f, 30f, 5f, 1f,
     };
 
     public Stats.Side side;

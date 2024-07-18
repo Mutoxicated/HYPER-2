@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SoasStat
   m_EditorClassIdentifier: 
   difficulty: 3
+  verticality: 2

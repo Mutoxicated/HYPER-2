@@ -18,6 +18,7 @@ public class Resources : MonoBehaviour
     public enum Enemy {
         MOG = 0,
         PROWLER,
+        SOAS,
         UFO
     }
 
@@ -25,6 +26,12 @@ public class Resources : MonoBehaviour
         NORMAL = 0,
         RADIATING
     }
+
+    // public enum Extra {
+    //     Explosion
+    // }
+
+    //private static Dictionary<Extra, GameObject> extras;
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
@@ -45,6 +52,15 @@ public class Resources : MonoBehaviour
     }
 
     public void DStart() {
+        // if (extras == null) {
+        //     extras = new Dictionary<Extra, GameObject>();
+        //     var gos = UnityEngine.Resources.LoadAll<GameObject>("Extra");
+        //     Assert.IsNotNull(gos, "Extra folder in Helpers/Resources either doesn't exist");
+        //     for (int i = 0; i < gos.Length; i++) {
+        //         extras.Add((Extra)i, gos[i]);
+        //     } 
+        // }
+
         if (arsenalPrefabs == null) {
             arsenalPrefabs = new Dictionary<Arsenal, GameObject>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Arsenal");
@@ -64,11 +80,11 @@ public class Resources : MonoBehaviour
         }
         if (enemyStats == null) {
             enemyStats = new Dictionary<Enemy, EnemyStats>();
-            var gos = UnityEngine.Resources.LoadAll<GameObject>("Enemy");
+            var gos = UnityEngine.Resources.LoadAll<EnemyStats>("Enemy");
             Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
             Debug.Log("Uh "+gos.Length);
             for (int i = 0; i < gos.Length; i++) {
-                enemyPrefabs.Add((Enemy)i, gos[i]);
+                enemyStats.Add((Enemy)i, gos[i]);
             } 
         }
         if (bulletPrefabs == null) {
@@ -99,6 +115,10 @@ public class Resources : MonoBehaviour
             self = this;
         }
     }
+
+    // public static GameObject GetExtra(Extra extra) {
+    //     return extras[extra];
+    // }
 
     public static GameObject GetBullet(Bullet bullet) {
         return bulletPrefabs[bullet];

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Helpers;
+
 
 
 
@@ -9,7 +11,6 @@ using UnityEditor;
 [CustomEditor(typeof(StatsTemplate))]
 //[CanEditMultipleObjects]
 public class StatsEditor : Editor {
-    SerializedProperty stats;
     SerializedProperty statsBase;
     SerializedProperty mods;
     SerializedProperty element;
@@ -17,10 +18,12 @@ public class StatsEditor : Editor {
     SerializedProperty worth;
     SerializedProperty unlockAt;
 
+
     void OnEnable()
     {
+
+        EditorUtility.SetDirty((StatsTemplate)target);
         statsBase = serializedObject.FindProperty("statsBase");
-        stats = serializedObject.FindProperty("stats");
         mods = serializedObject.FindProperty("modifiers");
         element = serializedObject.FindProperty("element");
         worth = serializedObject.FindProperty("worth");
@@ -33,10 +36,13 @@ public class StatsEditor : Editor {
         serializedObject.Update();
         EditorGUILayout.BeginVertical();
         EditorGUILayout.PropertyField(statsBase);
-        for (int i  = 0; i < stats.arraySize; i++) {
+        for (int i  = 0; i < Stt.EnumValues.Length; i++) {
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(stats.enumNames[i]);
+            EditorGUILayout.PrefixLabel(Stt.EnumValues[i].ToString());
             //EditorGUILayout.PropertyField(modifiers.GetArrayElementAtIndex(i));
+            if (i >= mods.arraySize) {
+                mods.InsertArrayElementAtIndex(i);
+            }
             EditorGUILayout.PropertyField(mods.GetArrayElementAtIndex(i));
             GUILayout.EndHorizontal();
         }
@@ -57,25 +63,20 @@ public class StatsEditor : Editor {
 #endif
 
 [Serializable]
-public enum Stat {
+public enum Stat {//
     MAX_HEALTH,
     SPEED,
     DAMAGE,
-    RANGE
+    RANGE,
+    RATE
 }
 
 [CreateAssetMenu(fileName = "Stats Template", menuName = "Mutox/Stats Template", order = 1)]
 public class StatsTemplate : ScriptableObject {
     public StatsBase statsBase;
-    public Stat[] stats = new Stat[4] {
-        Stat.MAX_HEALTH,
-        Stat.SPEED,
-        Stat.DAMAGE,
-        Stat.RANGE
-    };
 
-    public float[] modifiers = new float[4] {
-        1f, 1f, 1f, 1f
+    public List<float> modifiers = new List<float>() {
+        1f, 1f, 1f, 1f, 1f
     };
 
     public Element element;

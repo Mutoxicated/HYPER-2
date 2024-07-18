@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: SecondMT
   m_EditorClassIdentifier: Assembly-CSharp::StatsFields
   statsBase: {fileID: 11400000, guid: 67704fdc349c0af41ae9232210002ed8, type: 2}
-  stats: 00000000010000000200000003000000
   modifiers:
   - 0.7
   - 1
   - 1
   - 0.6
+  - 0.6
   element: 1
+  elementImmunities: 
   worth: 5
   unlockAt: 3

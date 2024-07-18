@@ -382,7 +382,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8233565666014920145
 Transform:
   m_ObjectHideFlags: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
+  enemyType: 3
   followPath: 0
   XPWorth: 10
 --- !u!114 &7654643070103954848
@@ -477,7 +478,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
-  speed: 4
 --- !u!114 &7698251030543043278
 MonoBehaviour:
   m_ObjectHideFlags: 0

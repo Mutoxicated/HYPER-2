@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Rotate : MonoBehaviour
@@ -10,6 +11,10 @@ public class Rotate : MonoBehaviour
     [SerializeField] private bool randomRotation = true;
     [SerializeField] private bool local;
     private float time;
+
+    public virtual float Speed {
+        get { return lerpSpeed; }
+    }
 
     private void Start()
     {
@@ -24,7 +29,7 @@ public class Rotate : MonoBehaviour
         time += Time.deltaTime;
         if (rotationInterval < 0 || !randomRotation)
         {
-            transform.Rotate(toRotation.eulerAngles*Time.deltaTime* lerpSpeed, Space.Self);
+            transform.Rotate(toRotation.eulerAngles*Time.deltaTime*Speed, Space.Self);
             return;
         }
         if (time >= rotationInterval)
@@ -33,8 +38,8 @@ public class Rotate : MonoBehaviour
             time = 0;
         }
         if (local)
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, toRotation, Time.deltaTime*lerpSpeed);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, toRotation, Time.deltaTime*Speed);
         else
-            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime*lerpSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime*Speed);
     }
 }

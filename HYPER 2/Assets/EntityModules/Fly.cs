@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static Stat;
 
 public class Fly : MonoBehaviour
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private float speed;
-
 
     private float delta;
     private Quaternion look;
@@ -43,7 +42,7 @@ public class Fly : MonoBehaviour
             Vec3.Abs(ref uh);
             delta = (uh.x+uh.y+uh.z)/3f;
             Debug.Log(delta);
-            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*speed, Time.deltaTime*delta);
+            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED), Time.deltaTime*delta);
         });
     }
 }

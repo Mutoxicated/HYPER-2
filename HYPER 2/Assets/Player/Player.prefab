@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5950979555054321684}
   - component: {fileID: 6954566601433983008}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: Env Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4561857034760873925, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4561857034760873927, guid: df4196b3e787941419a380f8f7e23a92, type: 3}
       propertyPath: m_Depth

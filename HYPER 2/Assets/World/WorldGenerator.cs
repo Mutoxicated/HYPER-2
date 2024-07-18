@@ -86,6 +86,9 @@ public class WorldGenerator : MonoBehaviour
 
     // Path generation
     private List<Path> paths = new List<Path>();
+    public List<Path> Paths {
+        get { return paths; }
+    }
     private int lastRandomCorner;
 
     public float TileSize {

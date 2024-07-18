@@ -10,6 +10,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] private bool inherit = false;
     [SerializeField] private Interval shootInterval;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private AudioSource shootSFX;
 
     public delegate void BulletConstructor(Bullet bullet);
 
@@ -20,20 +21,24 @@ public class Shoot : MonoBehaviour
     }
 
     private void shootBullet() {
+        var shot = false;
         for (int i = 0; i < shootAmount; i++) {
-            if (!stats.TargetIsValid(i)) { return; }
+            if (!stats.TargetIsValid(i)) { continue; }
 
             var rotation = Quaternion.LookRotation(stats.Target(i).Get().transform.position-firePoint.position);
-
+            shot = true;
             if (inherit) 
                 Action(firePoint.position, b => b.CStart(stats.Manager, rotation, stats));
             else
                 Action(firePoint.position, b => b.CStart(stats.Manager, rotation));
         }
+        if (shot) {
+            shootSFX.Play();
+        }
         enemies.Clear();
     }
     
-    public Bullet Action(Vector3 postion, BulletConstructor bc) {
+    private Bullet Action(Vector3 postion, BulletConstructor bc) {
         var instance = Instantiate(Resources.GetBullet(bullet));
         var b = instance.GetComponent<Bullet>();
         instance.transform.position = postion;
@@ -42,7 +47,7 @@ public class Shoot : MonoBehaviour
         return b;
     }
 
-    public Bullet Action(BulletConstructor bc) {
+    private Bullet Action(BulletConstructor bc) {
         var instance = Instantiate(Resources.GetBullet(bullet));
         var b = instance.GetComponent<Bullet>();
         

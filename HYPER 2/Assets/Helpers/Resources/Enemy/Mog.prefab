@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 392584003170639795}
   - component: {fileID: 1352958871411155194}
   - component: {fileID: 4182929243653569490}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1352958871411155194}
-  type: 3
+  type: 5
   changeColor: 1
-  color: {r: 3.9999995, g: 0.44732282, b: 0, a: 1}
+  color: {r: 2.1185474, g: 0.06655122, b: 0, a: 1}
   changeQueue: 0
   queueMode: 0
   offset: 0
@@ -112,18 +112,19 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3683712398852619574}
+  - component: {fileID: 3549407459916468888}
+  - component: {fileID: -2374010696808039988}
   - component: {fileID: 7108315076602090061}
   - component: {fileID: 6798698503118529780}
-  - component: {fileID: 3549407459916468888}
   - component: {fileID: 1561741863301072786}
   - component: {fileID: 7898778864201012105}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3683712398852619574
 Transform:
   m_ObjectHideFlags: 0
@@ -142,6 +143,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &3549407459916468888
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490804994053668935}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.55
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-2374010696808039988
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490804994053668935}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!114 &7108315076602090061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,21 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7108315076602090061}
+  enemyType: 0
   followPath: 1
   XPWorth: 7
---- !u!135 &3549407459916468888
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3490804994053668935}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1561741863301072786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +244,8 @@ GameObject:
   - component: {fileID: 4618201421122691180}
   - component: {fileID: 6738281768822997981}
   - component: {fileID: 6781730815592953323}
-  - component: {fileID: 1509324469241424131}
-  m_Layer: 0
+  - component: {fileID: 4565275888845908524}
+  m_Layer: 10
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +296,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
-  - {fileID: 2100000, guid: 311313efa011949e98b6761d652ad13c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -313,11 +330,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stencilIndex: 1
-  outlineColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+  outlineWidth: 1.3
   bakeKeys: []
   bakeValues: []
---- !u!114 &1509324469241424131
+--- !u!114 &4565275888845908524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -326,14 +343,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8742178766524011794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26980ea7e81b2bf4c894ef7b3f13a183, type: 3}
+  m_Script: {fileID: 11500000, guid: 60a2432b0e0e6804cb4d498218313b85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationInterval: -1
-  lerpSpeed: 3.03
+  lerpSpeed: 2.86
   toRotation: {x: 0.25881904, y: 0, z: 0, w: 0.9659258}
   randomRotation: 0
   local: 1
+  stats: {fileID: 7108315076602090061}
 --- !u!1 &9180050703513791267
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +364,7 @@ GameObject:
   - component: {fileID: 7737225129066025406}
   - component: {fileID: 2351531458629099441}
   - component: {fileID: 9159796564013917453}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: forwardRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -397,7 +415,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
-  - {fileID: 2100000, guid: 311313efa011949e98b6761d652ad13c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -432,7 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stencilIndex: 1
-  outlineColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+  outlineWidth: 1.3
   bakeKeys: []
   bakeValues: []

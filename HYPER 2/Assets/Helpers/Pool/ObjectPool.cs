@@ -7,7 +7,7 @@ using UnityEngine;
 public enum PoolID {
     WaterBacteria,
     FireBacteria,
-    NRM
+    Explosion
 }
 
 public class ObjectPool : MonoBehaviour
@@ -34,6 +34,7 @@ public class ObjectPool : MonoBehaviour
             prefab.SetActive(false);
             var instance = Instantiate(prefab);
             SetInstanceName(ref instance);
+            instance.GetComponent<PooledObject>().CStart(this);
             outsideGos.Add(instance);
             instance.transform.SetParent(receiver.transform, false);
             if (enableOnUse)
@@ -55,6 +56,7 @@ public class ObjectPool : MonoBehaviour
         {
             var instance = Instantiate(prefab, position, rotation);
             SetInstanceName(ref instance);
+            instance.GetComponent<PooledObject>().CStart(this);
             outsideGos.Add(instance);
             if (enableOnInstance)
                 instance.SetActive(true);
@@ -81,6 +83,7 @@ public class ObjectPool : MonoBehaviour
         {
             var instance = Instantiate(prefab, position, rotation);
             SetInstanceName(ref instance);
+            instance.GetComponent<PooledObject>().CStart(this);
             outsideGos.Add(instance);
             if (enableOnInstance)
                 instance.SetActive(true);

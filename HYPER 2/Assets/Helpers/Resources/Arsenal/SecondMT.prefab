@@ -176,7 +176,6 @@ MonoBehaviour:
   dontResetTime: 0
   chance: 100
   interval: 0.2
-  minMaxInterval: {x: 0, y: 0}
   onInterval:
     m_PersistentCalls:
       m_Calls:
@@ -226,7 +225,7 @@ GameObject:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 7800337281580403305}
   - component: {fileID: 5161669399869190583}
-  - component: {fileID: 2159686960475984556}
+  - component: {fileID: 6709251826038295375}
   - component: {fileID: 6357530675397054155}
   - component: {fileID: 5043135766398655162}
   m_Layer: 9
@@ -284,7 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 7800337281580403305}
   bt: 1
---- !u!114 &2159686960475984556
+--- !u!114 &6709251826038295375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,14 +292,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3710317631712574376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 251d29018956e9b4c867a14ba25de56f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
   interval: 1
-  minMaxInterval: {x: 0, y: 0}
   onInterval:
     m_PersistentCalls:
       m_Calls:
@@ -320,6 +318,7 @@ MonoBehaviour:
   t: 0
   time: 0
   isPlaying: 0
+  stats: {fileID: 7800337281580403305}
 --- !u!114 &6357530675397054155
 MonoBehaviour:
   m_ObjectHideFlags: 0

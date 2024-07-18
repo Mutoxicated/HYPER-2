@@ -112,7 +112,7 @@ public class Selector : MonoBehaviour
                 }
                 Debug.Log("Instantiated mini tower", go);
                 var mt = manager.World.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
-                go.GetComponent<Tile>().Occupy(mt.gameObject);
+                go.transform.parent.GetComponent<Tile>().Occupy(mt.gameObject);
                 selected = new Option<GameObject>(mt.gameObject);
             });
         }

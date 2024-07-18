@@ -292,6 +292,13 @@ namespace Helpers {
         }
     }
 
+    public static class Stt {
+        private static Stat[] enumValues = Enum.GetValues(typeof(Stat)) as Stat[];
+        public static Stat[] EnumValues {
+            get { return enumValues; }
+        } 
+    }
+
     public static class Dir {
         private static Dictionary<Direction, Vector3> directions = new Dictionary<Direction, Vector3>() {
             { Direction.DOWN, Vector3.back },
@@ -362,8 +369,8 @@ namespace Helpers {
                 return "WaterBacteria";
             case FireBacteria:
                 return "FireBacteria";
-            case NRM:
-                return "NRM";
+            case Explosion:
+                return "Explosion";
             default: 
                 return "Unknown";
             } 
@@ -459,6 +466,17 @@ namespace Helpers {
             v.x = Mathf.Abs(v.x);
             v.y = Mathf.Abs(v.y);
             v.z = Mathf.Abs(v.z);
+        }
+
+        public static Vector3 Swap(Vector3 v, int index1, int index2) {
+            var temp = v[index1];
+            v[index1] = v[index2];
+            v[index2] = temp;
+            return v;
+        }
+
+        public static Vector3 Shift(Vector3 v) {
+            return new Vector3(v.z, v.x, v.y);
         }
     }
 

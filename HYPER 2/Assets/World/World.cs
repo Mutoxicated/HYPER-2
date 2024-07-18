@@ -112,7 +112,7 @@ public class World : MonoBehaviour
             RaycastHit info;
             Physics.Raycast(state.position, Vector3.down, out info, Mathf.Infinity);
             var mt = InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
-            info.collider.gameObject.GetComponent<Tile>().Occupy(mt.gameObject);
+            info.collider.transform.parent.GetComponent<Tile>().Occupy(mt.gameObject);
         }
 
         Save.rData.MTs.Clear();

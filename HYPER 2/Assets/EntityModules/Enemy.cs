@@ -7,6 +7,7 @@ using static Stat;
 public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;
+    [SerializeField] private Resources.Enemy enemyType;
     [Header("Settings")]
     [SerializeField] private bool followPath;
     [SerializeField] private float XPWorth = 5f;
@@ -21,24 +22,24 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
     private World.ReportDeath<Enemy> death;
 
     public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root) {
+        this.death = e => {
+            manager.Pools.Get(PoolID.Explosion).ShootObject(e.transform.position, Quaternion.identity);
+        };
         this.death = death;
         hp = stats.CStart(manager);
+
+        transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
 
         currentBranch = root;
-        dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
-        gameObject.SetActive(true);
-    }
-
-    public void CStart(Manager manager, World.ReportDeath<Enemy> death) {
-        this.death = death;
-        hp = stats.CStart(manager);
-
+        dir = Dir.ToVec(currentBranch.direction);
         gameObject.SetActive(true);
     }
 
     public void Update() {
         if (!followPath) { return; }
+        Debug.Log(dir);
         transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats.get(SPEED), Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(Vec3.Shift(dir)*90f), Time.deltaTime*5f);
         //Debug.Log("Current branch: "+currentBranch.direction);
         if (last) {
             return;
@@ -57,7 +58,7 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
                 last = true;
             }else {
                 currentBranch = branch.Get();
-                dir = transform.InverseTransformDirection(Dir.ToVec(currentBranch.direction));
+                dir = Dir.ToVec(currentBranch.direction);
             }
         }
     }
@@ -65,6 +66,7 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
     public void Die(Option<Stats> senderStats) {
         if (senderStats.IsNone()) {
             death.Invoke(this);
+
             Destroy(gameObject);
             return;
         }

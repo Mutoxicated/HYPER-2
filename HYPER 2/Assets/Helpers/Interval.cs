@@ -7,7 +7,6 @@ public class Interval : MonoBehaviour
     [SerializeField] private bool dontResetTime;
     [SerializeField, Range(0, 100)] private int chance = 100;
     [SerializeField] private float interval;
-    [SerializeField] private Vector2 minMaxInterval;
     [SerializeField] public UnityEvent onInterval;
     [SerializeField] private bool destroyUponEvent;
 
@@ -16,10 +15,8 @@ public class Interval : MonoBehaviour
     [HideInInspector] public bool isPlaying;
     private float deltaTime;
 
-    public Vector2 MinMax {
-        get {
-            return minMaxInterval;
-        }
+    public virtual float Rate {
+        get { return interval; }
     }
 
     public void ResetEarly()//this is stupid but oh well lol
@@ -61,22 +58,12 @@ public class Interval : MonoBehaviour
     }
 
     public float GetInterval(){
-        return interval;
+        return Rate;
     }
 
     public void ChangeInterval(float interval)
     {
         this.interval = interval;
-    }
-
-    public void ChangeMinMaxInterval(Vector2 newMinMaX) {
-        minMaxInterval = newMinMaX;
-    }
-
-    public void RandomizeInterval() {
-        if (minMaxInterval != Vector2.zero){
-            interval = Random.Range(minMaxInterval.x,minMaxInterval.y);
-        }
     }
 
     public void Enable() {
@@ -99,7 +86,6 @@ public class Interval : MonoBehaviour
     private void OnEnable()
     {
         //Debug.Log(gameObject.name);
-        RandomizeInterval();
         time = 0f;
         t = 0f;
         isPlaying = true;
@@ -116,12 +102,12 @@ public class Interval : MonoBehaviour
         }
         time += deltaTime;
         //Debug.Log(time);
-        if (time >= interval)
+        if (time >= Rate)
         {
             ResetInterval();
         }
         if (time != 0f)
-            t = time / interval;
+            t = time / Rate;
         else t = 0f;
     }
 }

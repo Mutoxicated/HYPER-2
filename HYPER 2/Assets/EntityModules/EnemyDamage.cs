@@ -19,8 +19,8 @@ public class EnemyDamage : MonoBehaviour {
             //Debug.Log("Contains Damageable");
             currentlyColliding = new Option<IDamageable>(damageable);
             IntervalDamage();
+            enemy.Die(new Option<Stats>(stats));
         }
-        enemy.Die(new Option<Stats>(stats));
     }
 
     // public void OnCollisionStay(Collision collision) {
