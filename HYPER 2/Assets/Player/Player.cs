@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
             Save.rData.SetXP(0);
             Save.rData.SetLvl(Save.rData.Lvl+1);
             self.onLvlUp.Invoke(Save.rData.Lvl);
-            Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl)));
+            Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl))*10);
             return;
         }
         Save.rData.SetXP(newXP);

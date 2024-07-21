@@ -32,23 +32,26 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
 
         currentBranch = root;
         dir = Dir.ToVec(currentBranch.direction);
+        look = Quaternion.LookRotation(currentBranch.end-currentBranch.start);
         gameObject.SetActive(true);
     }
+
+    private Quaternion look;
 
     public void Update() {
         if (!followPath) { return; }
         Debug.Log(dir);
         transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats.get(SPEED), Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(Vec3.Shift(dir)*90f), Time.deltaTime*5f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime*5f);
         //Debug.Log("Current branch: "+currentBranch.direction);
         if (last) {
             return;
         }
         if (currentBranch.direction == Direction.UP | currentBranch.direction == Direction.DOWN) {
-            dist = Mathf.Abs(transform.position.z-currentBranch.end.transform.position.z);
+            dist = Mathf.Abs(transform.position.z-currentBranch.end.z);
         }else {
             //Debug.Log(currentBranch.end);
-            dist = Mathf.Abs(transform.position.x-currentBranch.end.transform.position.x);
+            dist = Mathf.Abs(transform.position.x-currentBranch.end.x);
         }
         if (dist < 0.2f) {
             var branch = currentBranch.Next();
@@ -59,6 +62,7 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
             }else {
                 currentBranch = branch.Get();
                 dir = Dir.ToVec(currentBranch.direction);
+                look = Quaternion.LookRotation(currentBranch.end-currentBranch.start);
             }
         }
     }

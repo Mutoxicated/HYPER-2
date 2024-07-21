@@ -57,67 +57,6 @@ public class Selector : MonoBehaviour
                 selected = Option<GameObject>.None();
             return;
         }
-        //Debug.Log("stored");
-
-        if (selected.IsSome()) {
-            if (player.OnDelete) {
-                Delete(hits[0].collider.gameObject.transform.parent.gameObject);
-            }else {
-                if (!selectedArsenalInfo.gameObject.activeInHierarchy) {
-                    selectedArsenalInfo.Enable(selected.Get().GetComponent<MiniTower>());
-                }
-            }
-        }else {
-            if (selectedArsenalInfo.gameObject.activeInHierarchy) {
-                selectedArsenalInfo.Disable(true);
-            }
-            UpdateSelection();
-        }
-        if (selectedArsenalInfo.Locked && hits[0].transform.parent.gameObject != selected.Get()) {
-            UpdateSelection();
-        }
-
-        var go = hits[0].collider.gameObject;
-
-        if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
-            selected = new Option<GameObject>(go.transform.parent.gameObject);
-            selection.Disable();
-        }else if (go.layer == EditorState.GetLayer(EditorLayer.OCCUPIED)) {
-            selection.Disable();
-        }else if (!selectedArsenalInfo.Locked){
-            selected = Option<GameObject>.None();
-        }
-
-        if (player.OnLeftClick) {
-            Debug.Log("Clicked");
-            if (go.layer == EditorState.GetLayer(EditorLayer.OCCUPIED)) {
-                Debug.Log("Object is occupied ("+go.name+")", go);
-                selected = Option<GameObject>.None();
-                return;
-            }else if (go.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
-                Debug.Log("Object is mini tower ("+go.name+")", go);
-                selected = new Option<GameObject>(go.transform.parent.gameObject);
-                selectedArsenalInfo.Lock();
-                return;
-            }
-            
-            var arsenal = qi.GetSelectedArsenal();
-            arsenal.GetAndThen(a => {
-                var template = Resources.GetStatTemplate(a);
-                if (Save.rData.Money >= template.worth) {
-                    Player.SetMoneyRelative(-template.worth);
-                }else {
-                    Debug.Log("bbnomoney");
-                    return;
-                }
-                Debug.Log("Instantiated mini tower", go);
-                var mt = manager.World.InstantiateMiniTower(hits[0].transform.position+Vector3.up*0.5f, a, m => m.CStart(manager));
-                go.transform.parent.GetComponent<Tile>().Occupy(mt.gameObject);
-                selected = new Option<GameObject>(mt.gameObject);
-            });
-        }
-
-        hits = new RaycastHit[1];
     }
 
     private void UpdateSelection() {
@@ -125,7 +64,7 @@ public class Selector : MonoBehaviour
         bool got = arsenal.GetAndThen(a => {
             currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
             selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().statsBase.values[3]*currentStat.Get().modifiers[3]);
-        });
+        }).Successful();
         if (!got) {
             currentStat = Option<StatsTemplate>.None();
             selection.Disable();

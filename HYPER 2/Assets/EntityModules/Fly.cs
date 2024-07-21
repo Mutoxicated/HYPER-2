@@ -23,7 +23,7 @@ public class Fly : MonoBehaviour
                 return g.gameObject.layer == EditorState.GetLayer(EditorLayer.DEFAULT);
             }).GetAndThen(g => {
                 target = g;
-            });
+            }).Successful();
 
             if (!got) {
                 target = stats.Manager.Tower;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IComparable<ArsenalItem>
 {
     [SerializeField] private ArsenalInfo ai;
     [SerializeField] private Resources.Arsenal @type;
@@ -61,9 +62,14 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             ai.Disable();
     }
 
+    public void CStart(ArsenalInfo ai, Resources.Arsenal arsenalType) {
+        type = arsenalType;
+        template = Resources.GetStatTemplate(Type);
+        this.ai = ai;
+    }
+
     public void Enable() {
         internalImage.sprite = Resources.GetArsenalSprite(type);
-        template = Resources.GetStatTemplate(Type);
         SetImageColor();
         UpdateLockState();
         gameObject.SetActive(true);
@@ -105,5 +111,16 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         ai.Unlock();
         selected = false;
+    }
+
+    public int CompareTo(ArsenalItem other)
+    {
+        if (Template.unlockAt > other.Template.unlockAt) {
+            return 1;
+        }else if (Template.unlockAt < other.Template.unlockAt) {
+            return -1;
+        }
+
+        return 0;
     }
 }

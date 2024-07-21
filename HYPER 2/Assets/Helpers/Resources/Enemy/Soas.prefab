@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 5527292738372518236}
   - component: {fileID: 597442823549275407}
   - component: {fileID: 8813299966052488670}
-  m_Layer: 0
+  - component: {fileID: 7536109144670785967}
+  - component: {fileID: 1883687730350430261}
+  - component: {fileID: 6652731775108236531}
+  m_Layer: 10
   m_Name: Soas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +53,7 @@ MonoBehaviour:
   range:
     value:
       _underlyingValue: {fileID: 0}
-    none: 0
+    none: 1
 --- !u!114 &8813299966052488670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +70,49 @@ MonoBehaviour:
   enemyType: 2
   followPath: 1
   XPWorth: 15
+--- !u!136 &7536109144670785967
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917521941778588663}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2.21
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.36}
+--- !u!114 &1883687730350430261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917521941778588663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b661d883b775ead48963714d3523fb6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 597442823549275407}
+--- !u!54 &6652731775108236531
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917521941778588663}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &3459381392782159264
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,9 +124,10 @@ GameObject:
   - component: {fileID: 4081532240298140955}
   - component: {fileID: 4318297897313557182}
   - component: {fileID: 8581449838452843117}
-  - component: {fileID: 1496697403143966158}
+  - component: {fileID: 3308503971376539246}
   - component: {fileID: 664021496462231558}
-  m_Layer: 0
+  - component: {fileID: 47715133604136468}
+  m_Layer: 10
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +201,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1496697403143966158
+--- !u!114 &3308503971376539246
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,14 +210,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3459381392782159264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26980ea7e81b2bf4c894ef7b3f13a183, type: 3}
+  m_Script: {fileID: 11500000, guid: 411decd9cd302d84cac39d4dee9e3cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationInterval: -1
-  lerpSpeed: 2.66
-  toRotation: {x: 0, y: 0, z: 0.25881904, w: 0.9659258}
-  randomRotation: 1
-  local: 1
+  meshFilter: {fileID: 4318297897313557182}
+  sensitivity: 0.035
+  onlyTriangles: 0
 --- !u!114 &664021496462231558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +235,24 @@ MonoBehaviour:
   changeQueue: 0
   queueMode: 0
   offset: 0
+--- !u!114 &47715133604136468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3459381392782159264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60a2432b0e0e6804cb4d498218313b85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationInterval: -1
+  lerpSpeed: 8.7
+  toRotation: {x: 0, y: 0, z: 0.5, w: 0.8660254}
+  randomRotation: 0
+  local: 1
+  stats: {fileID: 597442823549275407}
 --- !u!1 &3539824130882968046
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +264,7 @@ GameObject:
   - component: {fileID: 2140893195974975997}
   - component: {fileID: 6425191512359721130}
   - component: {fileID: 4709348629206805019}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

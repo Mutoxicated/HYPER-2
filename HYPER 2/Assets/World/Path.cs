@@ -1,24 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using Helpers;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static Helpers.General;
 
 public class Branch {
     public Direction direction;
-    public Tile end;
+    public Vector3 start;
+    public Vector3 end;
     public List<Branch> branches = new List<Branch>();
 
-    public Branch(Direction direction, Tile tile) {
+    public Branch(Vector3 start, Direction direction, Vector3 end) {
         this.direction = direction;
-        end = tile;
+        this.start = start;
+        this.end = end;
     }
 
-    public Branch(Direction direction, Tile tile, Branch parent) {
+    public Branch(Direction direction, Vector3 end, Branch parent) {
         this.direction = direction;
-        end = tile;
+        this.end = end;
         parent.SetBranch(this);
+        start = parent.end;
     }
 
     public Option<Branch> Next() {
@@ -110,10 +112,14 @@ public class Path : MonoBehaviour
         extend();
 
         var dir = wg.Tower.transform.position-neighbors[neighbors.Count-1].Tile.transform.position;
+        if (dir.y > 0f) {
+            dir.y = 0f;
+        }
         var direction = Dir.FromVec(dir);
         //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+direction);
         if (currentBranch.Get().direction != direction) {
             AddBranch(direction, 1);
+            currentBranch.Get().end += dir.normalized*2f;
         }
     }
 
@@ -225,21 +231,36 @@ public class Path : MonoBehaviour
         AddBranch(1);
     }
 
+    public Option<Tile> FindStart(int offset = 0) {
+        var direction = neighbors[neighbors.Count-2+offset].Direction;
+        for (int i = neighbors.Count-2+offset; i >= 0; i--) {
+            if (neighbors[i].Direction != direction) {
+                return new Option<Tile>(neighbors[i+1].Tile);
+            }
+        }
+
+        return Option<Tile>.None();
+    }
+
     public void AddBranch(int offset = 0) {
         if (currentBranch.IsNone()) {
-            root = new Branch(neighbors[neighbors.Count-2].Direction, neighbors[neighbors.Count-2+offset].Tile);
+            var start = FindStart();
+            Assert.IsNotNull(start.Get(), "Start was null");
+            root = new Branch(start.Get().transform.position, neighbors[neighbors.Count-2].Direction, neighbors[neighbors.Count-2+offset].Tile.transform.position);
             currentBranch = new Option<Branch>(root);
         }else {
-            currentBranch = new Option<Branch>(new Branch(neighbors[neighbors.Count-2+offset].Direction, neighbors[neighbors.Count-2+offset].Tile, currentBranch.Get()));
+            currentBranch = new Option<Branch>(new Branch(neighbors[neighbors.Count-2+offset].Direction, neighbors[neighbors.Count-2+offset].Tile.transform.position, currentBranch.Get()));
         }
     }
 
     public void AddBranch(Direction dir, int offset = 0) {
         if (currentBranch.IsNone()) {
-            root = new Branch(dir, neighbors[neighbors.Count-2+offset].Tile);
+            var start = FindStart();
+            Assert.IsNotNull(start.Get(), "Start was null");
+            root = new Branch(start.Get().transform.position, dir, neighbors[neighbors.Count-2+offset].Tile.transform.position);
             currentBranch = new Option<Branch>(root);
         }else {
-            currentBranch = new Option<Branch>(new Branch(dir, neighbors[neighbors.Count-2+offset].Tile, currentBranch.Get()));
+            currentBranch = new Option<Branch>(new Branch(dir, neighbors[neighbors.Count-2+offset].Tile.transform.position, currentBranch.Get()));
         }
     }
     

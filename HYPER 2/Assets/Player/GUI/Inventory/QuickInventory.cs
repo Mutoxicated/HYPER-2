@@ -24,20 +24,29 @@ public class QuickInventory : MonoBehaviour
     private List<QuickInventoryItem> Items {
         get { return items; }
     }
-    private QuickInventoryItem selected;
+    private Option<QuickInventoryItem> selected = Option<QuickInventoryItem>.None();
     private float imageSize;
     private float length;
 
     private Player player;
 
     public Option<Resources.Arsenal> GetSelectedArsenal() {
-        return selected.ArsenalType;
+        if (selected.IsNone()) {
+            return Option<Resources.Arsenal>.None();
+        }
+        return selected.Get().ArsenalType;
     }
 
-    public void UpdateSelected(QuickInventoryItem item) {
+    public void UpdateSelected(Option<QuickInventoryItem> item) {
         selected = item;
-        selectedImage.position = item.transform.position;
-        Save.rData.SetSelectedIndex(item.Index);
+        selected.GetAndThen(i => {
+            selectedImage.position = i.transform.position;
+            Save.rData.SetSelectedIndex(i.Index);
+        }).Else(() => {
+            selectedImage.position = new Vector3(5700,0,0);
+            Save.rData.SetSelectedIndex(-1);
+        });
+  
     }
 
     public void CheckCDs() {
@@ -52,16 +61,19 @@ public class QuickInventory : MonoBehaviour
         
         Sort();
         edit.position = items[capacity-1].transform.position+Vector3.right*imageSize;
-        selected = items[0];
-        selected.transform.position = items[0].transform.position;
+        if (Save.rData.SelectedIndex < 0) {
+            UpdateSelected(Option<QuickInventoryItem>.None());
+        }else {
+            UpdateSelectedWithIndex(Save.rData.SelectedIndex);
+        }
 
         Save.rData.UpdateQIACapacity(capacity);
         int index = 0;
-        foreach (var qia in Save.rData.QIAs) {
+        foreach (var qia in Save.rData.QIAs.ToArray()) {
             items[index].SetArsenal(qia);
             index++;
         }
-        UpdateSelected(items[Save.rData.SelectedIndex]);
+     
         gameObject.SetActive(true);
     }
 
@@ -83,7 +95,9 @@ public class QuickInventory : MonoBehaviour
     private void Update() {
         
         if (player.OnUIDelete) {
-            selected.SetArsenal(Option<Resources.Arsenal>.None());
+            selected.GetAndThen(i => {
+                i.SetArsenal(Option<Resources.Arsenal>.None());
+            });
         }
         if (Keyboard.current.digit1Key.wasPressedThisFrame) {
             UpdateSelectedWithIndex(0);
@@ -104,7 +118,15 @@ public class QuickInventory : MonoBehaviour
         if (index >= capacity) {
             index = capacity-1;
         }
-        UpdateSelected(items[index]);
+        selected.GetAndThen(i => {
+            if (i.Index == index) {
+                UpdateSelected(Option<QuickInventoryItem>.None());
+            }else {
+                UpdateSelected(new Option<QuickInventoryItem>(items[index]));
+            }
+        }).Else(() => {
+            UpdateSelected(new Option<QuickInventoryItem>(items[index]));
+        });
     }
 
     private void Sort() {

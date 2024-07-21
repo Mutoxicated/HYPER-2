@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,16 +7,28 @@ using UnityEngine;
 public class Arsenal : MonoBehaviour
 {
     [SerializeField] private Inventory inventory;
-    [SerializeField] private ArsenalItem[] aitems;
+    [SerializeField] private GameObject arsenalItemPrefab;
+    [SerializeField] private Transform arsenalItems;
+    [SerializeField] private List<ArsenalItem> aitems;
     [SerializeField] private ItemSorter sorter;
     [SerializeField] private ArsenalInfo ai;
 
-    public ArsenalItem[] AItems {
+    public List<ArsenalItem> AItems {
         get { return aitems; }
     }
 
     public void DStart() {
         ai.DStart();
+        var enumVals = Enum.GetValues(typeof(Resources.Arsenal)) as Resources.Arsenal[];
+        foreach (var arsenal in enumVals) {
+            var aitem = Instantiate(arsenalItemPrefab, arsenalItems).GetComponent<ArsenalItem>();
+            aitem.CStart(ai, arsenal);
+            aitems.Add(aitem);
+        }
+        aitems.Sort();
+        foreach (var aitem in aitems) {
+            sorter.AddItem(aitem.transform);
+        }
         sorter.PrepareValues();
     }
 

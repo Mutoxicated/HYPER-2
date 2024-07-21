@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: MogStats
   m_EditorClassIdentifier: 
   difficulty: 2
+  verticality: 1

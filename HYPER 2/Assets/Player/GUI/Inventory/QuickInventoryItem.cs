@@ -43,6 +43,7 @@ public class QuickInventoryItem : MonoBehaviour
     }
 
     public void SetArsenal(Option<Resources.Arsenal> arsenalType) {
+        Save.rData.QIAs[index] = arsenalType;
         this.arsenalType = arsenalType;
         if (arsenalType.IsNone()) {
             image.sprite = Resources.Empty;

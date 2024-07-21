@@ -143,13 +143,30 @@ public class Option<T> {
 
     public delegate void OnAcquisition(T value);
 
-    public bool GetAndThen(OnAcquisition onAcquisition) {
-        if (IsSome()) {
-            onAcquisition(Get());
-            return true;
+    public class Result {
+        private bool success;
+
+        public Result(bool success) {
+            this.success = success;
         }
 
-        return false;
+        public void Else(OnFail onFail) {
+            if (Successful()) { return; }
+            onFail();
+        }
+
+        public bool Successful() {
+            return success;
+        }
+    }
+
+    public Result GetAndThen(OnAcquisition onAcquisition) {
+        if (IsSome()) {
+            onAcquisition(Get());
+            return new Result(true);
+        }
+
+        return new Result(false);
     }
 
     public delegate void OnFail();
@@ -356,6 +373,8 @@ namespace Helpers {
                 return "Radmole";
             case Resources.Arsenal.SECOND_MT:
                 return "Blame";
+            case Resources.Arsenal.WATCHER:
+                return "Watcher";
             default:
                 return "UNKNOWN";
             }
@@ -477,6 +496,20 @@ namespace Helpers {
 
         public static Vector3 Shift(Vector3 v) {
             return new Vector3(v.z, v.x, v.y);
+        }
+
+        public static Vector3 Zero(Vector3 v, bool x, bool y, bool z) {
+            if (x) {
+                v.x = 0f;
+            }
+            if (y) {
+                v.y = 0f;
+            }
+            if (z) {
+                v.z = 0f;
+            }
+
+            return v;
         }
     }
 

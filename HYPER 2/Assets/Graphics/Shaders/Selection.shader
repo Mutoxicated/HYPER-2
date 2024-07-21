@@ -8,7 +8,7 @@ Shader "Mutox/Selection"
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparency" }
+        Tags { "Queue"="Transparent" "RenderType"="Opaque" }
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
         Cull Off

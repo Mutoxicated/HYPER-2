@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee42aeab456334438a325b470586d17, type: 3}
   m_Name: ProwlerStat
   m_EditorClassIdentifier: 
-  difficulty: 1
+  difficulty: 2
+  verticality: 1
