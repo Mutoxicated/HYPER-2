@@ -23,13 +23,8 @@ public class SelectedArsenalInfo : MonoBehaviour
     private List<string> ufmtStats = new List<string>();
     private string ufmtCurrentMax;
     private string ufmtRestoreCost;
-    private bool locked = false;
 
     private Gameplay gamePlay;
-
-    public bool Locked {
-        get { return locked; }
-    }
 
     public void DStart(Gameplay gameplay) {
         this.gamePlay = gameplay;
@@ -62,16 +57,10 @@ public class SelectedArsenalInfo : MonoBehaviour
         });
     }
 
-    public void Lock() {
-        locked = true;
-    }
-
-    public void Disable(bool must) {
-        if (!must && locked) { return; }
+    public void Disable() {
         selector.OnDeselect();
         gameObject.SetActive(false);
         mt = Option<MiniTower>.None();
-        locked = false;
     }
 
     public void OnRestoreHP() {
@@ -83,8 +72,8 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Destroy() {
-        selector.Delete(mt.Get().gameObject);
+        selector.Delete();
         mt = Option<MiniTower>.None();
-        Disable(true);
+        Disable();
     }
 }

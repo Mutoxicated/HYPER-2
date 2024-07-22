@@ -110,13 +110,13 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     public void Occupy(GameObject go) {
         occupied = true;
         occupiedWith = new Option<GameObject>(go);
-        gameObject.layer = EditorState.GetLayer(EditorLayer.OCCUPIED);
+        Go.SetLayerRecursive(gameObject, EditorLayer.OCCUPIED);
     }
 
     public void Deoccupy() {
         occupied = false;
         occupiedWith = Option<GameObject>.None();
-        gameObject.layer = EditorState.GetLayer(EditorLayer.INTERACTABLE_ONE);
+        Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
     }
 
     public void Enable() {

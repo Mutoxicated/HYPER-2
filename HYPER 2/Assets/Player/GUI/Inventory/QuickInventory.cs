@@ -46,7 +46,6 @@ public class QuickInventory : MonoBehaviour
             selectedImage.position = new Vector3(5700,0,0);
             Save.rData.SetSelectedIndex(-1);
         });
-  
     }
 
     public void CheckCDs() {

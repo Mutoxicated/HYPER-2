@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Resources.Enemy enemyType;
+    [SerializeField] private GameObject explosion;
     [Header("Settings")]
     [SerializeField] private bool followPath;
     [SerializeField] private float XPWorth = 5f;
@@ -22,10 +23,10 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
     private World.ReportDeath<Enemy> death;
 
     public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root) {
-        this.death = e => {
-            manager.Pools.Get(PoolID.Explosion).ShootObject(e.transform.position, Quaternion.identity);
-        };
-        this.death = death;
+        // this.death = e => {
+        //     manager.Pools.Get(PoolID.Explosion).ShootObject(e.transform.position, Quaternion.identity);
+        // };
+        this.death += death;
         hp = stats.CStart(manager);
 
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
@@ -78,6 +79,8 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
             Player.IncrementXP(XPWorth);
         }
         death.Invoke(this);
+        explosion.transform.parent = null;
+        explosion.SetActive(true);
         Destroy(gameObject);
     }
 

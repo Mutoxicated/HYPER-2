@@ -142,6 +142,7 @@ public class Option<T> {
     }
 
     public delegate void OnAcquisition(T value);
+    public delegate void OnFail();
 
     public class Result {
         private bool success;
@@ -150,9 +151,13 @@ public class Option<T> {
             this.success = success;
         }
 
-        public void Else(OnFail onFail) {
-            if (Successful()) { return; }
+        public Result Else(OnFail onFail, params bool[] conditions) {
+            if (Successful()) { return this; }
+            foreach (var cond in conditions) {
+                if (!cond) { return this; }
+            }
             onFail();
+            return this;
         }
 
         public bool Successful() {
@@ -168,8 +173,6 @@ public class Option<T> {
 
         return new Result(false);
     }
-
-    public delegate void OnFail();
 
     public bool TryGetOr(OnFail fail) {
         if (IsNone()) {

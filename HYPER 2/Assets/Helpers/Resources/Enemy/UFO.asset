@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: UFO
   m_EditorClassIdentifier: 
   statsBase: {fileID: 11400000, guid: baf7b0142a5c56e49ae9e7c823e9e9c7, type: 2}
-  stats: 00000000010000000200000003000000
   modifiers:
-  - 0.5
+  - 0.2
   - 3
   - 2
   - 1.5
+  - 1
   element: 3
   elementImmunities: 02000000
   worth: 1

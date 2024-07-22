@@ -28,19 +28,20 @@ public class Selector : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Delete(GameObject go) {
-        Debug.Log("Delete", go);
-        var towerPos = go.transform.position;
-        Destroy(go);
+    public void Delete() {
+        if (selected.IsNone()) {
+            return;
+        }
+        var towerPos = selected.Get().transform.position;
+        Destroy(selected.Get());
         selected = Option<GameObject>.None();
 
-        var direction = (towerPos-player.Cam.transform.position).normalized;
-        direction.x = 0f;
-        direction.z = 0f;
-
-        stored = Physics.RaycastNonAlloc(new Ray(towerPos, direction),hits,Mathf.Infinity, tileSelectionMask);
-        go.GetComponent<Tile>().Deoccupy();
+        RaycastHit hit;
+        Physics.Raycast(towerPos+Vector3.up, Vector3.down, out hit, Mathf.Infinity);
+        hit.collider.transform.parent.GetComponent<Tile>().Deoccupy();
     }
+
+    private GameObject storedGo;
 
     public void Update() {
         if (player.OnMiddleButton) {
@@ -52,13 +53,37 @@ public class Selector : MonoBehaviour
         if (stored == 0 | input.IsPointerOverGameObject(Mouse.current.deviceId)) {
             currentStat = Option<StatsTemplate>.None();
             selection.Disable();
-            selectedArsenalInfo.Disable(false);
-            if (!selectedArsenalInfo.Locked)
-                selected = Option<GameObject>.None();
             return;
+        }
+        storedGo = hits[0].collider.gameObject;
+
+        if (storedGo.layer == EditorState.GetLayer(EditorLayer.OCCUPIED) | storedGo.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
+            selection.Disable();
+        }else {
+            UpdateSelection();
+        }
+
+        if (player.OnLeftClick) {
+            qi.GetSelectedArsenal().GetAndThen(a => {
+                if (storedGo.gameObject && storedGo.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
+                    return;
+                }
+                var instance = manager.World.InstantiateMiniTower(storedGo.transform.position, a, mt => { mt.CStart(manager); });
+                hits[0].collider.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
+                selected = new Option<GameObject>(instance.gameObject);
+                selectedArsenalInfo.Enable(instance);
+            }).Else(() => {
+                selectedArsenalInfo.Disable();
+                selected = Option<GameObject>.None();
+            }, storedGo.layer != EditorState.GetLayer(EditorLayer.MINI_TOWER));
         }
     }
 
+    /// <summary>
+    /// Only call when the hits[0] layer is:
+    /// 1. Unoccupied
+    /// 2. Not a mini tower
+    /// </summary>
     private void UpdateSelection() {
         var arsenal = qi.GetSelectedArsenal();
         bool got = arsenal.GetAndThen(a => {

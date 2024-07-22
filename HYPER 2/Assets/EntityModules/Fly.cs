@@ -7,8 +7,12 @@ using static Stat;
 
 public class Fly : MonoBehaviour
 {
+    [SerializeField] private Transform hypotheticalLook;
+    [SerializeField] private Option<Transform> body;
     [SerializeField] private Stats stats;
+    [SerializeField] private float accelRate;
 
+    private float accel = 1f;
     private float delta;
     private Quaternion look;
     private GameObject target;
@@ -19,30 +23,36 @@ public class Fly : MonoBehaviour
 
     private void Update() {
         stats.Range.GetAndThen(r => {
-            bool got = r.Value.Find(g => {
-                return g.gameObject.layer == EditorState.GetLayer(EditorLayer.DEFAULT);
-            }).GetAndThen(g => {
+            r.Value.Target().GetAndThen(g => {
                 target = g;
-            }).Successful();
-
-            if (!got) {
+            }).Else(() => {
                 target = stats.Manager.Tower;
-            }
+            });
 
-            look = Quaternion.LookRotation(target.transform.position+Vector3.up*5f-transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime*0.5f);
-            Debug.Log("1:" +transform.eulerAngles);
-            Debug.Log("2:" +look.eulerAngles);
-            var uh = new Vector3(
-                Num.SafeDiv(transform.eulerAngles.x, look.eulerAngles.x),
-                Num.SafeDiv(transform.eulerAngles.y, look.eulerAngles.y),
-                Num.SafeDiv(transform.eulerAngles.z, look.eulerAngles.z)
-            );
-            Debug.Log("C: "+uh);
-            Vec3.Abs(ref uh);
-            delta = (uh.x+uh.y+uh.z)/3f;
+            look = Quaternion.LookRotation(target.transform.position+Vector3.up*4f-transform.position);
+            transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime*0.6f);
+
+            hypotheticalLook.rotation = look;
+            var vdelta = hypotheticalLook.forward-transform.forward;
+            Vec3.Abs(ref vdelta);
+            delta = (vdelta.x+vdelta.y+vdelta.z)/3f;
+            delta -= 1;
+            delta = Mathf.Abs(delta);
+            if (delta > 0.55f) {
+                accel += accelRate*stats.Mod[RATE] * Time.deltaTime;
+            }else {
+               accel -= accelRate*stats.Mod[RATE] * Time.deltaTime;
+                if (accel < 1) {
+                    accel = 1;
+                }
+            }
             Debug.Log(delta);
-            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED), Time.deltaTime*delta);
+            body.GetAndThen(b => {
+                b.rotation = Quaternion.Lerp(b.rotation, b.rotation*Quaternion.AngleAxis(delta+accel, Vector3.forward), Time.deltaTime*2f);
+            });
+            //Debug.Log("C: "+uh);
+            //Debug.Log(delta);
+            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED)*accel, Time.deltaTime*delta);
         });
     }
 }
