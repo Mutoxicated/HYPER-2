@@ -6,9 +6,9 @@ using TMPro;
 
 public enum Direction {
     RIGHT,
+    DOWN,
     LEFT,
     UP,
-    DOWN,
     UNKNOWN
 }
 

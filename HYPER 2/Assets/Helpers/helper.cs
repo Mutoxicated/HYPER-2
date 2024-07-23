@@ -429,16 +429,11 @@ namespace Helpers {
 
     public static class Num {
         public static int Wrap(int value, int min, int max) {
-            if (value > max) {
-                //Debug.Log("value: "+value);
-                float length = max-min;
-                //Debug.Log("length: "+length);
-                int times = Mathf.CeilToInt(value/length); 
-                //Debug.Log("times: "+times);
-                return Mathf.FloorToInt(length)*times-value;
-            }else {
-                return value;
+            var length = max-min+1;
+            while (value > max) {
+                value -= length;
             }
+            return value;
         }
 
         public static float SafeDiv(float val, float val2) {

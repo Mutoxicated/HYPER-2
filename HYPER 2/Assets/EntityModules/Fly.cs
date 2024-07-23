@@ -46,7 +46,7 @@ public class Fly : MonoBehaviour
                     accel = 1;
                 }
             }
-            Debug.Log(delta);
+            //Debug.Log(delta);
             body.GetAndThen(b => {
                 b.rotation = Quaternion.Lerp(b.rotation, b.rotation*Quaternion.AngleAxis(delta+accel, Vector3.forward), Time.deltaTime*2f);
             });

@@ -411,6 +411,7 @@ public class WorldGenerator : MonoBehaviour
         var path = instance.GetComponent<Path>();
         paths.Add(path);
         path.CStart(player.Manager, tiles[index]);
+        //path.Widen();
     }
 
     private void CreatePaths() {
