@@ -28,7 +28,7 @@ public class MaterialChanger : MonoBehaviour
     [SerializeField] private QueueMode queueMode;
     [SerializeField] private int offset;
 
-    private Material material;
+    public Material material;
 
     public int @Type {
         set { 
@@ -37,9 +37,8 @@ public class MaterialChanger : MonoBehaviour
         get { return @Type; }
     }
 
-    public Color Color {
-        set { color = value; }
-        get { return color; }
+    public ref Color Color {
+        get { return ref color; }
     }
 
     void Awake()
@@ -54,6 +53,10 @@ public class MaterialChanger : MonoBehaviour
 
         ChangeColor(color, false);
         ChangeQueue(queueMode+offset, false);
+    }
+
+    public void CStart() {
+        Awake();
     }
 
     public void ChangeColor(Color color, bool overrideSettings) {

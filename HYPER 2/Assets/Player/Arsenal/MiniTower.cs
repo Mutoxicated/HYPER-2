@@ -110,6 +110,8 @@ public class MiniTower : MonoBehaviour, IDamageable, ISideBelonger<MiniTower>
 
     public void Damage(Stats stats, float amount)
     {
+        if (hp.Current < 0) { return; }
+
         hp.Current -= amount;
         if (hp.Current <= 0) {
             Die(Option<Stats>.None());
@@ -117,7 +119,19 @@ public class MiniTower : MonoBehaviour, IDamageable, ISideBelonger<MiniTower>
     }
 
     public void BacteriaDamage(Element bt, float amount) {
+        if (hp.Current < 0) { return; }
+        
         hp.Current -= amount;
+        if (hp.Current <= 0) {
+            Die(Option<Stats>.None());
+        }
+    }
+
+    public void ExplosionDamage(Explosion.Strength strength, float additive)
+    {
+        if (hp.Current < 0) { return; }
+        
+        hp.Current -= additive+(int)strength;
         if (hp.Current <= 0) {
             Die(Option<Stats>.None());
         }

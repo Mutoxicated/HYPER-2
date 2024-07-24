@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Stat;
 
-public class Bullet : MonoBehaviour
+public interface IConstruct {
+    void CStart(Manager manager, Quaternion direction, Stats other);
+    void CStart(Manager manager, Quaternion direction);
+}
+
+public class Bullet : MonoBehaviour, IConstruct
 {
     private const float bulletLength = 90f;
     private const float expiration = 5f;
@@ -11,7 +16,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Stats stats;
 
     private Vector3 scale;
-    private Quaternion lookAt;
 
     private bool DEAD_RIGHT_NOW = false;
     private float t;
@@ -31,7 +35,7 @@ public class Bullet : MonoBehaviour
 
     public void Update() {
         t += Time.deltaTime;
-        if (t >= 5f) {
+        if (t >= expiration) {
             DEAD_RIGHT_NOW = true;
         }
 

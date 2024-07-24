@@ -391,7 +391,7 @@ namespace Helpers {
                 return "WaterBacteria";
             case FireBacteria:
                 return "FireBacteria";
-            case Explosion:
+            case PoolID.Explosion:
                 return "Explosion";
             default: 
                 return "Unknown";

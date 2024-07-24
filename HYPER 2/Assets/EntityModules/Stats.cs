@@ -110,4 +110,8 @@ public class Stats : MonoBehaviour
             mod[k] *= other.mod[k];
         }
     }
+
+    public bool ImmuneTo(Element elm) {
+        return StatElmImmunities.Contains(elm);
+    }
 }

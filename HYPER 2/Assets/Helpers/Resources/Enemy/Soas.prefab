@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7536109144670785967}
   - component: {fileID: 1883687730350430261}
   - component: {fileID: 6652731775108236531}
+  - component: {fileID: 2901140250104818730}
   m_Layer: 10
   m_Name: Soas
   m_TagString: Untagged
@@ -69,7 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 597442823549275407}
   enemyType: 2
-  explosion: {fileID: 2348206318774251820}
   followPath: 1
   XPWorth: 15
 --- !u!136 &7536109144670785967
@@ -115,6 +115,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &2901140250104818730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2917521941778588663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81926a3603f015e4bb20a0e22ca73596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 2348206318774251820}
 --- !u!1 &3459381392782159264
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +250,7 @@ MonoBehaviour:
   changeQueue: 0
   queueMode: 0
   offset: 0
+  material: {fileID: 0}
 --- !u!114 &47715133604136468
 MonoBehaviour:
   m_ObjectHideFlags: 0

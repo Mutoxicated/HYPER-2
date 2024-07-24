@@ -25,6 +25,10 @@ public class Gameplay : MonoBehaviour
     public const int unlock2ndPath = 5;
     public const int unlock3rdPath = 10;
     public const int unlock4thPath = 20;
+    public const int unlock1stWidePath = 30;
+    public const int unlock2ndWidePath = 40;
+    public const int unlock3rdWidePath = 50;
+    public const int unlock4ndWidePath = 60;
 
     [SerializeField] private QuantitativeRound quantitativeRound;
     [SerializeField] private Interval waitInterval;
@@ -38,10 +42,38 @@ public class Gameplay : MonoBehaviour
         get { return world; }
     }
 
+    private void UnlockLogic() {
+        var lvl = Save.rData.Lvl;
+
+        if (lvl >= unlock2ndPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock3rdPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock4thPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock1stWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock2ndWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock3rdWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock4ndWidePath) {
+            world.WG.WidenNextPath();
+        }
+    }
+
     public void DStart(Player player, Manager manager) {
         self = this;
         this.manager = manager;
         world = manager.World;
+
+        UnlockLogic();
 
         player.AddLvlUpListener(lvl => {
             switch (lvl) {
@@ -54,9 +86,20 @@ public class Gameplay : MonoBehaviour
                 case unlock4thPath:
                     world.WG.CreateNextPath();
                     break;
+                case unlock1stWidePath:
+                    world.WG.WidenNextPath();
+                    break;
+                case unlock2ndWidePath:
+                    world.WG.WidenNextPath();
+                    break;
+                case unlock3rdWidePath:
+                    world.WG.WidenNextPath();
+                    break;
+                case unlock4ndWidePath:
+                    world.WG.WidenNextPath();
+                    break;
             }
         });
-        player.onLvlUp.Invoke(Save.rData.Lvl);
         
         var iter = Resources.IterEnemyStats();
         using (iter) {
@@ -87,11 +130,8 @@ public class Gameplay : MonoBehaviour
         waitInterval.Disable();
     }
 
-    public void Update() {
-        linearT += Time.deltaTime/30f;
-    }
-
     public void EndWave() {
+        linearT += Time.deltaTime/10f;
         waitInterval.Enable();
     }
 }

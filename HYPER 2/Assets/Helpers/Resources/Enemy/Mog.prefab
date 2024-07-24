@@ -103,6 +103,7 @@ MonoBehaviour:
   changeQueue: 0
   queueMode: 0
   offset: 0
+  material: {fileID: 0}
 --- !u!1 &3490804994053668935
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +119,7 @@ GameObject:
   - component: {fileID: 6798698503118529780}
   - component: {fileID: 1561741863301072786}
   - component: {fileID: 7898778864201012105}
+  - component: {fileID: 3682642577540786494}
   m_Layer: 10
   m_Name: Mog
   m_TagString: Untagged
@@ -204,7 +206,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 7108315076602090061}
   enemyType: 0
-  explosion: {fileID: 2582654405024354517}
   followPath: 1
   XPWorth: 7
 --- !u!114 &1561741863301072786
@@ -234,6 +235,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7108315076602090061}
+--- !u!114 &3682642577540786494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3490804994053668935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81926a3603f015e4bb20a0e22ca73596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 2582654405024354517}
 --- !u!1 &8742178766524011794
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,8 @@ public class Resources : MonoBehaviour
         FIRST_MT = 0,
         RADMOL,
         SECOND_MT,
-        WATCHER
+        WATCHER,
+        BOOMER
     }
 
     public enum Enemy {
@@ -26,7 +27,8 @@ public class Resources : MonoBehaviour
     public enum Bullet {
         NORMAL = 0,
         RADIATING,
-        WIND
+        WIND,
+        BOOM
     }
 
     // public enum Extra {

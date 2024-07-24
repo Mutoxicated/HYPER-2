@@ -64,18 +64,17 @@ public class Selector : MonoBehaviour
         }
 
         if (player.OnLeftClick) {
+            if (storedGo.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
+                selectedArsenalInfo.Enable(storedGo.transform.parent.GetComponent<MiniTower>());
+                selected = new Option<GameObject>(storedGo.transform.parent.gameObject);
+                return;
+            }
             qi.GetSelectedArsenal().GetAndThen(a => {
-                if (storedGo.gameObject && storedGo.layer == EditorState.GetLayer(EditorLayer.MINI_TOWER)) {
-                    return;
-                }
                 var instance = manager.World.InstantiateMiniTower(storedGo.transform.position, a, mt => { mt.CStart(manager); });
                 hits[0].collider.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
                 selected = new Option<GameObject>(instance.gameObject);
                 selectedArsenalInfo.Enable(instance);
-            }).Else(() => {
-                selectedArsenalInfo.Disable();
-                selected = Option<GameObject>.None();
-            }, storedGo.layer != EditorState.GetLayer(EditorLayer.MINI_TOWER));
+            });
         }
     }
 

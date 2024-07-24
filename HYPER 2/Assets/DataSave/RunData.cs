@@ -86,7 +86,7 @@ public class RunData
 
     public void UpdateQIACapacity(int capacity) {
         quickInventoryArsenals.Capacity = capacity;
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i <= capacity; i++) {
             if (quickInventoryArsenals.Count < i) {
                 quickInventoryArsenals.Add(Option<Resources.Arsenal>.None());
             }

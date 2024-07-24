@@ -12,7 +12,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private AudioSource shootSFX;
 
-    public delegate void BulletConstructor(Bullet bullet);
+    public delegate void BulletConstructor(IConstruct bullet);
 
     private List<GameObject> enemies = new List<GameObject>();
 
@@ -38,13 +38,13 @@ public class Shoot : MonoBehaviour
         enemies.Clear();
     }
     
-    private Bullet Action(Vector3 postion, BulletConstructor bc) {
+    private GameObject Action(Vector3 postion, BulletConstructor bc) {
         var instance = Instantiate(Resources.GetBullet(bullet));
-        var b = instance.GetComponent<Bullet>();
+        var b = instance.GetComponent<IConstruct>();
         instance.transform.position = postion;
         
         bc(b);
-        return b;
+        return instance;
     }
 
     private Bullet Action(BulletConstructor bc) {
