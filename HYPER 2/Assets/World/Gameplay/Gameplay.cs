@@ -45,27 +45,27 @@ public class Gameplay : MonoBehaviour
     private void UnlockLogic() {
         var lvl = Save.rData.Lvl;
 
-        if (lvl >= unlock2ndPath) {
-            world.WG.CreateNextPath();
-        }
-        if (lvl >= unlock3rdPath) {
-            world.WG.CreateNextPath();
-        }
-        if (lvl >= unlock4thPath) {
-            world.WG.CreateNextPath();
-        }
-        if (lvl >= unlock1stWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock2ndWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock3rdWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock4ndWidePath) {
-            world.WG.WidenNextPath();
-        }
+        // if (lvl >= unlock2ndPath) {
+        //     world.WG.CreateNextPath();
+        // }
+        // if (lvl >= unlock3rdPath) {
+        //     world.WG.CreateNextPath();
+        // }
+        // if (lvl >= unlock4thPath) {
+        //     world.WG.CreateNextPath();
+        // }
+        // if (lvl >= unlock1stWidePath) {
+        //     world.WG.WidenNextPath();
+        // }
+        // if (lvl >= unlock2ndWidePath) {
+        //     world.WG.WidenNextPath();
+        // }
+        // if (lvl >= unlock3rdWidePath) {
+        //     world.WG.WidenNextPath();
+        // }
+        // if (lvl >= unlock4ndWidePath) {
+        //     world.WG.WidenNextPath();
+        // }
     }
 
     public void DStart(Player player, Manager manager) {

@@ -8,6 +8,7 @@ public class PlayOnEnable : MonoBehaviour
     [SerializeField] private Option<AudioSource> audio;
 
     private void OnEnable() {
+        Debug.Log("enabled at "+gameObject.name, gameObject);
         ps.Play();
         audio.GetAndThen(a => {
             a.Play();
