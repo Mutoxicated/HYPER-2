@@ -23,6 +23,7 @@ public class Explosion : MonoBehaviour {
     private Vector3 expandedScale;
     private List<GameObject> explodedGos = new List<GameObject>();
     private Color initColor;
+    private Color color;
     private Material material;
 
     public void CStart() {
@@ -37,6 +38,7 @@ public class Explosion : MonoBehaviour {
         scaleModifier.postWrapMode = WrapMode.ClampForever;
 
         initColor = mc.Color;
+        color = mc.Color;
         mc.CStart();
         material = mc.material;
     }
@@ -53,7 +55,8 @@ public class Explosion : MonoBehaviour {
         transform.localScale = expandedScale*scaleT;
 
         t = Mathf.Abs((time / expiration)-1);
-        mc.Color.a = initColor.a*t;
+        color.a = initColor.a*t;
+        mc.ChangeColor(color, false);
 
         if (time >= expiration/2f) {
             material.SetFloat("_Intact", Mathf.Lerp(expiration/2f, expiration, time));

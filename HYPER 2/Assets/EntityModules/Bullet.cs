@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Stat;
 
-public interface IConstruct {
+public interface IBulletConstruct {
     void CStart(Manager manager, Quaternion direction, Stats other);
-    void CStart(Manager manager, Quaternion direction);
 }
 
-public class Bullet : MonoBehaviour, IConstruct
+public class Bullet : MonoBehaviour, IBulletConstruct
 {
     private const float bulletLength = 90f;
     private const float expiration = 5f;
@@ -21,14 +21,7 @@ public class Bullet : MonoBehaviour, IConstruct
     private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
-        stats.CStart(manager);
-        stats.Inherit(other);
-        transform.rotation = direction;
-        gameObject.SetActive(true);
-    }
-
-    public void CStart(Manager manager, Quaternion direction) {
-        stats.CStart(manager);
+        stats.CStart(manager, other);
         transform.rotation = direction;
         gameObject.SetActive(true);
     }
@@ -59,10 +52,19 @@ public class Bullet : MonoBehaviour, IConstruct
         transform.localScale = scale;
     }
 
-    public void OnTriggerEnter(Collider collider) {
+     public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
         collider.gameObject.GetComponent<IDamageable>()?.Damage(stats, stats.get(DAMAGE));
 
-        DEAD_RIGHT_NOW = true;
+        var damageable = collider.gameObject.GetComponent<IDamageable>();
+        int? xp = damageable?.Damage(stats, stats.get(DAMAGE));
+        stats.Inheriter.GetAndThen(s => {
+            if (s.StatSide == Stats.Side.PLAYER) {
+                Player.IncrementXP(xp ?? 0);
+                s.IncXP(xp ?? 0);
+            }
+        });
+
+        stats.Die(Option<Stats>.None());
     }
 }

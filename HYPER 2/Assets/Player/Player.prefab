@@ -218,6 +218,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 15474457-e1d0-407d-b863-ef5cfcba3ea3
     m_ActionName: UI/Delete[/Keyboard/delete]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e31b7dd3-2983-45eb-b014-793fec472be2
+    m_ActionName: Player/Quit[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

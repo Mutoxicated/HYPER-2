@@ -59,9 +59,9 @@ Shader "Mutox/ObjectPixelation"
             ENDCG
         }
         GrabPass{ "_GrabTransparentTexture" }
-        ZWrite Off
-        Cull Back
-        Blend Off
+        //ZWrite Off
+        //Cull Back
+        //Blend Off
         Pass
         {
             CGPROGRAM

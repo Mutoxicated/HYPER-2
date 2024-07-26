@@ -14,12 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatsFields
   statsBase: {fileID: 11400000, guid: 67704fdc349c0af41ae9232210002ed8, type: 2}
   modifiers:
+  - 0.55
   - 1
-  - 1
-  - 1
+  - 0.11
   - 0.8
   - 0.5
+  incrementers:
+  - 0.02
+  - 0.02
+  - 0.02
+  - 0.02
+  - -0.01
   element: 0
   elementImmunities: 
+  maxXp: 100
+  xpKillWorth: 15
+  xpHitWorth: 3
   worth: 6
   unlockAt: 1

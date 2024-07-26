@@ -119,9 +119,9 @@ public class ItemSorter : MonoBehaviour
 
     public void RevertItemScaling() {
         if (items.Count == 0) { return; }
-        Debug.Log("Reverting item scaling:");
+        //Debug.Log("Reverting item scaling:");
         foreach (var item in items) {
-            Debug.Log("  Item "+item.localScale+" become "+initScale);
+            //Debug.Log("  Item "+item.localScale+" become "+initScale);
             item.localScale = initScale;
         }
     }

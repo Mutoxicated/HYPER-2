@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayOnEnable : MonoBehaviour
 {
     [SerializeField] private ParticleSystem ps;
-    [SerializeField] private Option<AudioSource> audio;
+    [SerializeField] private Option<AudioSource> audioSource;
 
     private void OnEnable() {
         Debug.Log("enabled at "+gameObject.name, gameObject);
         ps.Play();
-        audio.GetAndThen(a => {
+        audioSource.GetAndThen(a => {
             a.Play();
         });
     }

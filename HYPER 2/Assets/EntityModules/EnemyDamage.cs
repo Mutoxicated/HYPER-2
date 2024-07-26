@@ -2,7 +2,6 @@ using UnityEngine;
 using static Stat;
 
 public class EnemyDamage : MonoBehaviour {
-    [SerializeField] private Enemy enemy;
     [SerializeField] private Stats stats;
     private Option<IDamageable> currentlyColliding = Option<IDamageable>.None();
 
@@ -19,7 +18,7 @@ public class EnemyDamage : MonoBehaviour {
             //Debug.Log("Contains Damageable");
             currentlyColliding = new Option<IDamageable>(damageable);
             IntervalDamage();
-            enemy.Die(new Option<Stats>(stats));
+            stats.Die(new Option<Stats>(stats));
         }
     }
 

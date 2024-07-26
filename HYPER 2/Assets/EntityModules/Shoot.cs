@@ -7,12 +7,11 @@ public class Shoot : MonoBehaviour
     [SerializeField] private Resources.Bullet bullet;
     [SerializeField] private Stats stats;
     [SerializeField] private int shootAmount = 1;
-    [SerializeField] private bool inherit = false;
     [SerializeField] private Interval shootInterval;
     [SerializeField] private Transform firePoint;
     [SerializeField] private AudioSource shootSFX;
 
-    public delegate void BulletConstructor(IConstruct bullet);
+    public delegate void BulletConstructor(IBulletConstruct bullet);
 
     private List<GameObject> enemies = new List<GameObject>();
 
@@ -27,10 +26,7 @@ public class Shoot : MonoBehaviour
 
             var rotation = Quaternion.LookRotation(stats.Target(i).Get().transform.position-firePoint.position);
             shot = true;
-            if (inherit) 
-                Action(firePoint.position, b => b.CStart(stats.Manager, rotation, stats));
-            else
-                Action(firePoint.position, b => b.CStart(stats.Manager, rotation));
+            Action(firePoint.position, b => b.CStart(stats.Manager, rotation, stats));
         }
         if (shot) {
             shootSFX.Play();
@@ -40,7 +36,7 @@ public class Shoot : MonoBehaviour
     
     private GameObject Action(Vector3 postion, BulletConstructor bc) {
         var instance = Instantiate(Resources.GetBullet(bullet));
-        var b = instance.GetComponent<IConstruct>();
+        var b = instance.GetComponent<IBulletConstruct>();
         instance.transform.position = postion;
         
         bc(b);

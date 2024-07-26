@@ -447,6 +447,13 @@ namespace Helpers {
         public static bool IsZero(float val) {
             return val < 0.01f && val > -0.01f;
         }
+
+        public static float MinLimit(float val, float val2) {
+            if (val < val2) {
+                return val2;
+            }
+            return val;
+        }
     }
 
     public static class Vec3 {

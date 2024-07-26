@@ -4,14 +4,16 @@ using UnityEngine;
 using Helpers;
 using static Stat;
 
-public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
+[RequireComponent(typeof(Stats))]
+public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Resources.Enemy enemyType;
+    [SerializeField] private HitVisual hitVisual;
+    [SerializeField] private AudioSource hitSFX;
     [Header("Settings")]
     [SerializeField] private bool followPath;
     [SerializeField] private float XPWorth = 5f;
-    private health hp;
     
     private Branch currentBranch;
 
@@ -21,12 +23,19 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
 
     private World.ReportDeath<Enemy> death;
 
+    private void PrepareConfiguration() {
+        stats.ConfigureOnDie(s => {
+            death.Invoke(this);
+        });
+    }
+
     public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root) {
         // this.death = e => {
         //     manager.Pools.Get(PoolID.Explosion).ShootObject(e.transform.position, Quaternion.identity);
         // };
         this.death += death;
-        hp = stats.CStart(manager);
+        stats.CStart(manager);
+        PrepareConfiguration();
 
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
 
@@ -64,50 +73,6 @@ public class Enemy : MonoBehaviour, IDamageable, ISideBelonger<Enemy>
                 dir = Dir.ToVec(currentBranch.direction);
                 look = Quaternion.LookRotation(currentBranch.end-currentBranch.start);
             }
-        }
-    }
-
-    public void Die(Option<Stats> senderStats) {
-        if (senderStats.IsNone()) {
-            death.Invoke(this);
-
-            Destroy(gameObject);
-            return;
-        }
-        if (senderStats.Get().StatSide == Stats.Side.PLAYER) {
-            Player.IncrementXP(XPWorth);
-        }
-        death.Invoke(this);
-        Destroy(gameObject);
-    }
-
-    public void Damage(Stats stats, float amount)
-    {
-        //Debug.Log("["+hp.Current+"] Being damaged: "+amount);
-        //Debug.Log("from "+stats.gameObject.name);
-        if (hp.Current <= 0) { return; }
-
-        hp.Current -= amount;
-        if (hp.Current <= 0) {
-            Die(new Option<Stats>(stats));
-        }
-    }
-
-    public void BacteriaDamage(Element bt, float amount) {
-        if (hp.Current <= 0) { return; }
-
-        hp.Current -= amount;
-        if (hp.Current <= 0) {
-            Die(Option<Stats>.None());
-        }
-    }
-
-    public void ExplosionDamage(Explosion.Strength strength, float additive) {
-        if (hp.Current <= 0) { return; }
-
-        hp.Current -= additive+(int)strength;
-        if (hp.Current <= 0) {
-            Die(Option<Stats>.None());
         }
     }
 

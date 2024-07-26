@@ -19,7 +19,8 @@ public class Gameplay : MonoBehaviour
 
     // Settings
     public int enemiesAmount = 10;
-    
+
+    public const int MiniTowerLvlUpHPBonus = 30;
 
     // Unlocks
     public const int unlock2ndPath = 5;

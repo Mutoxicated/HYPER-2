@@ -58,9 +58,8 @@ public class Path : MonoBehaviour
 
     private int amount = 0;
     private List<Neighbor> buffer = new List<Neighbor>();
-    private int noFinds = 0;
 
-    private Manager manager;
+    //private Manager manager;
     private IRound round;
 
     public void DestroyPath() {
@@ -71,7 +70,7 @@ public class Path : MonoBehaviour
     }
 
     public void CStart(Manager manager, Tile start) {
-        this.manager = manager;
+        //this.manager = manager;
         world = manager.World;
         wg = world.WG;
         start.Enable();

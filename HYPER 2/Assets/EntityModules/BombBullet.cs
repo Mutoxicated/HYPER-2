@@ -1,7 +1,7 @@
 using UnityEngine;
 using static Stat;
 
-public class BombBullet : MonoBehaviour, IConstruct {
+public class BombBullet : MonoBehaviour, IBulletConstruct {
     private const float expiration = 5f;
 
     [SerializeField] private Stats stats;
@@ -42,6 +42,15 @@ public class BombBullet : MonoBehaviour, IConstruct {
     public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
         collider.gameObject.GetComponent<IDamageable>()?.Damage(stats, stats.get(DAMAGE));
+
+        var damageable = collider.gameObject.GetComponent<IDamageable>();
+        int? xp = damageable?.Damage(stats, stats.get(DAMAGE));
+        stats.Inheriter.GetAndThen(s => {
+            if (s.StatSide == Stats.Side.PLAYER) {
+                Player.IncrementXP(xp ?? 0);
+                s.IncXP(xp ?? 0);
+            }
+        });
 
         Die();
     }
