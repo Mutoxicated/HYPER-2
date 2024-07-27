@@ -461,10 +461,10 @@ public class WorldGenerator : MonoBehaviour
         };
         // find inelligible tiles
         for (int i = 1; i < range.Count; i++) {
-            var tile = tiles[range[i]];
-            if (tile.gameObject.layer == EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO) | 
-                tile.gameObject.layer == EditorState.GetLayer(EditorLayer.GOLD) |
-                tile.Occupied) {
+            var _tile = tiles[range[i]];
+            if (_tile.gameObject.layer == EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO) | 
+                _tile.gameObject.layer == EditorState.GetLayer(EditorLayer.GOLD) |
+                _tile.Occupied) {
                 points.Add(range[i]);
             }
         }
@@ -480,7 +480,29 @@ public class WorldGenerator : MonoBehaviour
         var point2 = point+1;
 
         var index = Mathf.RoundToInt(points[point]+(points[point2]-points[point])/2);
-        tiles[index].Goldify();
+        var tile = tiles[index];
+        var instance = Instantiate(goldPilePrefab, tile.transform.position-new Vector3(-1,0,1)*tileSize, Quaternion.identity);
+        tile.Goldify(instance);
+        var nbs = tile.GetNeighbors();
+        Direction directionToLookFor = Direction.UNKNOWN;
+        List<Neighbor> newNbs = new List<Neighbor>();
+        foreach (var nb in nbs) {
+            if (nb.Direction == Direction.LEFT) {
+                nb.Tile.Goldify(instance);
+                newNbs = nb.Tile.GetNeighbors();
+                directionToLookFor = Direction.UP;
+            }else if (nb.Direction == Direction.UP) {
+                nb.Tile.Goldify(instance);
+                newNbs = nb.Tile.GetNeighbors();
+                directionToLookFor = Direction.LEFT;
+            }
+        }
+        foreach (var nb in newNbs) {
+            if (nb.Direction == directionToLookFor) {
+                nb.Tile.Goldify(instance);
+                break;
+            }
+        }
     }
 
     int counter = 0;

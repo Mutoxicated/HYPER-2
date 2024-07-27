@@ -142,10 +142,10 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         mc.ChangeColor(true);
     }
 
-    public void Goldify() {
+    public void Goldify(GameObject occupiedBy) {
         if (!lit) { return; }
 
-        Go.SetLayerRecursive(gameObject, EditorLayer.GOLD);
+        Occupy(occupiedBy);
         mc.ChangeColor(goldColor, true);
     }
 

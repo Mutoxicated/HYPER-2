@@ -7,7 +7,7 @@ using UnityEngine;
 public enum PoolID {
     WaterBacteria,
     FireBacteria,
-    Explosion
+    NumPopup
 }
 
 public class ObjectPool : MonoBehaviour

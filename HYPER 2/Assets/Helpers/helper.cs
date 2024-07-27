@@ -397,8 +397,8 @@ namespace Helpers {
                 return "WaterBacteria";
             case FireBacteria:
                 return "FireBacteria";
-            case PoolID.Explosion:
-                return "Explosion";
+            case PoolID.NumPopup:
+                return "NumPopup";
             default: 
                 return "Unknown";
             } 
