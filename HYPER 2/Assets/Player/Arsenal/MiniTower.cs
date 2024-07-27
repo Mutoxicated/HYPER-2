@@ -34,6 +34,7 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
     [SerializeField] private Interval DOTInterval;
     [SerializeField] private Resources.Arsenal arsenal;
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
+    [SerializeField] private Sound deathSound;
 
     private World.ReportDeath<MiniTower> death;
 
@@ -53,17 +54,10 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         r.AddMTState(new MTState(Stats.Mod, transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
     }
 
-    private void PrepareConfiguration() {
-        stats.ConfigureOnDie(s => {
-            death.Invoke(this);
-        });
-    }
-
     public void CStart(Manager manager) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager);
-        PrepareConfiguration();
 
         gameObject.SetActive(true);
         DOTInterval.Enable();
@@ -73,7 +67,6 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager, state);
-        PrepareConfiguration();
 
         //transform.position = state.position;
 
@@ -89,8 +82,11 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         stats.RestoreHP();
     }
 
-    public void OnDestroy() {
+    public void OnDisable() {
         PublicEvent.onSaveRun -= StoreMTState;
+        death.Invoke(this);
+        if (!gameObject.scene.isLoaded) { return; }
+        deathSound.Play();
     }
 
     public Stats.Side Side()

@@ -40,7 +40,7 @@ public class RunData
     	__xp = val;
     }
 
-    [SerializeField] private int __lvl = 20;
+    [SerializeField] private int __lvl = 30;
     
     public int Lvl {
     	get { return __lvl; }
@@ -50,6 +50,16 @@ public class RunData
     	__lvl = val;
     }
     //MACRO_END
+    [SerializeField] private float __linearT = 1f;
+
+    public float LinearTime {
+        get { return __linearT; }
+    }
+    
+    public void IncLinearTime(float amount) {
+        __linearT += amount;
+    }
+
     [SerializeField] private int __waves = 0;
 
     public int Waves {

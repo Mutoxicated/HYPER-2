@@ -60,6 +60,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private World world;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject pathPrefab;
+    [SerializeField] private GameObject goldPilePrefab;
     [SerializeField] private int layers = 1;
 
     private List<Tile> tiles = new List<Tile>();
@@ -165,6 +166,23 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
+    private int amount = 1;
+
+    public void Expand(int amount = 1) {
+        this.amount = amount;
+        Debug.Log("expand");
+        StartCoroutine("ExpandWorld");
+    }
+
+    private void ExpandWorld() {
+        layers += amount;
+        Layer();
+        world.UpdateRadius();
+        foreach (var path in paths) {
+            path.RepositionPath();
+        }
+    }
+
     public bool IndexBelongsTo(int index, int layer) {
         return index >= GetFirstOfLayer(layer) && index <= GetLastOfLayer(layer);
     }
@@ -181,7 +199,7 @@ public class WorldGenerator : MonoBehaviour
             //Debug.Log("Corner: "+corner+" ["+nth+"]");
             if (index == corner) {
                 //Debug.Log("// Is corner "+ nth);
-                return new Location((LocationType)((nth)*2), 0, GetLayerSurplus(layer));
+                return new Location((LocationType)(nth*2), 0, GetLayerSurplus(layer));
             }
             nth--;
             if (nth <= 0) {
@@ -406,11 +424,11 @@ public class WorldGenerator : MonoBehaviour
         return range;
     }
 
-    private void InstantiatePath(int index) {
+    private void InstantiatePath(int index, int corner1, int corner2) {
         var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
         var path = instance.GetComponent<Path>();
         paths.Add(path);
-        path.CStart(player.Manager, tiles[index]);
+        path.CStart(player.Manager, tiles[index], corner1, corner2);
         //path.Widen();
     }
 
@@ -422,7 +440,7 @@ public class WorldGenerator : MonoBehaviour
         lastRandomCorner = randomCorner2;
         //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
 
-        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2));
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2), randomCorner, randomCorner2);
         //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
         //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
     }
@@ -430,8 +448,39 @@ public class WorldGenerator : MonoBehaviour
     public void CreateNextPath() {
         int next = Num.Wrap(lastRandomCorner+1, 1, 4);
 
-        InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next));
+        InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next), lastRandomCorner, next);
         lastRandomCorner = next;
+    }
+
+    private int mininumTileSpaceForGold = 7;
+
+    public void NewGoldPile() {
+        var range = LayerRange(Mathf.RoundToInt(layers/2));
+        var points = new List<int>() {
+            range[0]
+        };
+        // find inelligible tiles
+        for (int i = 1; i < range.Count; i++) {
+            var tile = tiles[range[i]];
+            if (tile.gameObject.layer == EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO) | 
+                tile.gameObject.layer == EditorState.GetLayer(EditorLayer.GOLD) |
+                tile.Occupied) {
+                points.Add(range[i]);
+            }
+        }
+        // remove tiles that don't have enough space
+        for (int i = points.Count-1; i > 0; i--) {
+            var diff = points[i]-points[i-1];
+            if (diff < mininumTileSpaceForGold) {
+                points.RemoveAt(i);
+            }
+        }
+        // randomly choose where to generate the gold tiles
+        var point = Seed.IntRange(0, points.Count-1);
+        var point2 = point+1;
+
+        var index = Mathf.RoundToInt(points[point]+(points[point2]-points[point])/2);
+        tiles[index].Goldify();
     }
 
     int counter = 0;

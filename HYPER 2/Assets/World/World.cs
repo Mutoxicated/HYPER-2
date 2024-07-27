@@ -98,6 +98,10 @@ public class World : MonoBehaviour
         return list;
     }
 
+    public void UpdateRadius() {
+        borderRadius = worldGenerator.GetLayerRadius();
+    }
+
     public void DStart(Player player) {
         reportEnemyDeath = new ReportDeath<Enemy>(v => {
             enemies.Remove(v);
@@ -116,7 +120,7 @@ public class World : MonoBehaviour
         }
 
         Save.rData.MTs.Clear();
-        borderRadius = worldGenerator.GetLayerRadius();
+        UpdateRadius();
         //Debug.Log(borderRadius);
     }
 }

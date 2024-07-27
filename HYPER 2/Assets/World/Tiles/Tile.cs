@@ -39,8 +39,12 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
     private bool lit = false;
     private bool occupied = false;
+    public bool Occupied {
+        get { return occupied; }
+    }
     private Option<GameObject> occupiedWith;
     private readonly Color litColor = new Color(0.9f,0.06f,0.06f);
+    private readonly Color goldColor = new Color(0.9f, 0.7f, 0f);
     private const float heightOffset = 1f;
 
     private Vector3 initPos;
@@ -121,6 +125,9 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
     public void Enable() {
         if (lit) { return; }
+        if (occupied) {
+            Destroy(occupiedWith.Get());
+        }
         transform.position = initPos+Vector3.up*heightOffset;
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
@@ -133,6 +140,13 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = false;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
         mc.ChangeColor(true);
+    }
+
+    public void Goldify() {
+        if (!lit) { return; }
+
+        Go.SetLayerRecursive(gameObject, EditorLayer.GOLD);
+        mc.ChangeColor(goldColor, true);
     }
 
     private void Awake() {

@@ -13,9 +13,11 @@ public class Explosion : MonoBehaviour {
     private const float expiration = 1.2f;
 
     [SerializeField] private Strength strength;
+    [SerializeField] private float additive = 0f;
     [SerializeField] private Option<Infector> infector;
     [SerializeField] private AnimationCurve scaleModifier;
     [SerializeField] private MaterialChanger mc;
+    [SerializeField] private AudioSource sfx;
 
     private float time = 0f;
     private float scaleT = 1f;
@@ -46,6 +48,7 @@ public class Explosion : MonoBehaviour {
     public void Action() {
         transform.parent = null;
         gameObject.SetActive(true);
+        sfx.Play();
     }
 
     private void Update() {
@@ -57,10 +60,6 @@ public class Explosion : MonoBehaviour {
         t = Mathf.Abs((time / expiration)-1);
         color.a = initColor.a*t;
         mc.ChangeColor(color, false);
-
-        if (time >= expiration/2f) {
-            material.SetFloat("_Intact", Mathf.Lerp(expiration/2f, expiration, time));
-        }
         
         if (time >= expiration) {
             Destroy(gameObject);
@@ -69,6 +68,7 @@ public class Explosion : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider col) {
+        Debug.Log("collided");
         foreach (var exploded in explodedGos) {
             if (exploded == col.gameObject) {
                 return;
@@ -78,7 +78,8 @@ public class Explosion : MonoBehaviour {
         infector.GetAndThen(i => {
             i.Infect(col.gameObject);
         }).Else(() => {
-            col.gameObject.GetComponent<IDamageable>()?.ExplosionDamage(strength, 0);
+            Debug.Log("damage");
+            col.gameObject.GetComponent<IDamageable>()?.ExplosionDamage(strength, additive);
         });
     }
 }

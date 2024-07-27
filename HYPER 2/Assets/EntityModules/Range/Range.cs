@@ -61,7 +61,7 @@ public class Range<T> : MonoBehaviour, IRange where T: ISideBelonger<T>
         if (enemies.Count < offset+1) {
             return Option<GameObject>.None();
         }
-        if (enemies[offset] == null) {
+        if (enemies[offset].IsNull()) {
             enemies.RemoveAt(offset);
             return Target();
         }

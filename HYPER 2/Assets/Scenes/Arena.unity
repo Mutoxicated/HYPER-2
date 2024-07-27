@@ -207,6 +207,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5302765}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &101354891 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6142873641347849532, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+  m_PrefabInstance: {fileID: 301292992882584374}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48f424f3edd8f248a5404141779a9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &272962585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1371,10 @@ PrefabInstance:
       propertyPath: selection
       value: 
       objectReference: {fileID: 1906026086}
+    - target: {fileID: 6142873641347849532, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: towerStats
+      value: 
+      objectReference: {fileID: 2270164303187945445}
     - target: {fileID: 6978081049711193512, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -1483,10 +1498,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1334546281}
-  stats: {fileID: 0}
-  hp:
-    max: 0
-    Current: 0
+  stats: {fileID: 2270164303187945445}
+  dts: {fileID: 101354891}
 --- !u!64 &2270164303187945441
 MeshCollider:
   m_ObjectHideFlags: 0

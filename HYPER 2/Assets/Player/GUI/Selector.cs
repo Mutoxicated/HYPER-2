@@ -10,6 +10,7 @@ public class Selector : MonoBehaviour
     [SerializeField] private LayerMask tileSelectionMask;
     [SerializeField] private Selection selection; 
     [SerializeField] private SelectedArsenalInfo selectedArsenalInfo;
+    [SerializeField] private AudioSource onTowerPlacement;
     private Player player;
     private Ray ray;
     private RaycastHit[] hits = new RaycastHit[1];
@@ -70,6 +71,7 @@ public class Selector : MonoBehaviour
                 return;
             }
             qi.GetSelectedArsenal().GetAndThen(a => {
+                onTowerPlacement.Play();
                 var instance = manager.World.InstantiateMiniTower(storedGo.transform.position, a, mt => { mt.CStart(manager); });
                 hits[0].collider.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
                 selected = new Option<GameObject>(instance.gameObject);

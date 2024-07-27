@@ -45,6 +45,7 @@ public class Path : MonoBehaviour
     }
 
     [SerializeField] private Interval spawnInterval;
+    [SerializeField] private Interval spawnInterval2;
 
     private World world;
     private WorldGenerator wg;
@@ -53,6 +54,8 @@ public class Path : MonoBehaviour
     private Direction mainDirection = Direction.UNKNOWN;
     private Direction currentDirection = Direction.UNKNOWN;
     private Branch root1;
+    private int closestCornerDist1;
+    private float closestCornerPercent;
     private Option<Branch> currentBranch1 = Option<Branch>.None();
     private Branch root2;
 
@@ -69,13 +72,19 @@ public class Path : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void CStart(Manager manager, Tile start) {
+    public void CStart(Manager manager, Tile start, int corner1, int corner2) {
         //this.manager = manager;
         world = manager.World;
         wg = world.WG;
         start.Enable();
         var location = wg.GetLocationOfIndex(start.Index, start.Layer);
         neighbors1.Add(new Neighbor(Direction.UNKNOWN, start, location));
+
+        var diff1 = Mathf.Abs(start.Index-corner1);
+        var diff2 = Mathf.Abs(start.Index-corner2);
+        closestCornerDist1 = diff1 > diff2 ? diff1 : diff2;
+        var length = Mathf.Abs(corner2-corner1);
+        closestCornerPercent = closestCornerDist1/length;
 
         switch (location.Type) {
         case LocationType.LEFT_BOTTOM:
@@ -122,7 +131,7 @@ public class Path : MonoBehaviour
     public void Widen() {
         var offset = Mathf.Abs(neighbors1[0].Location.CornersRange.a) > Mathf.Abs(neighbors1[0].Location.CornersRange.b) ? 3 : 1;
         var sideDirection = (Direction)Num.Wrap((int)mainDirection+offset, 0, 3);
-        var deviatedSideDirection = (Direction)Num.Wrap((int)mainDirection+2, 0, 3);
+        var deviatedSideDirection = Dir.Opposite(mainDirection);
         var currentSideDirection = sideDirection;
         
         var deviatedDirection = Direction.UNKNOWN;
@@ -236,19 +245,31 @@ public class Path : MonoBehaviour
         return root.Get();
     }
 
-    public Interval StartSpawning(IRound round) {
+    public Interval[] StartSpawning(IRound round) {
         this.round = round;
         spawnInterval.Enable();
-        spawnInterval.ResetEarly();
-        return spawnInterval;
+        if (neighbors2.Count != 0) {
+            spawnInterval2.time = 0.3f;
+            spawnInterval2.Enable();
+            return new Interval[] {
+                spawnInterval, spawnInterval2
+            };
+        }
+        return new Interval[] {
+            spawnInterval
+        };
     }
 
     public void StopSpawning() {
         spawnInterval.Disable();
+        spawnInterval2.Disable();
     }
 
     public void IntervalSpawnEnemy() {
         round.Spawn(root1, neighbors1[0].Tile.transform.position+Vector3.up*2.5f);
+    }
+    public void IntervalSpawnEnemy2() {
+        round.Spawn(root1, neighbors2[0].Tile.transform.position+Vector3.up*2.5f);
     }
 
     private void extend() {
@@ -441,4 +462,29 @@ public class Path : MonoBehaviour
         return true;
     }
 
-}
+    public void RepositionPath() {
+        RepositionRoot(neighbors1, root1);
+        RepositionRoot(neighbors2, root2);
+    }
+
+    private void RepositionRoot(List<Neighbor> neighbors, Branch root) {
+        if (neighbors.Count == 0) { return; }
+
+        var nbs = neighbors[0].Tile.GetNeighbors();
+        var opp = Dir.Opposite(mainDirection);
+        Option<Neighbor> nbFound = Option<Neighbor>.None();
+
+        foreach (var nb in nbs) {
+            if (nb.Direction == opp) {
+                nb.Tile.Enable();
+                neighbors.Insert(0, nb);
+                nbFound = new Option<Neighbor>(nb);
+                root.start = nb.Tile.transform.position;
+                break;
+            }
+        }
+        if (nbFound.IsSome()) {
+            RepositionRoot(neighbors, root);
+        }
+    }
+}   

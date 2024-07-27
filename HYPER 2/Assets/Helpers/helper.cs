@@ -264,7 +264,8 @@ namespace Helpers {
         ENEMY,
         OCCUPIED,
         ENEMY_DETECTION,
-        PLAYER_DETECTION
+        PLAYER_DETECTION,
+        GOLD,
     }
 
     public static class EditorState {
@@ -273,6 +274,7 @@ namespace Helpers {
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
             {EditorLayer.INTERACTABLE_TWO, "Interactable2"},
+            {EditorLayer.GOLD, "Gold"},
             {EditorLayer.MINI_TOWER, "MiniTower"},
             {EditorLayer.ENEMY, "Enemy"},
             {EditorLayer.OCCUPIED, "Occupied"},
@@ -349,6 +351,10 @@ namespace Helpers {
             }
 
             return Direction.UNKNOWN;
+        }
+
+        public static Direction Opposite(Direction dir) {
+            return (Direction)Num.Wrap((int)dir+2, 0, 3);
         }
     }
 

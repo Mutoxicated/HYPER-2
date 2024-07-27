@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public interface IRound {
@@ -23,11 +24,9 @@ public class QuantitativeRound : MonoBehaviour, IRound
 
     private float time = 0f;
 
-    private void Awake() {
-    }
-
     private void UpdateOnSpawn() {
         totalSpawns++;
+        //Debug.Log("Update On Spawn ("+totalSpawns+")");
     }
 
     public Enemy Spawn(Branch root, Vector3 pos) {
@@ -41,14 +40,17 @@ public class QuantitativeRound : MonoBehaviour, IRound
         //weirdSpawnFrequency = Seed.IntRange((int)weirdSpawnFrequencyRange.x, (int)weirdSpawnFrequencyRange.y);
         spawnIntervals.Clear();
         foreach (var path in gameplay.World.WG.Paths) {
-            spawnIntervals.Add(path.StartSpawning(this));
+            spawnIntervals.Concat(path.StartSpawning(this));
         }
+        enabled = true;
     }
 
     public void Update() {
         time += Time.deltaTime;
+        //Debug.Log("Enemies Amount: "+gameplay.enemiesAmount);
 
         if (totalSpawns > gameplay.enemiesAmount) {
+            Debug.Log("STOP");
             enabled = false;
             foreach (var path in gameplay.World.WG.Paths) {
                 path.StopSpawning();
@@ -56,7 +58,6 @@ public class QuantitativeRound : MonoBehaviour, IRound
             totalSpawns = 0;
             time = 0f;
             gameplay.EndWave();
-
         }
     }
 }

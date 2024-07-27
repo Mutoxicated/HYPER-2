@@ -20,11 +20,11 @@ MonoBehaviour:
   - 0.8
   - 0.5
   incrementers:
-  - 0.02
-  - 0.02
-  - 0.02
-  - 0.02
-  - -0.01
+  - 0.01
+  - 0
+  - 0.005
+  - 0
+  - -0.005
   element: 0
   elementImmunities: 
   maxXp: 100

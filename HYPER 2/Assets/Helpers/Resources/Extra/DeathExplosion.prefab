@@ -4894,7 +4894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ps: {fileID: 4599366206974855172}
-  audio:
+  audioSource:
     value: {fileID: 451037411402040420}
     none: 0
 --- !u!82 &451037411402040420
@@ -4918,7 +4918,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 45
+  MaxDistance: 65
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0

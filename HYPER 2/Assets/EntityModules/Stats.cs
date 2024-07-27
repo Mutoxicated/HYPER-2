@@ -34,9 +34,9 @@ public class Stats : MonoBehaviour, IDamageable
 
     private Manager manager; // IMMUTABLE
     public delegate void OnDie(Option<Stats> stats);
-    public delegate void OnStatDamage(Stats stats, float amount);
-    public delegate void OnBacteriaDamage(Element elm, float amount);
-    public delegate void OnExplosionDamage(Explosion.Strength strength, float additive);
+    public delegate int OnStatDamage(Stats stats, float amount);
+    public delegate int OnBacteriaDamage(Element elm, float amount);
+    public delegate int OnExplosionDamage(Explosion.Strength strength, float additive);
 
     public OnDie onDie;
     public OnStatDamage onStatDamage;
@@ -93,6 +93,20 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     private void PrepareValues() {
+        onDie = new OnDie(s => {Destroy(gameObject);});
+        onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
+            bool killed = GetHit(amount);
+            return killed ? template.xpKillWorth : template.xpHitWorth;
+        });
+        onExplosionDamage = new OnExplosionDamage((strength, amount) => {
+            bool killed = GetHit(amount+(int)strength);
+            return killed ? template.xpKillWorth : template.xpHitWorth;
+        });
+        onStatDamage = new OnStatDamage((stats, amount) => {
+            bool killed = GetHit(amount);
+            return killed ? template.xpKillWorth : template.xpHitWorth;
+        });
+
         for (int i = 0; i < Stt.EnumValues.Length; i++) {
             if (i >= template.modifiers.Count) {
                 template.modifiers.Add(1f);
@@ -166,7 +180,7 @@ public class Stats : MonoBehaviour, IDamageable
     public void IncXP(int xp) {
         this.xp += xp;
         if (this.xp >= template.maxXp) {
-            hp += Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1);
+            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
             lvl++;
             this.xp = 0;
         }
@@ -183,12 +197,18 @@ public class Stats : MonoBehaviour, IDamageable
         inheriter = new Option<Stats>(other);
     }
 
+    public void Heal(float amount) {
+        hp = Mathf.Clamp(hp+amount, 0, get(Stat.MAX_HEALTH));
+    }
+
     public bool ImmuneTo(Element elm) {
         return StatElmImmunities.Contains(elm);
     }
 
-    public void ConfigureOnDie(params OnDie[] calbacks) {
-        onDie = calbacks[0];
+    public void ConfigureOnDie(bool reset = false, params OnDie[] calbacks) {
+        if (reset)
+            onDie = calbacks[0];
+        else onDie += calbacks[0];
         if (calbacks.Length == 1) {
             return;
         }
@@ -197,8 +217,10 @@ public class Stats : MonoBehaviour, IDamageable
         }
     }
 
-    public void ConfigureOnStatDamage(params OnStatDamage[] calbacks) {
-        onStatDamage = calbacks[0];
+    public void ConfigureOnStatDamage(bool reset = false, params OnStatDamage[] calbacks) {
+        if (reset)
+            onStatDamage = calbacks[0];
+        else onStatDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;
         }
@@ -207,8 +229,10 @@ public class Stats : MonoBehaviour, IDamageable
         }
     }
 
-    public void ConfigureOnBacteriaDamage(params OnBacteriaDamage[] calbacks) {
-        onBacteriaDamage = calbacks[0];
+    public void ConfigureOnBacteriaDamage(bool reset = false, params OnBacteriaDamage[] calbacks) {
+        if (reset)
+            onBacteriaDamage = calbacks[0];
+        else onBacteriaDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;
         }
@@ -217,8 +241,10 @@ public class Stats : MonoBehaviour, IDamageable
         }
     }
 
-    public void ConfigureOnExplosionDamage(params OnExplosionDamage[] calbacks) {
-        onExplosionDamage = calbacks[0];
+    public void ConfigureOnExplosionDamage(bool reset = false, params OnExplosionDamage[] calbacks) {
+        if (reset)
+            onExplosionDamage = calbacks[0];
+        else onExplosionDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;
         }
@@ -228,35 +254,19 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     public void Die(Option<Stats> senderStats) {
-        if (onDie != null)
-            onDie.Invoke(senderStats);
-        Destroy(gameObject);
+        onDie.Invoke(senderStats);
     }
 
     public int Damage(Stats stats, float amount)
     {
-        //Debug.Log("["+hp.Current+"] Being damaged: "+amount);
-        //Debug.Log("from "+stats.gameObject.name);
-        bool killed = GetHit(amount);
-        if (killed && onStatDamage != null) {
-            onStatDamage.Invoke(stats, amount);
-        }
-        return killed ? template.xpKillWorth : template.xpHitWorth;
+        return onStatDamage.Invoke(stats, amount);
     }
 
     public int BacteriaDamage(Element bt, float amount) {
-        bool killed = GetHit(amount);
-        if (killed && onBacteriaDamage != null) {
-            onBacteriaDamage.Invoke(bt, amount);
-        }
-        return killed ? template.xpKillWorth : template.xpHitWorth;
+        return onBacteriaDamage.Invoke(bt, amount);
     }
 
     public int ExplosionDamage(Explosion.Strength strength, float additive) {
-        bool killed = GetHit(additive+(int)strength);
-        if (killed && onExplosionDamage != null) {
-            onExplosionDamage.Invoke(strength, additive);
-        }
-        return killed ? template.xpKillWorth : template.xpHitWorth;
+        return onExplosionDamage.Invoke(strength, additive);
     }
 }

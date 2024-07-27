@@ -6,21 +6,27 @@ public class Gameplay : MonoBehaviour
     private static Gameplay self;
 
     // Difficulty
-    private float linearT = 1f;
-    public float LinearT {
-        get { return linearT; }
+    public int Waves {
+        get { return Save.rData.Waves; }
     }
+    public float LinearT {
+        get { return Save.rData.LinearTime; }
+    }
+    public int IntLinearT {
+        get { return Mathf.RoundToInt(LinearT); }
+    }
+
     public float AsymT {
-        get { return Mathf.Sqrt(linearT); }
+        get { return Mathf.Sqrt(LinearT); }
     }
     public int IntAsymT {
-        get { return Mathf.CeilToInt(Mathf.Sqrt(linearT)); }
+        get { return Mathf.CeilToInt(Mathf.Sqrt(LinearT)); }
     }
 
     // Settings
-    public int enemiesAmount = 10;
+    public int enemiesAmount = 1;
 
-    public const int MiniTowerLvlUpHPBonus = 30;
+    public const int MiniTowerLvlUpHPBonus = 10;
 
     // Unlocks
     public const int unlock2ndPath = 5;
@@ -46,27 +52,27 @@ public class Gameplay : MonoBehaviour
     private void UnlockLogic() {
         var lvl = Save.rData.Lvl;
 
-        // if (lvl >= unlock2ndPath) {
-        //     world.WG.CreateNextPath();
-        // }
-        // if (lvl >= unlock3rdPath) {
-        //     world.WG.CreateNextPath();
-        // }
-        // if (lvl >= unlock4thPath) {
-        //     world.WG.CreateNextPath();
-        // }
-        // if (lvl >= unlock1stWidePath) {
-        //     world.WG.WidenNextPath();
-        // }
-        // if (lvl >= unlock2ndWidePath) {
-        //     world.WG.WidenNextPath();
-        // }
-        // if (lvl >= unlock3rdWidePath) {
-        //     world.WG.WidenNextPath();
-        // }
-        // if (lvl >= unlock4ndWidePath) {
-        //     world.WG.WidenNextPath();
-        // }
+        if (lvl >= unlock2ndPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock3rdPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock4thPath) {
+            world.WG.CreateNextPath();
+        }
+        if (lvl >= unlock1stWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock2ndWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock3rdWidePath) {
+            world.WG.WidenNextPath();
+        }
+        if (lvl >= unlock4ndWidePath) {
+            world.WG.WidenNextPath();
+        }
     }
 
     public void DStart(Player player, Manager manager) {
@@ -101,6 +107,14 @@ public class Gameplay : MonoBehaviour
                     break;
             }
         });
+
+        if (Waves >= 5) {
+            var expansionsOwed = Mathf.FloorToInt(Waves % 5);
+            for (int i = 0; i <= expansionsOwed; i++) {
+                world.WG.Expand();
+            }
+        }
+
         
         var iter = Resources.IterEnemyStats();
         using (iter) {
@@ -126,13 +140,18 @@ public class Gameplay : MonoBehaviour
     }
 
     public void IntervalStartWave() {
+        Debug.Log("start");
         Save.rData.IncrementWaves();
         quantitativeRound.Enable();
         waitInterval.Disable();
     }
 
     public void EndWave() {
-        linearT += Time.deltaTime/10f;
+        Debug.Log("Wave ended ("+Waves+")");
+        Save.rData.IncLinearTime(amount: 0.05f);
         waitInterval.Enable();
+        if (Waves % 5 == 0) {
+            World.WG.Expand();
+        }   
     }
 }

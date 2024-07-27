@@ -7,6 +7,15 @@ public class Tower : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private Stats stats;
+    [SerializeField] private DisplayTowerStatus dts;
+
+    private void Awake() {
+        stats.CStart(player.Manager);
+        stats.ConfigureOnDie(true, _ => {
+            Die(_);
+        });
+        dts.CStart();
+    }
 
     private void OnCollisionEnter(Collision collision) {
         Destroy(collision.gameObject);

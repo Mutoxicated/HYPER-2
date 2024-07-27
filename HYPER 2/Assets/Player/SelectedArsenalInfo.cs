@@ -51,6 +51,10 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Update() {
+        if (mt.Get().IsNull()) {
+            Disable();
+            return;
+        }
         mt.GetAndThen(m => {
             arsenalName.text = String.Format(ufmtName, Arsnl.ToName(m.ArsenalType));
             arsenalElement.text = String.Format(ufmtElement, Elm.ToString(stats.StatElement));

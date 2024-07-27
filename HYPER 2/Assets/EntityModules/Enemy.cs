@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
     private World.ReportDeath<Enemy> death;
 
     private void PrepareConfiguration() {
-        stats.ConfigureOnDie(s => {
+        stats.ConfigureOnDie(false, s => {
             death.Invoke(this);
         });
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1113682453117159787}
   - component: {fileID: 5592014939074514789}
   - component: {fileID: 7246149829043903894}
+  - component: {fileID: 7359329356056878002}
   m_Layer: 0
   m_Name: Path
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnInterval: {fileID: 7246149829043903894}
+  spawnInterval2: {fileID: 7359329356056878002}
 --- !u!114 &7246149829043903894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,13 +64,47 @@ MonoBehaviour:
   dontResetTime: 0
   chance: 100
   interval: 2
-  minMaxInterval: {x: 0, y: 0}
   onInterval:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5592014939074514789}
         m_TargetAssemblyTypeName: Path, Assembly-CSharp
         m_MethodName: IntervalSpawnEnemy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  destroyUponEvent: 0
+  t: 0
+  time: 0
+  isPlaying: 0
+--- !u!114 &7359329356056878002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89893645827178099}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useUnscaledTime: 0
+  dontResetTime: 0
+  chance: 100
+  interval: 1.8
+  onInterval:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5592014939074514789}
+        m_TargetAssemblyTypeName: Path, Assembly-CSharp
+        m_MethodName: IntervalSpawnEnemy2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
