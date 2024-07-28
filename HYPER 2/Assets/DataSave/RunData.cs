@@ -60,6 +60,16 @@ public class RunData
         __linearT += amount;
     }
 
+    // [SerializeField] private int __runTimeSeconds = 0;
+
+    // public int RunTimeSecs {
+    //     get { return __runTimeSeconds; }
+    // }
+    
+    // public void IncRunTime() {
+    //     __runTimeSeconds++;
+    // }
+
     [SerializeField] private int __waves = 0;
 
     public int Waves {

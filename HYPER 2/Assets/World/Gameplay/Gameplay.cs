@@ -24,7 +24,10 @@ public class Gameplay : MonoBehaviour
     }
 
     // Settings
-    public int enemiesAmount = 1;
+    private int enemiesAmount = 9;
+    public int EnemiesAmount {
+        get { return Mathf.RoundToInt(enemiesAmount*LinearT); }
+    }
 
     public const int MiniTowerLvlUpHPBonus = 10;
 
@@ -137,7 +140,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnEnemy(Vector3 pos, Branch root) {
-        var diff = IntAsymT;
+        var diff = IntLinearT;
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root);
         });

@@ -678,7 +678,7 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 5
+  interval: 7
   onInterval:
     m_PersistentCalls:
       m_Calls:
@@ -710,7 +710,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0cee40de9244f24a93fab8c24b6fe53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesAmount: 10
   quantitativeRound: {fileID: 568595623}
   waitInterval: {fileID: 568595620}
 --- !u!4 &568595622
@@ -1584,6 +1583,10 @@ PrefabInstance:
       propertyPath: selection
       value: 
       objectReference: {fileID: 1906026086}
+    - target: {fileID: 5626734589798424696, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: waitInterval
+      value: 
+      objectReference: {fileID: 568595620}
     - target: {fileID: 6142873641347849532, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
       propertyPath: towerStats
       value: 

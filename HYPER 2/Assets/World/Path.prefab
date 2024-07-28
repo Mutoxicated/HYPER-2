@@ -63,7 +63,7 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 2
+  interval: 0.9
   onInterval:
     m_PersistentCalls:
       m_Calls:
@@ -98,7 +98,7 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 1.8
+  interval: 0.8
   onInterval:
     m_PersistentCalls:
       m_Calls:
