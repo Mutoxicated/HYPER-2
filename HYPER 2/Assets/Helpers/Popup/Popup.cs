@@ -15,19 +15,24 @@ public class Popup : MonoBehaviour
     private float duration;
     private float dy;
     private Color color;
+    private Vector3 initScale;
 
-    public void CStart(Transform player) {
+    public void CStart(PopupPool ppp, Transform player) {
         this.player = player;
+        initScale = transform.localScale;
+        this.ppp = ppp;
     }
 
-    public void Action(Vector3 position, Color color, string text, float duration = 1f, float dy = 0.2f) {
+    public void Action(Vector3 position, Color color, string text, float scale = 1f, float duration = 1.4f, float dy = 2f) {
+        //Debug.Log("uhm?");
         transform.position = position;
         this.text.text = text;
         this.duration = duration;
         this.dy = dy;
         this.color = color;
         this.text.color = color;
-        enabled = true;
+        transform.localScale = initScale*scale;
+        gameObject.SetActive(true);
     }
 
     public void Update() {
@@ -35,11 +40,12 @@ public class Popup : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, transform.position+Vector3.up*dy, Time.deltaTime);
         look = Quaternion.LookRotation(player.position-transform.position);
         transform.rotation = look;
-        color.a = time / duration;
+        color.a = Mathf.Abs(Mathf.Clamp01(time / (duration*0.85f))-1);
         text.color = color;
         if (time >= duration) {
             ppp.RetrievePopup(this);
-            enabled = false;
+            gameObject.SetActive(false);
+            time = 0f;
         }
     }
 }

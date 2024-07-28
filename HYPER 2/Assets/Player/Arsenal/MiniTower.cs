@@ -54,10 +54,26 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         r.AddMTState(new MTState(Stats.Mod, transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
     }
 
+    public void PrepareConfiguration() {
+        stats.ConfigureOnStatDamage(true, (s, d) => {
+            bool killed = stats.GetHit(d);
+            return killed ? stats.Template.xpKillWorth : stats.Template.xpHitWorth;
+        });
+        stats.ConfigureOnExplosionDamage(true, (str, d) => {
+            bool killed = stats.GetHit(d+(int)str);
+            return killed ? stats.Template.xpKillWorth : stats.Template.xpHitWorth;
+        });
+        stats.ConfigureOnBacteriaDamage(true, (elm, d) => {
+            bool killed = stats.GetHit(d);
+            return killed ? stats.Template.xpKillWorth : stats.Template.xpHitWorth;
+        });
+    }
+
     public void CStart(Manager manager) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager);
+        PrepareConfiguration();
 
         gameObject.SetActive(true);
         DOTInterval.Enable();
@@ -67,6 +83,7 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager, state);
+        PrepareConfiguration();
 
         //transform.position = state.position;
 

@@ -33,6 +33,10 @@ public class World : MonoBehaviour
         get { return worldGenerator; }
     }
 
+    public Gameplay GP {
+        get { return WG.GP; }
+    }
+
     public delegate void EnemyConstructor(ReportDeath<Enemy> death, Enemy enemy);
 
     public Enemy InstantiateEnemy(Resources.Enemy enemyType, Vector3 pos, EnemyConstructor es) {

@@ -73,6 +73,9 @@ public class Player : MonoBehaviour
     public bool Dead {
         get { return dead; }
     }
+    public GUI GUI {
+        get { return gui; }
+    }
     
     public void AddLvlUpListener(LvlUp fn) {
         onLvlUp += fn;

@@ -49,7 +49,7 @@ public class Gameplay : MonoBehaviour
         get { return world; }
     }
 
-    private void UnlockLogic() {
+    public void GenerationUnlockLogic() {
         var lvl = Save.rData.Lvl;
 
         if (lvl >= unlock2ndPath) {
@@ -73,14 +73,26 @@ public class Gameplay : MonoBehaviour
         if (lvl >= unlock4ndWidePath) {
             world.WG.WidenNextPath();
         }
+
+        if (Save.rData.Waves >= 25) {
+            var expansionsOwed = Mathf.FloorToInt(Save.rData.Waves % 25);
+            for (int i = 0; i <= expansionsOwed; i++) {
+                world.WG.Expand(5);
+            }
+        }
+
+        if (Waves >= 50) {
+            var goldPilesOwed = Mathf.FloorToInt(Waves % 50); 
+            for (int i = 0; i < goldPilesOwed; i++) {
+                world.WG.NewGoldPile();
+            }
+        }
     }
 
     public void DStart(Player player, Manager manager) {
         self = this;
         this.manager = manager;
         world = manager.World;
-
-        UnlockLogic();
 
         player.AddLvlUpListener(lvl => {
             switch (lvl) {
@@ -108,14 +120,6 @@ public class Gameplay : MonoBehaviour
             }
         });
 
-        if (Waves >= 5) {
-            var expansionsOwed = Mathf.FloorToInt(Waves % 5);
-            for (int i = 0; i <= expansionsOwed; i++) {
-                world.WG.Expand();
-            }
-        }
-
-        
         var iter = Resources.IterEnemyStats();
         using (iter) {
             while (iter.MoveNext()) {
@@ -150,8 +154,11 @@ public class Gameplay : MonoBehaviour
         Debug.Log("Wave ended ("+Waves+")");
         Save.rData.IncLinearTime(amount: 0.05f);
         waitInterval.Enable();
-        if (Waves % 5 == 0) {
-            World.WG.Expand();
-        }   
+        if (Waves % 25 == 0) {
+            World.WG.Expand(5);
+        }
+        if (Waves % 50 == 0) {
+            World.WG.NewGoldPile();
+        }
     }
 }

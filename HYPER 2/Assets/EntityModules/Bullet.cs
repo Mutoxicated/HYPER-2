@@ -54,8 +54,6 @@ public class Bullet : MonoBehaviour, IBulletConstruct
 
      public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
-        collider.gameObject.GetComponent<IDamageable>()?.Damage(stats, stats.get(DAMAGE));
-
         var damageable = collider.gameObject.GetComponent<IDamageable>();
         int? xp = damageable?.Damage(stats, stats.get(DAMAGE));
         stats.Inheriter.GetAndThen(s => {

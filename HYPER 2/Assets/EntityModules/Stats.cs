@@ -21,7 +21,7 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     [SerializeField] private StatsTemplate template;
-
+    [SerializeField] private Option<HitVisual> hitVisual = Option<HitVisual>.None();
     [SerializeField] private Option<InterfaceReference<IRange, MonoBehaviour>> range;
 
     private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
@@ -96,15 +96,30 @@ public class Stats : MonoBehaviour, IDamageable
         onDie = new OnDie(s => {Destroy(gameObject);});
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
             bool killed = GetHit(amount);
-            return killed ? template.xpKillWorth : template.xpHitWorth;
+            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
+            if (template.statsBase.side == Side.ENEMY)
+                manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
+            if (hitVisual.IsSome()) 
+                hitVisual.Get().OnHit(0.5f);
+            return xp;
         });
         onExplosionDamage = new OnExplosionDamage((strength, amount) => {
             bool killed = GetHit(amount+(int)strength);
-            return killed ? template.xpKillWorth : template.xpHitWorth;
+            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
+            if (template.statsBase.side == Side.ENEMY)
+                manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
+            if (hitVisual.IsSome()) 
+                hitVisual.Get().OnHit(1f);
+            return xp;
         });
         onStatDamage = new OnStatDamage((stats, amount) => {
             bool killed = GetHit(amount);
-            return killed ? template.xpKillWorth : template.xpHitWorth;
+            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
+            if (template.statsBase.side == Side.ENEMY)
+                manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
+            if (hitVisual.IsSome()) 
+                hitVisual.Get().OnHit(0.75f);
+            return xp;
         });
 
         for (int i = 0; i < Stt.EnumValues.Length; i++) {
@@ -167,7 +182,7 @@ public class Stats : MonoBehaviour, IDamageable
         return range.Get().Value.Target(offset).IsSome();
     }
 
-    private bool GetHit(float damage) {
+    public bool GetHit(float damage) {
         if (hp <= 0) { return false; }
         hp -= damage;
         if (hp <= 0) {
@@ -207,7 +222,7 @@ public class Stats : MonoBehaviour, IDamageable
 
     public void ConfigureOnDie(bool reset = false, params OnDie[] calbacks) {
         if (reset)
-            onDie = calbacks[0];
+            onDie = new OnDie(calbacks[0]);
         else onDie += calbacks[0];
         if (calbacks.Length == 1) {
             return;
@@ -219,7 +234,7 @@ public class Stats : MonoBehaviour, IDamageable
 
     public void ConfigureOnStatDamage(bool reset = false, params OnStatDamage[] calbacks) {
         if (reset)
-            onStatDamage = calbacks[0];
+            onStatDamage = new OnStatDamage(calbacks[0]);
         else onStatDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;
@@ -231,7 +246,7 @@ public class Stats : MonoBehaviour, IDamageable
 
     public void ConfigureOnBacteriaDamage(bool reset = false, params OnBacteriaDamage[] calbacks) {
         if (reset)
-            onBacteriaDamage = calbacks[0];
+            onBacteriaDamage = new OnBacteriaDamage(calbacks[0]);
         else onBacteriaDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;
@@ -243,7 +258,7 @@ public class Stats : MonoBehaviour, IDamageable
 
     public void ConfigureOnExplosionDamage(bool reset = false, params OnExplosionDamage[] calbacks) {
         if (reset)
-            onExplosionDamage = calbacks[0];
+            onExplosionDamage = new OnExplosionDamage(calbacks[0]);
         else onExplosionDamage += calbacks[0];
         if (calbacks.Length == 1) {
             return;

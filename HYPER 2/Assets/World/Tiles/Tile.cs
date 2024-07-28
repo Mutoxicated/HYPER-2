@@ -143,7 +143,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     }
 
     public void Goldify(GameObject occupiedBy) {
-        if (!lit) { return; }
+        if (lit) { return; }
 
         Occupy(occupiedBy);
         mc.ChangeColor(goldColor, true);

@@ -11,12 +11,16 @@ public class GUI : MonoBehaviour
     [SerializeField] private Selector selector;
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
+    [SerializeField] private PopupPool popupPool;
 
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
 
     public Color UIColor {
         get { return Save.pData.UIColor; }
+    }
+    public PopupPool PopupPool {
+        get { return popupPool; }
     }
 
     private Player player;
@@ -27,6 +31,7 @@ public class GUI : MonoBehaviour
         quickInventory.DStart(player);
         inventory.DStart();
         arsenal.DStart();
+        popupPool.DStart(player.gameObject);
     }
 
     public void UIMode(bool freezeTime) {

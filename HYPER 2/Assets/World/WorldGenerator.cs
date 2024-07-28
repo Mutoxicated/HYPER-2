@@ -62,6 +62,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private GameObject pathPrefab;
     [SerializeField] private GameObject goldPilePrefab;
     [SerializeField] private int layers = 1;
+    [SerializeField] private Gameplay gp;
 
     private List<Tile> tiles = new List<Tile>();
     public Tile[] Tiles {
@@ -70,6 +71,10 @@ public class WorldGenerator : MonoBehaviour
 
     public GameObject Tower {
         get { return world.Tower; }
+    }
+
+    public Gameplay GP {
+        get { return gp; }
     }
 
     // Tile generation
@@ -101,6 +106,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     public void DStart(World world, Player player) {
+        gp.DStart(player, player.Manager);
         this.player = player;
         this.world = world;
         towerSize = world.TowerPlatform.transform.localScale.x*0.5f;
@@ -109,6 +115,8 @@ public class WorldGenerator : MonoBehaviour
         Layer();
 
         CreatePaths();
+        gp.GenerationUnlockLogic();
+        NewGoldPile();
     }
 
     public void Update() {
@@ -452,15 +460,15 @@ public class WorldGenerator : MonoBehaviour
         lastRandomCorner = next;
     }
 
-    private int mininumTileSpaceForGold = 7;
+    private int mininumTileSpaceForGold = 12;
 
     public void NewGoldPile() {
-        var range = LayerRange(Mathf.RoundToInt(layers/2));
+        var range = LayerRange(Mathf.RoundToInt(Seed.IntRange(0, 3)+layers/2));
         var points = new List<int>() {
             range[0]
         };
         // find inelligible tiles
-        for (int i = 1; i < range.Count; i++) {
+        for (int i = 1; i < range.Count-1; i++) {
             var _tile = tiles[range[i]];
             if (_tile.gameObject.layer == EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO) | 
                 _tile.gameObject.layer == EditorState.GetLayer(EditorLayer.GOLD) |
@@ -468,6 +476,7 @@ public class WorldGenerator : MonoBehaviour
                 points.Add(range[i]);
             }
         }
+        points.Add(range[range.Count-1]);
         // remove tiles that don't have enough space
         for (int i = points.Count-1; i > 0; i--) {
             var diff = points[i]-points[i-1];
@@ -481,7 +490,7 @@ public class WorldGenerator : MonoBehaviour
 
         var index = Mathf.RoundToInt(points[point]+(points[point2]-points[point])/2);
         var tile = tiles[index];
-        var instance = Instantiate(goldPilePrefab, tile.transform.position-new Vector3(-1,0,1)*tileSize, Quaternion.identity);
+        var instance = Instantiate(goldPilePrefab, tile.transform.position+Vector3.up*1.3f, Quaternion.identity);
         tile.Goldify(instance);
         var nbs = tile.GetNeighbors();
         Direction directionToLookFor = Direction.UNKNOWN;

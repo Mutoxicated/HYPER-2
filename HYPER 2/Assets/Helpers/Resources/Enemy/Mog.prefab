@@ -190,6 +190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   template: {fileID: 11400000, guid: b29e45dca1b20ae4c804f4c97d5248e7, type: 2}
+  hitVisual:
+    value: {fileID: 7142330870873328552}
+    none: 0
   range:
     value:
       _underlyingValue: {fileID: 0}
@@ -208,7 +211,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 7108315076602090061}
   enemyType: 0
-  hitVisual: {fileID: 0}
   hitSFX: {fileID: 1150321680076776557}
   followPath: 1
   XPWorth: 7
@@ -224,7 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0b216a58758b3489f00e441f6087a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 6798698503118529780}
   stats: {fileID: 7108315076602090061}
 --- !u!114 &7898778864201012105
 MonoBehaviour:
@@ -266,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mc: {fileID: 4182929243653569490}
   hitColor: {r: 1, g: 1, b: 1, a: 1}
-  rate: 0.19
+  rate: 0.4
 --- !u!1 &8742178766524011794
 GameObject:
   m_ObjectHideFlags: 0

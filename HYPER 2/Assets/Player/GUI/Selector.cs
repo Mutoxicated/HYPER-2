@@ -62,6 +62,15 @@ public class Selector : MonoBehaviour
             selection.Disable();
         }else {
             UpdateSelection();
+            if (player.OnLeftClick) {
+                qi.GetSelectedArsenal().GetAndThen(a => {
+                    onTowerPlacement.Play();
+                    var instance = manager.World.InstantiateMiniTower(storedGo.transform.parent.position, a, mt => { mt.CStart(manager); });
+                    storedGo.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
+                    selected = new Option<GameObject>(instance.gameObject);
+                    selectedArsenalInfo.Enable(instance);
+                });
+            }
         }
 
         if (player.OnLeftClick) {
@@ -70,13 +79,6 @@ public class Selector : MonoBehaviour
                 selected = new Option<GameObject>(storedGo.transform.parent.gameObject);
                 return;
             }
-            qi.GetSelectedArsenal().GetAndThen(a => {
-                onTowerPlacement.Play();
-                var instance = manager.World.InstantiateMiniTower(storedGo.transform.position, a, mt => { mt.CStart(manager); });
-                hits[0].collider.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
-                selected = new Option<GameObject>(instance.gameObject);
-                selectedArsenalInfo.Enable(instance);
-            });
         }
     }
 
@@ -89,7 +91,7 @@ public class Selector : MonoBehaviour
         var arsenal = qi.GetSelectedArsenal();
         bool got = arsenal.GetAndThen(a => {
             currentStat = new Option<StatsTemplate>(Resources.GetStatTemplate(a));
-            selection.Enable(wg, hits[0].transform.position+Vector3.up*0.5f, currentStat.Get().statsBase.values[3]*currentStat.Get().modifiers[3]);
+            selection.Enable(wg, hits[0].transform.parent.position, currentStat.Get().statsBase.values[3]*currentStat.Get().modifiers[3]);
         }).Successful();
         if (!got) {
             currentStat = Option<StatsTemplate>.None();

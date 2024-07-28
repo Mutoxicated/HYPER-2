@@ -8,14 +8,12 @@ public class Manager : MonoBehaviour
     [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
-    [SerializeField] private Gameplay gp;
 
     public void Awake() {
         pps.DStart();
         resources.DStart();
         player.DStart(this);
         world.DStart(player);
-        gp.DStart(player, this);
     }
 
     public World World {
@@ -30,11 +28,15 @@ public class Manager : MonoBehaviour
         get { return player.gameObject; }
     }
 
+    public GUI GUI {
+        get { return player.GUI; }
+    }
+
     public PublicPools Pools {
         get { return pps; }
     }
 
     public Gameplay GP {
-        get { return gp; }
+        get { return world.GP; }
     }
 }

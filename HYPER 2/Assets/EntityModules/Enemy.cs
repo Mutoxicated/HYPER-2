@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Resources.Enemy enemyType;
-    [SerializeField] private HitVisual hitVisual;
     [SerializeField] private AudioSource hitSFX;
     [Header("Settings")]
     [SerializeField] private bool followPath;

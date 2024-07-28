@@ -266,10 +266,10 @@ public class Path : MonoBehaviour
     }
 
     public void IntervalSpawnEnemy() {
-        round.Spawn(root1, neighbors1[0].Tile.transform.position+Vector3.up*2.5f);
+        round.Spawn(root1, neighbors1[0].Tile.transform.position+Vector3.up*1.5f);
     }
     public void IntervalSpawnEnemy2() {
-        round.Spawn(root1, neighbors2[0].Tile.transform.position+Vector3.up*2.5f);
+        round.Spawn(root1, neighbors2[0].Tile.transform.position+Vector3.up*1.5f);
     }
 
     private void extend() {
@@ -469,6 +469,7 @@ public class Path : MonoBehaviour
 
     private void RepositionRoot(List<Neighbor> neighbors, Branch root) {
         if (neighbors.Count == 0) { return; }
+        if (root == null) { return; }
 
         var nbs = neighbors[0].Tile.GetNeighbors();
         var opp = Dir.Opposite(mainDirection);
