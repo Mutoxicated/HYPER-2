@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using Helpers;
 
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 [CustomEditor(typeof(StatsTemplate))]

@@ -11,26 +11,19 @@ public interface ISideBelonger<T> where T: ISideBelonger<T>{
 }
 
 public delegate bool Predicate<E>(E t);
-public delegate void Iter(GameObject go);
+public delegate void Iter<E>(E t);
 
-public interface IRange {
-    public void CStart();
-    public Option<GameObject> Target(int offset = 0);
-    public Option<GameObject> Find(Predicate<GameObject> go);
-    public void Foreach(Iter iter);
-}
-
-public class Range<T> : MonoBehaviour, IRange where T: ISideBelonger<T>
+public class Range : MonoBehaviour
 {
     [SerializeField] private Stats stats;
 
-    private List<T> enemies = new List<T>();
+    private List<Stats> enemies = new List<Stats>();
 
-    public List<T> Enemies {
+    public List<Stats> Enemies {
         get { return enemies; }
     }
 
-    public delegate void OnEnemy(T e);
+    public delegate void OnEnemy(Stats e);
 
     public OnEnemy OnEnter;
     public OnEnemy OnExit;
@@ -44,58 +37,62 @@ public class Range<T> : MonoBehaviour, IRange where T: ISideBelonger<T>
     }
 
     public void OnTriggerEnter(Collider collider) {
-        var enemy = collider.gameObject.GetComponent<T>();
+        var enemy = collider.gameObject.GetComponent<Stats>();
         if (enemy == null) {
             return;
+        }else if (enemy == stats) {
+            return;
         }
-        enemy.GetReportDeath() += e => OnExit.Invoke(e);
         OnEnter.Invoke(enemy);
     }
 
     public void OnTriggerExit(Collider collider) {
-        var enemy = collider.gameObject.GetComponent<T>();
+        var enemy = collider.gameObject.GetComponent<Stats>();
         OnExit.Invoke(enemy);
     }
 
-    public Option<GameObject> Target(int offset = 0) {
+    public Option<Stats> Target(int offset = 0) {
         if (enemies.Count < offset+1) {
-            return Option<GameObject>.None();
+            return Option<Stats>.None();
         }
-        if (enemies[offset].IsNull()) {
+        if (enemies[offset] == null) {
             enemies.RemoveAt(offset);
             return Target();
         }
-        return new Option<GameObject>(enemies[offset].Go());
+        if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.ENEMY) |
+            (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.PLAYER)) {
+            return Target(offset+1);
+        }
+        return new Option<Stats>(enemies[offset]);
     }
-
 
     /// <summary>
     /// Tries to find a gameObject that matches the predicate, otherwise falls back to choosing the first element in the enemies list.
     /// </summary>
     /// <param name="go"></param>
     /// <returns></returns>
-    public Option<GameObject> Find(Predicate<GameObject> go) {
+    public Option<Stats> Find(Predicate<Stats> go) {
         if (enemies.Count == 0) {
-            return Option<GameObject>.None();
+            return Option<Stats>.None();
         }
         foreach (var target in enemies.ToArray()) {
             if (target == null) {
                 Enemies.Remove(target);
             }
 
-            if (go(target.Go())) {
-                return new Option<GameObject>(target.Go());
+            if (go(target)) {
+                return new Option<Stats>(target);
             }
         }
         return Target();
     }
 
-    public void Foreach(Iter iter) {
+    public void Foreach(Iter<Stats> iter) {
         foreach (var enemy in enemies) {
             if (enemy == null) {
                 continue;
             }
-            iter(enemy.Go());
+            iter(enemy);
         }
     }
 }

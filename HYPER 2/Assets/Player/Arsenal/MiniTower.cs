@@ -27,13 +27,13 @@ public class MTState {
     }
 }
 
-[RequireComponent(typeof(Stats))]
 public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Interval DOTInterval;
     [SerializeField] private Resources.Arsenal arsenal;
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
+    [SerializeField] private Highlight highlight;
     [SerializeField] private Sound deathSound;
 
     private World.ReportDeath<MiniTower> death;
@@ -48,6 +48,14 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
 
     public Resources.Arsenal ArsenalType {
         get { return arsenal; }
+    }
+
+    public void Highlight() {
+        highlight.Enable();
+    }
+
+    public void Dehighlight() {
+        highlight.Disable();
     }
 
     private void StoreMTState(RunData r) {
@@ -100,6 +108,7 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
     }
 
     public void OnDisable() {
+        Dehighlight();
         PublicEvent.onSaveRun -= StoreMTState;
         death.Invoke(this);
         if (!gameObject.scene.isLoaded) { return; }

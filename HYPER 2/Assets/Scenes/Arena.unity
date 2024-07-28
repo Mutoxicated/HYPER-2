@@ -1818,8 +1818,7 @@ MonoBehaviour:
     value: {fileID: 0}
     none: 1
   range:
-    value:
-      _underlyingValue: {fileID: 0}
+    value: {fileID: 0}
     none: 1
 --- !u!4 &2979961338762642098
 Transform:
@@ -1926,6 +1925,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 960169734}
+    - target: {fileID: 5116079301421470314, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 5116079301421470317, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -2001,6 +2004,10 @@ PrefabInstance:
     - target: {fileID: 5116079301912019087, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954566601433983008, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32735
       objectReference: {fileID: 0}
     - target: {fileID: 7478444468263295430, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_LocalRotation.w

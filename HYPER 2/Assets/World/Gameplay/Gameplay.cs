@@ -35,7 +35,7 @@ public class Gameplay : MonoBehaviour
     public const int unlock1stWidePath = 30;
     public const int unlock2ndWidePath = 40;
     public const int unlock3rdWidePath = 50;
-    public const int unlock4ndWidePath = 60;
+    public const int unlock4thWidePath = 60;
 
     [SerializeField] private QuantitativeRound quantitativeRound;
     [SerializeField] private Interval waitInterval;
@@ -70,7 +70,7 @@ public class Gameplay : MonoBehaviour
         if (lvl >= unlock3rdWidePath) {
             world.WG.WidenNextPath();
         }
-        if (lvl >= unlock4ndWidePath) {
+        if (lvl >= unlock4thWidePath) {
             world.WG.WidenNextPath();
         }
 
@@ -114,7 +114,7 @@ public class Gameplay : MonoBehaviour
                 case unlock3rdWidePath:
                     world.WG.WidenNextPath();
                     break;
-                case unlock4ndWidePath:
+                case unlock4thWidePath:
                     world.WG.WidenNextPath();
                     break;
             }

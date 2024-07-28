@@ -263,9 +263,8 @@ namespace Helpers {
         MINI_TOWER,
         ENEMY,
         OCCUPIED,
-        ENEMY_DETECTION,
-        PLAYER_DETECTION,
-        GOLD,
+        ENTITY_DETECTION,
+        ENVIRONMENT,
     }
 
     public static class EditorState {
@@ -274,12 +273,11 @@ namespace Helpers {
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
             {EditorLayer.INTERACTABLE_TWO, "Interactable2"},
-            {EditorLayer.GOLD, "Gold"},
+            {EditorLayer.ENVIRONMENT, "Environment"},
             {EditorLayer.MINI_TOWER, "MiniTower"},
             {EditorLayer.ENEMY, "Enemy"},
             {EditorLayer.OCCUPIED, "Occupied"},
-            {EditorLayer.ENEMY_DETECTION, "EnemyDetection"},
-            {EditorLayer.PLAYER_DETECTION, "PlayerDetection"},
+            {EditorLayer.ENTITY_DETECTION, "EntityDetection"},
             {EditorLayer.UI, "UI"}
         };
 
@@ -384,6 +382,8 @@ namespace Helpers {
                 return "Blame";
             case Resources.Arsenal.WATCHER:
                 return "Watcher";
+            case Resources.Arsenal.BOOMER:
+                return "Boomer";
             default:
                 return "UNKNOWN";
             }

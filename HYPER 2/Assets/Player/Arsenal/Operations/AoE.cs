@@ -7,7 +7,7 @@ public class AoE : MonoBehaviour
     [SerializeField] private Stats stats;
     [SerializeField] private Element bt;
 
-    private InterfaceReference<IRange, MonoBehaviour> range;
+    private Range range;
 
     private void Start() {
         stats.Range.TryGetOr(() => { 
@@ -21,8 +21,8 @@ public class AoE : MonoBehaviour
     }
 
     public void IntervalDamage() {
-        range.Value.Foreach(g => {
-            g.GetComponent<IInfectable>()?.Infect(bt);
+        range.Foreach(s => {
+            s.gameObject.GetComponent<IInfectable>()?.Infect(bt);
         });
     }
 

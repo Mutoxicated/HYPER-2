@@ -91,7 +91,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
                 var tileLocation = index+delta.Get();
                 //Debug.Log("Delta got: "+delta.Get());
                 if (tileLocation >= 0 && tileLocation <= worldGenerator.Tiles.Length-1 && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
-                    neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1], context.Location));
+                    neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1], worldGenerator.GetLocationOfIndex(tileLocation, worldGenerator.Tiles[tileLocation].layer)));
                 }
             }else {
                 //Debug.Log("Ain't got no delta.");
@@ -132,6 +132,16 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.ChangeColor(litColor, true);
+    }
+    public void Enable(Color color) {
+        if (lit) { return; }
+        if (occupied) {
+            Destroy(occupiedWith.Get());
+        }
+        transform.position = initPos+Vector3.up*heightOffset;
+        lit = true;
+        Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
+        mc.ChangeColor(color, true);
     }
 
     public void Disable() {

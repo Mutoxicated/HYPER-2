@@ -52,6 +52,7 @@ public class Path : MonoBehaviour
     private List<Neighbor> neighbors1 = new List<Neighbor>();
     private List<Neighbor> neighbors2 = new List<Neighbor>();
     private Direction mainDirection = Direction.UNKNOWN;
+    Direction perpendicular, perpendicular2;// to the main
     private Direction currentDirection = Direction.UNKNOWN;
     private Branch root1;
     private int closestCornerDist1;
@@ -79,11 +80,13 @@ public class Path : MonoBehaviour
         start.Enable();
         var location = wg.GetLocationOfIndex(start.Index, start.Layer);
         neighbors1.Add(new Neighbor(Direction.UNKNOWN, start, location));
-
-        var diff1 = Mathf.Abs(start.Index-corner1);
-        var diff2 = Mathf.Abs(start.Index-corner2);
+        
+        var cornerIndex1 = wg.GetLayerCorner(start.Layer, corner1);
+        var cornerIndex2 = wg.GetLayerCorner(start.Layer, corner2);
+        var diff1 = Mathf.Abs(start.Index-cornerIndex1);
+        var diff2 = Mathf.Abs(start.Index-cornerIndex2);
         closestCornerDist1 = diff1 > diff2 ? diff1 : diff2;
-        var length = Mathf.Abs(corner2-corner1);
+        var length = Mathf.Abs(cornerIndex2-cornerIndex1);
         closestCornerPercent = closestCornerDist1/length;
 
         switch (location.Type) {
@@ -113,6 +116,8 @@ public class Path : MonoBehaviour
             mainDirection = Direction.RIGHT;
             break;
         }
+        perpendicular = (Direction)Num.Wrap((int)mainDirection+1, 0, 3);
+        perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
 
         extend();
 
@@ -129,57 +134,50 @@ public class Path : MonoBehaviour
     }
 
     public void Widen() {
-        var offset = Mathf.Abs(neighbors1[0].Location.CornersRange.a) > Mathf.Abs(neighbors1[0].Location.CornersRange.b) ? 3 : 1;
-        var sideDirection = (Direction)Num.Wrap((int)mainDirection+offset, 0, 3);
-        var deviatedSideDirection = Dir.Opposite(mainDirection);
-        var currentSideDirection = sideDirection;
-        
-        var deviatedDirection = Direction.UNKNOWN;
-        
-        var currentBranch = new Option<Branch>(root1);
-        while (currentBranch.IsSome()) {
-            if (currentBranch.Get().direction != mainDirection) {
-                deviatedDirection = currentBranch.Get().direction;
+        var sideDirection =  Mathf.Abs(neighbors1[0].Location.CornersRange.a) < Mathf.Abs(neighbors1[0].Location.CornersRange.b) ? perpendicular : perpendicular2; 
+        // if (neighbors1[1].Direction == Direction.UP | neighbors1[1].Direction == Direction.DOWN) {
+        //     sideDirection = sideDirection == perpendicular2 ? perpendicular : perpendicular2;
+        // }
+
+        Option<Neighbor> start = Option<Neighbor>.None();
+        var nbs = neighbors1[0].Tile.GetNeighbors();
+        foreach (var nb in nbs) {
+            if (nb.Direction == sideDirection) {
+                start = new Option<Neighbor>(nb);
                 break;
-            }else {
-                currentBranch = currentBranch.Get().Next();
             }
         }
-        var currentDirection = root1.direction;
+        Assert.IsFalse(start.IsNone());
+        start.GetAndThen(s => {
+            s.Direction = Direction.UNKNOWN;
+            s.Tile.Enable();
+            neighbors2.Add(s);
+        });
 
-        List<Neighbor> neighbors;
-        for (int i  = 0; i < neighbors1.Count; i++) {
-            neighbors = neighbors1[i].Tile.GetNeighbors();
-            
-            if (i+1 > neighbors1.Count-1) {
-                EnableNeighbor(currentSideDirection, neighbors, neighbors2);
-                continue;
+        //var color = new Color(1f,0f,1f);
+
+        var currentTile = neighbors2[neighbors2.Count-1].Tile;
+        var found = false;
+        while (validForExtending(currentTile)) {
+            if (currentTile.Distance < 9f) {
+                Debug.Log("breakpoint");
             }
-
-            if (neighbors1[i+1].Direction != currentDirection && neighbors1[i].Direction == currentDirection) {
-
-                var nb = EnableNeighbor(currentSideDirection, neighbors, neighbors2);
-                nb.GetAndThen(n => {
-                    var nbs = n.Tile.GetNeighbors();
-
-                    var nb2 = EnableNeighbor(currentDirection, nbs, neighbors2);
-                    nb2.GetAndThen(n2 => {
-                        EnableNeighbor(mainDirection, n2.Tile.GetNeighbors(), neighbors2);
-                    });
-                });
-
-                currentSideDirection = currentSideDirection == sideDirection ? deviatedSideDirection : sideDirection;
-                currentDirection = currentDirection == mainDirection ? deviatedDirection : mainDirection;
-            }else {
-                EnableNeighbor(currentSideDirection, neighbors, neighbors2);
+            nbs = currentTile.GetNeighbors();
+            foreach (var nb in nbs) {
+                if (nb.Direction == mainDirection) {
+                    nb.Tile.Enable();
+                    currentTile = nb.Tile;
+                    neighbors2.Add(nb);
+                    found = true;
+                    break;
+                }
             }
-        }
-
-        if (neighbors1[neighbors1.Count-1].Direction != mainDirection) {
-            var nbs = neighbors2[neighbors2.Count-1].Tile.GetNeighbors();
-            EnableNeighbor(sideDirection, nbs, neighbors2);
-            nbs = neighbors1[neighbors1.Count-1].Tile.GetNeighbors();
-            EnableNeighbor(sideDirection, nbs, neighbors2);
+            if (!found) {
+                nbs[0].Tile.Enable();
+                neighbors2.Add(nbs[0]);
+                currentTile = nbs[0].Tile;
+            }
+            found = false;
         }
 
         root2 = CreateBranches(neighbors2);
@@ -273,6 +271,7 @@ public class Path : MonoBehaviour
     }
 
     private void extend() {
+        //Color color = Color.red;
         int noFinds = 0;
         while (validForExtending(neighbors1[neighbors1.Count-1].Tile)) {
             if (buffer.Count == 0)
@@ -283,6 +282,7 @@ public class Path : MonoBehaviour
                     if (nb.Direction == currentDirection) {
                         if (EnableNeighbor(nb) != Message.ALL_GOOD) {
                             amount = 0;
+                            //color = Color.gray;
                             leave = true;
                             break;
                         }
@@ -303,37 +303,16 @@ public class Path : MonoBehaviour
                     DisableNeighbor(neighbors1[neighbors1.Count-1]);
                     continue;
                 }
+            }else {
+                //color = Color.red;
             }
             // if (buffer.Count == 0) {
             //     break;
             // }
-
             var closestToTower = buffer[0];
-            if (wg.IndexBelongsTo(neighbors1[neighbors1.Count-1].Tile.Index, 1)) {
-                Option<Neighbor> a = Option<Neighbor>.None(), b = Option<Neighbor>.None();
-                Direction perpendicular = Direction.UNKNOWN, perpendicular2 = Direction.UNKNOWN;
-                if (neighbors1[1].Location.Type == LocationType.FIRST | neighbors1[1].Location.Type == LocationType.BOTTOM | neighbors1[1].Location.Type == LocationType.TOP) {
-                    perpendicular = Direction.LEFT;
-                    perpendicular2 = Direction.RIGHT;
-                } else {
-                    perpendicular = Direction.UP;
-                    perpendicular2 = Direction.DOWN;
-                }
-                foreach (var nb in buffer) {
-                    if (nb.Direction == perpendicular) {
-                        a = new Option<Neighbor>(nb);
-                    }else if (nb.Direction == perpendicular2) {
-                        b = new Option<Neighbor>(nb);
-                    }
-                }
-
-                if (a.IsNone() && b.IsSome()) {
-                    closestToTower = b.Get();
-                }else if (b.IsNone() && a.IsSome()) {
-                    closestToTower = a.Get();
-                }else if (b.IsSome() && a.IsSome()) {
-                    closestToTower = a.Get().Tile.Distance > b.Get().Tile.Distance ? b.Get() : a.Get();
-                }
+            if (wg.IndexBelongsTo(neighbors1[neighbors1.Count-1].Tile.Index, 1) | 
+                ((int)neighbors1[neighbors1.Count-1].Location.Type % 2 == 0 && neighbors1[neighbors1.Count-1].Location.Type != LocationType.FIRST)) {
+                GetDeviatedNeighbor().GetAndThen(n => { closestToTower = n; });
             }
 
             if (currentDirection == Direction.UNKNOWN) {
@@ -344,6 +323,7 @@ public class Path : MonoBehaviour
                 EnableNeighbor(closestToTower);
                 continue;
             }
+            //color = new Color(0, Random.Range(0.5f, 1f), Random.Range(0f, 1f));
             EnableNeighbor(closestToTower);
             AddBranch(neighbors1);
             currentDirection = closestToTower.Direction;
@@ -363,6 +343,28 @@ public class Path : MonoBehaviour
         }
 
         AddBranch(neighbors1, 1);
+    }
+
+    public Option<Neighbor> GetDeviatedNeighbor() {
+        Debug.Log("Deviation at "+neighbors1[neighbors1.Count-1].Tile.Index+" with "+neighbors1[neighbors1.Count-1].Location.Type);
+        Option<Neighbor> a = Option<Neighbor>.None(), b = Option<Neighbor>.None();
+            
+        foreach (var nb in buffer) {
+            if (nb.Direction == perpendicular) {
+                a = new Option<Neighbor>(nb);
+            }else if (nb.Direction == perpendicular2) {
+                b = new Option<Neighbor>(nb);
+            }
+        }
+
+        if (a.IsNone() && b.IsSome()) {
+            return b;
+        }else if (b.IsNone() && a.IsSome()) {
+            return a;
+        }else if (b.IsSome() && a.IsSome()) {
+            return a.Get().Tile.Distance > b.Get().Tile.Distance ? b : a;
+        }
+        return Option<Neighbor>.None();
     }
 
     public Option<Tile> FindStart(List<Neighbor> neighbors, int offset = 0) {
@@ -401,7 +403,7 @@ public class Path : MonoBehaviour
     private void SetAmount(int value) {
         var min = 3;
 
-        var max = Mathf.FloorToInt(value/2f)-2;
+        var max = Mathf.FloorToInt(value/2f)-1;
         if (max > 6) {
             max = 6;
         }
@@ -445,6 +447,23 @@ public class Path : MonoBehaviour
         buffer.Clear();
         return Message.ALL_GOOD;
     }
+    // private Message EnableNeighbor(Neighbor nb, Color color) {
+    //     if (!validForExtending(nb.Tile)) {
+    //         goto All_good;
+    //     }
+
+    //     var localNeighbors = nb.Tile.GetNeighbors();
+    //     if (localNeighbors.Count >= 3) {
+    //         goto All_good;
+    //     }
+    //     buffer.Remove(nb);
+    //     return Message.IMPROPER_PLACEMENT;
+    // All_good:
+    //     nb.Tile.Enable(color);
+    //     neighbors1.Add(nb);
+    //     buffer.Clear();
+    //     return Message.ALL_GOOD;
+    // }
 
     private void DisableNeighbor(Neighbor nb) {
         nb.Tile.Disable();

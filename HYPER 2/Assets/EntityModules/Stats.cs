@@ -17,12 +17,13 @@ public class Stats : MonoBehaviour, IDamageable
 {
     public enum Side {
         PLAYER,
-        ENEMY
+        ENEMY,
+        NEUTRAL
     }
 
     [SerializeField] private StatsTemplate template;
     [SerializeField] private Option<HitVisual> hitVisual = Option<HitVisual>.None();
-    [SerializeField] private Option<InterfaceReference<IRange, MonoBehaviour>> range;
+    [SerializeField] private Option<Range> range;
 
     private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> val = new Dictionary<Stat, float>();
@@ -68,8 +69,8 @@ public class Stats : MonoBehaviour, IDamageable
         get { return template; }
     }
 
-    public Option<GameObject> Target(int offset = 0) {
-        return range.Get().Value.Target(offset);
+    public Option<Stats> Target(int offset = 0) {
+        return range.Get().Target(offset);
     }
 
     public Side StatSide {
@@ -84,7 +85,7 @@ public class Stats : MonoBehaviour, IDamageable
         get { return template.elementImmunities; }
     }
 
-    public Option<InterfaceReference<IRange, MonoBehaviour>> Range {
+    public Option<Range> Range {
         get { return range; }
     }
 
@@ -143,13 +144,13 @@ public class Stats : MonoBehaviour, IDamageable
     public void CStart(Manager manager) {
         this.manager = manager;
         PrepareValues();
-        range.GetAndThen(v => v.Value.CStart());
+        range.GetAndThen(v => v.CStart());
     }
 
     public void CStart(Manager manager, Stats other) {
         this.manager = manager;
         PrepareValues();
-        range.GetAndThen(v => v.Value.CStart());
+        range.GetAndThen(v => v.CStart());
         Inherit(other);
     }
 
@@ -157,7 +158,7 @@ public class Stats : MonoBehaviour, IDamageable
         this.manager = manager;
         PrepareValues();
         mod = General.ListToDict(state.modkey, state.modVal);
-        range.GetAndThen(v => v.Value.CStart());
+        range.GetAndThen(v => v.CStart());
         xp = state.xp;
         lvl = state.lvl;
         hp = state.hp;
@@ -179,7 +180,7 @@ public class Stats : MonoBehaviour, IDamageable
         if (range.IsNone()) {
             return false;
         }
-        return range.Get().Value.Target(offset).IsSome();
+        return range.Get().Target(offset).IsSome();
     }
 
     public bool GetHit(float damage) {
@@ -274,14 +275,44 @@ public class Stats : MonoBehaviour, IDamageable
 
     public int Damage(Stats stats, float amount)
     {
-        return onStatDamage.Invoke(stats, amount);
+        var delegates = onStatDamage.GetInvocationList();
+        if (delegates.Length == 1) {
+            return onStatDamage.Invoke(stats, amount);
+        }
+        var ret = delegates[0].DynamicInvoke(stats, amount);
+
+        for (int i = 1; i < delegates.Length; i++) {
+            delegates[i].DynamicInvoke(stats, amount);
+        }
+    
+        return (int)ret;
     }
 
     public int BacteriaDamage(Element bt, float amount) {
-        return onBacteriaDamage.Invoke(bt, amount);
+        var delegates = onBacteriaDamage.GetInvocationList();
+        if (delegates.Length == 1) {
+            return onBacteriaDamage.Invoke(bt, amount);
+        }
+        var ret = delegates[0].DynamicInvoke(bt, amount);
+
+        for (int i = 1; i < delegates.Length; i++) {
+            delegates[i].DynamicInvoke();
+        }
+    
+        return (int)ret;
     }
 
     public int ExplosionDamage(Explosion.Strength strength, float additive) {
-        return onExplosionDamage.Invoke(strength, additive);
+        var delegates = onExplosionDamage.GetInvocationList();
+        if (delegates.Length == 1) {
+            return onExplosionDamage.Invoke(strength, additive);
+        }
+        var ret = delegates[0].DynamicInvoke(strength, additive);
+
+        for (int i = 1; i < delegates.Length; i++) {
+            delegates[i].DynamicInvoke();
+        }
+    
+        return (int)ret;
     }
 }

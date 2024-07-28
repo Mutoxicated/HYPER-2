@@ -194,8 +194,7 @@ MonoBehaviour:
     value: {fileID: 7142330870873328552}
     none: 0
   range:
-    value:
-      _underlyingValue: {fileID: 0}
+    value: {fileID: 0}
     none: 1
 --- !u!114 &6798698503118529780
 MonoBehaviour:

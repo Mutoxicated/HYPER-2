@@ -23,8 +23,8 @@ public class Fly : MonoBehaviour
 
     private void Update() {
         stats.Range.GetAndThen(r => {
-            r.Value.Target().GetAndThen(g => {
-                target = g;
+            r.Target().GetAndThen(s => {
+                target = s.gameObject;
             }).Else(() => {
                 target = stats.Manager.Tower;
             });

@@ -5,13 +5,13 @@ using Helpers;
 using UnityEngine;
 
 public enum LocationType {// 0+0, 1+1, 2+2, 3+3
-    FIRST,
+    FIRST,//1, 0
     BOTTOM,
-    BOTTOM_RIGHT,
+    BOTTOM_RIGHT,//2, 2
     RIGHT,
-    RIGHT_TOP,
+    RIGHT_TOP,//3, 4
     TOP,
-    TOP_LEFT,
+    TOP_LEFT,//4, 6
     LEFT,
     LEFT_BOTTOM
 }
@@ -196,6 +196,9 @@ public class WorldGenerator : MonoBehaviour
     }
 
     public Location GetLocationOfIndex(int index, int layer) {
+        if (layer == 1) {
+            Debug.Log("breakpoint");
+        }
         if (index == GetFirstOfLayer(layer)) {
             return new Location(LocationType.FIRST, -1, GetLayerSurplus(layer)-1);
         }
@@ -210,27 +213,20 @@ public class WorldGenerator : MonoBehaviour
                 return new Location((LocationType)(nth*2), 0, GetLayerSurplus(layer));
             }
             nth--;
-            if (nth <= 0) {
-                break;
-            }
+            if (nth <= 0) { break; }
             corner = GetLayerCorner(layer, nth);
         }
 
         //Debug.Log("Corner: "+corner+" ["+nth+"]");
 
-        int corner1Delta, corner2Delta = 0;
+        int corner1Delta, corner2Delta;
         if (nth == 0) {
             corner1Delta = -1;
         }else {
             corner1Delta = GetLayerCorner(layer, nth)-index;
         }
         corner2Delta = GetLayerCorner(layer, nth+1)-index;
-
-        if (corner1Delta < corner2Delta) {
-            return new Location((LocationType)(nth+1+nth), corner1Delta, corner2Delta);
-        }else {
-            return new Location((LocationType)(nth+1+nth), corner2Delta, corner1Delta);
-        }
+        return new Location((LocationType)(nth+1+nth), corner1Delta, corner2Delta);
     }
 
     public int LayerAmount(int layer) { // CORRECT
@@ -346,7 +342,7 @@ public class WorldGenerator : MonoBehaviour
         return 3 + ( layer - 1 ) * 2;
     }
 
-    private int GetLayerCorner(int layer, int nth) {
+    public int GetLayerCorner(int layer, int nth) {
         return GetFirstOfLayer(layer) + 2*layer + ( nth-1 )*GetLayerSurplus(layer) ;
     }
 
@@ -460,37 +456,39 @@ public class WorldGenerator : MonoBehaviour
         lastRandomCorner = next;
     }
 
-    private int mininumTileSpaceForGold = 12;
+    private int mininumTileSpaceForGold = 10;
 
     public void NewGoldPile() {
         var range = LayerRange(Mathf.RoundToInt(Seed.IntRange(0, 3)+layers/2));
-        var points = new List<int>() {
-            range[0]
-        };
+        var points = new List<(int, int)>();
         // find inelligible tiles
-        for (int i = 1; i < range.Count-1; i++) {
+        var previousIndex = 0;
+        for (int i = 0; i < range.Count; i++) {
             var _tile = tiles[range[i]];
             if (_tile.gameObject.layer == EditorState.GetLayer(EditorLayer.INTERACTABLE_TWO) | 
-                _tile.gameObject.layer == EditorState.GetLayer(EditorLayer.GOLD) |
+                _tile.gameObject.layer == EditorState.GetLayer(EditorLayer.ENVIRONMENT) |
                 _tile.Occupied) {
-                points.Add(range[i]);
+                points.Add( (range[previousIndex], range[i]) );
+                previousIndex = i;
             }
         }
-        points.Add(range[range.Count-1]);
         // remove tiles that don't have enough space
         for (int i = points.Count-1; i > 0; i--) {
-            var diff = points[i]-points[i-1];
+            var diff = points[i].Item2-points[i].Item1;
             if (diff < mininumTileSpaceForGold) {
                 points.RemoveAt(i);
             }
         }
+        if (points.Count == 0) {
+            return;
+        }
         // randomly choose where to generate the gold tiles
         var point = Seed.IntRange(0, points.Count-1);
-        var point2 = point+1;
 
-        var index = Mathf.RoundToInt(points[point]+(points[point2]-points[point])/2);
+        var index = Mathf.RoundToInt(points[point].Item1+(points[point].Item2-points[point].Item1)/2);
         var tile = tiles[index];
         var instance = Instantiate(goldPilePrefab, tile.transform.position+Vector3.up*1.3f, Quaternion.identity);
+        instance.GetComponent<GoldPile>().CStart(player.Manager);
         tile.Goldify(instance);
         var nbs = tile.GetNeighbors();
         Direction directionToLookFor = Direction.UNKNOWN;

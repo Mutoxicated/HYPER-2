@@ -18,9 +18,9 @@ TagManager:
   - MiniTower
   - Enemy
   - Occupied
-  - PlayerDetection
-  - EnemyDetection
-  - Gold
+  - EntityDetection
+  - Environment
+  - 
   - 
   - 
   - 

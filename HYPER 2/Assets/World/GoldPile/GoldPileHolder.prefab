@@ -12,8 +12,11 @@ GameObject:
   - component: {fileID: 205951162157024801}
   - component: {fileID: 205951162157024800}
   - component: {fileID: 3233345435434670300}
+  - component: {fileID: 2723066781449292359}
   - component: {fileID: 6612031136879162840}
-  m_Layer: 14
+  - component: {fileID: 101176154675680530}
+  - component: {fileID: 5413807647572124523}
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +108,21 @@ MonoBehaviour:
   queueMode: 0
   offset: 0
   material: {fileID: 0}
+--- !u!114 &2723066781449292359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205951162157024802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c580c88710778947b9c44b4640631c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mc: {fileID: 3233345435434670300}
+  hitColor: {r: 1, g: 0.9509536, b: 0.3066038, a: 1}
+  rate: 0.4
 --- !u!64 &6612031136879162840
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -119,6 +137,41 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1350751478352299312, guid: c6fb5880b59e4974bbb9206e1f8f75bc, type: 3}
+--- !u!114 &101176154675680530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205951162157024802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  template: {fileID: 11400000, guid: 4399c9aeaf2a7bf4999df27ccb45aff6, type: 2}
+  hitVisual:
+    value: {fileID: 2723066781449292359}
+    none: 0
+  range:
+    value: {fileID: 0}
+    none: 1
+--- !u!54 &5413807647572124523
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205951162157024802}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &205951162460291993
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,7 +181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 205951162460291998}
-  m_Layer: 14
+  - component: {fileID: 8043191059559606959}
+  m_Layer: 13
   m_Name: GoldPileHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,3 +205,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8043191059559606959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205951162460291993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299e552ac33a3914f828bdbea13bfb95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 101176154675680530}
