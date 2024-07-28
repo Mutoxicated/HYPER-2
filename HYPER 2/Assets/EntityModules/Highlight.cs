@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class Highlight : MonoBehaviour
 {
+    [SerializeField] private Transform rangeTransform;
     [Tooltip("Have this component disabled")]
     [SerializeField] private Outline outline;
 
     [SerializeField] private MeshRenderer range;
 
     public void Enable() {
+        enabled = true;
         outline.enabled = true;
         range.enabled = true;
     }
 
+    private void Update() {
+        transform.localScale = new Vector3(rangeTransform.localScale.x, transform.localScale.y, rangeTransform.localScale.z);
+    }
+
     public void Disable() {
+        enabled = false;
         outline.enabled = false;
         range.enabled = false;
     }

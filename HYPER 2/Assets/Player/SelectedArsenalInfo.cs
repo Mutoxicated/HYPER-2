@@ -45,6 +45,9 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Enable(MiniTower mt) {
+        if (this.mt.IsSome()) {
+            Disable();
+        }
         this.mt = new Option<MiniTower>(mt);
         mt.Highlight();
         stats = mt.Stats;

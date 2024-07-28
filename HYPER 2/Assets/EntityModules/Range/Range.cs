@@ -28,11 +28,16 @@ public class Range : MonoBehaviour
     public OnEnemy OnEnter;
     public OnEnemy OnExit;
 
-    public void CStart() {
-        OnEnter = new OnEnemy(e => enemies.Add(e));
-        OnExit = new OnEnemy(e => enemies.Remove(e));
+    private void UpdateSize() {
         var tileSize = stats.Manager.World.WG.TileSize;
         transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4-tileSize, transform.localScale.y, stats.get(RANGE)*tileSize*4-tileSize);
+    }
+
+    public void CStart() {
+        stats.onLvlUp = UpdateSize;
+        OnEnter = new OnEnemy(e => enemies.Add(e));
+        OnExit = new OnEnemy(e => enemies.Remove(e));
+        UpdateSize();
         gameObject.SetActive(true);
     }
 

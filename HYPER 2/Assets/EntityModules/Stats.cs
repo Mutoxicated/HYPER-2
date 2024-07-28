@@ -34,6 +34,7 @@ public class Stats : MonoBehaviour, IDamageable
     private int lvl = 1;
 
     private Manager manager; // IMMUTABLE
+    public delegate void OnLvl();
     public delegate void OnDie(Option<Stats> stats);
     public delegate int OnStatDamage(Stats stats, float amount);
     public delegate int OnBacteriaDamage(Element elm, float amount);
@@ -43,6 +44,7 @@ public class Stats : MonoBehaviour, IDamageable
     public OnStatDamage onStatDamage;
     public OnBacteriaDamage onBacteriaDamage;
     public OnExplosionDamage onExplosionDamage;
+    public OnLvl onLvlUp;
 
     public Dictionary<Stat, float> Mod {
         set { mod = value; }
@@ -198,6 +200,8 @@ public class Stats : MonoBehaviour, IDamageable
         if (this.xp >= template.maxXp) {
             Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
             lvl++;
+            if (onLvlUp != null)
+                onLvlUp.Invoke();
             this.xp = 0;
         }
     }
