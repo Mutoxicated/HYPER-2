@@ -64,8 +64,8 @@ public class Range : MonoBehaviour
             enemies.RemoveAt(offset);
             return Target();
         }
-        if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.ENEMY) |
-            (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.PLAYER)) {
+        if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.PLAYER) |
+            (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.ENEMY)) {
             return Target(offset+1);
         }
         return new Option<Stats>(enemies[offset]);

@@ -10,8 +10,8 @@ public class MusicPlayer : MonoBehaviour
     private int index = 0;
 
     // music visualization related
-    private float[] samples = new float[4] {
-        0f,0f,0f,0f
+    private float[] samples = new float[8] {
+        0f,0f,0f,0f,0f,0f,0f,0f
     };
     private float avg;
 

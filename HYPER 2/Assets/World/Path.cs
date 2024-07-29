@@ -410,6 +410,9 @@ public class Path : MonoBehaviour
         if (min > max) {
             min = max;
         }
+        // if (max == 1) {
+        //     Debug.Log("breakpoint");
+        // }
 
         amount = Seed.IntRange(min, max);
     }

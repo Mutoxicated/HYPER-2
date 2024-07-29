@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8550607997635344521}
   - component: {fileID: 76498751986217570}
   - component: {fileID: 1658029023197047657}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: NumPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}

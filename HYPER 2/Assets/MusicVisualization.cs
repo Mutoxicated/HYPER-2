@@ -8,10 +8,10 @@ public static class MusicVisualization
     private static float t = 0f;
 
     public static float T {
-        get { return t; }
+        get { return Mathf.Sqrt(t); }
     }
 
     public static void SetT(float t) {
-        MusicVisualization.t = t;
+        MusicVisualization.t = Mathf.Clamp01(t);
     }
 }

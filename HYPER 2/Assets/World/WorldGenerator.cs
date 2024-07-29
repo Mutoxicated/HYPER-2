@@ -223,11 +223,14 @@ public class WorldGenerator : MonoBehaviour
 
         int corner1Delta, corner2Delta;
         if (nth == 0) {
-            corner1Delta = -1;
+            corner1Delta = GetFirstOfLayer(layer)-index-1;
         }else {
             corner1Delta = GetLayerCorner(layer, nth)-index;
         }
         corner2Delta = GetLayerCorner(layer, nth+1)-index;
+        if (corner1Delta == -1 & corner2Delta == -1) {
+            Debug.Log("breakpoint");
+        }
         return new Location((LocationType)(nth+1+nth), corner1Delta, corner2Delta);
     }
 
