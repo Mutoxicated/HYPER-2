@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
     [SerializeField] private Camera cam;
+    [SerializeField] private CameraShake camShake;
     private Transform camRoot;
     private InputAction debugRefresh;
     private InputAction middleButton;
@@ -76,6 +77,10 @@ public class Player : MonoBehaviour
     public GUI GUI {
         get { return gui; }
     }
+
+    public static int Money {
+        get { return Save.rData.Money; }
+    }
     
     public void AddLvlUpListener(LvlUp fn) {
         onLvlUp += fn;
@@ -87,7 +92,7 @@ public class Player : MonoBehaviour
             Save.rData.SetXP(0);
             Save.rData.SetLvl(Save.rData.Lvl+1);
             self.onLvlUp.Invoke(Save.rData.Lvl);
-            Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl))*10);
+            Save.rData.SetMoneyRelative(Mathf.CeilToInt(Mathf.Sqrt(Save.rData.Lvl)));
             return;
         }
         Save.rData.SetXP(newXP);
@@ -98,7 +103,7 @@ public class Player : MonoBehaviour
     }
 
     public static float MaxXPRequired() {
-        return Save.rData.Lvl*10f;
+        return Save.rData.Lvl*15f;
     }
 
     public void DeadMode() {
@@ -120,6 +125,10 @@ public class Player : MonoBehaviour
         player.Enable();
         debug.Enable();
         ui.Disable();
+    }
+
+    public void ShakeCamera(Transform caller, float strength = 1f) {
+        camShake.Shake(caller, strength);
     }
 
     public void DStart(Manager manager) {

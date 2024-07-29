@@ -47,6 +47,8 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     private readonly Color goldColor = new Color(0.9f, 0.7f, 0f);
     private const float heightOffset = 1f;
 
+    private Color currentColor;
+
     private Vector3 initPos;
 
     private WorldGenerator worldGenerator;
@@ -71,6 +73,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     }
 
     public void CStart(WorldGenerator wg, float dist, int layer, int index) {
+        currentColor = mc.Color;
         worldGenerator = wg;
         distanceFromTower = dist;
         this.layer = layer;
@@ -132,6 +135,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.ChangeColor(litColor, true);
+        currentColor = litColor;
     }
     public void Enable(Color color) {
         if (lit) { return; }
@@ -142,6 +146,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.ChangeColor(color, true);
+        currentColor = color;
     }
 
     public void Disable() {
@@ -150,6 +155,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = false;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
         mc.ChangeColor(true);
+        currentColor = mc.Color;
     }
 
     public void Goldify(GameObject occupiedBy) {
@@ -157,6 +163,11 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
         Occupy(occupiedBy);
         mc.ChangeColor(goldColor, true);
+        currentColor = goldColor;
+    }
+
+    public void UpdateColor() {
+        mc.ChangeColor(Color.Lerp(currentColor, Color.white, MusicVisualization.T), true);
     }
 
     private void Awake() {

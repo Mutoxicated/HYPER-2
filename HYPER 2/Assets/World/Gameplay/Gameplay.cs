@@ -24,7 +24,7 @@ public class Gameplay : MonoBehaviour
     }
 
     // Settings
-    private int enemiesAmount = 9;
+    private int enemiesAmount = 3;
     public int EnemiesAmount {
         get { return Mathf.RoundToInt(enemiesAmount*LinearT); }
     }
@@ -63,6 +63,7 @@ public class Gameplay : MonoBehaviour
         }
         if (lvl >= unlock4thPath) {
             world.WG.CreateNextPath();
+            world.WG.NewGoldPile();
         }
         if (lvl >= unlock1stWidePath) {
             world.WG.WidenNextPath();
@@ -79,14 +80,14 @@ public class Gameplay : MonoBehaviour
 
         if (Save.rData.Waves >= 25) {
             var expansionsOwed = Mathf.FloorToInt(Save.rData.Waves % 25);
-            for (int i = 0; i <= expansionsOwed; i++) {
+            for (int i = 1; i <= expansionsOwed; i++) {
                 world.WG.Expand(5);
             }
         }
 
         if (Waves >= 50) {
             var goldPilesOwed = Mathf.FloorToInt(Waves % 50); 
-            for (int i = 0; i < goldPilesOwed; i++) {
+            for (int i = 1; i < goldPilesOwed; i++) {
                 world.WG.NewGoldPile();
             }
         }

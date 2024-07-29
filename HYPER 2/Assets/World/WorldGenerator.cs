@@ -116,7 +116,6 @@ public class WorldGenerator : MonoBehaviour
 
         CreatePaths();
         gp.GenerationUnlockLogic();
-        NewGoldPile();
     }
 
     public void Update() {
@@ -127,6 +126,9 @@ public class WorldGenerator : MonoBehaviour
             paths.Clear();
 
             CreatePaths();
+        }
+        foreach (var tile in tiles) {
+            tile.UpdateColor();
         }
     }
 

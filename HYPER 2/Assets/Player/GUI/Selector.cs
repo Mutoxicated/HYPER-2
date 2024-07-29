@@ -11,6 +11,7 @@ public class Selector : MonoBehaviour
     [SerializeField] private Selection selection; 
     [SerializeField] private SelectedArsenalInfo selectedArsenalInfo;
     [SerializeField] private AudioSource onTowerPlacement;
+    [SerializeField] private AudioSource onDenyTowerPlacement;
     private Player player;
     private Ray ray;
     private RaycastHit[] hits = new RaycastHit[1];
@@ -64,6 +65,12 @@ public class Selector : MonoBehaviour
             UpdateSelection();
             if (player.OnLeftClick) {
                 qi.GetSelectedArsenal().GetAndThen(a => {
+                    var template = Resources.GetStatTemplate(a);
+                    if (Player.Money < template.worth) {
+                        onDenyTowerPlacement.Play();
+                        return;
+                    }
+                    Player.SetMoneyRelative(-template.worth);
                     onTowerPlacement.Play();
                     var instance = manager.World.InstantiateMiniTower(storedGo.transform.parent.position, a, mt => { mt.CStart(manager); });
                     storedGo.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);

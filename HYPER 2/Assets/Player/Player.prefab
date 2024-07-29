@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5950979555054321684}
   - component: {fileID: 6954566601433983008}
+  - component: {fileID: 643583587844315304}
   m_Layer: 3
   m_Name: Env Camera
   m_TagString: Untagged
@@ -56,7 +57,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 1400
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -75,6 +76,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &643583587844315304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579949200108288757}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8d92253259a9f48a78f7dff4af3e32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  envCamera: {fileID: 5950979555054321684}
 --- !u!1 &5116079301912019084
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,6 +256,7 @@ MonoBehaviour:
   movement: {fileID: 1080319219865831810}
   gui: {fileID: 0}
   cam: {fileID: 5116079301421470314}
+  camShake: {fileID: 643583587844315304}
 --- !u!114 &1080319219865831810
 MonoBehaviour:
   m_ObjectHideFlags: 0

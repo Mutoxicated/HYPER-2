@@ -21,6 +21,7 @@ public class Stats : MonoBehaviour, IDamageable
         NEUTRAL
     }
 
+    [SerializeField] private Option<GameObject> holder = Option<GameObject>.None();
     [SerializeField] private StatsTemplate template;
     [SerializeField] private Option<HitVisual> hitVisual = Option<HitVisual>.None();
     [SerializeField] private Option<Range> range;
@@ -96,7 +97,7 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     private void PrepareValues() {
-        onDie = new OnDie(s => {Destroy(gameObject);});
+        onDie = new OnDie(s => {Destroy(holder.Get());});
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
             bool killed = GetHit(amount);
             int xp = killed ? template.xpKillWorth : template.xpHitWorth;
@@ -124,7 +125,9 @@ public class Stats : MonoBehaviour, IDamageable
                 hitVisual.Get().OnHit(0.75f);
             return xp;
         });
-
+        if (holder.IsNone()) {
+            holder = new Option<GameObject>(gameObject);
+        }
         for (int i = 0; i < Stt.EnumValues.Length; i++) {
             if (i >= template.modifiers.Count) {
                 template.modifiers.Add(1f);

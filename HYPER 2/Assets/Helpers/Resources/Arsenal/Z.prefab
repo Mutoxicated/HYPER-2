@@ -307,6 +307,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holder:
+    value: {fileID: 3710317631712574376}
+    none: 0
   template: {fileID: 11400000, guid: 52047b60c0f2ec245ae232f9f9b7ea68, type: 2}
   hitVisual:
     value: {fileID: 0}
