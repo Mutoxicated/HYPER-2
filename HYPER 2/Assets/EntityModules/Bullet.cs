@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
 
         if (DEAD_RIGHT_NOW) {
             scale = transform.localScale;
-            scale.z = Mathf.Lerp(scale.z, scale.z-stats.get(SPEED)*24f, Time.deltaTime);
+            scale.z = Mathf.Lerp(scale.z, scale.z-stats[SPEED]*24f, Time.deltaTime);
             transform.localScale = scale;
             if (scale.z <= 0) {
                 Destroy(gameObject);
@@ -42,12 +42,12 @@ public class Bullet : MonoBehaviour, IBulletConstruct
             return;
         }
 
-        transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED), Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats[SPEED], Time.deltaTime);
         scale = transform.localScale;
         if (scale.z > bulletLength) {
             scale.z = bulletLength;
         }else {
-            scale.z = Mathf.Lerp(scale.z, scale.z+stats.get(SPEED)*19f, Time.deltaTime);
+            scale.z = Mathf.Lerp(scale.z, scale.z+stats[SPEED]*19f, Time.deltaTime);
         }
         transform.localScale = scale;
     }
@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
     public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
         var damageable = collider.gameObject.GetComponent<IDamageable>();
-        int? xp = damageable?.Damage(stats, stats.get(DAMAGE));
+        int? xp = damageable?.Damage(stats, stats[DAMAGE]);
         stats.Inheriter.GetAndThen(s => {
             if (s.StatSide == Stats.Side.PLAYER) {
                 Player.IncrementXP(xp ?? 0);

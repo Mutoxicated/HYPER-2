@@ -6,6 +6,6 @@ public class EnemyRotate : Rotate
 {
     [SerializeField] private Stats stats;
     public override float Speed {
-        get { return base.Speed*stats.get(Stat.SPEED); }
+        get { return base.Speed*stats[Stat.SPEED]; }
     } 
 }

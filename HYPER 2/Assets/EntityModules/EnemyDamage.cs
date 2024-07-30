@@ -8,7 +8,7 @@ public class EnemyDamage : MonoBehaviour {
     public void IntervalDamage() {
         if (currentlyColliding.IsNone()) { return; }
 
-        currentlyColliding.Get().Damage(stats, stats.get(DAMAGE));
+        currentlyColliding.Get().Damage(stats, stats[DAMAGE]);
     }
 
     public void OnCollisionEnter(Collision collision) {

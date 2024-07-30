@@ -52,7 +52,7 @@ public class Fly : MonoBehaviour
             });
             //Debug.Log("C: "+uh);
             //Debug.Log(delta);
-            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED)*accel, Time.deltaTime*delta);
+            transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats[SPEED]*accel, Time.deltaTime*delta);
         });
     }
 }

@@ -4,6 +4,7 @@ using Helpers;
 using UnityEngine;
 using TMPro;
 
+[Serializable]
 public enum Direction {
     RIGHT,
     DOWN,
@@ -13,14 +14,16 @@ public enum Direction {
 }
 
 public class Neighbor : IComparable<Neighbor> {
-    public Location Location;
     public Direction Direction;
     public Tile Tile;
 
-    public Neighbor(Direction direction, Tile tile, Location location) {
+    public Location Location {
+        get { return Tile.Location; }
+    }
+
+    public Neighbor(Direction direction, Tile tile) {
         Direction = direction;
         Tile = tile;
-        Location = location;
     }
 
     int IComparable<Neighbor>.CompareTo(Neighbor nb) {
@@ -53,8 +56,12 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
     private WorldGenerator worldGenerator;
     private int layer;
+    /// <summary>
+    /// DO "index-1" WHEN ACCESSING WORLD GENERATOR TILES 
+    /// </summary>
     private int index;
     private float distanceFromTower;
+    private Location location;
 
     public int Layer {
         get { return layer; }
@@ -67,6 +74,9 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     public float Distance {
         get { return distanceFromTower; }
     }
+    public Location Location {
+        get { return location; }
+    }
 
     public bool IsLit() {
         return lit;
@@ -78,12 +88,12 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         distanceFromTower = dist;
         this.layer = layer;
         this.index = index;
+        location = worldGenerator.GetLocationOfIndex(index, layer);
         textIndex.text = ""+index;
     }
 
     public List<Neighbor> GetNeighbors() {
         List<Neighbor> neighbors = new List<Neighbor>();
-        var location = worldGenerator.GetLocationOfIndex(index, layer);
         var context = new Context(location, Direction.UP);
         //Debug.Log("Index: "+index);
 
@@ -94,7 +104,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
                 var tileLocation = index+delta.Get();
                 //Debug.Log("Delta got: "+delta.Get());
                 if (tileLocation >= 0 && tileLocation <= worldGenerator.Tiles.Length-1 && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
-                    neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1], worldGenerator.GetLocationOfIndex(tileLocation, worldGenerator.Tiles[tileLocation].layer)));
+                    neighbors.Add(new Neighbor(direction, worldGenerator.Tiles[tileLocation-1]));
                 }
             }else {
                 //Debug.Log("Ain't got no delta.");
@@ -112,6 +122,20 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         neighbors.Sort();
 
         return neighbors;
+    }
+
+    public Option<Neighbor> GetNeighbor(Direction dir) {
+        var delta = worldGenerator.GetLayerDelta(layer, new Context(location, dir));
+        if (delta.IsSome()) {
+            var tileLocation = index+delta.Get();
+            //Debug.Log("Delta got: "+delta.Get());
+            if (tileLocation >= 0 && tileLocation <= worldGenerator.Tiles.Length-1 && !worldGenerator.Tiles[tileLocation-1].IsLit()) {
+                return new Option<Neighbor>(
+                    new Neighbor(dir, worldGenerator.Tiles[tileLocation-1])
+                );
+            }
+        }
+        return Option<Neighbor>.None();
     }
 
     public void Occupy(GameObject go) {

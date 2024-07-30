@@ -40,7 +40,7 @@ public class RunData
     	__xp = val;
     }
 
-    [SerializeField] private int __lvl = 1;
+    [SerializeField] private int __lvl = 4;
     
     public int Lvl {
     	get { return __lvl; }
@@ -158,12 +158,28 @@ public class RunData
     }
 
     [SerializeField] private List<Branch> roots = new List<Branch>();
+    [SerializeField] private List<int> pathsToWiden = new List<int>();
 
-    public void AddRoot(Branch root) {
-        roots.Add(root);
+    public void AddRoot1(Branch root1) {
+        roots.Add(root1);
+    }
+
+    public void AddPathToWiden(int index) {
+        pathsToWiden.Add(index);
     }
 
     public List<Branch> Roots {
         get { return roots; }
     }
+
+    public List<int> PathsToWiden {
+        get { return pathsToWiden; }
+    }
+}
+
+[Serializable]
+public class PathState 
+{
+    public Branch root1;
+    public Branch root2;
 }

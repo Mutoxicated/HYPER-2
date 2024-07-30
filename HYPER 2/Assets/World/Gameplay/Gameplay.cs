@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 
+public delegate void Doer();
+
 public class Gameplay : MonoBehaviour
 {
     private static Gameplay self;
@@ -53,34 +55,11 @@ public class Gameplay : MonoBehaviour
         get { return world; }
     }
 
-    public void GenerationUnlockLogic() {
-        var lvl = Save.rData.Lvl;
-
-        if (lvl >= unlock2ndPath) {
-            world.WG.CreateNextPath();
-        }
-        if (lvl >= unlock3rdPath) {
-            world.WG.CreateNextPath();
-        }
-        if (lvl >= unlock4thPath) {
-            world.WG.CreateNextPath();
-            world.WG.NewGoldPile();
-        }
-        if (lvl >= unlock1stWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock2ndWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock3rdWidePath) {
-            world.WG.WidenNextPath();
-        }
-        if (lvl >= unlock4thWidePath) {
-            world.WG.WidenNextPath();
-        }
-
+    public void GenerationUnlockLogic(Doer doer) {
         var expansionsOwed = Mathf.FloorToInt(Save.rData.Waves / 25);
         world.WG.Expand(5*expansionsOwed);
+
+        doer();
 
         var goldPilesOwed = Mathf.FloorToInt(Waves / 50); 
         for (int i = 1; i < goldPilesOwed; i++) {
@@ -135,10 +114,10 @@ public class Gameplay : MonoBehaviour
         waitInterval.Enable();
     }
 
-    public Enemy SpawnEnemy(Vector3 pos, Branch root) {
+    public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {
         var diff = Num.MinLimit(Random.Range(IntLinearT-1, IntLinearT), 1);
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
-            e.CStart(manager, r, root);
+            e.CStart(manager, r, root, main);
         });
     }
 

@@ -69,6 +69,12 @@ public class WorldGenerator : MonoBehaviour
         get { return tiles.ToArray(); }
     }
 
+    public Tile this[int index] {
+        get {
+            return Tiles[index];
+        }
+    }
+
     public GameObject Tower {
         get { return world.Tower; }
     }
@@ -114,8 +120,7 @@ public class WorldGenerator : MonoBehaviour
 
         Layer();
 
-        CreatePaths();
-        gp.GenerationUnlockLogic();
+        gp.GenerationUnlockLogic(CreatePaths);
     }
 
     public void Update() {
@@ -180,6 +185,7 @@ public class WorldGenerator : MonoBehaviour
     private int amount = 1;
 
     public void Expand(int amount = 1) {
+        if (amount == 0) { return; }// bug fix
         this.amount = amount;
         Debug.Log("expand");
         StartCoroutine("ExpandWorld");
@@ -198,10 +204,34 @@ public class WorldGenerator : MonoBehaviour
         return index >= GetFirstOfLayer(layer) && index <= GetLastOfLayer(layer);
     }
 
-    public Location GetLocationOfIndex(int index, int layer) {
-        if (layer == 1) {
-            Debug.Log("breakpoint");
+    public (int, int) GetCornersBetweenIndex(int index, int layer) {
+        if (index == GetFirstOfLayer(layer)) {
+            return (4, 1);
         }
+
+        //Debug.Log("// Finding location of: "+index);
+        int nth = 4;
+        int corner = GetLayerCorner(layer, nth);
+        while (index <= corner) {
+            //Debug.Log("Corner: "+corner+" ["+nth+"]");
+            if (index == corner) {
+                //Debug.Log("// Is corner "+ nth);
+                return (Num.Wrap(nth-1, 1, 4), nth);
+            }
+            nth--;
+            if (nth <= 0) { break; }
+            corner = GetLayerCorner(layer, nth);
+        }
+
+        //Debug.Log("Corner: "+corner+" ["+nth+"]");
+
+        return (Num.Wrap(nth, 1, 4), nth+1);
+    }
+
+    public Location GetLocationOfIndex(int index, int layer) {
+        // if (layer == 1) {
+        //     Debug.Log("breakpoint");
+        // }
         if (index == GetFirstOfLayer(layer)) {
             return new Location(LocationType.FIRST, -1, GetLayerSurplus(layer)-1);
         }
@@ -434,12 +464,15 @@ public class WorldGenerator : MonoBehaviour
         return range;
     }
 
-    private void InstantiatePath(int index, int corner1, int corner2) {
+    public delegate void PathConstructor(Path p, int index);
+
+    private Path InstantiatePath(int index, PathConstructor pc) {
         var instance = Instantiate(pathPrefab, Vector3.zero, Quaternion.identity);
         var path = instance.GetComponent<Path>();
         paths.Add(path);
-        path.CStart(player.Manager, tiles[index], corner1, corner2);
+        pc(path, index);
         //path.Widen();
+        return path;
     }
 
     private void CreatePaths() {
@@ -449,16 +482,25 @@ public class WorldGenerator : MonoBehaviour
         //int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
         lastRandomCorner = randomCorner2;
         //Debug.Log("first: "+randomCorner+", second: "+randomCorner2+", third: "+randomCorner3+", fourth: "+randomCorner4);
-
-        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2), randomCorner, randomCorner2);
+        InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner, randomCorner2), (p, i) => p.CStart(player.Manager, tiles[i]));
         //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner2, randomCorner3));
         //InstantiatePath(GetRandomIndexFromCorners(layers, randomCorner3, randomCorner4));
+
+        for (int i = 0; i < Save.rData.Roots.Count; i++) {
+            lastRandomCorner = Num.Wrap(lastRandomCorner+1, 1, 4);
+            InstantiatePath(Save.rData.Roots[i].startIndex, (p, _) => { p.CStart(player.Manager, Save.rData.Roots[i]); }); 
+        }
+        for (int i = 0; i < Save.rData.PathsToWiden.Count; i++) {
+            var curr = Save.rData.PathsToWiden[i];
+            paths[curr].Widen();
+        }
     }
 
     public void CreateNextPath() {
         int next = Num.Wrap(lastRandomCorner+1, 1, 4);
 
-        InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next), lastRandomCorner, next);
+        var path = InstantiatePath(GetRandomIndexFromCorners(layers, lastRandomCorner, next), (p, i) => p.CStart(player.Manager, tiles[i]));
+        Save.rData.AddRoot1(path.Root1);
         lastRandomCorner = next;
     }
 
@@ -522,6 +564,7 @@ public class WorldGenerator : MonoBehaviour
 
     public void WidenNextPath() {
         paths[counter].Widen();
+        Save.rData.AddPathToWiden(counter);
         counter++;
     }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statsBase: {fileID: 11400000, guid: baf7b0142a5c56e49ae9e7c823e9e9c7, type: 2}
   modifiers:
-  - 0.5
+  - 1
   - 1
   - 1
   - 1

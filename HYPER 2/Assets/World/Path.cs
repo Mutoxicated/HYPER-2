@@ -1,26 +1,38 @@
+using System;
 using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 using UnityEngine.Assertions;
 using static Helpers.General;
 
+[Serializable]
 public class Branch {
     public Direction direction;
-    public Vector3 start;
-    public Vector3 end;
-    public List<Branch> branches = new List<Branch>();
+    public int length = 0;
+    public int startIndex;
+    public Tile start;
+    public int endIndex;
+    public Tile end;
+    [SerializeReference] public List<Branch> branches = new List<Branch>();
 
-    public Branch(Vector3 start, Direction direction, Vector3 end) {
+    public Branch(Tile start, Direction direction, int length, Tile end) {
+        this.length = length;
         this.direction = direction;
         this.start = start;
+        startIndex = start.Index;
         this.end = end;
+        endIndex = end.Index;
     }
 
-    public Branch(Direction direction, Vector3 end, Branch parent) {
+    public Branch(Direction direction, Tile end, int length, Branch parent) {
         this.direction = direction;
         this.end = end;
+        endIndex = end.Index;
         parent.SetBranch(this);
         start = parent.end;
+        startIndex = start.Index;
+
+        this.length = length;
     }
 
     public Option<Branch> Next() {
@@ -55,10 +67,17 @@ public class Path : MonoBehaviour
     Direction perpendicular, perpendicular2;// to the main
     private Direction currentDirection = Direction.UNKNOWN;
     private Branch root1;
+    public Branch Root1 {
+        get { return root1; }
+    }
     private int closestCornerDist1;
     private float closestCornerPercent;
     private Option<Branch> currentBranch1 = Option<Branch>.None();
     private Branch root2;
+     public Branch Root2 {
+        get { return root2; }
+    }
+
 
     private int amount = 0;
     private List<Neighbor> buffer = new List<Neighbor>();
@@ -73,22 +92,16 @@ public class Path : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void CStart(Manager manager, Tile start, int corner1, int corner2) {
-        //this.manager = manager;
-        world = manager.World;
-        wg = world.WG;
-        start.Enable();
-        var location = wg.GetLocationOfIndex(start.Index, start.Layer);
-        neighbors1.Add(new Neighbor(Direction.UNKNOWN, start, location));
-        
-        var cornerIndex1 = wg.GetLayerCorner(start.Layer, corner1);
-        var cornerIndex2 = wg.GetLayerCorner(start.Layer, corner2);
+    private void CalculateCornerToIndexDist(Tile start) {
+        var (cornerIndex1, cornerIndex2) = wg.GetCornersBetweenIndex(start.Index, start.Layer);
         var diff1 = Mathf.Abs(start.Index-cornerIndex1);
         var diff2 = Mathf.Abs(start.Index-cornerIndex2);
         closestCornerDist1 = diff1 > diff2 ? diff1 : diff2;
         var length = Mathf.Abs(cornerIndex2-cornerIndex1);
         closestCornerPercent = closestCornerDist1/length;
+    }
 
+    private void GetMainDirFromLocation(Location location) {
         switch (location.Type) {
         case LocationType.LEFT_BOTTOM:
             mainDirection = FiftyFifty(Direction.RIGHT, Direction.UP);
@@ -116,21 +129,31 @@ public class Path : MonoBehaviour
             mainDirection = Direction.RIGHT;
             break;
         }
+    }
+
+    public void CStart(Manager manager, Tile start) {
+        //this.manager = manager;
+        world = manager.World;
+        wg = world.WG;
+        start.Enable();
+        GetMainDirFromLocation(start.Location);
+        neighbors1.Add(new Neighbor(mainDirection, start));
+        
+        CalculateCornerToIndexDist(start);
+
         perpendicular = (Direction)Num.Wrap((int)mainDirection+1, 0, 3);
         perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
 
         extend();
+    }
 
-        var dir = wg.Tower.transform.position-neighbors1[neighbors1.Count-1].Tile.transform.position;
-        if (dir.y > 0f) {
-            dir.y = 0f;
-        }
-        var direction = Dir.FromVec(dir);
-        //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+direction);
-        if (currentBranch1.Get().direction != direction) {
-            AddBranch(neighbors1, direction, 1);
-            currentBranch1.Get().end += dir.normalized*2f;
-        }
+    public void CStart(Manager manager, Branch root) {
+        world = manager.World;
+        wg = world.WG;
+        root1 = root;
+        GetMainDirFromLocation(wg[root.startIndex].Location);
+        CalculateCornerToIndexDist(wg[root.startIndex]);
+        RecreatePath(ref neighbors1, root);
     }
 
     public void Widen() {
@@ -149,7 +172,7 @@ public class Path : MonoBehaviour
         }
         Assert.IsFalse(start.IsNone());
         start.GetAndThen(s => {
-            s.Direction = Direction.UNKNOWN;
+            s.Direction = mainDirection;
             s.Tile.Enable();
             neighbors2.Add(s);
         });
@@ -183,64 +206,46 @@ public class Path : MonoBehaviour
         root2 = CreateBranches(neighbors2);
     }
 
-    private Option<Neighbor> EnableNeighbor(Direction direction, List<Neighbor> buffer, List<Neighbor>neighbors) {
-        foreach (var nb in buffer) {
-            if (nb.Direction == direction) {
-                nb.Tile.Enable();
-                neighbors.Add(nb);
-                return new Option<Neighbor>(nb);
-            }
-        }
-
-        return Option<Neighbor>.None();
-    }
-
     private Branch CreateBranches(List<Neighbor> neighbors) {
-        var deviatedDirection = Direction.UNKNOWN;
-        foreach (var nb in neighbors) {
-            if (nb.Direction != mainDirection) {
-                deviatedDirection = nb.Direction;
-                break;
-            }
-        }
-        var currentDirection = neighbors[0].Direction;
+        Branch root = null;
+        var current = Option<Branch>.None();
+        currentDirection = mainDirection;
 
-        Option<Branch> root = Option<Branch>.None(), current = Option<Branch>.None();
-
+        int counter = 0;
+        var prevStart = neighbors[0];
         for (int i = 1; i < neighbors.Count; i++) {
-            if (i+1 >= neighbors.Count-1) {
+            if (i+1 > neighbors.Count-1) {
                 continue;
             }
+            counter++;
             if (neighbors[i+1].Direction != currentDirection && neighbors[i].Direction == currentDirection) {
-                if (root.IsNone()) {
-                    var start = FindStart(neighbors);
-                    Assert.IsNotNull(start, "start was null");
-                    root = new Option<Branch>(new Branch(start.Get().transform.position, currentDirection, neighbors[i].Tile.transform.position));
-                    current = root;
+                if (root == null) {
+                    root = new Branch(prevStart.Tile, currentDirection, counter, neighbors[i].Tile);
+                    current = new Option<Branch>(root);
                 }else {
                     current.GetAndThen(c => {
-                        current = new Option<Branch>( new Branch(currentDirection, neighbors[i].Tile.transform.position, c) );
+                        current = new Option<Branch>( new Branch(currentDirection, neighbors[i].Tile, counter, c) );
                     });
                 }
+                prevStart = neighbors[i];
+
+                currentDirection = neighbors[i+1].Direction;
+                counter = 0;
             }
+        }
+        currentDirection = mainDirection;
 
-            currentDirection = currentDirection == mainDirection ? deviatedDirection : mainDirection;
+        var last = neighbors[neighbors.Count-1];
+        if (root == null) {
+            root = new Branch(prevStart.Tile, currentDirection, counter+1, last.Tile);
+            current = new Option<Branch>(root);
+        }else {
+            current.GetAndThen(c => {
+                current = new Option<Branch>( new Branch(last.Direction, last.Tile, counter+1, c) );
+            });
         }
 
-        AddBranch(neighbors, 1);
-
-        var dir = wg.Tower.transform.position-neighbors1[neighbors1.Count-1].Tile.transform.position;
-        if (dir.y > 0f) {
-            dir.y = 0f;
-        }
-        var direction = Dir.FromVec(dir);
-        //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA "+direction);
-        if (currentBranch1.Get().direction != direction) {
-            AddBranch(neighbors, direction, 1);
-            currentBranch1.Get().end += dir.normalized*2f;
-        }
-
-        return root.Get();
+        return root;
     }
 
     public Interval[] StartSpawning(IRound round) {
@@ -264,10 +269,10 @@ public class Path : MonoBehaviour
     }
 
     public void IntervalSpawnEnemy() {
-        round.Spawn(root1, neighbors1[0].Tile.transform.position+Vector3.up*1.5f);
+        round.Spawn(root1, mainDirection, neighbors1[0].Tile.transform.position+Vector3.up*1.5f);
     }
     public void IntervalSpawnEnemy2() {
-        round.Spawn(root1, neighbors2[0].Tile.transform.position+Vector3.up*1.5f);
+        round.Spawn(root2, mainDirection, neighbors2[0].Tile.transform.position+Vector3.up*1.5f);
     }
 
     private void extend() {
@@ -315,17 +320,12 @@ public class Path : MonoBehaviour
                 GetDeviatedNeighbor().GetAndThen(n => { closestToTower = n; });
             }
 
-            if (currentDirection == Direction.UNKNOWN) {
-                currentDirection = closestToTower.Direction;
-            }
-
             if (currentDirection == closestToTower.Direction) {
                 EnableNeighbor(closestToTower);
                 continue;
             }
             //color = new Color(0, Random.Range(0.5f, 1f), Random.Range(0f, 1f));
             EnableNeighbor(closestToTower);
-            AddBranch(neighbors1);
             currentDirection = closestToTower.Direction;
 
             if (currentDirection != mainDirection) {
@@ -342,7 +342,35 @@ public class Path : MonoBehaviour
             }
         }
 
-        AddBranch(neighbors1, 1);
+        root1 = CreateBranches(neighbors1);
+    }
+
+    private void RecreatePath(ref List<Neighbor> neighbors, Branch root) {
+        Option<Branch> curr = new Option<Branch>(root);
+        {
+            var currBranch = curr.Get();
+            var start = wg[currBranch.startIndex-1];
+            currBranch.start = start;
+            currBranch.end = wg[currBranch.endIndex-1];
+            start.Enable();
+            neighbors.Add(new Neighbor(mainDirection, start));
+        }
+        while(curr.IsSome()) {
+            var currBranch = curr.Get();
+            currBranch.start = wg[currBranch.startIndex-1];
+            currBranch.end = wg[currBranch.endIndex-1];
+
+            var nb = neighbors[neighbors.Count-1];
+            for (int i = 0; i < currBranch.length; i++) {
+                var hypotheticalNB = nb.Tile.GetNeighbor(currBranch.direction);
+                Assert.IsFalse(hypotheticalNB.IsNone(), "recreating path error: no neighbor found trying to go "+currBranch.direction+" at "+nb.Tile.Index);
+                nb = hypotheticalNB.Get();
+                nb.Tile.Enable();
+                neighbors.Add(nb);
+            }
+
+            curr = currBranch.Next();
+        } 
     }
 
     public Option<Neighbor> GetDeviatedNeighbor() {
@@ -367,39 +395,6 @@ public class Path : MonoBehaviour
         return Option<Neighbor>.None();
     }
 
-    public Option<Tile> FindStart(List<Neighbor> neighbors, int offset = 0) {
-        var direction = neighbors[neighbors.Count-2+offset].Direction;
-        for (int i = neighbors.Count-2+offset; i >= 0; i--) {
-            if (neighbors[i].Direction != direction) {
-                return new Option<Tile>(neighbors[i+1].Tile);
-            }
-        }
-
-        return Option<Tile>.None();
-    }
-
-    public void AddBranch(List<Neighbor> neighbors, int offset = 0) {
-        if (currentBranch1.IsNone()) {
-            var start = FindStart(neighbors1);
-            Assert.IsNotNull(start.Get(), "Start was null");
-            root1 = new Branch(start.Get().transform.position, neighbors1[neighbors1.Count-2].Direction, neighbors1[neighbors1.Count-2+offset].Tile.transform.position);
-            currentBranch1 = new Option<Branch>(root1);
-        }else {
-            currentBranch1 = new Option<Branch>(new Branch(neighbors1[neighbors1.Count-2+offset].Direction, neighbors1[neighbors1.Count-2+offset].Tile.transform.position, currentBranch1.Get()));
-        }
-    }
-
-    public void AddBranch(List<Neighbor> neighbors, Direction dir, int offset = 0) {
-        if (currentBranch1.IsNone()) {
-            var start = FindStart(neighbors1);
-            Assert.IsNotNull(start.Get(), "Start was null");
-            root1 = new Branch(start.Get().transform.position, dir, neighbors1[neighbors1.Count-2+offset].Tile.transform.position);
-            currentBranch1 = new Option<Branch>(root1);
-        }else {
-            currentBranch1 = new Option<Branch>(new Branch(dir, neighbors1[neighbors1.Count-2+offset].Tile.transform.position, currentBranch1.Get()));
-        }
-    }
-    
     private void SetAmount(int value) {
         var min = 3;
 
@@ -502,7 +497,7 @@ public class Path : MonoBehaviour
                 nb.Tile.Enable();
                 neighbors.Insert(0, nb);
                 nbFound = new Option<Neighbor>(nb);
-                root.start = nb.Tile.transform.position;
+                root.start = nb.Tile;
                 break;
             }
         }

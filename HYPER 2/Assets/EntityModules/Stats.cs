@@ -30,6 +30,12 @@ public class Stats : MonoBehaviour, IDamageable
     private Dictionary<Stat, float> val = new Dictionary<Stat, float>();
     private readonly Dictionary<Stat, float> incrs = new Dictionary<Stat, float>();
 
+    public float this[Stat stat] {
+        get {
+            return get(stat);
+        }
+    }
+
     private float hp;
     private int xp = 0;
     private int lvl = 1;
@@ -173,7 +179,7 @@ public class Stats : MonoBehaviour, IDamageable
         return mod[value]+incrs[value]*lvl;
     }
 
-    public float get(Stat value) {
+    private float get(Stat value) {
         return Num.MinLimit(val[value]*modify(value), 0.05f);
     }
 

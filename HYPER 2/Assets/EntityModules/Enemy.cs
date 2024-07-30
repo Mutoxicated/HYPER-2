@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
     [SerializeField] private bool followPath;
     
     private Branch currentBranch;
+    private Direction main;
 
     private Vector3 dir;
     private float dist;
@@ -27,10 +28,11 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
         });
     }
 
-    public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root) {
+    public void CStart(Manager manager, World.ReportDeath<Enemy> death, Branch root, Direction main) {
         // this.death = e => {
         //     manager.Pools.Get(PoolID.Explosion).ShootObject(e.transform.position, Quaternion.identity);
         // };
+        this.main = main;
         this.death += death;
         stats.CStart(manager);
         PrepareConfiguration();
@@ -39,7 +41,7 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
 
         currentBranch = root;
         dir = Dir.ToVec(currentBranch.direction);
-        look = Quaternion.LookRotation(currentBranch.end-currentBranch.start);
+        look = Quaternion.LookRotation(currentBranch.end.transform.position-currentBranch.start.transform.position);
         gameObject.SetActive(true);
     }
 
@@ -48,28 +50,32 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
     public void Update() {
         if (!followPath) { return; }
         //Debug.Log(dir);
-        transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats.get(SPEED), Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, transform.position+dir*stats[SPEED], Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, look, Time.deltaTime*5f);
         //Debug.Log("Current branch: "+currentBranch.direction);
         if (last) {
             return;
         }
         if (currentBranch.direction == Direction.UP | currentBranch.direction == Direction.DOWN) {
-            dist = Mathf.Abs(transform.position.z-currentBranch.end.z);
+            dist = Mathf.Abs(transform.position.z-currentBranch.end.transform.position.z);
         }else {
             //Debug.Log(currentBranch.end);
-            dist = Mathf.Abs(transform.position.x-currentBranch.end.x);
+            dist = Mathf.Abs(transform.position.x-currentBranch.end.transform.position.x);
         }
         if (dist < 0.2f) {
             var branch = currentBranch.Next();
             //Debug.Log(branch);
             dist = 0f;
             if (branch.IsNone()) {
+                if (currentBranch.direction != main) {
+                    dir = Dir.ToVec(main);
+                    look = Quaternion.LookRotation(currentBranch.end.transform.position-currentBranch.start.transform.position);
+                }
                 last = true;
             }else {
                 currentBranch = branch.Get();
                 dir = Dir.ToVec(currentBranch.direction);
-                look = Quaternion.LookRotation(currentBranch.end-currentBranch.start);
+                look = Quaternion.LookRotation(currentBranch.end.transform.position-currentBranch.start.transform.position);
             }
         }
     }

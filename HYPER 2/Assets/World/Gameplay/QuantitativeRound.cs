@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public interface IRound {
-    Enemy Spawn(Branch root, Vector3 pos);
+    Enemy Spawn(Branch root, Direction main, Vector3 pos);
 }
 
 public class QuantitativeRound : MonoBehaviour, IRound
@@ -29,8 +29,8 @@ public class QuantitativeRound : MonoBehaviour, IRound
         //Debug.Log("Update On Spawn ("+totalSpawns+")");
     }
 
-    public Enemy Spawn(Branch root, Vector3 pos) {
-        var enemy = gameplay.SpawnEnemy(pos, root);
+    public Enemy Spawn(Branch root, Direction main, Vector3 pos) {
+        var enemy = gameplay.SpawnEnemy(pos, main, root);
         UpdateOnSpawn();
         return enemy;
     }

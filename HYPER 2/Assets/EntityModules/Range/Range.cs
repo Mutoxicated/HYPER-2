@@ -30,7 +30,7 @@ public class Range : MonoBehaviour
 
     private void UpdateSize() {
         var tileSize = stats.Manager.World.WG.TileSize;
-        transform.localScale = new Vector3(stats.get(RANGE)*tileSize*4-tileSize, transform.localScale.y, stats.get(RANGE)*tileSize*4-tileSize);
+        transform.localScale = new Vector3(stats[RANGE]*tileSize*4-tileSize, transform.localScale.y, stats[RANGE]*tileSize*4-tileSize);
     }
 
     public void CStart() {

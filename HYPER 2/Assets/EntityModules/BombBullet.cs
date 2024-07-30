@@ -36,15 +36,13 @@ public class BombBullet : MonoBehaviour, IBulletConstruct {
             return;
         }
 
-        transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats.get(SPEED), Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, transform.position+transform.forward*stats[SPEED], Time.deltaTime);
     }
 
     public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
-        collider.gameObject.GetComponent<IDamageable>()?.Damage(stats, stats.get(DAMAGE));
-
         var damageable = collider.gameObject.GetComponent<IDamageable>();
-        int? xp = damageable?.Damage(stats, stats.get(DAMAGE));
+        int? xp = damageable?.Damage(stats, stats[DAMAGE]);
         stats.Inheriter.GetAndThen(s => {
             if (s.StatSide == Stats.Side.PLAYER) {
                 Player.IncrementXP(xp ?? 0);
