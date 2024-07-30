@@ -53,13 +53,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holder:
+    value: {fileID: 0}
+    none: 1
   template: {fileID: 11400000, guid: 54ba38384f6546f43a0ed43c16c6ba0d, type: 2}
   hitVisual:
     value: {fileID: 7925803477917204670}
     none: 0
   range:
-    value:
-      _underlyingValue: {fileID: 0}
+    value: {fileID: 0}
     none: 1
 --- !u!114 &8813299966052488670
 MonoBehaviour:
@@ -301,7 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c580c88710778947b9c44b4640631c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mc: {fileID: 664021496462231558}
+  mcs:
+  - {fileID: 664021496462231558}
   hitColor: {r: 1, g: 1, b: 1, a: 1}
   rate: 0.4
 --- !u!1 &3539824130882968046

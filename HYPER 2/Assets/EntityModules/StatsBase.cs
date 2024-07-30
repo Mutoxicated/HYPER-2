@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using Helpers;
+
 
 
 #if UNITY_EDITOR
@@ -22,9 +24,12 @@ public class BaseStatsEditor : Editor {
     {
         serializedObject.Update();
         EditorGUILayout.BeginVertical();
-        for (int i  = 0; i < stats.arraySize; i++) {
+        for (int i  = 0; i < Stt.EnumValues.Length; i++) {
             GUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(stats.enumNames[i]);
+            if (i > values.arraySize-1) {
+                values.InsertArrayElementAtIndex(i);
+            }
+            EditorGUILayout.PrefixLabel(Stt.EnumValues[i].ToString());
             //EditorGUILayout.PropertyField(modifiers.GetArrayElementAtIndex(i));
             EditorGUILayout.PropertyField(values.GetArrayElementAtIndex(i));
             GUILayout.EndHorizontal();
@@ -38,16 +43,8 @@ public class BaseStatsEditor : Editor {
 
 [CreateAssetMenu(fileName = "Stats Base", menuName = "Mutox/Stats Base", order = 1)]
 public class StatsBase : ScriptableObject {
-    public Stat[] stats = new Stat[5] {
-        Stat.MAX_HEALTH,
-        Stat.SPEED,
-        Stat.DAMAGE,
-        Stat.RANGE,
-        Stat.RATE
-    };
-
-    public float[] values = new float[5] {
-        100f, 7f, 30f, 5f, 1f,
+    public float[] values =  new float[6] {
+        100f, 7f, 30f, 5f, 1f, 1f
     };
 
     public Stats.Side side;

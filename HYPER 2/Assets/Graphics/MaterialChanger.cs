@@ -9,7 +9,8 @@ public enum MaterialType {
     ADV_WIRE,
     HDR,
     SELECTION,
-    PIXEL_OBJECT
+    PIXEL_OBJECT,
+    OUTLINE
 }
 
 public enum QueueMode {

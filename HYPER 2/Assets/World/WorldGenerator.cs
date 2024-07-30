@@ -128,7 +128,8 @@ public class WorldGenerator : MonoBehaviour
             CreatePaths();
         }
         foreach (var tile in tiles) {
-            tile.UpdateColor();
+            if (!tile.IsLit())
+                tile.UpdateColor();
         }
     }
 

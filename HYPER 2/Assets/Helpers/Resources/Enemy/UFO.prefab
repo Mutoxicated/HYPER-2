@@ -134,7 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c580c88710778947b9c44b4640631c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mc: {fileID: 4264655840607621079}
+  mcs:
+  - {fileID: 4264655840607621079}
   hitColor: {r: 1, g: 1, b: 1, a: 1}
   rate: 0.4
 --- !u!1 &1780869610907323443
@@ -485,6 +486,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holder:
+    value: {fileID: 0}
+    none: 1
   template: {fileID: 11400000, guid: 5dff51667b9b9894a850438b4580c1d4, type: 2}
   hitVisual:
     value: {fileID: 2206449522765130306}

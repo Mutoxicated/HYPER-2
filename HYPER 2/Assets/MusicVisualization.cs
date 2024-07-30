@@ -8,7 +8,7 @@ public static class MusicVisualization
     private static float t = 0f;
 
     public static float T {
-        get { return Mathf.Sqrt(t); }
+        get { return t; }
     }
 
     public static void SetT(float t) {

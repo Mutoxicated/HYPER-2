@@ -100,26 +100,26 @@ public class Stats : MonoBehaviour, IDamageable
         onDie = new OnDie(s => {Destroy(holder.Get());});
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
             bool killed = GetHit(amount);
-            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
-            if (template.statsBase.side == Side.ENEMY)
+            int xp = killed ? template.xpKillWorth : 0;
+            if (template.statsBase.side == Side.ENEMY  & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
-            if (hitVisual.IsSome()) 
+            if (hitVisual.IsSome())
                 hitVisual.Get().OnHit(0.5f);
             return xp;
         });
         onExplosionDamage = new OnExplosionDamage((strength, amount) => {
-            bool killed = GetHit(amount+(int)strength);
-            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
-            if (template.statsBase.side == Side.ENEMY)
+            bool killed = GetHit((amount+(int)strength)*get(Stat.ARMOR));
+            int xp = killed ? template.xpKillWorth : 0;
+            if (template.statsBase.side == Side.ENEMY  & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
             if (hitVisual.IsSome()) 
                 hitVisual.Get().OnHit(1f);
             return xp;
         });
         onStatDamage = new OnStatDamage((stats, amount) => {
-            bool killed = GetHit(amount);
-            int xp = killed ? template.xpKillWorth : template.xpHitWorth;
-            if (template.statsBase.side == Side.ENEMY)
+            bool killed = GetHit(amount*get(Stat.ARMOR));
+            int xp = killed ? template.xpKillWorth : 0;
+            if (template.statsBase.side == Side.ENEMY & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
             if (hitVisual.IsSome()) 
                 hitVisual.Get().OnHit(0.75f);

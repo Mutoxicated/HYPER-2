@@ -16,10 +16,20 @@ MonoBehaviour:
   modifiers:
   - 1
   - 1
-  - 0.8
   - 1
   - 1
+  - 1
+  - 1
+  incrementers:
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
   element: 0
   elementImmunities: 
+  maxXp: 100
+  xpKillWorth: 15
   worth: 1
   unlockAt: 1

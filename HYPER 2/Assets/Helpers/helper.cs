@@ -460,6 +460,12 @@ namespace Helpers {
             }
             return val;
         }
+        public static int MinLimit(int val, int val2) {
+            if (val < val2) {
+                return val2;
+            }
+            return val;
+        }
     }
 
     public static class Vec3 {
@@ -546,6 +552,8 @@ namespace Helpers {
                 return "Selection";
             case MaterialType.PIXEL_OBJECT:
                 return "PixelObject";
+            case MaterialType.OUTLINE:
+                return "Outline";
             default:
                 return "UNKNOWN";
             }

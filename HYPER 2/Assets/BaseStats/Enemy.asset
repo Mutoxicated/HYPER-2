@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43f03f42220a5d4899f6991318a1a34, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  stats: 0000000001000000020000000300000004000000
   values:
   - 20
   - 2
-  - 30
-  - 5
+  - 25
+  - 1
+  - 1
   - 1
   side: 1

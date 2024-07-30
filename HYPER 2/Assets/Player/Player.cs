@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GUI gui;
     [SerializeField] private Camera cam;
     [SerializeField] private CameraShake camShake;
+    [SerializeField] private MusicPlayer musicPlayer;
     private Transform camRoot;
     private InputAction debugRefresh;
     private InputAction middleButton;
@@ -107,9 +108,11 @@ public class Player : MonoBehaviour
     }
 
     public void DeadMode() {
+        manager.GP.gameObject.SetActive(false);
         dead = true;
         UIMode(true);
         gui.DeadUI();
+        musicPlayer.Pause();
     }
 
     public void UIMode(bool freezeTime) {
@@ -118,6 +121,7 @@ public class Player : MonoBehaviour
         player.Disable();
         debug.Disable();
         ui.Enable();
+        musicPlayer.Pause();
     }
 
     public void PlayingMode() {
@@ -125,9 +129,10 @@ public class Player : MonoBehaviour
         player.Enable();
         debug.Enable();
         ui.Disable();
+        musicPlayer.Resume();
     }
 
-    public void ShakeCamera(Transform caller, float strength = 1f) {
+    public void ShakeCamera(Vector3 caller, float strength = 1f) {
         camShake.Shake(caller, strength);
     }
 

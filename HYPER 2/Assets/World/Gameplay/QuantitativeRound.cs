@@ -49,7 +49,7 @@ public class QuantitativeRound : MonoBehaviour, IRound
         time += Time.deltaTime;
         //Debug.Log("Enemies Amount: "+gameplay.enemiesAmount);
 
-        if (totalSpawns > gameplay.EnemiesAmount) {
+        if (totalSpawns >= gameplay.EnemiesAmount) {
             Debug.Log("STOP");
             enabled = false;
             foreach (var path in gameplay.World.WG.Paths) {

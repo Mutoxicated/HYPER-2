@@ -770,8 +770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   songs:
-  - {fileID: 604103283}
   - {fileID: 2008852004}
+  - {fileID: 604103283}
 --- !u!4 &777256972
 Transform:
   m_ObjectHideFlags: 0
@@ -2201,6 +2201,10 @@ PrefabInstance:
       propertyPath: gui
       value: 
       objectReference: {fileID: 301292992882584375}
+    - target: {fileID: 2879844348241484139, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: musicPlayer
+      value: 
+      objectReference: {fileID: 777256971}
     - target: {fileID: 4579949200108288757, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_Name
       value: EnvCamera

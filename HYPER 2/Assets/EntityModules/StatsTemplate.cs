@@ -15,7 +15,7 @@ public class StatsEditor : Editor {
     SerializedProperty elementImmunities;
     SerializedProperty worth;
     SerializedProperty xpKillWorth;
-    SerializedProperty xpHitWorth;
+    //SerializedProperty xpHitWorth;
     SerializedProperty unlockAt;
     SerializedProperty maxXp;
 
@@ -29,7 +29,7 @@ public class StatsEditor : Editor {
         element = serializedObject.FindProperty("element");
         worth = serializedObject.FindProperty("worth");
         xpKillWorth = serializedObject.FindProperty("xpKillWorth");
-        xpHitWorth = serializedObject.FindProperty("xpHitWorth");
+        //xpHitWorth = serializedObject.FindProperty("xpHitWorth");
         unlockAt = serializedObject.FindProperty("unlockAt");
         elementImmunities = serializedObject.FindProperty("elementImmunities");
         maxXp = serializedObject.FindProperty("maxXp");
@@ -73,7 +73,7 @@ public class StatsEditor : Editor {
         EditorGUILayout.PropertyField(maxXp);
         EditorGUILayout.PropertyField(worth);
         EditorGUILayout.PropertyField(xpKillWorth);
-        EditorGUILayout.PropertyField(xpHitWorth);
+        //EditorGUILayout.PropertyField(xpHitWorth);
         EditorGUILayout.PropertyField(unlockAt);
         serializedObject.ApplyModifiedProperties();
     }
@@ -86,7 +86,8 @@ public enum Stat {
     SPEED,
     DAMAGE,
     RANGE,
-    RATE
+    RATE,
+    ARMOR
 }
 
 [CreateAssetMenu(fileName = "Stats Template", menuName = "Mutox/Stats Template", order = 1)]
@@ -94,17 +95,16 @@ public class StatsTemplate : ScriptableObject {
     public StatsBase statsBase;
 
     public List<float> modifiers = new List<float>() {
-        1f, 1f, 1f, 1f, 1f
+        1f, 1f, 1f, 1f, 1f, 1f
     };
     public List<float> incrementers = new List<float>() {
-        0.1f,0.1f,0.1f,0.1f,0.1f
+        0.1f,0.1f,0.1f,0.1f,0.1f, 0.1f
     };
     
     public Element element;
     public List<Element> elementImmunities = new List<Element>();
     public int maxXp = 100;
     public int xpKillWorth = 15;
-    public int xpHitWorth = 5;
     public int worth = 1;
     public int unlockAt = 1;
 }

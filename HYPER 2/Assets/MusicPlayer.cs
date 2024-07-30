@@ -14,10 +14,22 @@ public class MusicPlayer : MonoBehaviour
         0f,0f,0f,0f,0f,0f,0f,0f
     };
     private float avg;
+    private float t;
+    private float newT;
 
     private void Awake() {
         songs[index].Play();
     }
+
+    public void Pause() {
+        songs[index].Pause();
+    }
+
+    public void Resume() {
+        songs[index].UnPause();
+    }
+
+    private float musicT;
 
     private void Update() {
         if (!songs[index].isPlaying) {
@@ -30,7 +42,11 @@ public class MusicPlayer : MonoBehaviour
         for (int i = 0; i < samples.Length; i++) {
             avg += samples[i];
         }
-        MusicVisualization.SetT(Mathf.Lerp(-1, 1, avg/samples.Length));
+        avg /= samples.Length;
+        t = Mathf.InverseLerp(-1f, 1f, avg);
+        musicT = Mathf.Lerp(musicT, Mathf.InverseLerp(0f, 1f, t-newT), Time.deltaTime*25f);
+        MusicVisualization.SetT(musicT);
         avg = 0f;
+        newT = t;
     }
 }

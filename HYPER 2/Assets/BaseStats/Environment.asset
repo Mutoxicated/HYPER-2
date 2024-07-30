@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b43f03f42220a5d4899f6991318a1a34, type: 3}
   m_Name: Environment
   m_EditorClassIdentifier: 
-  stats: 0000000001000000020000000300000004000000
   values:
   - 700
-  - 0
-  - 0
-  - 0
-  - 0
+  - 1
+  - 1
+  - 2
+  - 1
+  - 1
   side: 2

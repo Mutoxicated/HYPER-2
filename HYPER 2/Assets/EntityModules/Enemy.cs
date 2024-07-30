@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
     [SerializeField] private AudioSource hitSFX;
     [Header("Settings")]
     [SerializeField] private bool followPath;
-    [SerializeField] private float XPWorth = 5f;
     
     private Branch currentBranch;
 

@@ -8,7 +8,7 @@ public class CameraShake : MonoBehaviour
     private List<float> strengths = new List<float>(4);
 
     private const float interval = 0.04f;
-    private const float delta = 0.1f;
+    private const float delta = 0.45f;
     private const float duration = 0.2f;
 
     private float currentDuration = 0f;
@@ -18,15 +18,17 @@ public class CameraShake : MonoBehaviour
     private Vector3 camPos = Vector3.zero;
     private bool settled = true;
     
-    public void Shake(Transform caller, float strength = 1f) {
+    public void Shake(Vector3 caller, float strength = 1f) {
+        Debug.Log("shake");
         if (strengths.Count >= 5) {
             return;
         }
-        var diff = currentDuration-strength*duration;
+        float dist = Vector3.Distance(envCamera.position, caller);
+        strengths.Add(Mathf.Lerp(50, 1, dist)*strength);
+        var diff = strengths[strengths.Count-1]*duration-currentDuration;
         if (diff < 0) 
             diff = 0;
         currentDuration += diff;
-        strengths.Add(Mathf.Lerp(50, 1, Vector3.Distance(envCamera.position, caller.position))*strength);
         settled = false;
         if (strengths.Count == 1) {
             var delta = DeltaCollective();
@@ -43,6 +45,8 @@ public class CameraShake : MonoBehaviour
         return delta;
     }
 
+    private float lerpSpeed;
+
     private void Update() {
         timeInterval += Time.deltaTime;
         time += Time.deltaTime;
@@ -51,8 +55,11 @@ public class CameraShake : MonoBehaviour
             camPos = Vector3.zero;
             strengths.Clear();
         }else if (timeInterval >= interval) {
+            timeInterval = 0f;
             var delta = DeltaCollective();
-            camPos = new Vector3(Random.Range(delta/2f, delta),Random.Range(delta/2f, delta));
+            var angle = Mathf.Atan2(-camPos.normalized.y*delta, -camPos.normalized.x*delta);
+            angle += Mathf.Deg2Rad*Random.Range(0, 90f);
+            camPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
         }
 
         for (int i = strengths.Count-1; i >= 0; i--) {
@@ -60,9 +67,11 @@ public class CameraShake : MonoBehaviour
                 strengths.RemoveAt(i);
             }
         }
+
+        lerpSpeed = Mathf.Lerp(currentDuration, 0f, time)*30f;
    
         if (strengths.Count == 0 && !settled) {
-            envCamera.localPosition = Vector3.Lerp(envCamera.localPosition, Vector3.zero, Time.deltaTime);
+            envCamera.localPosition = Vector3.Lerp(envCamera.localPosition, Vector3.zero, Time.deltaTime*50f);
             if (envCamera.localPosition == Vector3.zero) {
                 settled = true;
                 enabled = false;
@@ -73,6 +82,6 @@ public class CameraShake : MonoBehaviour
             }
         }
 
-        envCamera.localPosition = Vector3.Lerp(envCamera.localPosition, camPos, Time.deltaTime);
+        envCamera.localPosition = Vector3.Lerp(envCamera.localPosition, camPos, Time.deltaTime*lerpSpeed);
     }
 }

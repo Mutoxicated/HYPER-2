@@ -120,7 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c580c88710778947b9c44b4640631c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mc: {fileID: 3127707556828635850}
+  mcs:
+  - {fileID: 3127707556828635850}
   hitColor: {r: 1, g: 1, b: 1, a: 1}
   rate: 0.382
 --- !u!1 &4618620402407156219
@@ -145,7 +146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8233565666014920145
 Transform:
   m_ObjectHideFlags: 0
@@ -203,13 +204,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holder:
+    value: {fileID: 0}
+    none: 1
   template: {fileID: 11400000, guid: 26cc5b1768bc8ab4fb68ba5a8d18bf09, type: 2}
   hitVisual:
     value: {fileID: 4089195765754699109}
     none: 0
   range:
-    value:
-      _underlyingValue: {fileID: 0}
+    value: {fileID: 0}
     none: 1
 --- !u!114 &8026403155563357703
 MonoBehaviour:

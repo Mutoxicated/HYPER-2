@@ -52,7 +52,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
         transform.localScale = scale;
     }
 
-     public void OnTriggerEnter(Collider collider) {
+    public void OnTriggerEnter(Collider collider) {
         //Debug.Log("collider: "+collider.gameObject.name);
         var damageable = collider.gameObject.GetComponent<IDamageable>();
         int? xp = damageable?.Damage(stats, stats.get(DAMAGE));

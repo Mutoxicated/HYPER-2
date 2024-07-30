@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 
 public class Gameplay : MonoBehaviour
@@ -24,9 +25,9 @@ public class Gameplay : MonoBehaviour
     }
 
     // Settings
-    private int enemiesAmount = 3;
+    private int enemiesAmount = 1;
     public int EnemiesAmount {
-        get { return Mathf.RoundToInt(enemiesAmount*LinearT); }
+        get { return Mathf.CeilToInt(enemiesAmount*Waves); }
     }
 
     public const int MiniTowerLvlUpHPBonus = 10;
@@ -78,18 +79,12 @@ public class Gameplay : MonoBehaviour
             world.WG.WidenNextPath();
         }
 
-        if (Save.rData.Waves >= 25) {
-            var expansionsOwed = Mathf.FloorToInt(Save.rData.Waves % 25);
-            for (int i = 1; i <= expansionsOwed; i++) {
-                world.WG.Expand(5);
-            }
-        }
+        var expansionsOwed = Mathf.FloorToInt(Save.rData.Waves / 25);
+        world.WG.Expand(5*expansionsOwed);
 
-        if (Waves >= 50) {
-            var goldPilesOwed = Mathf.FloorToInt(Waves % 50); 
-            for (int i = 1; i < goldPilesOwed; i++) {
-                world.WG.NewGoldPile();
-            }
+        var goldPilesOwed = Mathf.FloorToInt(Waves / 50); 
+        for (int i = 1; i < goldPilesOwed; i++) {
+            world.WG.NewGoldPile();
         }
     }
 
@@ -141,7 +136,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnEnemy(Vector3 pos, Branch root) {
-        var diff = IntLinearT;
+        var diff = Num.MinLimit(Random.Range(IntLinearT-1, IntLinearT), 1);
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root);
         });
@@ -158,10 +153,10 @@ public class Gameplay : MonoBehaviour
         Debug.Log("Wave ended ("+Waves+")");
         Save.rData.IncLinearTime(amount: 0.05f);
         waitInterval.Enable();
-        if (Waves % 25 == 0) {
+        if (Waves % 25 == 0 & Waves >= 25) {
             World.WG.Expand(5);
         }
-        if (Waves % 50 == 0) {
+        if (Waves % 50 == 0 & Waves >= 50) {
             World.WG.NewGoldPile();
         }
     }

@@ -156,4 +156,14 @@ public class RunData
     public List<MTState> MTs {
         get { return mts; }
     }
+
+    [SerializeField] private List<Branch> roots = new List<Branch>();
+
+    public void AddRoot(Branch root) {
+        roots.Add(root);
+    }
+
+    public List<Branch> Roots {
+        get { return roots; }
+    }
 }
