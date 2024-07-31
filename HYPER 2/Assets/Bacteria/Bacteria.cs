@@ -8,6 +8,7 @@ public class Bacteria : MonoBehaviour
 {
     private const float rateStep = 0.05f;
 
+    [SerializeField] private PooledObject pooledObject;
     [SerializeField] private Element @type;
     [SerializeField] private float lifetime = 1f;
     [SerializeField] private ParticleSystem ps;
@@ -44,6 +45,10 @@ public class Bacteria : MonoBehaviour
             emission.rateOverTimeMultiplier += rateStep;
         });
         this.immune = immune;
+        immune.Stats.ConfigureOnBeforeDeath(false, (_) => {
+            pooledObject.OnDeath();
+            gameObject.SetActive(false);
+        });
         gameObject.SetActive(true);
     }
 

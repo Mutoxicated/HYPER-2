@@ -50,6 +50,7 @@ public class SelectedArsenalInfo : MonoBehaviour
         }
         this.mt = new Option<MiniTower>(mt);
         mt.Highlight();
+        mt.GetReportDeath() += _ => Disable();
         stats = mt.Stats;
         gameObject.SetActive(true);
     }
@@ -77,7 +78,12 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Disable() {
-        mt.GetAndThen(m => { m.Dehighlight(); });
+        if (this == null) { return; }
+        if (!gameObject.scene.isLoaded) { return; }
+        mt.GetAndThen(m => {
+            m.Dehighlight(); 
+            m.GetReportDeath() -= _ => Disable();
+        });
         selector.OnDeselect();
         gameObject.SetActive(false);
         mt = Option<MiniTower>.None();
@@ -92,8 +98,8 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Destroy() {
+        Player.SetMoneyRelative(mt.Get().Stats.Template.worth/2);
         selector.Delete();
         mt = Option<MiniTower>.None();
-        Disable();
     }
 }

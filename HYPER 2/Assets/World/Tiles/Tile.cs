@@ -46,11 +46,10 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         get { return occupied; }
     }
     private Option<GameObject> occupiedWith;
+    private Color normalColor;
     private readonly Color litColor = new Color(0.9f,0.06f,0.06f);
     private readonly Color goldColor = new Color(0.9f, 0.7f, 0f);
     private const float heightOffset = 1f;
-
-    private Color currentColor;
 
     private Vector3 initPos;
 
@@ -83,7 +82,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
     }
 
     public void CStart(WorldGenerator wg, float dist, int layer, int index) {
-        currentColor = mc.Color;
+        normalColor = mc.Color;
         worldGenerator = wg;
         distanceFromTower = dist;
         this.layer = layer;
@@ -158,8 +157,8 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         transform.position = initPos+Vector3.up*heightOffset;
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
-        mc.ChangeColor(litColor, true);
-        currentColor = litColor;
+        mc.SetColor(litColor);
+        mc.ChangeColor(true);
     }
     public void Enable(Color color) {
         if (lit) { return; }
@@ -169,8 +168,8 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         transform.position = initPos+Vector3.up*heightOffset;
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
-        mc.ChangeColor(color, true);
-        currentColor = color;
+        mc.SetColor(color);
+        mc.ChangeColor(true);
     }
 
     public void Disable() {
@@ -178,20 +177,20 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         transform.position = initPos;
         lit = false;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
+        mc.SetColor(normalColor);
         mc.ChangeColor(true);
-        currentColor = mc.Color;
     }
 
     public void Goldify(GameObject occupiedBy) {
         if (lit) { return; }
 
         Occupy(occupiedBy);
-        mc.ChangeColor(goldColor, true);
-        currentColor = goldColor;
+        mc.SetColor(goldColor);
+        mc.ChangeColor(true);
     }
 
     public void UpdateColor() {
-        mc.ChangeColor(Color.Lerp(currentColor, Color.white, MusicVisualization.T), true);
+        mc.ChangeColor(Color.Lerp(mc.Color, Color.white, MusicVisualization.T), true);
     }
 
     private void Awake() {

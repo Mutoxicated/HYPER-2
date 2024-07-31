@@ -10,6 +10,9 @@ public interface IInfectable {
 public class ImmuneSystem : MonoBehaviour, IInfectable
 {
     [SerializeField] private Stats stats;
+    public Stats Stats {
+        get { return stats; }
+    }
     private Dictionary<Element, Bacteria> bacterias = new  Dictionary<Element, Bacteria>();
 
     public void Infect(Element bt) {
@@ -27,9 +30,6 @@ public class ImmuneSystem : MonoBehaviour, IInfectable
             .GetComponent<Bacteria>();
         bac.CStart(this, b => { 
             bacterias.Remove(b.Type);
-            Pool.FromBT(stats.Manager, b.Type)
-                .Get()
-                .ReattachImmediate(b.gameObject);
         });
  
         bacterias.Add(bac.Type, bac);

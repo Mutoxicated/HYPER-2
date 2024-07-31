@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 using static Stat;
 
@@ -34,7 +35,7 @@ public class Range : MonoBehaviour
     }
 
     public void CStart() {
-        stats.onLvlUp = UpdateSize;
+        stats.ConfigureOnLvlUp(false, UpdateSize);
         OnEnter = new OnEnemy(e => enemies.Add(e));
         OnExit = new OnEnemy(e => enemies.Remove(e));
         UpdateSize();
@@ -62,7 +63,7 @@ public class Range : MonoBehaviour
         }
         if (enemies[offset] == null) {
             enemies.RemoveAt(offset);
-            return Target();
+            return Target(Num.MinLimit(offset-1, 0));
         }
         if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.PLAYER) |
             (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.ENEMY)) {

@@ -40,7 +40,7 @@ public class RunData
     	__xp = val;
     }
 
-    [SerializeField] private int __lvl = 4;
+    [SerializeField] private int __lvl = 1;
     
     public int Lvl {
     	get { return __lvl; }
@@ -50,7 +50,7 @@ public class RunData
     	__lvl = val;
     }
     //MACRO_END
-    [SerializeField] private float __linearT = 1f;
+    [SerializeField] private float __linearT = 0.5f;
 
     public float LinearTime {
         get { return __linearT; }

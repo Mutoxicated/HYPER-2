@@ -195,8 +195,9 @@ public class WorldGenerator : MonoBehaviour
         layers += amount;
         Layer();
         world.UpdateRadius();
-        foreach (var path in paths) {
-            path.RepositionPath();
+        for (int i = 0; i < paths.Count; i++) {
+            paths[i].RepositionPath();
+            Save.rData.Roots[i] = paths[i].Root1;
         }
     }
 

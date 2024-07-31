@@ -16,10 +16,15 @@ public class Damage : MonoBehaviour {
         };
     }
 
+    public void OnDisable() {
+        damageable = Option<IDamageable>.None();
+    }
+
     public void IntervalDamage() {
         if (damageable.IsNone()) {
             damageable = new Option<IDamageable>(bacteria.ImmuneSystem.GetComponent<IDamageable>());
         }
-        damageable.Get().BacteriaDamage(bacteria.Type, damage);
+        int xp = damageable.Get().BacteriaDamage(bacteria.Type, damage);
+        Player.IncrementXP(xp);
     }
 }

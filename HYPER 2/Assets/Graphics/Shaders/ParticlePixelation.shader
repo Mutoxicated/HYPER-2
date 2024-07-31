@@ -148,7 +148,7 @@ Shader "Mutox/ParticlePixelation"
                         finalColor = IN.custom1;
                     }
                     else {
-                        finalColor = (compareColors(IN.custom1,beforeColor, 0.001)) ? col : beforeColor;
+                        finalColor = (compareColors(IN.custom1,beforeColor, 0.001)) ? col : float4(0.0,0.0,0.0,0.0);
                     }
                     //finalColor = (distance(beforeColor, col) > 0.7) ? col : beforeColor;
                     return finalColor;

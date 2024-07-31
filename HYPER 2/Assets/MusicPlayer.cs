@@ -17,6 +17,9 @@ public class MusicPlayer : MonoBehaviour
     private float t;
     private float newT;
 
+    private float room = 0.05f;
+    private float time = 0.07f;
+
     private void Awake() {
         songs[index].Play();
     }
@@ -35,8 +38,9 @@ public class MusicPlayer : MonoBehaviour
         if (!songs[index].isPlaying) {
             index = Num.Wrap(index++, 0, songs.Count-1);
             songs[index].Play();
-            return;
         }
+
+        time += Time.deltaTime;
 
         songs[index].GetOutputData(samples, 0);
         for (int i = 0; i < samples.Length; i++) {
@@ -44,9 +48,14 @@ public class MusicPlayer : MonoBehaviour
         }
         avg /= samples.Length;
         t = Mathf.InverseLerp(-1f, 1f, avg);
+        newT = Mathf.Lerp(newT, 0f, Time.deltaTime*0.8f);    
+
         musicT = Mathf.Lerp(musicT, Mathf.InverseLerp(0f, 1f, t-newT), Time.deltaTime*25f);
         MusicVisualization.SetT(musicT);
         avg = 0f;
-        newT = t;
+        if (time >= room){
+            newT = t;
+            time = 0f;
+        }
     }
 }

@@ -21,10 +21,6 @@ public class PublicEvent : MonoBehaviour
         saveRun.Invoke(Save.rData);
     }
 
-    public void OnApplicationQuit() {
-        SaveRun();
-    }
-
     public void ClearAll() {
         onSaveRun = new OnSaveRun(r => {});
     }

@@ -11,7 +11,6 @@ public class SceneSwitcher : MonoBehaviour
 
     public void ArenaToMain() {
         Time.timeScale = 1f;
-        PublicEvent.SaveRun();
         SceneManager.LoadScene("MainMenu");
     }
 }

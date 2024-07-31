@@ -83,4 +83,8 @@ public class MaterialChanger : MonoBehaviour
             material.renderQueue = (int)mode;
         }
     }
+
+    public void SetColor(Color color) {
+        this.color = color;
+    }
 }

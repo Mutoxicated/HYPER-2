@@ -13,7 +13,7 @@ public class Gameplay : MonoBehaviour
         get { return Save.rData.Waves; }
     }
     public float LinearT {
-        get { return Save.rData.LinearTime; }
+        get { return Save.rData.LinearTime*2f; }
     }
     public int IntLinearT {
         get { return Mathf.RoundToInt(LinearT); }
@@ -35,10 +35,10 @@ public class Gameplay : MonoBehaviour
     public const int MiniTowerLvlUpHPBonus = 10;
 
     // Unlocks
-    public const int unlock2ndPath = 5;
-    public const int unlock3rdPath = 10;
-    public const int unlock4thPath = 20;
-    public const int unlock1stWidePath = 30;
+    public const int unlock2ndPath = 8;
+    public const int unlock3rdPath = 15;
+    public const int unlock4thPath = 25;
+    public const int unlock1stWidePath = 35;
     public const int unlock2ndWidePath = 40;
     public const int unlock3rdWidePath = 50;
     public const int unlock4thWidePath = 60;
@@ -53,6 +53,10 @@ public class Gameplay : MonoBehaviour
     private World world;
     public World World {
         get { return world; }
+    }
+
+    public static int MoneyEarned(int lvl) {
+        return Mathf.CeilToInt(Mathf.Sqrt(lvl)*2);
     }
 
     public void GenerationUnlockLogic(Doer doer) {
@@ -115,7 +119,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {
-        var diff = Num.MinLimit(Random.Range(IntLinearT-1, IntLinearT), 1);
+        var diff = Num.MinLimit(Random.Range(IntLinearT-1, IntLinearT+1), 1);
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });
@@ -138,5 +142,6 @@ public class Gameplay : MonoBehaviour
         if (Waves % 50 == 0 & Waves >= 50) {
             World.WG.NewGoldPile();
         }
+        PublicEvent.SaveRun();
     }
 }

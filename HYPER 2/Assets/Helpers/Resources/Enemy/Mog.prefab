@@ -215,7 +215,6 @@ MonoBehaviour:
   enemyType: 0
   hitSFX: {fileID: 1150321680076776557}
   followPath: 1
-  XPWorth: 7
 --- !u!114 &1561741863301072786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc08d6aaaeef5745a051943da326bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 6738281768822997981}
+  _renderer: {fileID: 2351531458629099441}
   type: 6
   changeColor: 0
   color: {r: 0.14117648, g: 0.14117648, b: 0.14117648, a: 1}

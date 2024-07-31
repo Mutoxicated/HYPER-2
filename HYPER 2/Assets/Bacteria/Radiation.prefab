@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26765e769894b945921f8ee097450ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pooledObject: {fileID: 4521633747649212285}
   type: 2
   lifetime: 2
   ps: {fileID: 224420990770183751}

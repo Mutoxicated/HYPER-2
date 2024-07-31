@@ -122,7 +122,8 @@ Shader "Mutox/ObjectPixelation"
                     finalColor = _Color;
                 }
                 else {
-                    finalColor = (distance(_Color,beforeColor) < 0.1) ? col : beforeColor;
+                    finalColor = (distance(_Color,beforeColor) < 0.1) ? col : float4(0.0,0.0,0.0,0.0);
+                    //finalColor = float4(0.0,0.0,0.0,0.0);
                 }
                 //finalColor = (distance(beforeColor, col) > 0.7) ? col : beforeColor;
                 return finalColor;

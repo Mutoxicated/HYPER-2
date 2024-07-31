@@ -32,4 +32,4 @@ MonoBehaviour:
   maxXp: 100
   xpKillWorth: 15
   worth: 5
-  unlockAt: 3
+  unlockAt: 10

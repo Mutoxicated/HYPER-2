@@ -20,11 +20,16 @@ public class Shoot : MonoBehaviour
     }
 
     private void shootBullet() {
-        var shot = false;
+        var targets = new GameObject[shootAmount];
         for (int i = 0; i < shootAmount; i++) {
             if (!stats.TargetIsValid(i)) { continue; }
+            targets[i] = stats.Target(i).Get().gameObject;
+        }
 
-            var rotation = Quaternion.LookRotation(stats.Target(i).Get().transform.position-firePoint.position);
+        var shot = false;
+        for (int i = 0; i < targets.Length; i++) {
+            if (targets[i] == null) { continue; }
+            var rotation = Quaternion.LookRotation(targets[i].transform.position-firePoint.position);
             shot = true;
             Action(firePoint.position, b => b.CStart(stats.Manager, rotation, stats));
         }

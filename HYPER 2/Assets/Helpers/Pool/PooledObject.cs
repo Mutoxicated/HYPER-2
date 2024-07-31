@@ -10,7 +10,11 @@ public class PooledObject : MonoBehaviour
         this.pool = pool;
     }
 
-    public void OnDisable() {
+    private void OnEnable() {
+        transform.localPosition = Vector3.zero;
+    }
+
+    public void OnDeath() {
         pool.ReattachImmediate(gameObject);
     }
 }

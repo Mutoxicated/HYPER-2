@@ -48,6 +48,7 @@ public class Stats : MonoBehaviour, IDamageable
     public delegate int OnExplosionDamage(Explosion.Strength strength, float additive);
 
     public OnDie onDie;
+    public OnDie onBeforeDeath;
     public OnStatDamage onStatDamage;
     public OnBacteriaDamage onBacteriaDamage;
     public OnExplosionDamage onExplosionDamage;
@@ -103,10 +104,10 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     private void PrepareValues() {
-        onDie = new OnDie(s => {Destroy(holder.Get());});
+        onDie = new OnDie(_ => Destroy(holder.Get()));
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
             bool killed = GetHit(amount);
-            int xp = killed ? template.xpKillWorth : 0;
+            int xp = killed ? template.xpKillWorth/2 : 0;
             if (template.statsBase.side == Side.ENEMY  & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
             if (hitVisual.IsSome())
@@ -131,6 +132,17 @@ public class Stats : MonoBehaviour, IDamageable
                 hitVisual.Get().OnHit(0.75f);
             return xp;
         });
+        if (StatSide == Side.PLAYER) {
+            onLvlUp = new OnLvl(() => {
+                manager.GUI.PopupPool.Popup(
+                    position: transform.position+Vector3.up*transform.localScale.y*4, 
+                    color: Color.cyan,
+                    text: "Lvl Up!",
+                    duration: 4,
+                    dy: 0.3f
+                );
+            });
+        }
         if (holder.IsNone()) {
             holder = new Option<GameObject>(gameObject);
         }
@@ -234,6 +246,24 @@ public class Stats : MonoBehaviour, IDamageable
         return StatElmImmunities.Contains(elm);
     }
 
+    public void ConfigureOnLvlUp(bool reset = false, params OnLvl[] calbacks) {
+        if (reset)
+            onLvlUp = new OnLvl(calbacks[0]);
+        else {
+            if (onLvlUp == null) {
+                onLvlUp = new OnLvl(calbacks[0]);
+            }else {
+                onLvlUp += calbacks[0];
+            }
+        }
+        if (calbacks.Length == 1) {
+            return;
+        }
+        for (int i = 1; i < calbacks.Length; i++) {
+            onLvlUp += calbacks[i];
+        }
+    }
+
     public void ConfigureOnDie(bool reset = false, params OnDie[] calbacks) {
         if (reset)
             onDie = new OnDie(calbacks[0]);
@@ -243,6 +273,24 @@ public class Stats : MonoBehaviour, IDamageable
         }
         for (int i = 1; i < calbacks.Length; i++) {
             onDie += calbacks[i];
+        }
+    }
+
+    public void ConfigureOnBeforeDeath(bool reset = false, params OnDie[] calbacks) {
+        if (reset)
+            onBeforeDeath = new OnDie(calbacks[0]);
+        else {
+            if (onBeforeDeath == null) {
+                onBeforeDeath = new OnDie(calbacks[0]);
+            }else {
+                onBeforeDeath += calbacks[0];
+            }
+        }
+        if (calbacks.Length == 1) {
+            return;
+        }
+        for (int i = 1; i < calbacks.Length; i++) {
+            onBeforeDeath += calbacks[i];
         }
     }
 
@@ -283,6 +331,8 @@ public class Stats : MonoBehaviour, IDamageable
     }
 
     public void Die(Option<Stats> senderStats) {
+        if (onBeforeDeath != null)
+            onBeforeDeath.Invoke(senderStats);
         onDie.Invoke(senderStats);
     }
 
