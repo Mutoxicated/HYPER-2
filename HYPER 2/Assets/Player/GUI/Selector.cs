@@ -47,6 +47,7 @@ public class Selector : MonoBehaviour
 
     public void Update() {
         if (player.OnMiddleButton) {
+            selection.Disable();
             return;
         }
         ray = player.Cam.ScreenPointToRay(Mouse.current.position.ReadValue());

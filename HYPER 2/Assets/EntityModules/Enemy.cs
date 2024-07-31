@@ -4,7 +4,7 @@ using UnityEngine;
 using Helpers;
 using static Stat;
 
-public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
+public class Enemy : MonoBehaviour
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Resources.Enemy enemyType;
@@ -66,10 +66,11 @@ public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
             //Debug.Log(branch);
             dist = 0f;
             if (branch.IsNone()) {
-                if (currentBranch.direction != main) {
-                    dir = Dir.ToVec(main);
-                    look = Quaternion.LookRotation(currentBranch.end.transform.position-currentBranch.start.transform.position);
-                }
+                dir = Dir.ToVec(main);
+                var direction = (stats.Manager.Tower.transform.position-transform.position).normalized;
+                direction.y = 0f;
+                Vec3.Round(direction);
+                look = Quaternion.LookRotation(direction);
                 last = true;
             }else {
                 currentBranch = branch.Get();

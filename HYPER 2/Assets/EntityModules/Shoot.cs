@@ -23,7 +23,7 @@ public class Shoot : MonoBehaviour
         var targets = new GameObject[shootAmount];
         for (int i = 0; i < shootAmount; i++) {
             if (!stats.TargetIsValid(i)) { continue; }
-            targets[i] = stats.Target(i).Get().gameObject;
+            targets[i] =  stats.Target(i).Get().gameObject;
         }
 
         var shot = false;

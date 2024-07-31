@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tower
   m_EditorClassIdentifier: 
   values:
-  - 400
+  - 100
   - 1
   - 999999
   - 1

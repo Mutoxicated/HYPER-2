@@ -13,7 +13,7 @@ public class World : MonoBehaviour
     
     private List<Enemy> enemies = new List<Enemy>();
     private List<MiniTower> mts = new List<MiniTower>();
-    public delegate void ReportDeath<T>(T enemy) where T: ISideBelonger<T>;
+    public delegate void ReportDeath<T>(T enemy);
     private ReportDeath<Enemy> reportEnemyDeath;
     private ReportDeath<MiniTower> reportPlayerDeath;
 

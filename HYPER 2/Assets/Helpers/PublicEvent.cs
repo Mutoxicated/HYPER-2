@@ -18,6 +18,7 @@ public class PublicEvent : MonoBehaviour
     public static OnSaveRun onSaveRun = new OnSaveRun(r => {});
 
     public static void SaveRun() {
+        Save.rData.MTs.Clear();
         saveRun.Invoke(Save.rData);
     }
 

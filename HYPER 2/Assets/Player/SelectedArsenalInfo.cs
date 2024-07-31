@@ -56,7 +56,7 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Update() {
-        if (mt.Get().IsNull()) {
+        if (mt.Get() == null) {
             Disable();
             return;
         }
@@ -72,7 +72,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             xpBar.fillAmount =  (float)m.Stats.XP/(float)m.Stats.Template.maxXp;
             lvl.text = String.Format(ufmtLvl, m.Stats.LVL);
 
-            hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(gamePlay.LinearT*15)+"*");
+            hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(gamePlay.RestoreHPPrice)+"*");
             gameObject.SetActive(true);
         });
     }
@@ -90,10 +90,10 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void OnRestoreHP() {
-        if (Save.rData.Money < Mathf.RoundToInt(gamePlay.LinearT*15)) {
+        if (Save.rData.Money < Mathf.RoundToInt(gamePlay.RestoreHPPrice)) {
             return;
         }
-        Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.LinearT*15));
+        Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.RestoreHPPrice));
         mt.Get().RestoreHP();
     }
 

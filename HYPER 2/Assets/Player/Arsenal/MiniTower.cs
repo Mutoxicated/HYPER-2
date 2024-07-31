@@ -27,7 +27,7 @@ public class MTState {
     }
 }
 
-public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
+public class MiniTower : MonoBehaviour
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Interval DOTInterval;
@@ -113,20 +113,6 @@ public class MiniTower : MonoBehaviour, ISideBelonger<MiniTower>
         death.Invoke(this);
         if (!gameObject.scene.isLoaded) { return; }
         deathSound.Play();
-    }
-
-    public Stats.Side Side()
-    {
-        return stats.StatSide;
-    }
-
-    public GameObject Go()
-    {
-        return gameObject;
-    }
-
-    public bool IsNull() {
-        return this == null;
     }
 
     public ref World.ReportDeath<MiniTower> GetReportDeath() {

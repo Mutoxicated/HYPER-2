@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 
     private UnityEngine.InputSystem.PlayerInput input;
     private Manager manager;
+    [SerializeField] private Stats towerStats;
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
     [SerializeField] private Camera cam;
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     private InputAction leftButton;
     private InputAction deleteButton;
     private InputAction uiDeleteButton;
+    private InputAction disableUIButton;
 
     private InputActionMap player;
     private InputActionMap ui;
@@ -72,6 +74,10 @@ public class Player : MonoBehaviour
         get { return deleteButton.WasPerformedThisFrame(); }
     }
 
+    public bool OnDisableUI {
+        get { return disableUIButton.WasPerformedThisFrame(); }
+    }
+
     public bool Dead {
         get { return dead; }
     }
@@ -89,12 +95,12 @@ public class Player : MonoBehaviour
 
     public static void IncrementXP(float val) {
         float newXP = Save.rData.XP+val;
-        if (newXP >= MaxXPRequired()) 
-            self.onLvlUp.Invoke(Save.rData.Lvl);
         while (newXP >= MaxXPRequired()) {
             newXP -= MaxXPRequired();
             Save.rData.SetLvl(Save.rData.Lvl+1);
+            self.towerStats.LvlUp(true);
             Save.rData.SetMoneyRelative(Gameplay.MoneyEarned(Save.rData.Lvl));
+            self.onLvlUp.Invoke(Save.rData.Lvl);
         }
         Save.rData.SetXP(newXP);
     }
@@ -143,6 +149,7 @@ public class Player : MonoBehaviour
         middleButton = player.FindAction("MiddleButton", true);
         leftButton = player.FindAction("Fire");
         deleteButton = player.FindAction("Delete");
+        disableUIButton = player.FindAction("DisableUI");
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
         ui = input.actions.FindActionMap("UI", true);

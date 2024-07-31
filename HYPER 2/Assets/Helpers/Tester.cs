@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Tester : MonoBehaviour
 {
-    [SerializeField] private AoEVFX test1;
+    [SerializeField] private Option<AoEVFX> test1;
 
     public void DStart() {
-        test1.CStart();
+        test1.GetAndThen(a => a.CStart());
     }
 }

@@ -74,7 +74,7 @@ public class Path : MonoBehaviour
     private float closestCornerPercent;
     private Option<Branch> currentBranch1 = Option<Branch>.None();
     private Branch root2;
-     public Branch Root2 {
+    public Branch Root2 {
         get { return root2; }
     }
 
@@ -84,6 +84,8 @@ public class Path : MonoBehaviour
 
     //private Manager manager;
     private IRound round;
+
+    private int index = 0;
 
     public void DestroyPath() {
         foreach (var nb in neighbors1) {
@@ -145,6 +147,9 @@ public class Path : MonoBehaviour
         perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
 
         extend();
+
+        Save.rData.AddRoot1(root1);
+        index = Save.rData.Roots.Count-1;
     }
 
     public void CStart(Manager manager, Branch root) {
@@ -152,6 +157,8 @@ public class Path : MonoBehaviour
         wg = world.WG;
         root1 = root;
         GetMainDirFromLocation(wg[root.startIndex].Location);
+        perpendicular = (Direction)Num.Wrap((int)mainDirection+1, 0, 3);
+        perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
         CalculateCornerToIndexDist(wg[root.startIndex]);
         RecreatePath(ref neighbors1, root);
     }
@@ -266,6 +273,10 @@ public class Path : MonoBehaviour
     public void StopSpawning() {
         spawnInterval.Disable();
         spawnInterval2.Disable();
+    }
+
+    public void SpawnBoss() {
+        round.Spawn(root1, mainDirection, neighbors1[0].Tile.transform.position+Vector3.up*1.5f, true);
     }
 
     public void IntervalSpawnEnemy() {
@@ -481,6 +492,7 @@ public class Path : MonoBehaviour
 
     public void RepositionPath() {
         RepositionRoot(neighbors1, root1);
+        Save.rData.Roots[index] = root1;
         RepositionRoot(neighbors2, root2);
     }
 

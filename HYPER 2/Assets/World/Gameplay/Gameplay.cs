@@ -16,7 +16,7 @@ public class Gameplay : MonoBehaviour
         get { return Save.rData.LinearTime*2f; }
     }
     public int IntLinearT {
-        get { return Mathf.RoundToInt(LinearT); }
+        get { return Mathf.FloorToInt(LinearT); }
     }
 
     public float AsymT {
@@ -32,21 +32,35 @@ public class Gameplay : MonoBehaviour
         get { return Mathf.CeilToInt(enemiesAmount*Waves); }
     }
 
+    public int RestoreHPPrice {
+        get { 
+            return Mathf.RoundToInt(LinearT*RestoreHPCost);
+        }
+    }
+
+    public const int RestoreHPCost = 4;
     public const int MiniTowerLvlUpHPBonus = 10;
 
     // Unlocks
-    public const int unlock2ndPath = 8;
-    public const int unlock3rdPath = 15;
+    public const int unlock2ndPath = 7;
+    public const int unlock3rdPath = 20;
     public const int unlock4thPath = 25;
-    public const int unlock1stWidePath = 35;
+    public const int unlock1stWidePath = 30;
     public const int unlock2ndWidePath = 40;
     public const int unlock3rdWidePath = 50;
     public const int unlock4thWidePath = 60;
 
+    //Frequencies
+    private const int bossFrequency = 35;
+    private const int goldPileFrequency = 50;
+    private const int expandFrequency = 25;
+
     [SerializeField] private QuantitativeRound quantitativeRound;
+    [SerializeField] private BossRound bossRound;
     [SerializeField] private Interval waitInterval;
 
     private Dictionary<int, List<Resources.Enemy>> enemyDifficulties = new Dictionary<int, List<Resources.Enemy>>();
+    private Dictionary<int, List<Resources.Enemy>> bossEnemyDifficulties = new Dictionary<int, List<Resources.Enemy>>();
 
     // Dependencies
     private Manager manager;
@@ -104,13 +118,19 @@ public class Gameplay : MonoBehaviour
 
         var iter = Resources.IterEnemyStats();
         using (iter) {
+            var dict = enemyDifficulties;
             while (iter.MoveNext()) {
-                if (!enemyDifficulties.ContainsKey(iter.Current.Value.difficulty)) {
-                    enemyDifficulties.Add(iter.Current.Value.difficulty, new List<Resources.Enemy>() {
+                if (iter.Current.Value.type == EnemyType.BOSS) {
+                    dict = bossEnemyDifficulties;
+                }else {
+                    dict = enemyDifficulties;
+                }
+                if (!dict.ContainsKey(iter.Current.Value.difficulty)) {
+                    dict.Add(iter.Current.Value.difficulty, new List<Resources.Enemy>() {
                         iter.Current.Key
                     });
                 }else {
-                    enemyDifficulties[iter.Current.Value.difficulty].Add(iter.Current.Key);
+                    dict[iter.Current.Value.difficulty].Add(iter.Current.Key);
                 }
             }
         }
@@ -119,27 +139,45 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {
-        var diff = Num.MinLimit(Random.Range(IntLinearT-1, IntLinearT+1), 1);
+        var diff = Num.MinLimit(Random.Range(IntLinearT-3, IntLinearT+1), 1);
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
+            e.CStart(manager, r, root, main);
+        });
+    }
+
+    private int BossDiff {
+        get { 
+            return Waves / bossFrequency;
+        }
+    }
+
+    public Enemy SpawnBoss(Vector3 pos, Direction main, Branch root) {
+        var diff = Num.MinLimit(Random.Range(BossDiff-1, BossDiff+1), 1);
+        return world.InstantiateEnemy(bossEnemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });
     }
 
     public void IntervalStartWave() {
         Debug.Log("start");
-        Save.rData.IncrementWaves();
-        quantitativeRound.Enable();
+        if (Waves % bossFrequency == 0 & Waves >= bossFrequency) {
+            bossRound.Enable();
+        }else {
+            quantitativeRound.Enable();
+        }
         waitInterval.Disable();
     }
 
     public void EndWave() {
         Debug.Log("Wave ended ("+Waves+")");
         Save.rData.IncLinearTime(amount: 0.05f);
+        Save.rData.IncrementWaves();
         waitInterval.Enable();
-        if (Waves % 25 == 0 & Waves >= 25) {
+        if (Waves % expandFrequency == 0 & Waves >= expandFrequency) {
             World.WG.Expand(5);
         }
-        if (Waves % 50 == 0 & Waves >= 50) {
+   
+        if (Waves % goldPileFrequency == 0 & Waves >= goldPileFrequency) {
             World.WG.NewGoldPile();
         }
         PublicEvent.SaveRun();

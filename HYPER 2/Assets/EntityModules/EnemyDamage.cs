@@ -1,3 +1,4 @@
+using Helpers;
 using UnityEngine;
 using static Stat;
 
@@ -13,6 +14,9 @@ public class EnemyDamage : MonoBehaviour {
 
     public void OnCollisionEnter(Collision collision) {
         //Debug.Log(collision.gameObject.name);
+        if (!collision.gameObject.name.Contains("Tower")) {
+            return;
+        }
         var damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null) {
             //Debug.Log("Contains Damageable");
@@ -37,6 +41,9 @@ public class EnemyDamage : MonoBehaviour {
 
     public void OnTriggerEnter(Collider collider) {
         //Debug.Log(collider.gameObject.name);
+        if (!collider.gameObject.name.Contains("Tower")) {
+            return;
+        }
         var damageable = collider.gameObject.GetComponent<IDamageable>();
         if (damageable != null) {
             //Debug.Log("Contains Damageable");

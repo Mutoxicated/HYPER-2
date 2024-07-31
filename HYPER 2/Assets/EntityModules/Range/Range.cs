@@ -4,13 +4,6 @@ using Helpers;
 using UnityEngine;
 using static Stat;
 
-public interface ISideBelonger<T> where T: ISideBelonger<T>{
-    Stats.Side Side();
-    GameObject Go();
-    bool IsNull();
-    ref World.ReportDeath<T> GetReportDeath();
-}
-
 public delegate bool Predicate<E>(E t);
 public delegate void Iter<E>(E t);
 
@@ -44,7 +37,7 @@ public class Range : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider) {
         var enemy = collider.gameObject.GetComponent<IStats>();
-        if (enemy == null) {
+        if (enemy.Convert() == null) {
             return;
         }else if (enemy.Convert() == stats) {
             return;
@@ -53,17 +46,17 @@ public class Range : MonoBehaviour
     }
 
     public void OnTriggerExit(Collider collider) {
-        var enemy = collider.gameObject.GetComponent<Stats>();
-        OnExit.Invoke(enemy);
+        var enemy = collider.gameObject.GetComponent<IStats>();
+        OnExit.Invoke(enemy.Convert());
     }
 
     public Option<Stats> Target(int offset = 0) {
         if (enemies.Count < offset+1) {
             return Option<Stats>.None();
         }
-        if (enemies[offset] == null) {
+        if (enemies[offset] == null || enemies[offset].gameObject == null) {
             enemies.RemoveAt(offset);
-            return Target(Num.MinLimit(offset-1, 0));
+            return Target(offset);
         }
         if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.PLAYER) |
             (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.ENEMY)) {

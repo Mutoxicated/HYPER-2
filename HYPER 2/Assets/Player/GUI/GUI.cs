@@ -12,6 +12,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
     [SerializeField] private PopupPool popupPool;
+    [SerializeField] private GameObject disabableUI;
 
     [Header("Menu UI")]
     [SerializeField] private GameObject menuUI;
@@ -30,8 +31,9 @@ public class GUI : MonoBehaviour
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
         inventory.DStart();
-        arsenal.DStart();
+        arsenal.DStart(player);
         popupPool.DStart(player.gameObject);
+        gameObject.SetActive(true);
     }
 
     public void UIMode(bool freezeTime) {
@@ -47,5 +49,11 @@ public class GUI : MonoBehaviour
     public void DeadUI() {
         deathUI.SetActive(true);
         playingUI.SetActive(false);
+    }
+
+    private void Update() {
+        if (player.OnDisableUI) {
+            disabableUI.SetActive(!disabableUI.activeInHierarchy);
+        }
     }
 }

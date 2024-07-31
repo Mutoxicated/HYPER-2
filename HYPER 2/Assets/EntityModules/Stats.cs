@@ -220,14 +220,20 @@ public class Stats : MonoBehaviour, IStats
         return false;
     }
 
+    public void LvlUp(bool restoreCompletely = false) {
+        onLvlUp.Invoke();
+        lvl++;
+        if (restoreCompletely) {
+            hp = this[Stat.MAX_HEALTH];
+        }else {
+            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
+        }
+    }
+
     public void IncXP(int xp) {
         this.xp += xp;
-        if (this.xp >= template.maxXp)
-            if (onLvlUp != null)
-                onLvlUp.Invoke();
         while (this.xp >= template.maxXp) {
-            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
-            lvl++;
+            LvlUp();
             this.xp -= template.maxXp;
         }
     }
@@ -359,9 +365,9 @@ public class Stats : MonoBehaviour, IStats
     public int BacteriaDamage(Element bt, float amount) {
         var delegates = onBacteriaDamage.GetInvocationList();
         if (delegates.Length == 1) {
-            return onBacteriaDamage.Invoke(bt, amount);
+            return onBacteriaDamage.Invoke(bt, amount*this[Stat.IMMUNITY]);
         }
-        var ret = delegates[0].DynamicInvoke(bt, amount);
+        var ret = delegates[0].DynamicInvoke(bt, amount*this[Stat.IMMUNITY]);
 
         for (int i = 1; i < delegates.Length; i++) {
             delegates[i].DynamicInvoke();

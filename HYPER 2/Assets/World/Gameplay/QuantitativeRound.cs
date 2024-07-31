@@ -4,14 +4,17 @@ using System.Linq;
 using UnityEngine;
 
 public interface IRound {
-    Enemy Spawn(Branch root, Direction main, Vector3 pos);
+    Enemy Spawn(Branch root, Direction main, Vector3 pos, bool boss = false);
 }
 
 public class QuantitativeRound : MonoBehaviour, IRound
 {
     [SerializeField] private Gameplay gameplay;
 
-    private float spawnRate = 0.5f;
+    private Vector2 spawnRate = new Vector2(0.5f, 2f);
+    private float SpawnRate {
+        get { return Seed.NextFloat(spawnRate.x, spawnRate.y); }
+    }
     private int spawns = 0;
     private int totalSpawns = 0;
     private List<Interval> spawnIntervals = new List<Interval>();
@@ -29,7 +32,7 @@ public class QuantitativeRound : MonoBehaviour, IRound
         //Debug.Log("Update On Spawn ("+totalSpawns+")");
     }
 
-    public Enemy Spawn(Branch root, Direction main, Vector3 pos) {
+    public Enemy Spawn(Branch root, Direction main, Vector3 pos, bool boss = false) {
         var enemy = gameplay.SpawnEnemy(pos, main, root);
         UpdateOnSpawn();
         return enemy;
@@ -41,6 +44,9 @@ public class QuantitativeRound : MonoBehaviour, IRound
         spawnIntervals.Clear();
         foreach (var path in gameplay.World.WG.Paths) {
             spawnIntervals.Concat(path.StartSpawning(this));
+        }
+         foreach (var spawnInterval in spawnIntervals) {
+            spawnInterval.ChangeInterval(SpawnRate);
         }
         enabled = true;
     }

@@ -13,8 +13,8 @@ public class ArsenalInfo : MonoBehaviour
     [SerializeField] private List<TMP_Text> arsenalStats = new List<TMP_Text>();
     [SerializeField] private TMP_Text arsenalWorth;
     //[SerializeField] private UnityEngine.UI.Button research;
-    [SerializeField] private UnityEngine.UI.Button buy;
-    [SerializeField] private UnityEngine.UI.Button sell;
+    // [SerializeField] private UnityEngine.UI.Button buy;
+    // [SerializeField] private UnityEngine.UI.Button sell;
 
     private string ufmtName;
     private string ufmtElement;
@@ -45,8 +45,8 @@ public class ArsenalInfo : MonoBehaviour
         currentItem = aitem;
         current = aitem.Template;
         if (aitem.Locked) {
-            sell.gameObject.SetActive(false);
-            buy.gameObject.SetActive(false);
+            //sell.gameObject.SetActive(false);
+            //buy.gameObject.SetActive(false);
             arsenalName.text = "???";
             arsenalElement.text = "Unlock at lvl "+current.unlockAt;
             for (int i = 0; i < arsenalStats.Count; i++) {
@@ -64,17 +64,17 @@ public class ArsenalInfo : MonoBehaviour
         arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+current.worth);
         if (aitem.Type == Resources.Arsenal.FIRST_MT) {
             gameObject.SetActive(true);
-            sell.gameObject.SetActive(false);
-            buy.gameObject.SetActive(false);
+            //sell.gameObject.SetActive(false);
+            //buy.gameObject.SetActive(false);
             return;
         }
-        if (aitem.Bought) {
-            sell.gameObject.SetActive(true);
-            buy.gameObject.SetActive(false);
-        }else {
-            buy.gameObject.SetActive(true);
-            sell.gameObject.SetActive(false);
-        }
+        // if (aitem.Bought) {
+        //     sell.gameObject.SetActive(true);
+        //     buy.gameObject.SetActive(false);
+        // }else {
+        //     buy.gameObject.SetActive(true);
+        //     sell.gameObject.SetActive(false);
+        // }
         gameObject.SetActive(true);
     }
 
@@ -82,17 +82,17 @@ public class ArsenalInfo : MonoBehaviour
         locked = Option<ArsenalItem>.None();
     }
 
-    public void OnResearch() {
+    // public void OnResearch() {
 
-    }
+    // }
 
-    public void OnBuy() {
-        arsenal.Buy(currentItem);
-    }
+    // public void OnBuy() {
+    //     arsenal.Buy(currentItem);
+    // }
 
-    public void OnSell() {
-        arsenal.Sell(currentItem);
-    }
+    // public void OnSell() {
+    //     arsenal.Sell(currentItem);
+    // }
 
     public void Disable() {
         if (locked.IsNone())

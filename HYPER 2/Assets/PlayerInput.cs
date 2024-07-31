@@ -107,6 +107,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""b306cabd-c2b3-431d-b87f-47cf5b2603c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -393,6 +402,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a638c5f-68b5-4232-8d0d-16a53aa64979"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""DisableUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1037,6 +1057,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_MiddleButton = m_Player.FindAction("MiddleButton", throwIfNotFound: true);
         m_Player_Delete = m_Player.FindAction("Delete", throwIfNotFound: true);
         m_Player_Quit = m_Player.FindAction("Quit", throwIfNotFound: true);
+        m_Player_DisableUI = m_Player.FindAction("DisableUI", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1121,6 +1142,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MiddleButton;
     private readonly InputAction m_Player_Delete;
     private readonly InputAction m_Player_Quit;
+    private readonly InputAction m_Player_DisableUI;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -1134,6 +1156,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @MiddleButton => m_Wrapper.m_Player_MiddleButton;
         public InputAction @Delete => m_Wrapper.m_Player_Delete;
         public InputAction @Quit => m_Wrapper.m_Player_Quit;
+        public InputAction @DisableUI => m_Wrapper.m_Player_DisableUI;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1170,6 +1193,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Quit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
                 @Quit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
                 @Quit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
+                @DisableUI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
+                @DisableUI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
+                @DisableUI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1201,6 +1227,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Quit.started += instance.OnQuit;
                 @Quit.performed += instance.OnQuit;
                 @Quit.canceled += instance.OnQuit;
+                @DisableUI.started += instance.OnDisableUI;
+                @DisableUI.performed += instance.OnDisableUI;
+                @DisableUI.canceled += instance.OnDisableUI;
             }
         }
     }
@@ -1407,6 +1436,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnMiddleButton(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
+        void OnDisableUI(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
