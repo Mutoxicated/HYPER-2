@@ -55,9 +55,69 @@ public class AdvancedWire : MonoBehaviour
 
     private Dictionary<(Vector3, Vector3), List<Triangle>> triangleCommons = new Dictionary<(Vector3, Vector3), List<Triangle>>();
 
+    private bool prebaked = false;
+
     [SerializeField] private bool onlyTriangles = false;
+    [ContextMenu("Reset Values")]
+    private void ResetValues() {
+        triangleCommons.Clear();
+        colors = new Color[0];
+        if (mesh != null) {
+            mesh.colors = colors;
+        }
+        prebaked = false;
+    }
+
+    [ContextMenu("Prebake (only for skinned mesh renderer)")]
+    private void Prebake() {
+        triangleCommons.Clear();
+        if (GetMesh() != 1) {
+            Debug.LogWarning("Tried to prebake without a skinned mesh renderer");
+            return;
+        }
+
+        var vertices = mesh.vertices;
+        colors = mesh.colors;
+
+        if (colors.Length == 0) {
+            colors = new Color[vertices.Length];
+            Array.Fill(colors, Color.black);
+        }
+
+        var unparsedTriangles = mesh.triangles;
+        // Debug.Log("-- CREATING TRIANGLES --");
+        for (int i = 0; i < unparsedTriangles.Length; i += 3) {
+            // Debug.Log("Tri "+(i+3)/3+":");
+            // Debug.Log(unparsedTriangles[i]+", "+unparsedTriangles[i+1]+", "+unparsedTriangles[i+2]);
+            Vertex vert1 = new Vertex(vertices[unparsedTriangles[i]], unparsedTriangles[i], 0, Color.red);
+            Vertex vert2 = new Vertex(vertices[unparsedTriangles[i+1]], unparsedTriangles[i+1], 1, Color.green);
+            Vertex vert3 = new Vertex(vertices[unparsedTriangles[i+2]], unparsedTriangles[i+2], 2, Color.blue);
+            // if (vert1.pos == vert2.pos | vert2.pos == vert3.pos | vert1.pos == vert3.pos) {
+            //     Debug.Log("not good");
+            // }
+
+            Triangle tri = new Triangle(
+                vert1,
+                vert2,
+                vert3
+            );
+
+            assignColorToTriangle(tri);
+            if (!onlyTriangles)
+                storeTriCommonalities(tri);
+        }
+        if (!onlyTriangles)
+            DetectNormalDiscontinuities();
+
+        mesh.colors = colors;
+        triangleCommons.Clear();
+        prebaked = true;
+    }
 
     private void Start() {
+        if (prebaked){
+            return;
+        }
         if (!meshFilter.mesh.isReadable) {
             Debug.Log("Enable read write on "+gameObject.name+" dumbass");
         }
@@ -81,7 +141,7 @@ public class AdvancedWire : MonoBehaviour
         SkinnedMeshRenderer smr;
         if (TryGetComponent(out smr)) {
             mesh = smr.sharedMesh;
-            return 0;
+            return 1;
         }
 
         Debug.LogError("Object \""+ gameObject.name+"\" has no meshFilter or skinnedMeshRenderer.");

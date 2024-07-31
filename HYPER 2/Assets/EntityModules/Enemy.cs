@@ -4,7 +4,6 @@ using UnityEngine;
 using Helpers;
 using static Stat;
 
-[RequireComponent(typeof(Stats))]
 public class Enemy : MonoBehaviour, ISideBelonger<Enemy>
 {
     [SerializeField] private Stats stats;

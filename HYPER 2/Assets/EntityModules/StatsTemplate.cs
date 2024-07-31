@@ -87,7 +87,8 @@ public enum Stat {
     DAMAGE,
     RANGE,
     RATE,
-    ARMOR
+    ARMOR,
+    IMMUNITY
 }
 
 [CreateAssetMenu(fileName = "Stats Template", menuName = "Mutox/Stats Template", order = 1)]
@@ -95,10 +96,10 @@ public class StatsTemplate : ScriptableObject {
     public StatsBase statsBase;
 
     public List<float> modifiers = new List<float>() {
-        1f, 1f, 1f, 1f, 1f, 1f
+        1f, 1f, 1f, 1f, 1f, 1f, 1f
     };
     public List<float> incrementers = new List<float>() {
-        0.1f,0.1f,0.1f,0.1f,0.1f, 0.1f
+        0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f
     };
     
     public Element element;

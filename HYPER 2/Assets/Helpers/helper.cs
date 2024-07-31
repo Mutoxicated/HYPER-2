@@ -399,7 +399,7 @@ namespace Helpers {
                 return "WaterBacteria";
             case FireBacteria:
                 return "FireBacteria";
-            case PoolID.NumPopup:
+            case NumPopup:
                 return "NumPopup";
             default: 
                 return "Unknown";

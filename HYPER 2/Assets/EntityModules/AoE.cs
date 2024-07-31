@@ -6,6 +6,7 @@ public class AoE : MonoBehaviour
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Element bt;
+    [SerializeField] private AoEVFX vfx;
 
     private Range range;
 
@@ -17,6 +18,7 @@ public class AoE : MonoBehaviour
             }
         );
         range = stats.Range.Get();
+        vfx.CStart();
         //range.OnEnter += ApplyEffect;
     }
 

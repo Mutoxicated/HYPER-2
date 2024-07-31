@@ -111,6 +111,10 @@ public class WorldGenerator : MonoBehaviour
         get { return layers; }
     }
 
+    public float RangeSize(float multiplier) {
+        return multiplier*tileSize*4-tileSize*2;
+    }
+
     public void DStart(World world, Player player) {
         gp.DStart(player, player.Manager);
         this.player = player;

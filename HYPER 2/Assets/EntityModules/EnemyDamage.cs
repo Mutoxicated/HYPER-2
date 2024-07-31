@@ -34,4 +34,19 @@ public class EnemyDamage : MonoBehaviour {
     public void OnCollisionExit() {
         currentlyColliding = Option<IDamageable>.None();
     }
+
+    public void OnTriggerEnter(Collider collider) {
+        //Debug.Log(collider.gameObject.name);
+        var damageable = collider.gameObject.GetComponent<IDamageable>();
+        if (damageable != null) {
+            //Debug.Log("Contains Damageable");
+            currentlyColliding = new Option<IDamageable>(damageable);
+            IntervalDamage();
+            stats.Die(new Option<Stats>(stats));
+        }
+    }
+
+    public void OnTriggerExit() {
+        currentlyColliding = Option<IDamageable>.None();
+    }
 }

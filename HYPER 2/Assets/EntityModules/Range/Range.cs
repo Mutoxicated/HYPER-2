@@ -30,8 +30,8 @@ public class Range : MonoBehaviour
     public OnEnemy OnExit;
 
     private void UpdateSize() {
-        var tileSize = stats.Manager.World.WG.TileSize;
-        transform.localScale = new Vector3(stats[RANGE]*tileSize*4-tileSize, transform.localScale.y, stats[RANGE]*tileSize*4-tileSize);
+        var rangeSize = stats.Manager.World.WG.RangeSize(stats[RANGE]);
+        transform.localScale = new Vector3(rangeSize, transform.localScale.y, rangeSize);
     }
 
     public void CStart() {
@@ -43,13 +43,13 @@ public class Range : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider collider) {
-        var enemy = collider.gameObject.GetComponent<Stats>();
+        var enemy = collider.gameObject.GetComponent<IStats>();
         if (enemy == null) {
             return;
-        }else if (enemy == stats) {
+        }else if (enemy.Convert() == stats) {
             return;
         }
-        OnEnter.Invoke(enemy);
+        OnEnter.Invoke(enemy.Convert());
     }
 
     public void OnTriggerExit(Collider collider) {

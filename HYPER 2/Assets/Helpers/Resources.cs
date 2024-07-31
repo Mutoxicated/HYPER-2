@@ -19,6 +19,7 @@ public class Resources : MonoBehaviour
 
     public enum Enemy {
         MOG = 0,
+        PASATEMPO,
         PROWLER,
         SOAS,
         UFO
@@ -31,11 +32,11 @@ public class Resources : MonoBehaviour
         BOOM
     }
 
-    // public enum Extra {
-    //     Explosion
-    // }
+    public enum Misc {
+        Line
+    }
 
-    //private static Dictionary<Extra, GameObject> extras;
+    private static Dictionary<Misc, GameObject> miscs;
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
@@ -56,19 +57,19 @@ public class Resources : MonoBehaviour
     }
 
     public void DStart() {
-        // if (extras == null) {
-        //     extras = new Dictionary<Extra, GameObject>();
-        //     var gos = UnityEngine.Resources.LoadAll<GameObject>("Extra");
-        //     Assert.IsNotNull(gos, "Extra folder in Helpers/Resources either doesn't exist");
-        //     for (int i = 0; i < gos.Length; i++) {
-        //         extras.Add((Extra)i, gos[i]);
-        //     } 
-        // }
+        if (miscs == null) {
+            miscs = new Dictionary<Misc, GameObject>();
+            var gos = UnityEngine.Resources.LoadAll<GameObject>("Misc");
+            Assert.IsNotNull(gos, "Misc folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                miscs.Add((Misc)i, gos[i]);
+            } 
+        }
 
         if (arsenalPrefabs == null) {
             arsenalPrefabs = new Dictionary<Arsenal, GameObject>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Arsenal");
-            Assert.IsNotNull(gos, "Arsenal folder in Helpers/Resources either doesn't exist");
+            Assert.IsNotNull(gos, "Arsenal folder in Helpers/Resources doesn't exist");
             for (int i = 0; i < gos.Length; i++) {
                 arsenalPrefabs.Add((Arsenal)i, gos[i]);
             } 
@@ -120,9 +121,9 @@ public class Resources : MonoBehaviour
         }
     }
 
-    // public static GameObject GetExtra(Extra extra) {
-    //     return extras[extra];
-    // }
+    public static GameObject GetMisc(Misc misc) {
+        return miscs[misc];
+    }
 
     public static GameObject GetBullet(Bullet bullet) {
         return bulletPrefabs[bullet];

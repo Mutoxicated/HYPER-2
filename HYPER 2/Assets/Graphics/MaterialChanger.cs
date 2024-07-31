@@ -21,8 +21,11 @@ public enum QueueMode {
 
 public class MaterialChanger : MonoBehaviour
 {
+    [Header("Means of access to material")]
     [SerializeField] private Renderer _renderer;
+    [SerializeField] private SkinnedMeshRenderer smr;
     [SerializeField] private MaterialType @type;
+    [Header("Settings")]
     [SerializeField] private bool changeColor = true;
     [SerializeField, ColorUsage(true,true)] private Color color = Color.white;
     [SerializeField] private bool changeQueue = false;
@@ -44,8 +47,16 @@ public class MaterialChanger : MonoBehaviour
 
     void Awake()
     {
-        _renderer = _renderer == null? GetComponent<Renderer>() : _renderer; 
-        var res = Rdr.FindMaterial(_renderer, @type);
+        _renderer = _renderer == null ? GetComponent<Renderer>() : _renderer; 
+        if (_renderer == null)
+            smr = smr == null ? GetComponent<SkinnedMeshRenderer>() : smr;
+        
+        Option<Material> res = Option<Material>.None();
+        if (_renderer != null) {
+            res = Rdr.FindMaterial(_renderer, @type);
+        }else if (smr != null) {
+            res = Rdr.FindMaterial(smr, @type);
+        }
         if (res.IsNone()) {
             Debug.LogError("Couldn't find a material of type "+@type, _renderer);
             return;

@@ -89,12 +89,12 @@ public class Player : MonoBehaviour
 
     public static void IncrementXP(float val) {
         float newXP = Save.rData.XP+val;
-        if (newXP >= MaxXPRequired()) {
-            Save.rData.SetXP(0);
-            Save.rData.SetLvl(Save.rData.Lvl+1);
+        if (newXP >= MaxXPRequired()) 
             self.onLvlUp.Invoke(Save.rData.Lvl);
+        while (newXP >= MaxXPRequired()) {
+            newXP -= MaxXPRequired();
+            Save.rData.SetLvl(Save.rData.Lvl+1);
             Save.rData.SetMoneyRelative(Gameplay.MoneyEarned(Save.rData.Lvl));
-            return;
         }
         Save.rData.SetXP(newXP);
     }

@@ -115,6 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1050863701909819647}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -283,6 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 3752510526571051686}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -404,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4189758874385625951}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0.3962264, g: 0, b: 0, a: 1}
@@ -509,10 +512,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
-  enemyType: 3
+  enemyType: 4
   hitSFX: {fileID: 1724161886677925566}
   followPath: 0
-  XPWorth: 10
 --- !u!114 &7654643070103954848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 2359422171724077079}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0.6037736, g: 0, b: 0, a: 1}

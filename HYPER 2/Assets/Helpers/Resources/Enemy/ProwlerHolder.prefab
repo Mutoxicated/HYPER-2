@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 6132190789300334389}
+  smr: {fileID: 0}
   type: 5
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -227,10 +228,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
-  enemyType: 1
+  enemyType: 2
   hitSFX: {fileID: 5126550029506714795}
   followPath: 1
-  XPWorth: 5
 --- !u!114 &7654643070103954848
 MonoBehaviour:
   m_ObjectHideFlags: 0

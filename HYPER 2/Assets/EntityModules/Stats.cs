@@ -13,7 +13,11 @@ public enum Element {
     AIR
 }
 
-public class Stats : MonoBehaviour, IDamageable
+public interface IStats : IDamageable {
+    Stats Convert();
+}
+
+public class Stats : MonoBehaviour, IStats
 {
     public enum Side {
         PLAYER,
@@ -218,12 +222,13 @@ public class Stats : MonoBehaviour, IDamageable
 
     public void IncXP(int xp) {
         this.xp += xp;
-        if (this.xp >= template.maxXp) {
-            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
-            lvl++;
+        if (this.xp >= template.maxXp)
             if (onLvlUp != null)
                 onLvlUp.Invoke();
-            this.xp = 0;
+        while (this.xp >= template.maxXp) {
+            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
+            lvl++;
+            this.xp -= template.maxXp;
         }
     }
 
@@ -377,5 +382,10 @@ public class Stats : MonoBehaviour, IDamageable
         }
     
         return (int)ret;
+    }
+
+    public Stats Convert()
+    {
+        return this;
     }
 }

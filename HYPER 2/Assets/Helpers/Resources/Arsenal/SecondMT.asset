@@ -20,11 +20,13 @@ MonoBehaviour:
   - 0.6
   - 0.6
   - 0.6
+  - 0.6
   incrementers:
   - 0.01
   - 0
   - 0
   - 0.01
+  - -0.002
   - -0.002
   - -0.002
   element: 1

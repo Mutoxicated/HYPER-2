@@ -43,8 +43,8 @@ public class BaseStatsEditor : Editor {
 
 [CreateAssetMenu(fileName = "Stats Base", menuName = "Mutox/Stats Base", order = 1)]
 public class StatsBase : ScriptableObject {
-    public float[] values =  new float[6] {
-        100f, 7f, 30f, 5f, 1f, 1f
+    public float[] values =  new float[7] {
+        100f, 7f, 30f, 5f, 1f, 1f, 1f
     };
 
     public Stats.Side side;

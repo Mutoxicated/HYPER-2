@@ -8,12 +8,16 @@ public class Manager : MonoBehaviour
     [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
+    [SerializeField] private Tester tester;
 
     public void Awake() {
         pps.DStart();
         resources.DStart();
         player.DStart(this);
         world.DStart(player);
+        #if UNITY_EDITOR 
+        tester.DStart();
+        #endif
     }
 
     public World World {

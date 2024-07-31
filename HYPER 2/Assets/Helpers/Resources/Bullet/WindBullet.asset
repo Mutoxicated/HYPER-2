@@ -20,7 +20,9 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  - 1
   incrementers:
+  - 0.1
   - 0.1
   - 0.1
   - 0.1
