@@ -122,7 +122,12 @@ public class World : MonoBehaviour
             Physics.Raycast(state.position+Vector3.up*3f, Vector3.down, out info, Mathf.Infinity);
             var mt = InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
             Assert.IsNotNull(info.collider, "IN NO CASE SHOULD THIS EVER BE NULL, THERE SHOULD ALWAYS BE A TILE BELOW THE TOWER");
-            info.collider.transform.parent.GetComponent<Tile>()?.Occupy(mt.gameObject);
+            var tile = info.collider.transform.parent.GetComponent<Tile>();
+            mt.GetReportDeath() += m => { 
+                if (tile != null) 
+                    tile.Deoccupy();
+            };
+            tile.Occupy(mt.gameObject);
         }
 
         Save.rData.MTs.Clear();

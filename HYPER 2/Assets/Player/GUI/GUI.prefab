@@ -9703,6 +9703,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7431207329946451523}
     - target: {fileID: 1806489781769933589, guid: f84d3df538d200046b02239f943db02a, type: 3}
+      propertyPath: capacity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1806489781769933589, guid: f84d3df538d200046b02239f943db02a, type: 3}
       propertyPath: selectedImage
       value: 
       objectReference: {fileID: 6133040603319326484}
@@ -9776,7 +9780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921286213019740278, guid: f84d3df538d200046b02239f943db02a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 855
       objectReference: {fileID: 0}
     - target: {fileID: 1921286213019740278, guid: f84d3df538d200046b02239f943db02a, type: 3}
       propertyPath: m_AnchoredPosition.y

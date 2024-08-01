@@ -59,7 +59,7 @@ public class QuickInventory : MonoBehaviour
         imageSize = items[0].transform.localScale.x*0.1f+spacing;
         
         Sort();
-        edit.position = items[capacity-1].transform.position+Vector3.right*imageSize;
+        edit.position = items[capacity-1].transform.position+Vector3.left*imageSize;
         if (Save.rData.SelectedIndex < 0) {
             UpdateSelected(Option<QuickInventoryItem>.None());
         }else {
@@ -99,22 +99,22 @@ public class QuickInventory : MonoBehaviour
             });
         }
         if (Keyboard.current.digit1Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(0);
+            UpdateSelectedWithIndex(4);
         }else if (Keyboard.current.digit2Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(1);
+            UpdateSelectedWithIndex(3);
         }else if (Keyboard.current.digit3Key.wasPressedThisFrame) {
             UpdateSelectedWithIndex(2);
         }else if (Keyboard.current.digit4Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(3);
+            UpdateSelectedWithIndex(1);
         }else if (Keyboard.current.digit5Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(4);
+            UpdateSelectedWithIndex(0);
         }else if (Keyboard.current.digit6Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(5);
+            UpdateSelectedWithIndex(0);
         }
     }
 
-    private void UpdateSelectedWithIndex(int index) {
-        if (index >= capacity) {
+    public void UpdateSelectedWithIndex(int index) {
+        if (index > capacity-1) {
             index = capacity-1;
         }
         selected.GetAndThen(i => {
@@ -140,10 +140,8 @@ public class QuickInventory : MonoBehaviour
 
         var step = length/(capacity-1);
 
-        var index = 0;
-        for (float i = -length/2; i <= length/2; i += step) {
-            items[index].transform.position = transform.position+Vector3.right*i;
-            index++;
+        for (int i = 0; i < capacity; i++) {
+            items[i].transform.position = transform.position+Vector3.left*i*step;
         }
     }
 

@@ -63,7 +63,7 @@ public class MaterialChanger : MonoBehaviour
         }
         material = res.Get();
 
-        ChangeColor(color, false);
+        ChangeColor(color);
         ChangeQueue(queueMode+offset, false);
     }
 
@@ -71,19 +71,23 @@ public class MaterialChanger : MonoBehaviour
         Awake();
     }
 
-    public void ChangeColor(Color color, bool overrideSettings) {
-        if (overrideSettings) {
-            material.color = color;
-            return;
-        }
+    public void ChangeColor(Color color) {
         if (changeColor) {
             material.color = color;
         }
     }
-
-    public void ChangeColor(bool overrideSettings) {
-        ChangeColor(color, overrideSettings);
+    public void ChangeColorOverride(Color color) {
+        material.color = color;
     }
+    public void ChangeColor() {
+        if (changeColor) {
+            material.color = color;
+        }
+    }
+    public void ChangeColorOverride() {
+        material.color = color;
+    }
+
 
     public void ChangeQueue(QueueMode mode, bool overrideSettings) {
         if (overrideSettings) {

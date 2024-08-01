@@ -158,7 +158,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.SetColor(litColor);
-        mc.ChangeColor(true);
+        mc.ChangeColorOverride();
     }
     public void Enable(Color color) {
         if (lit) { return; }
@@ -169,7 +169,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.SetColor(color);
-        mc.ChangeColor(true);
+        mc.ChangeColorOverride();
     }
 
     public void Disable() {
@@ -178,7 +178,7 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         lit = false;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
         mc.SetColor(normalColor);
-        mc.ChangeColor(true);
+        mc.ChangeColorOverride();
     }
 
     public void Goldify(GameObject occupiedBy) {
@@ -186,11 +186,11 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 
         Occupy(occupiedBy);
         mc.SetColor(goldColor);
-        mc.ChangeColor(true);
+        mc.ChangeColorOverride();
     }
 
     public void UpdateColor() {
-        mc.ChangeColor(Color.Lerp(mc.Color, Color.white, MusicVisualization.T), true);
+        mc.ChangeColorOverride(Color.Lerp(mc.Color, Color.white, MusicVisualization.T));
     }
 
     private void Awake() {

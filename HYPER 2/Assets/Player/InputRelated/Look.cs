@@ -22,7 +22,7 @@ public class Look : MonoBehaviour
         lookAccess = player.FindAction("LookAccess");
         look = player.FindAction("Look");
 
-        lookRotation = transform.rotation;
+        lookRotation = player.CamRoot.rotation;
     }
 
     private void FixedUpdate() {
@@ -37,8 +37,8 @@ public class Look : MonoBehaviour
         rotationX -= moveVector.y * Time.fixedDeltaTime * (Save.pData.SensY * 100f);
         rotationY += moveVector.x * Time.fixedDeltaTime * (Save.pData.SensX * 100f);
         //clamp it so that cam cant freely move
-        rotationX = Mathf.Clamp(rotationX, -xRotationLimit, xRotationLimit);
+        rotationX = Mathf.Clamp(rotationX, -90, 90);
         lookRotation = Quaternion.Euler(rotationX, rotationY, 0f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.fixedDeltaTime*37f);
+        player.CamRoot.rotation = Quaternion.Lerp(player.CamRoot.rotation, lookRotation, Time.fixedDeltaTime*37f);
     }
 }

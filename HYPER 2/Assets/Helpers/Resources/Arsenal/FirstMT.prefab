@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
+  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 1, b: 0.94670725, a: 1}
@@ -308,6 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 7534240743865636171}
+  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 0.4941563, b: 0.8584906, a: 1}
@@ -384,7 +386,7 @@ MonoBehaviour:
   stats: {fileID: 3132699088074353899}
   DOTInterval: {fileID: 1287294738151058555}
   arsenal: 0
-  DOT: 0.1
+  DOT: 1
   highlight: {fileID: 4919237192308479548}
   deathSound: {fileID: 1007566626590660700}
 --- !u!1 &7449173768195002225

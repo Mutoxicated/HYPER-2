@@ -59,7 +59,7 @@ public class Explosion : MonoBehaviour {
 
         t = Mathf.Abs((time / expiration)-1);
         color.a = initColor.a*t;
-        mc.ChangeColor(color, false);
+        mc.ChangeColor(color);
         
         if (time >= expiration) {
             Destroy(gameObject);

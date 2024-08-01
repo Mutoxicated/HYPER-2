@@ -19,7 +19,7 @@ public class HitVisual : MonoBehaviour
         hitT = Mathf.Clamp01(hitT-rate*4*Time.deltaTime);
 
         foreach (var mc in mcs) {
-            mc.ChangeColor(Color.Lerp(mc.Color, hitColor, hitT), true);
+            mc.ChangeColorOverride(Color.Lerp(mc.Color, hitColor, hitT));
         }
 
         if (hitT == 0f) {

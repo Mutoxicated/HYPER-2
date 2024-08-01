@@ -225,21 +225,42 @@ public class Select<T, E> {
     }
 
     public delegate void OnAcquisition(T value);
+    public delegate void OnFail(E value);
 
-    public bool FirstAndThen(OnAcquisition onAcquisition) {
-        if (IsFirst()) {
-            onAcquisition(First());
-            return true;
+    public class Result {
+        private bool success;
+        private E value;
+
+        public Result(bool success, E value) {
+            this.success = success;
         }
 
-        return false;
+        public Result Else(OnFail onFail, params bool[] conditions) {
+            if (Successful()) { return this; }
+            foreach (var cond in conditions) {
+                if (!cond) { return this; }
+            }
+            onFail(value);
+            return this;
+        }
+
+        public bool Successful() {
+            return success;
+        }
     }
 
-    public delegate void OnFail();
+    public Result FirstAndThen(OnAcquisition onAcquisition) {
+        if (IsFirst()) {
+            onAcquisition(First());
+            return new Result(true, value2);
+        }
+
+        return new Result(false, value2);
+    }
 
     public bool TryFirstOr(OnFail fail) {
         if (IsSecond()) {
-            fail();
+            fail(Second());
             return false;
         }
 

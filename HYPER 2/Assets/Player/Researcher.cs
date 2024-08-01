@@ -20,6 +20,7 @@ public class Researcher : MonoBehaviour
     private void Update() {
         if (Save.rData == null) { enabled = false; }
         foreach (var curr in Save.rData.CurrentlyResearchingKeys) {
+            if (!Save.rData[curr, 0]) { continue; }
             Save.rData[curr] += Time.deltaTime;
             if (Save.rData[curr] >= Resources.GetStatTemplate(curr).maxXp) {
                 Save.rData[curr] = 0f;

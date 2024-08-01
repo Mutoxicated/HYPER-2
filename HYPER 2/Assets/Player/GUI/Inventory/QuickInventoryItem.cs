@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class QuickInventoryItem : MonoBehaviour
+public class QuickInventoryItem : MonoBehaviour, IPointerClickHandler
 {
     private const float radius = 0.1f;
 
@@ -13,6 +15,7 @@ public class QuickInventoryItem : MonoBehaviour
     private Option<Resources.Arsenal> arsenalType = Option<Resources.Arsenal>.None();
     private Option<StatsTemplate> template = Option<StatsTemplate>.None();
     [SerializeField] private Image image;
+    [SerializeField] private TMP_Text cost;
     private int index;
     private QuickInventory quickInventory;
 
@@ -46,9 +49,17 @@ public class QuickInventoryItem : MonoBehaviour
         Save.rData.QIAs[index] = arsenalType;
         this.arsenalType = arsenalType;
         if (arsenalType.IsNone()) {
+            cost.gameObject.SetActive(false);
             image.sprite = Resources.Empty;
         }else {
+            cost.text = Resources.GetStatTemplate(arsenalType.Get()).worth+"*";
+            cost.gameObject.SetActive(true);
             image.sprite = Resources.GetArsenalSprite(arsenalType.Get());
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        quickInventory.UpdateSelectedWithIndex(index);
     }
 }
