@@ -10,7 +10,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     [SerializeField] private ArsenalInfo ai;
     [SerializeField] private Resources.Arsenal @type;
-    [SerializeField] private bool bought;
+    [SerializeField] private bool beingResearched;
     [SerializeField] private Image image;
     [SerializeField] private Image internalImage;
     [SerializeField] private Text itemName;
@@ -22,8 +22,8 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return template; }
     }
 
-    public bool Bought {
-        get { return bought; }
+    public bool BeingResearched {
+        get { return beingResearched; }
     }
 
     private bool locked;
@@ -32,15 +32,10 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return locked; }
     }
 
-    public void SetBought(bool value) {
-        bought = value;
+    public void SetResearched(bool value) {
+        beingResearched = value;
         SetImageColor();
     }
-
-    // public void SetResearched(bool value) {
-    //     researched = value;
-    //     SetImageColor();
-    // }
 
     public Resources.Arsenal Type {
         get { return @type; }
@@ -65,6 +60,12 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void CStart(ArsenalInfo ai, Resources.Arsenal arsenalType) {
         type = arsenalType;
         template = Resources.GetStatTemplate(Type);
+        if (Save.rData[arsenalType, 0]) {
+            SetResearched(true);
+        }
+        if (Save.rData.Lvl >= template.unlockAt) {
+            ai.Arsenal.Inventory.NewInventoryItem(arsenalType);
+        }
         this.ai = ai;
     }
 
@@ -86,17 +87,9 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void SetImageColor() {
-        // if (researched) {
-        //     image.color = Color.cyan;
-        // }else {
-        //     image.color = Color.white;
-        // }
-        // if (bought) {
-        //     image.color = Color.green;
-        // }
-        if (bought) {
-            image.color = Color.green;
-        }else {
+        if (beingResearched) {
+            image.color = Color.cyan;
+        }else if (!locked) {
             image.color = Color.white;
         }
     }

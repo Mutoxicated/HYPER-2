@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour
         scroll = player.FindAction("Scroll");
     }
 
-    public void Update() {
+    public void FixedUpdate() {
         hypothetical = obj.position;
         direction = Vector3.zero;
         moveVector = move.ReadValue<Vector2>();
@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
             scrollVector.Normalize();
             direction = forward*scrollVector.y;
 
-            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*90f, Time.deltaTime);
+            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*90f, Time.fixedDeltaTime);
         }
         forward.y = 0f;
         forward.Normalize();
@@ -52,9 +52,9 @@ public class Movement : MonoBehaviour
         direction.Normalize();
 
         if (faster.IsPressed()) {
-            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*speed*multiplier, Time.deltaTime);
+            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*speed*multiplier, Time.fixedDeltaTime);
         }else {
-            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*speed, Time.deltaTime);
+            hypothetical = Vector3.Lerp(hypothetical, hypothetical+direction*speed, Time.fixedDeltaTime);
         }
         var dist = Vector2.Distance(Vec3.ToV2XZ(hypothetical), Vec3.ToV2XZ(player.Manager.Tower.transform.position));
         if (dist < towerRadius) {

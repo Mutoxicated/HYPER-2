@@ -21,7 +21,6 @@ public class Inventory : MonoBehaviour
         var iitem = instance.GetComponent<InventoryItem>();
         iitem.CStart(this, arsenalType);
         iitems.Add(arsenalType, iitem);
-        Save.rData.AddBoughtArsenal(arsenalType);
         sorter.AddItem(iitem.transform);
     }
 
@@ -29,16 +28,9 @@ public class Inventory : MonoBehaviour
         sorter.RemoveItem(iitems[arsenalType].transform);
         Destroy(iitems[arsenalType].gameObject);
         iitems.Remove(arsenalType);
-        Save.rData.RemoveBoughtArsenal(arsenalType);
     }
 
     public void DStart() {
-        foreach (var bought in Save.rData.BoughtArsenals) {
-            var iitem = Instantiate(inventoryItemPrefab, transform, false).GetComponent<InventoryItem>();
-            iitem.CStart(this, bought);
-            iitems.Add(bought, iitem);
-            sorter.AddItem(iitem.transform);
-        }
         sorter.PrepareValues();
     }
 

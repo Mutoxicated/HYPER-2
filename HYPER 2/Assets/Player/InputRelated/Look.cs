@@ -13,14 +13,19 @@ public class Look : MonoBehaviour
 
     private Vector2 moveVector;
 
+    private float rotationX, rotationY;
+    private Quaternion lookRotation;
+
     private const float xRotationLimit = 85;
 
     private void Start() {
         lookAccess = player.FindAction("LookAccess");
         look = player.FindAction("Look");
+
+        lookRotation = transform.rotation;
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         if (!lookAccess.IsPressed()) {
             Cursor.lockState = CursorLockMode.None;
             return;
@@ -29,23 +34,11 @@ public class Look : MonoBehaviour
 
         moveVector = look.ReadValue<Vector2>();
 
-        if (moveVector == Vector2.zero) {
-            return;
-        }
-
-        var delta = new Vector3(-moveVector.y*4f*Save.pData.SensX, moveVector.x*4f*Save.pData.SensY, 0);
-        var eulerAngles = player.CamRoot.transform.eulerAngles;
-
-        player.CamRoot.transform.eulerAngles = Vector3.Lerp(eulerAngles, eulerAngles+delta, Time.deltaTime);
-        var clampedX = player.CamRoot.transform.eulerAngles.x;
-    
-        if (clampedX > xRotationLimit && clampedX < 90f) {
-            clampedX = xRotationLimit;
-        }else if (clampedX < 360-xRotationLimit && clampedX > 90f) {
-            clampedX = 360-xRotationLimit;
-        }
-
-        eulerAngles = player.CamRoot.transform.eulerAngles;
-        player.CamRoot.transform.eulerAngles = new Vector3(clampedX, eulerAngles.y, eulerAngles.z);
+        rotationX -= moveVector.y * Time.fixedDeltaTime * (Save.pData.SensY * 100f);
+        rotationY += moveVector.x * Time.fixedDeltaTime * (Save.pData.SensX * 100f);
+        //clamp it so that cam cant freely move
+        rotationX = Mathf.Clamp(rotationX, -xRotationLimit, xRotationLimit);
+        lookRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.fixedDeltaTime*37f);
     }
 }

@@ -11,9 +11,9 @@ public class WavesUI : MonoBehaviour
 
     public void Update() {
         if (waitInterval.enabled == true) {
-            waves.text = String.Format("{1} : {0}", Save.rData.Waves, Mathf.Abs(7-Mathf.CeilToInt(waitInterval.time)));
+            waves.text = String.Format("Next Wave in {0}", Mathf.Abs(7-Mathf.CeilToInt(waitInterval.time)));
         }else {
-            waves.text = String.Format("{0}", Save.rData.Waves);
+            waves.text = String.Format("Wave {0}", Save.rData.Waves);
         }
     }
 }

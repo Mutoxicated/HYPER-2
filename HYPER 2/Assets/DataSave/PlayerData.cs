@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerData
 {
     //MACRO_START
-    [SerializeField] private float __sensX = 2f;
+    [SerializeField] private float __sensX = 0.1f;
     
     public float SensX {
     	get { return __sensX; }
@@ -14,7 +14,7 @@ public class PlayerData
     public void SetSensX(float val) {
     	__sensX = val;
     }
-    [SerializeField] private float __sensY = 2f;
+    [SerializeField] private float __sensY = 0.1f;
     
     public float SensY {
     	get { return __sensY; }

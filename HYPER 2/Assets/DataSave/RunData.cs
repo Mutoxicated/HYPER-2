@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 using static Resources.Arsenal;
 
@@ -84,22 +85,6 @@ public class RunData
         __waves++;
     }
 
-    [SerializeField] private List<Resources.Arsenal> boughtArsenals = new List<Resources.Arsenal>() {
-        FIRST_MT
-    };
-
-    public void AddBoughtArsenal(Resources.Arsenal arsenal) {
-        boughtArsenals.Add(arsenal);
-    }
-
-    public void RemoveBoughtArsenal(Resources.Arsenal arsenal) {
-        boughtArsenals.Remove(arsenal);
-    }
-
-    public List<Resources.Arsenal> BoughtArsenals {
-        get { return boughtArsenals; }
-    }
-
     [SerializeField] private List<Option<Resources.Arsenal>> quickInventoryArsenals = new List<Option<Resources.Arsenal>>() {
         new Option<Resources.Arsenal>(FIRST_MT)
     };
@@ -174,6 +159,96 @@ public class RunData
 
     public List<int> PathsToWiden {
         get { return pathsToWiden; }
+    }
+
+    [SerializeField] private List<Resources.Arsenal> researchProgressKeys = new List<Resources.Arsenal>() {
+        BOOMER,
+        FIRST_MT,
+        SECOND_MT,
+        WATCHER,
+        RADMOL,
+    };
+
+    [SerializeField] private List<int> researchProgressValues = new List<int>() {
+        1,
+        1,
+        1,
+        1,
+        1,
+    };
+
+    [SerializeField] private List<(bool, float)> currentlyResearchingValues = new List<(bool, float)>() {
+        (false, 0f),
+        (false, 0f),
+        (false, 0f),
+        (false, 0f),
+        (false, 0f),
+    };
+
+    public List<Resources.Arsenal> CurrentlyResearchingKeys {
+        get { return researchProgressKeys; }
+    }
+
+    public int  CurrentlyResearchingCount {
+        get { 
+            return currentlyResearchingValues.Count;
+        }
+    }
+
+    public int this[Resources.Arsenal arsnl, bool lvl] {
+        get {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    return researchProgressValues[i];
+                }
+            }
+            return 0;
+        }
+        set {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    researchProgressValues[i] = value;
+                }
+            }
+        }
+    }
+
+    public float this[Resources.Arsenal arsnl] {
+        get {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    return currentlyResearchingValues[i].Item2;
+                }
+            }
+            return -1f;
+        }
+        set {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    currentlyResearchingValues[i] = (currentlyResearchingValues[i].Item1, value);
+                }
+            }
+        }
+    }
+
+    public bool this[Resources.Arsenal arsnl, int _] {
+        get {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    return currentlyResearchingValues[i].Item1;
+                }
+            }
+            return false;
+        }
+    }
+
+    public void SetCurrentlyResearched(Resources.Arsenal arsnl, bool activated) {
+        for (int i = 0; i < researchProgressKeys.Count; i++) {
+            if (arsnl == researchProgressKeys[i]) {
+                currentlyResearchingValues[i] = (activated, currentlyResearchingValues[i].Item2);
+                break;
+            }
+        }
     }
 }
 

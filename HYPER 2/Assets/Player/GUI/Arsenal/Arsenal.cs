@@ -12,17 +12,23 @@ public class Arsenal : MonoBehaviour
     [SerializeField] private List<ArsenalItem> aitems;
     [SerializeField] private ItemSorter sorter;
     [SerializeField] private ArsenalInfo ai;
+    [SerializeField] private Notification notif;
+    [SerializeField] private Researcher researcher;
+
+    public Inventory Inventory {
+        get { return inventory;}
+    }
 
     public List<ArsenalItem> AItems {
         get { return aitems; }
     }
 
     public void DStart(Player player) {
+        notif.CStart();
         player.onLvlUp += lvl => {
             foreach (var aitem in aitems) {
-                if (aitem.Bought) { continue; }
                 if (aitem.Template.unlockAt != lvl) { continue; }
-                aitem.SetBought(true);
+                notif.Enable();
                 ai.Unlock();
                 ai.Enable(aitem, false);
                 inventory.NewInventoryItem(aitem.Type);
@@ -44,17 +50,21 @@ public class Arsenal : MonoBehaviour
 
     private void OnEnable() {
         sorter.SortItems();
-        List<Resources.Arsenal> boughtArsenals = Save.rData.BoughtArsenals.ToList();
         foreach (var item in aitems) {
-            foreach (var bought in boughtArsenals) {
-                if (bought == item.Type) {
-                    item.SetBought(true);
-                    boughtArsenals.Remove(bought);
-                    break;
-                }
-            }
             item.Enable();
         }
+    }
+
+    public void OnResearch(ArsenalItem arsenalItem) {
+        arsenalItem.SetResearched(true);
+        researcher.ResearchItem(arsenalItem.Type);
+        ai.Enable(arsenalItem, false);
+    }
+
+    public void OnStopResearch(ArsenalItem arsenalItem) {
+        arsenalItem.SetResearched(false);
+        researcher.StopResearchingItem(arsenalItem.Type);
+        ai.Enable(arsenalItem, false);
     }
 
     // public void Buy(ArsenalItem arsenalItem) {
@@ -79,6 +89,7 @@ public class Arsenal : MonoBehaviour
 
     public void Disable() {
         sorter.RevertItemScaling();
+        ai.Disable(true);
         foreach(var item in aitems) {
             item.gameObject.SetActive(false);
         }

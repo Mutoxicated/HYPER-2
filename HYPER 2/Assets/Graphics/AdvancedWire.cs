@@ -115,10 +115,7 @@ public class AdvancedWire : MonoBehaviour
     }
 
     private void Start() {
-        if (prebaked){
-            return;
-        }
-        if (!meshFilter.mesh.isReadable) {
+        if (meshFilter != null && !meshFilter.mesh.isReadable) {
             Debug.Log("Enable read write on "+gameObject.name+" dumbass");
         }
         Bake();

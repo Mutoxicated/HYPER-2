@@ -24,7 +24,7 @@ public class CameraShake : MonoBehaviour
             return;
         }
         float dist = Vector3.Distance(envCamera.position, caller);
-        strengths.Add(Mathf.Lerp(50, 1, dist)*strength);
+        strengths.Add(Mathf.Lerp(43, 1, dist)*strength);
         var diff = strengths[strengths.Count-1]*duration-currentDuration;
         if (diff < 0) 
             diff = 0;

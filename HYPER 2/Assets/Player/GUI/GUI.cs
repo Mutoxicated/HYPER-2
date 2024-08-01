@@ -30,8 +30,8 @@ public class GUI : MonoBehaviour
         this.player = player;
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
-        inventory.DStart();
         arsenal.DStart(player);
+        inventory.DStart();
         popupPool.DStart(player.gameObject);
         gameObject.SetActive(true);
     }

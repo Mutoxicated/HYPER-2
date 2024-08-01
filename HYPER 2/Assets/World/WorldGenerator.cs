@@ -483,7 +483,8 @@ public class WorldGenerator : MonoBehaviour
         if (Save.rData.Roots.Count != 0) {
             for (int i = 0; i < Save.rData.Roots.Count; i++) {
                 lastRandomCorner = Num.Wrap(lastRandomCorner+1, 1, 4);
-                InstantiatePath(Save.rData.Roots[i].startIndex, (p, _) => { p.CStart(player.Manager, Save.rData.Roots[i]); }); 
+                var path = InstantiatePath(Save.rData.Roots[i].startIndex, (p, _) => { p.CStart(player.Manager, Save.rData.Roots[i]); }); 
+                path.RepositionPath();
             }
             for (int i = 0; i < Save.rData.PathsToWiden.Count; i++) {
                 var curr = Save.rData.PathsToWiden[i];

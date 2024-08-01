@@ -85,6 +85,7 @@ public class Gameplay : MonoBehaviour
         }
     }
 
+    private int maxDiff;
     public void DStart(Player player, Manager manager) {
         self = this;
         this.manager = manager;
@@ -120,6 +121,9 @@ public class Gameplay : MonoBehaviour
         using (iter) {
             var dict = enemyDifficulties;
             while (iter.MoveNext()) {
+                if (iter.Current.Value.difficulty > maxDiff) {
+                    maxDiff = iter.Current.Value.difficulty;
+                }
                 if (iter.Current.Value.type == EnemyType.BOSS) {
                     dict = bossEnemyDifficulties;
                 }else {
@@ -139,7 +143,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {
-        var diff = Num.MinLimit(Random.Range(IntLinearT-3, IntLinearT+1), 1);
+        var diff = Mathf.Clamp(Random.Range(IntLinearT-3, IntLinearT+1), 1, maxDiff);
         return world.InstantiateEnemy(enemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });
@@ -152,7 +156,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public Enemy SpawnBoss(Vector3 pos, Direction main, Branch root) {
-        var diff = Num.MinLimit(Random.Range(BossDiff-1, BossDiff+1), 1);
+        var diff = Mathf.Clamp(Random.Range(BossDiff-1, BossDiff+1), 1, maxDiff);
         return world.InstantiateEnemy(bossEnemyDifficulties[diff][Seed.IntRange(0, enemyDifficulties[diff].Count)], pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });

@@ -293,10 +293,10 @@ namespace Helpers {
             return Seed.Chance(50f) ? v1 : v2;
         }
 
-        public static Dictionary<T, E> ListToDict<T,E>(List<T> list1, List<E> list2) {
+        public static Dictionary<T, E> ListToDict<T,E>(List<T> keys, List<E> values) {
             Dictionary<T, E> dict = new Dictionary<T, E>();
-            for (int i = 0; i < list1.Count; i++) {
-                dict.Add(list1[i], list2[i]);
+            for (int i = 0; i < keys.Count; i++) {
+                dict.Add(keys[i], values[i]);
             }
 
             return dict;

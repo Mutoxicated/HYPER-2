@@ -66,7 +66,7 @@ public class SelectedArsenalInfo : MonoBehaviour
             for (int i = 0; i < arsenalStats.Count; i++) {
                 arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+stats.Template.statsBase.values[i]+"<color=#999999> * "+m.Stats.modify(Stt.EnumValues[i]));
             }
-            hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP), stats[Stat.MAX_HEALTH]);
+            hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP), Mathf.RoundToInt(stats[Stat.MAX_HEALTH]));
             hpBar.fillAmount = m.HP/stats[Stat.MAX_HEALTH];
             xpCurrentMax.text = String.Format(ufmtXPCurrentMax, m.Stats.XP, m.Stats.Template.maxXp);
             xpBar.fillAmount =  (float)m.Stats.XP/(float)m.Stats.Template.maxXp;
@@ -96,6 +96,8 @@ public class SelectedArsenalInfo : MonoBehaviour
         Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.RestoreHPPrice));
         mt.Get().RestoreHP();
     }
+
+
 
     public void Destroy() {
         Player.SetMoneyRelative(mt.Get().Stats.Template.worth/2);

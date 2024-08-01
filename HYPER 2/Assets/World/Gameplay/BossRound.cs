@@ -45,10 +45,10 @@ public class BossRound : MonoBehaviour, IRound
     public void Enable() {
         //weirdSpawnFrequency = Seed.IntRange((int)weirdSpawnFrequencyRange.x, (int)weirdSpawnFrequencyRange.y);
         spawnIntervals.Clear();
-        gameplay.World.WG.Paths[gameplay.World.WG.Paths.Count].SpawnBoss();
         foreach (var path in gameplay.World.WG.Paths) {
             spawnIntervals.Concat(path.StartSpawning(this));
         }
+        gameplay.World.WG.Paths[Seed.IntRange(0, gameplay.World.WG.Paths.Count-1)].SpawnBoss();
         foreach (var spawnInterval in spawnIntervals) {
             spawnInterval.ChangeInterval(SpawnRate);
         }

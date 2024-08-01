@@ -20,7 +20,7 @@ public class DisplayTowerStatus : MonoBehaviour
     }
 
     private void Update() {
-        currentHP.text = String.Format(ufmtCurrent, towerStats.HP, towerStats[Stat.MAX_HEALTH]);
+        currentHP.text = String.Format(ufmtCurrent, Mathf.RoundToInt(towerStats.HP), Mathf.RoundToInt(towerStats[Stat.MAX_HEALTH]));
         hpBar.fillAmount = towerStats.HP/towerStats[Stat.MAX_HEALTH];
     }
 }
