@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 6962839112393779409}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0, g: 1, b: 0.0323627, a: 1}
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 332821827330092755}
+  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 0.6981132, b: 0.01979675, a: 1}
@@ -395,6 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
+  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0, g: 0.6132076, b: 0.05407005, a: 1}
@@ -524,6 +527,8 @@ MonoBehaviour:
   arsenal: 1
   DOT: 0.05
   highlight: {fileID: 6801513460600245608}
+  hpbarAnchor: {fileID: 1278299766410420061}
+  extrusion: 0.5
   deathSound: {fileID: 1475223347903707501}
 --- !u!1 &7449173768195002225
 GameObject:

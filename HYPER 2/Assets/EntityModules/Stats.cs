@@ -58,6 +58,10 @@ public class Stats : MonoBehaviour, IStats
     public OnExplosionDamage onExplosionDamage;
     public OnLvl onLvlUp;
 
+    public Option<GameObject> Holder {
+        get { return holder; }
+    }
+
     public Dictionary<Stat, float> Mod {
         set { mod = value; }
         get { return mod; }
@@ -221,7 +225,8 @@ public class Stats : MonoBehaviour, IStats
     }
 
     public void LvlUp(bool restoreCompletely = false) {
-        onLvlUp.Invoke();
+        if (onLvlUp != null)
+            onLvlUp.Invoke();
         lvl++;
         if (restoreCompletely) {
             hp = this[Stat.MAX_HEALTH];
@@ -230,11 +235,15 @@ public class Stats : MonoBehaviour, IStats
         }
     }
 
+    public int MaxRequiredXP() {
+        return template.maxXp+template.maxXpIncrememt*(lvl-1);
+    }
+
     public void IncXP(int xp) {
         this.xp += xp;
-        while (this.xp >= template.maxXp) {
+        while (this.xp >= MaxRequiredXP()) {
             LvlUp();
-            this.xp -= template.maxXp;
+            this.xp -= MaxRequiredXP();
         }
     }
 

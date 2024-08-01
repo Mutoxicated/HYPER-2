@@ -105,6 +105,7 @@ public class StatsTemplate : ScriptableObject {
     public Element element;
     public List<Element> elementImmunities = new List<Element>();
     public int maxXp = 100;
+    public int maxXpIncrememt = 20;
     public int xpKillWorth = 15;
     public int worth = 1;
     public int unlockAt = 1;

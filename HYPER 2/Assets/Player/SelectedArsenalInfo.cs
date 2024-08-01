@@ -68,8 +68,8 @@ public class SelectedArsenalInfo : MonoBehaviour
             }
             hpCurrentMax.text = String.Format(ufmtCurrentMax, Mathf.RoundToInt(m.HP), Mathf.RoundToInt(stats[Stat.MAX_HEALTH]));
             hpBar.fillAmount = m.HP/stats[Stat.MAX_HEALTH];
-            xpCurrentMax.text = String.Format(ufmtXPCurrentMax, m.Stats.XP, m.Stats.Template.maxXp);
-            xpBar.fillAmount =  (float)m.Stats.XP/(float)m.Stats.Template.maxXp;
+            xpCurrentMax.text = String.Format(ufmtXPCurrentMax, m.Stats.XP, m.Stats.MaxRequiredXP());
+            xpBar.fillAmount =  (float)m.Stats.XP/(float)m.Stats.MaxRequiredXP();
             lvl.text = String.Format(ufmtLvl, m.Stats.LVL);
 
             hpRestoreCost.text = String.Format(ufmtRestoreCost, Mathf.RoundToInt(gamePlay.RestoreHPPrice)+"*");

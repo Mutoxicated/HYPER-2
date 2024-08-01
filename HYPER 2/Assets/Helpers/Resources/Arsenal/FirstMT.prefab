@@ -386,8 +386,10 @@ MonoBehaviour:
   stats: {fileID: 3132699088074353899}
   DOTInterval: {fileID: 1287294738151058555}
   arsenal: 0
-  DOT: 1
+  DOT: 0.048
   highlight: {fileID: 4919237192308479548}
+  hpbarAnchor: {fileID: 1278299766410420061}
+  extrusion: 0.5
   deathSound: {fileID: 1007566626590660700}
 --- !u!1 &7449173768195002225
 GameObject:

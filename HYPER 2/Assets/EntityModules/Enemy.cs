@@ -35,6 +35,9 @@ public class Enemy : MonoBehaviour
         this.death += death;
         stats.CStart(manager);
         PrepareConfiguration();
+        for (int i = 1; i < Num.MinLimit(Mathf.FloorToInt(stats.Manager.GP.Waves*0.4f), 1); i++) {
+            stats.IncXP(stats.MaxRequiredXP());
+        }
 
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
 

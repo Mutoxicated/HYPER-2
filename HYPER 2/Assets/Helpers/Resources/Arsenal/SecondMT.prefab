@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 8951712424510583740}
+  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0.69803923, g: 0.2683335, b: 0, a: 1}
@@ -272,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
+  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 1, g: 0.22172387, b: 0, a: 1}
@@ -349,7 +351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7802898864057010206
 Transform:
   m_ObjectHideFlags: 0
@@ -438,6 +440,8 @@ MonoBehaviour:
   arsenal: 2
   DOT: 0.1
   highlight: {fileID: 1708426459559687945}
+  hpbarAnchor: {fileID: 1278299766410420061}
+  extrusion: 0.5
   deathSound: {fileID: 4572574436130010742}
 --- !u!1001 &437199033219885260
 PrefabInstance:

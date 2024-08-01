@@ -12,6 +12,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
     [SerializeField] private PopupPool popupPool;
+    [SerializeField] private HPBarPool hpbp;
     [SerializeField] private GameObject disabableUI;
 
     [Header("Menu UI")]
@@ -22,6 +23,10 @@ public class GUI : MonoBehaviour
     }
     public PopupPool PopupPool {
         get { return popupPool; }
+    }
+    
+    public HPBarPool HPBP {
+        get { return hpbp; }
     }
 
     private Player player;
