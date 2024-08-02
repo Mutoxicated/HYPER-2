@@ -100,15 +100,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Quit"",
-                    ""type"": ""Button"",
-                    ""id"": ""e31b7dd3-2983-45eb-b014-793fec472be2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""DisableUI"",
                     ""type"": ""Button"",
                     ""id"": ""b306cabd-c2b3-431d-b87f-47cf5b2603c9"",
@@ -391,17 +382,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Delete"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4c9dfb45-42f1-47c8-9f77-bff668377ae4"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -981,6 +961,74 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Common"",
+            ""id"": ""a9ac372a-21f4-4f37-af29-76c2c51d0ebd"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleArsenal"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc1c9015-04b5-4254-8ff1-d4b5f17ef68c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1a98d2b-7e8a-488e-8829-3ebc9c3405d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""4f7655a3-5276-4dee-824e-eb2538c6baf7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ba73b5bf-b4db-40ae-bf8a-cdbe3c38af99"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleArsenal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c9b4d3d-e4ee-4fdd-b1dd-b647563a343a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9068d6be-ee56-43ad-a613-a4122fcdac91"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1056,7 +1104,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
         m_Player_MiddleButton = m_Player.FindAction("MiddleButton", throwIfNotFound: true);
         m_Player_Delete = m_Player.FindAction("Delete", throwIfNotFound: true);
-        m_Player_Quit = m_Player.FindAction("Quit", throwIfNotFound: true);
         m_Player_DisableUI = m_Player.FindAction("DisableUI", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1074,6 +1121,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_DRef = m_Debug.FindAction("DRef", throwIfNotFound: true);
+        // Common
+        m_Common = asset.FindActionMap("Common", throwIfNotFound: true);
+        m_Common_ToggleArsenal = m_Common.FindAction("ToggleArsenal", throwIfNotFound: true);
+        m_Common_ToggleInventory = m_Common.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_Common_Quit = m_Common.FindAction("Quit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1141,7 +1193,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Scroll;
     private readonly InputAction m_Player_MiddleButton;
     private readonly InputAction m_Player_Delete;
-    private readonly InputAction m_Player_Quit;
     private readonly InputAction m_Player_DisableUI;
     public struct PlayerActions
     {
@@ -1155,7 +1206,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
         public InputAction @MiddleButton => m_Wrapper.m_Player_MiddleButton;
         public InputAction @Delete => m_Wrapper.m_Player_Delete;
-        public InputAction @Quit => m_Wrapper.m_Player_Quit;
         public InputAction @DisableUI => m_Wrapper.m_Player_DisableUI;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1190,9 +1240,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Delete.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
                 @Delete.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
                 @Delete.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDelete;
-                @Quit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
-                @Quit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
-                @Quit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQuit;
                 @DisableUI.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
                 @DisableUI.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
                 @DisableUI.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDisableUI;
@@ -1224,9 +1271,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Delete.started += instance.OnDelete;
                 @Delete.performed += instance.OnDelete;
                 @Delete.canceled += instance.OnDelete;
-                @Quit.started += instance.OnQuit;
-                @Quit.performed += instance.OnQuit;
-                @Quit.canceled += instance.OnQuit;
                 @DisableUI.started += instance.OnDisableUI;
                 @DisableUI.performed += instance.OnDisableUI;
                 @DisableUI.canceled += instance.OnDisableUI;
@@ -1380,6 +1424,55 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public DebugActions @Debug => new DebugActions(this);
+
+    // Common
+    private readonly InputActionMap m_Common;
+    private ICommonActions m_CommonActionsCallbackInterface;
+    private readonly InputAction m_Common_ToggleArsenal;
+    private readonly InputAction m_Common_ToggleInventory;
+    private readonly InputAction m_Common_Quit;
+    public struct CommonActions
+    {
+        private @PlayerInput m_Wrapper;
+        public CommonActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleArsenal => m_Wrapper.m_Common_ToggleArsenal;
+        public InputAction @ToggleInventory => m_Wrapper.m_Common_ToggleInventory;
+        public InputAction @Quit => m_Wrapper.m_Common_Quit;
+        public InputActionMap Get() { return m_Wrapper.m_Common; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CommonActions set) { return set.Get(); }
+        public void SetCallbacks(ICommonActions instance)
+        {
+            if (m_Wrapper.m_CommonActionsCallbackInterface != null)
+            {
+                @ToggleArsenal.started -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleArsenal;
+                @ToggleArsenal.performed -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleArsenal;
+                @ToggleArsenal.canceled -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleArsenal;
+                @ToggleInventory.started -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.performed -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.canceled -= m_Wrapper.m_CommonActionsCallbackInterface.OnToggleInventory;
+                @Quit.started -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
+                @Quit.performed -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
+                @Quit.canceled -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
+            }
+            m_Wrapper.m_CommonActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleArsenal.started += instance.OnToggleArsenal;
+                @ToggleArsenal.performed += instance.OnToggleArsenal;
+                @ToggleArsenal.canceled += instance.OnToggleArsenal;
+                @ToggleInventory.started += instance.OnToggleInventory;
+                @ToggleInventory.performed += instance.OnToggleInventory;
+                @ToggleInventory.canceled += instance.OnToggleInventory;
+                @Quit.started += instance.OnQuit;
+                @Quit.performed += instance.OnQuit;
+                @Quit.canceled += instance.OnQuit;
+            }
+        }
+    }
+    public CommonActions @Common => new CommonActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1435,7 +1528,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnMiddleButton(InputAction.CallbackContext context);
         void OnDelete(InputAction.CallbackContext context);
-        void OnQuit(InputAction.CallbackContext context);
         void OnDisableUI(InputAction.CallbackContext context);
     }
     public interface IUIActions
@@ -1455,5 +1547,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IDebugActions
     {
         void OnDRef(InputAction.CallbackContext context);
+    }
+    public interface ICommonActions
+    {
+        void OnToggleArsenal(InputAction.CallbackContext context);
+        void OnToggleInventory(InputAction.CallbackContext context);
+        void OnQuit(InputAction.CallbackContext context);
     }
 }

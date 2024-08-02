@@ -1,6 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum Asker {
+    ARSENAL,
+    INVENTORY,
+    PAUSE_MENU
+}
+
 public class Player : MonoBehaviour
 {
     public static Player self;
@@ -14,16 +20,21 @@ public class Player : MonoBehaviour
     [SerializeField] private CameraShake camShake;
     [SerializeField] private MusicPlayer musicPlayer;
     private Transform camRoot;
+
     private InputAction debugRefresh;
     private InputAction middleButton;
     private InputAction leftButton;
     private InputAction deleteButton;
     private InputAction uiDeleteButton;
     private InputAction disableUIButton;
+    private InputAction tabButton;
+    private InputAction inventoryButton;
+    private InputAction quitButton;
 
     private InputActionMap player;
     private InputActionMap ui;
     private InputActionMap debug;
+    private InputActionMap common;
 
     private bool dead = false;
 
@@ -76,6 +87,18 @@ public class Player : MonoBehaviour
 
     public bool OnDisableUI {
         get { return disableUIButton.WasPerformedThisFrame(); }
+    }
+
+    public bool OnToggleArsenal {
+        get { return tabButton.WasPerformedThisFrame(); }
+    }
+
+    public bool OnToggleInventory {
+        get { return inventoryButton.WasPerformedThisFrame(); }
+    }
+
+    public bool OnQuit {
+        get { return quitButton.WasPerformedThisFrame(); }
     }
 
     public bool Dead {
@@ -145,16 +168,25 @@ public class Player : MonoBehaviour
     public void DStart(Manager manager) {
         self = this;
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
+
         player = input.actions.FindActionMap("Player", true);
         middleButton = player.FindAction("MiddleButton", true);
         leftButton = player.FindAction("Fire");
         deleteButton = player.FindAction("Delete");
         disableUIButton = player.FindAction("DisableUI");
+
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
+
         ui = input.actions.FindActionMap("UI", true);
         uiDeleteButton = ui.FindAction("Delete");
         debugRefresh = input.actions.FindAction("DRef");
+
+        common = input.actions.FindActionMap("Common", true);
+        tabButton = common.FindAction("ToggleArsenal");
+        inventoryButton = common.FindAction("ToggleInventory");
+        quitButton = common.FindAction("Quit");
+        common.Enable();
 
         PlayingMode();
 

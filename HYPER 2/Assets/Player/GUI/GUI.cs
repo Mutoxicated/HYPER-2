@@ -41,6 +41,40 @@ public class GUI : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public bool ArsenalActive() {
+        return arsenal.gameObject.activeInHierarchy;
+    }
+
+    public void OpenArsenal() {
+        if (inventory.gameObject.activeInHierarchy) {
+            CloseInventory();
+        }
+        arsenal.Enable();
+        UIMode(false);
+    }
+
+    public void CloseArsenal() {
+        arsenal.Disable();
+        PlayingMode();
+    }
+
+    public bool InventoryActive() {
+        return inventory.gameObject.activeInHierarchy;
+    }
+
+    public void OpenInventory() {
+        if (arsenal.gameObject.activeInHierarchy) {
+            CloseArsenal();
+        }
+        inventory.Enable();
+        UIMode(false);
+    }
+
+    public void CloseInventory() {
+        inventory.Disable();
+        PlayingMode();
+    }
+
     public void UIMode(bool freezeTime) {
         player.UIMode(freezeTime);
         selector.gameObject.SetActive(false);
@@ -59,6 +93,29 @@ public class GUI : MonoBehaviour
     private void Update() {
         if (player.OnDisableUI) {
             disabableUI.SetActive(!disabableUI.activeInHierarchy);
+        }
+        if (player.OnToggleArsenal) {
+            if (!arsenal.gameObject.activeInHierarchy)
+                OpenArsenal();
+            else CloseArsenal();
+        }
+        if (player.OnToggleInventory) {
+            if (!inventory.gameObject.activeInHierarchy)
+                OpenInventory();
+            else CloseInventory();
+        }
+        if (player.OnQuit) {
+            if (InventoryActive()) {
+                CloseInventory();
+            }else if (ArsenalActive()) {
+                CloseArsenal();
+            }else {
+                menuUI.gameObject.SetActive(!menuUI.gameObject.activeInHierarchy);
+                playingUI.gameObject.SetActive(!playingUI.gameObject.activeInHierarchy);
+                if (menuUI.gameObject.activeInHierarchy)
+                    UIMode(true);
+                else PlayingMode();
+            }
         }
     }
 }

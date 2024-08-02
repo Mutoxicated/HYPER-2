@@ -48,11 +48,12 @@ public class Arsenal : MonoBehaviour
         sorter.PrepareValues();
     }
 
-    private void OnEnable() {
+    public void Enable() {
         sorter.SortItems();
         foreach (var item in aitems) {
             item.Enable();
         }
+        gameObject.SetActive(true);
     }
 
     public void OnResearch(ArsenalItem arsenalItem) {
@@ -93,5 +94,6 @@ public class Arsenal : MonoBehaviour
         foreach(var item in aitems) {
             item.gameObject.SetActive(false);
         }
+        gameObject.SetActive(false);
     }
 }
