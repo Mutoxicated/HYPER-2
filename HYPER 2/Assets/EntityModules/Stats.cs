@@ -242,8 +242,8 @@ public class Stats : MonoBehaviour, IStats
     public void IncXP(int xp) {
         this.xp += xp;
         while (this.xp >= MaxRequiredXP()) {
-            LvlUp();
             this.xp -= MaxRequiredXP();
+            LvlUp();
         }
     }
 

@@ -12,6 +12,11 @@ public class World : MonoBehaviour
     [SerializeField] private WorldGenerator worldGenerator;
     
     private List<Enemy> enemies = new List<Enemy>();
+    public List<Enemy> Enemies {
+        get {
+            return enemies;
+        }
+    }
     private List<MiniTower> mts = new List<MiniTower>();
     public delegate void ReportDeath<T>(T enemy);
     private ReportDeath<Enemy> reportEnemyDeath;

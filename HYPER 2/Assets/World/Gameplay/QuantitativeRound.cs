@@ -11,7 +11,7 @@ public class QuantitativeRound : MonoBehaviour, IRound
 {
     [SerializeField] private Gameplay gameplay;
 
-    private Vector2 spawnRate = new Vector2(0.5f, 2f);
+    private Vector2 spawnRate = new Vector2(0.5f, 1.5f);
     private float SpawnRate {
         get { return Seed.NextFloat(spawnRate.x, spawnRate.y); }
     }
@@ -24,8 +24,6 @@ public class QuantitativeRound : MonoBehaviour, IRound
     //private float weirdSpawnRate;
     //private int weirdSpawnFrequency;
     //private bool usedWeirdSpawn = false;
-
-    private float time = 0f;
 
     private void UpdateOnSpawn() {
         totalSpawns++;
@@ -43,27 +41,28 @@ public class QuantitativeRound : MonoBehaviour, IRound
         //weirdSpawnFrequency = Seed.IntRange((int)weirdSpawnFrequencyRange.x, (int)weirdSpawnFrequencyRange.y);
         spawnIntervals.Clear();
         foreach (var path in gameplay.World.WG.Paths) {
-            spawnIntervals.Concat(path.StartSpawning(this));
+            spawnIntervals.AddRange(path.StartSpawning(this));
         }
-         foreach (var spawnInterval in spawnIntervals) {
+        foreach (var spawnInterval in spawnIntervals) {
             spawnInterval.ChangeInterval(SpawnRate);
         }
         enabled = true;
     }
 
     public void Update() {
-        time += Time.deltaTime;
         //Debug.Log("Enemies Amount: "+gameplay.enemiesAmount);
 
         if (totalSpawns >= gameplay.EnemiesAmount) {
-            Debug.Log("STOP");
-            enabled = false;
-            foreach (var path in gameplay.World.WG.Paths) {
-                path.StopSpawning();
+            if (spawnIntervals[0].enabled) {
+                foreach (var path in gameplay.World.WG.Paths) {
+                    path.StopSpawning();
+                }
             }
-            totalSpawns = 0;
-            time = 0f;
-            gameplay.EndWave();
+            if (gameplay.World.Enemies.Count == 0) {
+                enabled = false;
+                totalSpawns = 0;
+                gameplay.EndWave();
+            }
         }
     }
 }

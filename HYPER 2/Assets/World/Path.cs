@@ -6,9 +6,15 @@ using UnityEngine.Assertions;
 using static Helpers.General;
 
 [Serializable]
+public class PathAlt {
+    public List<Neighbor> self = new List<Neighbor>();
+
+    public PathAlt(List<Neighbor> nbs) { self = nbs; }
+}
+
+[Serializable]
 public class Branch {
     public Direction direction;
-    public int length = 0;
     public int startIndex;
     public Tile start;
     public int endIndex;
@@ -16,7 +22,6 @@ public class Branch {
     [SerializeReference] public List<Branch> branches = new List<Branch>();
 
     public Branch(Tile start, Direction direction, int length, Tile end) {
-        this.length = length;
         this.direction = direction;
         this.start = start;
         startIndex = start.Index;
@@ -31,8 +36,6 @@ public class Branch {
         parent.SetBranch(this);
         start = parent.end;
         startIndex = start.Index;
-
-        this.length = length;
     }
 
     public Option<Branch> Next() {
@@ -89,7 +92,7 @@ public class Path : MonoBehaviour
 
     public void DestroyPath() {
         foreach (var nb in neighbors1) {
-            nb.Tile.Disable();
+            nb[wg].Disable();
         }
         Destroy(gameObject);
     }
@@ -148,29 +151,32 @@ public class Path : MonoBehaviour
 
         extend();
 
-        Save.rData.AddRoot1(root1);
-        index = Save.rData.Roots.Count-1;
+        Save.rData.AddPath(neighbors1);
+        index = Save.rData.Paths.Count-1;
     }
 
-    public void CStart(Manager manager, Branch root) {
+    public void CStart(Manager manager, List<Neighbor> nbs) {
         world = manager.World;
         wg = world.WG;
-        root1 = root;
-        GetMainDirFromLocation(wg[root.startIndex].Location);
+        GetMainDirFromLocation(nbs[0][wg].Location);
         perpendicular = (Direction)Num.Wrap((int)mainDirection+1, 0, 3);
         perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
-        CalculateCornerToIndexDist(wg[root.startIndex]);
-        RecreatePath(ref neighbors1, root);
+        CalculateCornerToIndexDist(nbs[0][wg]);
+        foreach (var nb in nbs) {
+            nb[wg].Enable();
+        }
+        neighbors1 = nbs;
+        root1 = CreateBranches(neighbors1);
     }
 
     public void Widen() {
-        var sideDirection =  Mathf.Abs(neighbors1[0].Location.CornersRange.a) < Mathf.Abs(neighbors1[0].Location.CornersRange.b) ? perpendicular : perpendicular2; 
+        var sideDirection =  Mathf.Abs(neighbors1[0][wg].Location.CornersRange.a) < Mathf.Abs(neighbors1[0][wg].Location.CornersRange.b) ? perpendicular : perpendicular2; 
         // if (neighbors1[1].Direction == Direction.UP | neighbors1[1].Direction == Direction.DOWN) {
         //     sideDirection = sideDirection == perpendicular2 ? perpendicular : perpendicular2;
         // }
 
         Option<Neighbor> start = Option<Neighbor>.None();
-        var nbs = neighbors1[0].Tile.GetNeighbors();
+        var nbs = neighbors1[0][wg].GetNeighbors();
         foreach (var nb in nbs) {
             if (nb.Direction == sideDirection) {
                 start = new Option<Neighbor>(nb);
@@ -180,32 +186,29 @@ public class Path : MonoBehaviour
         Assert.IsFalse(start.IsNone());
         start.GetAndThen(s => {
             s.Direction = mainDirection;
-            s.Tile.Enable();
+            s[wg].Enable();
             neighbors2.Add(s);
         });
 
         //var color = new Color(1f,0f,1f);
 
-        var currentTile = neighbors2[neighbors2.Count-1].Tile;
+        var currentTile = neighbors2[neighbors2.Count-1][wg];
         var found = false;
         while (validForExtending(currentTile)) {
-            if (currentTile.Distance < 9f) {
-                Debug.Log("breakpoint");
-            }
             nbs = currentTile.GetNeighbors();
             foreach (var nb in nbs) {
                 if (nb.Direction == mainDirection) {
-                    nb.Tile.Enable();
-                    currentTile = nb.Tile;
+                    nb[wg].Enable();
+                    currentTile = nb[wg];
                     neighbors2.Add(nb);
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                nbs[0].Tile.Enable();
+                nbs[0][wg].Enable();
                 neighbors2.Add(nbs[0]);
-                currentTile = nbs[0].Tile;
+                currentTile = nbs[0][wg];
             }
             found = false;
         }
@@ -227,11 +230,11 @@ public class Path : MonoBehaviour
             counter++;
             if (neighbors[i+1].Direction != currentDirection && neighbors[i].Direction == currentDirection) {
                 if (root == null) {
-                    root = new Branch(prevStart.Tile, currentDirection, counter, neighbors[i].Tile);
+                    root = new Branch(prevStart[wg], currentDirection, counter, neighbors[i][wg]);
                     current = new Option<Branch>(root);
                 }else {
                     current.GetAndThen(c => {
-                        current = new Option<Branch>( new Branch(currentDirection, neighbors[i].Tile, counter, c) );
+                        current = new Option<Branch>( new Branch(currentDirection, neighbors[i][wg], counter, c) );
                     });
                 }
                 prevStart = neighbors[i];
@@ -244,11 +247,11 @@ public class Path : MonoBehaviour
 
         var last = neighbors[neighbors.Count-1];
         if (root == null) {
-            root = new Branch(prevStart.Tile, currentDirection, counter+1, last.Tile);
+            root = new Branch(prevStart[wg], currentDirection, counter+1, last[wg]);
             current = new Option<Branch>(root);
         }else {
             current.GetAndThen(c => {
-                current = new Option<Branch>( new Branch(last.Direction, last.Tile, counter+1, c) );
+                current = new Option<Branch>( new Branch(last.Direction, last[wg], counter+1, c) );
             });
         }
 
@@ -276,22 +279,22 @@ public class Path : MonoBehaviour
     }
 
     public void SpawnBoss() {
-        round.Spawn(root1, mainDirection, neighbors1[0].Tile.transform.position+Vector3.up*1.5f, true);
+        round.Spawn(root1, mainDirection, neighbors1[0][wg].transform.position+Vector3.up*1.5f, true);
     }
 
     public void IntervalSpawnEnemy() {
-        round.Spawn(root1, mainDirection, neighbors1[0].Tile.transform.position+Vector3.up*1.5f);
+        round.Spawn(root1, mainDirection, neighbors1[0][wg].transform.position+Vector3.up*1.5f);
     }
     public void IntervalSpawnEnemy2() {
-        round.Spawn(root2, mainDirection, neighbors2[0].Tile.transform.position+Vector3.up*1.5f);
+        round.Spawn(root2, mainDirection, neighbors2[0][wg].transform.position+Vector3.up*1.5f);
     }
 
     private void extend() {
         //Color color = Color.red;
         int noFinds = 0;
-        while (validForExtending(neighbors1[neighbors1.Count-1].Tile)) {
+        while (validForExtending(neighbors1[neighbors1.Count-1][wg])) {
             if (buffer.Count == 0)
-                buffer = neighbors1[neighbors1.Count-1].Tile.GetNeighbors();
+                buffer = neighbors1[neighbors1.Count-1][wg].GetNeighbors();
             if (amount > 0) {
                 var leave = false;
                 foreach (var nb in buffer) {
@@ -310,7 +313,7 @@ public class Path : MonoBehaviour
                 if (leave) {
                     continue;
                 }else {
-                    Debug.Log("Didn't find at: "+neighbors1[neighbors1.Count-1].Tile.Index+" with direction "+currentDirection);
+                    Debug.Log("Didn't find at: "+neighbors1[neighbors1.Count-1][wg].Index+" with direction "+currentDirection);
                     if (noFinds > 2) {
                         break;
                     }
@@ -326,8 +329,8 @@ public class Path : MonoBehaviour
             //     break;
             // }
             var closestToTower = buffer[0];
-            if (wg.IndexBelongsTo(neighbors1[neighbors1.Count-1].Tile.Index, 1) | 
-                ((int)neighbors1[neighbors1.Count-1].Location.Type % 2 == 0 && neighbors1[neighbors1.Count-1].Location.Type != LocationType.FIRST)) {
+            if (wg.IndexBelongsTo(neighbors1[neighbors1.Count-1][wg].Index, 1) | 
+                ((int)neighbors1[neighbors1.Count-1][wg].Location.Type % 2 == 0 && neighbors1[neighbors1.Count-1][wg].Location.Type != LocationType.FIRST)) {
                 GetDeviatedNeighbor().GetAndThen(n => { closestToTower = n; });
             }
 
@@ -340,7 +343,7 @@ public class Path : MonoBehaviour
             currentDirection = closestToTower.Direction;
 
             if (currentDirection != mainDirection) {
-                var range = closestToTower.Location.CornersRange;
+                var range = closestToTower[wg].Location.CornersRange;
                 //Debug.Log("Range: "+range.a+", "+range.b);
                 range.a = Mathf.Abs(range.a);
                 range.b = Mathf.Abs(range.b);
@@ -356,36 +359,8 @@ public class Path : MonoBehaviour
         root1 = CreateBranches(neighbors1);
     }
 
-    private void RecreatePath(ref List<Neighbor> neighbors, Branch root) {
-        Option<Branch> curr = new Option<Branch>(root);
-        {
-            var currBranch = curr.Get();
-            var start = wg[currBranch.startIndex-1];
-            currBranch.start = start;
-            currBranch.end = wg[currBranch.endIndex-1];
-            start.Enable();
-            neighbors.Add(new Neighbor(mainDirection, start));
-        }
-        while(curr.IsSome()) {
-            var currBranch = curr.Get();
-            currBranch.start = wg[currBranch.startIndex-1];
-            currBranch.end = wg[currBranch.endIndex-1];
-
-            var nb = neighbors[neighbors.Count-1];
-            for (int i = 0; i < currBranch.length; i++) {
-                var hypotheticalNB = nb.Tile.GetNeighbor(currBranch.direction);
-                Assert.IsFalse(hypotheticalNB.IsNone(), "recreating path error: no neighbor found trying to go "+currBranch.direction+" at "+nb.Tile.Index);
-                nb = hypotheticalNB.Get();
-                nb.Tile.Enable();
-                neighbors.Add(nb);
-            }
-
-            curr = currBranch.Next();
-        } 
-    }
-
     public Option<Neighbor> GetDeviatedNeighbor() {
-        Debug.Log("Deviation at "+neighbors1[neighbors1.Count-1].Tile.Index+" with "+neighbors1[neighbors1.Count-1].Location.Type);
+        Debug.Log("Deviation at "+neighbors1[neighbors1.Count-1][wg].Index+" with "+neighbors1[neighbors1.Count-1][wg].Location.Type);
         Option<Neighbor> a = Option<Neighbor>.None(), b = Option<Neighbor>.None();
             
         foreach (var nb in buffer) {
@@ -401,7 +376,7 @@ public class Path : MonoBehaviour
         }else if (b.IsNone() && a.IsSome()) {
             return a;
         }else if (b.IsSome() && a.IsSome()) {
-            return a.Get().Tile.Distance > b.Get().Tile.Distance ? b : a;
+            return a.Get()[wg].Distance > b.Get()[wg].Distance ? b : a;
         }
         return Option<Neighbor>.None();
     }
@@ -423,59 +398,51 @@ public class Path : MonoBehaviour
         amount = Seed.IntRange(min, max);
     }
 
-    private void debugExtend() {
-        buffer = neighbors1[neighbors1.Count-1].Tile.GetNeighbors();
-        foreach (var nb in buffer) {
-            nb.Tile.Enable();
-            neighbors1.Add(nb);
-        }
-    }
-
     private Message EnableNeighbor(Neighbor nb) {
-        //Debug.Log("Tile index: "+nb.Tile.Index);
-        //Debug.Log("Though to be "+nb.Direction+" to: "+neighbors1[neighbors1.Count-1].Tile.Index);
+        //Debug.Log("Tile index: "+nb[wg].Index);
+        //Debug.Log("Though to be "+nb.Direction+" to: "+neighbors1[neighbors1.Count-1][wg].Index);
  
-        if (!validForExtending(nb.Tile)) {
+        if (!validForExtending(nb[wg])) {
             goto All_good;
         }
 
-        var localNeighbors = nb.Tile.GetNeighbors();
+        var localNeighbors = nb[wg].GetNeighbors();
         if (localNeighbors.Count >= 3) {
             goto All_good;
         }
-        //Debug.Log("At "+nb.Tile.Index+", this was no good");
+        //Debug.Log("At "+nb[wg].Index+", this was no good");
         //Debug.Log("Neighbors it had: ");
         // foreach (var nbr in localNeighbors) {
-        //     //Debug.Log("  "+nbr.Tile.Index+" | "+nbr.Location.Type+" / "+nbr.Direction);
+        //     //Debug.Log("  "+nbr[wg].Index+" | "+nbr[wg].Type+" / "+nbr.Direction);
         // }
         buffer.Remove(nb);
         return Message.IMPROPER_PLACEMENT;
     All_good:
-        nb.Tile.Enable();
+        nb[wg].Enable();
         neighbors1.Add(nb);
         buffer.Clear();
         return Message.ALL_GOOD;
     }
     // private Message EnableNeighbor(Neighbor nb, Color color) {
-    //     if (!validForExtending(nb.Tile)) {
+    //     if (!validForExtending(nb[wg])) {
     //         goto All_good;
     //     }
 
-    //     var localNeighbors = nb.Tile.GetNeighbors();
+    //     var localNeighbors = nb[wg].GetNeighbors();
     //     if (localNeighbors.Count >= 3) {
     //         goto All_good;
     //     }
     //     buffer.Remove(nb);
     //     return Message.IMPROPER_PLACEMENT;
     // All_good:
-    //     nb.Tile.Enable(color);
+    //     nb[wg].Enable(color);
     //     neighbors1.Add(nb);
     //     buffer.Clear();
     //     return Message.ALL_GOOD;
     // }
 
     private void DisableNeighbor(Neighbor nb) {
-        nb.Tile.Disable();
+        nb[wg].Disable();
         neighbors1.Remove(nb);
     }
 
@@ -492,7 +459,7 @@ public class Path : MonoBehaviour
 
     public void RepositionPath() {
         RepositionRoot(neighbors1, root1);
-        Save.rData.Roots[index] = root1;
+        Save.rData.Paths[index].self = neighbors1;
         RepositionRoot(neighbors2, root2);
     }
 
@@ -500,16 +467,16 @@ public class Path : MonoBehaviour
         if (neighbors.Count == 0) { return; }
         if (root == null) { return; }
 
-        var nbs = neighbors[0].Tile.GetNeighbors();
+        var nbs = neighbors[0][wg].GetNeighbors();
         var opp = Dir.Opposite(mainDirection);
         Option<Neighbor> nbFound = Option<Neighbor>.None();
 
         foreach (var nb in nbs) {
             if (nb.Direction == opp) {
-                nb.Tile.Enable();
+                nb[wg].Enable();
                 neighbors.Insert(0, nb);
                 nbFound = new Option<Neighbor>(nb);
-                root.start = nb.Tile;
+                root.start = nb[wg];
                 break;
             }
         }

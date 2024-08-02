@@ -10,15 +10,20 @@ public class Researcher : MonoBehaviour
     }
 
     public bool ResearchItem(Resources.Arsenal arsenal) {
-        if (Save.rData.CurrentlyResearchingCount >= 2) {
-            return false;
+        int count = 0;
+        foreach (var item in Save.rData.CurrentlyResearchingKeys) {
+            if (Save.rData[item, 0]) {
+                count++;
+                if (count >= 2)
+                    return false;
+            }
         }
         Save.rData.SetCurrentlyResearched(arsenal, true);
         return true;
     }
 
     private void Update() {
-        if (Save.rData == null) { enabled = false; }
+        if (Save.rData == null) { enabled = false; return; }
         foreach (var curr in Save.rData.CurrentlyResearchingKeys) {
             if (!Save.rData[curr, 0]) { continue; }
             Save.rData[curr] += Time.deltaTime;

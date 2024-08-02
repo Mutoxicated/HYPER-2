@@ -43,10 +43,10 @@ public class Gameplay : MonoBehaviour
 
     // Unlocks
     public const int unlock2ndPath = 7;
-    public const int unlock3rdPath = 20;
-    public const int unlock4thPath = 25;
-    public const int unlock1stWidePath = 30;
-    public const int unlock2ndWidePath = 40;
+    public const int unlock3rdPath = 8;
+    public const int unlock4thPath = 9;
+    public const int unlock1stWidePath = 10;
+    public const int unlock2ndWidePath = 11;
     public const int unlock3rdWidePath = 50;
     public const int unlock4thWidePath = 60;
 

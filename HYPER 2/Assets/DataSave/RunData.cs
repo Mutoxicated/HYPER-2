@@ -10,7 +10,7 @@ public class RunData
     //MACRO_START
     [SerializeField] private int __seed = -1;
     
-    public int Seed {
+    public int _Seed {
     	get { return __seed; }
     }
     
@@ -142,19 +142,27 @@ public class RunData
         get { return mts; }
     }
 
-    [SerializeField] private List<Branch> roots = new List<Branch>();
+    [SerializeField] private int firstCorner = 0;
+    public int FirstCorner {
+        get { return firstCorner; }
+    }
+    public void RandomizeCorner() {
+        firstCorner = Seed.IntRange(1, 5);
+    }
+
+    [SerializeField] private List<PathAlt> paths = new  List<PathAlt>();
     [SerializeField] private List<int> pathsToWiden = new List<int>();
 
-    public void AddRoot1(Branch root1) {
-        roots.Add(root1);
+    public void AddPath(List<Neighbor> nbs) {
+        paths.Add(new PathAlt(nbs));
     }
 
     public void AddPathToWiden(int index) {
         pathsToWiden.Add(index);
     }
 
-    public List<Branch> Roots {
-        get { return roots; }
+    public List<PathAlt> Paths {
+        get { return paths; }
     }
 
     public List<int> PathsToWiden {

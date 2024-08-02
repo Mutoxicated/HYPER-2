@@ -54,7 +54,6 @@ public class ArsenalInfo : MonoBehaviour
         currentItem = aitem;
         current = aitem.Template;
         if (aitem.Locked) {
-
             researchBar.transform.parent.gameObject.SetActive(false);
             researchLvl.gameObject.SetActive(false);
             research.gameObject.SetActive(false);

@@ -13,25 +13,28 @@ public enum Direction {
     UNKNOWN
 }
 
+[Serializable]
 public class Neighbor : IComparable<Neighbor> {
     public Direction Direction;
-    public Tile Tile;
+    public int tileIndex;
+    public float dist;
 
-    public Location Location {
-        get { return Tile.Location; }
+    public Tile this[WorldGenerator wg] {
+        get { return wg.Tiles[tileIndex-1]; }
     }
 
     public Neighbor(Direction direction, Tile tile) {
         Direction = direction;
-        Tile = tile;
+        tileIndex = tile.Index;
+        dist = tile.Distance;
     }
 
     int IComparable<Neighbor>.CompareTo(Neighbor nb) {
-        if (Tile.Distance == nb.Tile.Distance) {
+        if (dist == nb.dist) {
             return 0;
         }
 
-        return Tile.Distance > nb.Tile.Distance ? 1 : -1;
+        return dist > nb.dist ? 1 : -1;
     }
 }
 

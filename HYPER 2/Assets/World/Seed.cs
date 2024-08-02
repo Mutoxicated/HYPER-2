@@ -6,10 +6,10 @@ public class Seed : MonoBehaviour
 
     public void DStart()
     {
-        if (Save.rData.Seed == -1){
+        if (Save.rData._Seed == -1){
             Save.rData.SetSeed(Random.Range(0,999999999));
         }
-        random = new System.Random(Save.rData.Seed);
+        random = new System.Random(Save.rData._Seed);
     }
 
     public static int IntRange(int min, int max) {

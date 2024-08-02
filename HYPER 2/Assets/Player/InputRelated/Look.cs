@@ -37,7 +37,7 @@ public class Look : MonoBehaviour
         rotationX -= moveVector.y * Time.fixedDeltaTime * (Save.pData.SensY * 100f);
         rotationY += moveVector.x * Time.fixedDeltaTime * (Save.pData.SensX * 100f);
         //clamp it so that cam cant freely move
-        rotationX = Mathf.Clamp(rotationX, -90, 90);
+        rotationX = Mathf.Clamp(rotationX, -xRotationLimit, xRotationLimit);
         lookRotation = Quaternion.Euler(rotationX, rotationY, 0f);
         player.CamRoot.rotation = Quaternion.Lerp(player.CamRoot.rotation, lookRotation, Time.fixedDeltaTime*37f);
     }

@@ -480,10 +480,11 @@ public class WorldGenerator : MonoBehaviour
     }
 
     private void CreatePaths() {
-        if (Save.rData.Roots.Count != 0) {
-            for (int i = 0; i < Save.rData.Roots.Count; i++) {
+        if (Save.rData.Paths.Count != 0) {
+            lastRandomCorner = Save.rData.FirstCorner;
+            for (int i = 0; i < Save.rData.Paths.Count; i++) {
                 lastRandomCorner = Num.Wrap(lastRandomCorner+1, 1, 4);
-                var path = InstantiatePath(Save.rData.Roots[i].startIndex, (p, _) => { p.CStart(player.Manager, Save.rData.Roots[i]); }); 
+                var path = InstantiatePath(i, (p, _) => { p.CStart(player.Manager, Save.rData.Paths[i].self); }); 
                 path.RepositionPath();
             }
             for (int i = 0; i < Save.rData.PathsToWiden.Count; i++) {
@@ -492,7 +493,8 @@ public class WorldGenerator : MonoBehaviour
             }
             return;
         }
-        int randomCorner = Seed.IntRange(1,5);
+        Save.rData.RandomizeCorner();
+        int randomCorner = Save.rData.FirstCorner;
         int randomCorner2 = Num.Wrap(randomCorner+1, 1, 4);
         //int randomCorner3 = Num.Wrap(randomCorner2+1, 1, 4);
         //int randomCorner4 = Num.Wrap(randomCorner3+1, 1, 4);
@@ -549,18 +551,18 @@ public class WorldGenerator : MonoBehaviour
         List<Neighbor> newNbs = new List<Neighbor>();
         foreach (var nb in nbs) {
             if (nb.Direction == Direction.LEFT) {
-                nb.Tile.Goldify(instance);
-                newNbs = nb.Tile.GetNeighbors();
+                nb[this].Goldify(instance);
+                newNbs = nb[this].GetNeighbors();
                 directionToLookFor = Direction.UP;
             }else if (nb.Direction == Direction.UP) {
-                nb.Tile.Goldify(instance);
-                newNbs = nb.Tile.GetNeighbors();
+                nb[this].Goldify(instance);
+                newNbs = nb[this].GetNeighbors();
                 directionToLookFor = Direction.LEFT;
             }
         }
         foreach (var nb in newNbs) {
             if (nb.Direction == directionToLookFor) {
-                nb.Tile.Goldify(instance);
+                nb[this].Goldify(instance);
                 break;
             }
         }

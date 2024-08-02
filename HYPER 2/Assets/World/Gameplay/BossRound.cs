@@ -60,14 +60,17 @@ public class BossRound : MonoBehaviour, IRound
         //Debug.Log("Enemies Amount: "+gameplay.enemiesAmount);
 
         if (totalSpawns >= gameplay.EnemiesAmount & boss == null) {
-            Debug.Log("STOP");
-            enabled = false;
-            foreach (var path in gameplay.World.WG.Paths) {
-                path.StopSpawning();
+            if (spawnIntervals[0].enabled) {
+                foreach (var path in gameplay.World.WG.Paths) {
+                    path.StopSpawning();
+                }
             }
-            totalSpawns = 0;
-            time = 0f;
-            gameplay.EndWave();
+            if (gameplay.World.Enemies.Count == 0) {
+                enabled = false;
+                totalSpawns = 0;
+                time = 0f;
+                gameplay.EndWave();
+            }
         }
     }
 }

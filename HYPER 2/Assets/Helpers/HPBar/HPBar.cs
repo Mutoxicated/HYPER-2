@@ -68,7 +68,11 @@ public class HPBar : MonoBehaviour
                 open = false;
             }
         }
-        transform.position = trans.position;
+        if (trans == null) {
+            close = true;
+        }else {
+            transform.position = trans.position;
+        }
 
         RootRotation();
 
