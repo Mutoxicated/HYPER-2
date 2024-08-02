@@ -42,6 +42,8 @@ public class Tile : MonoBehaviour, IComparable<Tile>
 {
     [SerializeField] private MaterialChanger mc;
     [SerializeField] private TMP_Text textIndex;
+    
+    [SerializeField] private string dir;
 
     private bool lit = false;
     private bool occupied = false;
@@ -152,19 +154,21 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_ONE);
     }
 
-    public void Enable() {
+    public void Enable(string dir) {
         if (lit) { return; }
         if (occupied) {
             Destroy(occupiedWith.Get());
         }
+        textIndex.text += String.Format("\n{0}", dir);
         transform.position = initPos+Vector3.up*heightOffset;
         lit = true;
         Go.SetLayerRecursive(gameObject, EditorLayer.INTERACTABLE_TWO);
         mc.SetColor(litColor);
         mc.ChangeColorOverride();
     }
-    public void Enable(Color color) {
+    public void Enable(Color color, string dir) {
         if (lit) { return; }
+        textIndex.text += String.Format("\n{0}", dir);
         if (occupied) {
             Destroy(occupiedWith.Get());
         }

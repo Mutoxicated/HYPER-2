@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mc: {fileID: 308900478833666701}
   textIndex: {fileID: 8492274493318259534}
+  dir: 
 --- !u!1 &5922413580745592073
 GameObject:
   m_ObjectHideFlags: 0

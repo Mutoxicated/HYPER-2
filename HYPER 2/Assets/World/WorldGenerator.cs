@@ -29,6 +29,17 @@ public struct Location {
         get { return (less, greater); }
     }
 
+    // public Option<int> LocationToCorner() {
+    //     if (type <= 0) {
+    //         return Option<int>.None();
+    //     }
+    //     int toInt = (int)type;
+    //     if (toInt % 2 == 0) {
+    //         return new Option<int>(toInt);
+    //     }
+    //     return Option<int>.None();
+    // }
+
     public Location(LocationType Type, int less, int greater) {
         type = Type;
         this.less = less;
@@ -263,9 +274,6 @@ public class WorldGenerator : MonoBehaviour
             corner1Delta = GetLayerCorner(layer, nth)-index;
         }
         corner2Delta = GetLayerCorner(layer, nth+1)-index;
-        if (corner1Delta == -1 & corner2Delta == -1) {
-            Debug.Log("breakpoint");
-        }
         return new Location((LocationType)(nth+1+nth), corner1Delta, corner2Delta);
     }
 
@@ -378,7 +386,7 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
-    private int GetLayerSurplus(int layer) {
+    public int GetLayerSurplus(int layer) {
         return 3 + ( layer - 1 ) * 2;
     }
 

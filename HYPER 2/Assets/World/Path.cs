@@ -140,7 +140,7 @@ public class Path : MonoBehaviour
         //this.manager = manager;
         world = manager.World;
         wg = world.WG;
-        start.Enable();
+        start.Enable("start");
         GetMainDirFromLocation(start.Location);
         neighbors1.Add(new Neighbor(mainDirection, start));
         
@@ -163,7 +163,7 @@ public class Path : MonoBehaviour
         perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
         CalculateCornerToIndexDist(nbs[0][wg]);
         foreach (var nb in nbs) {
-            nb[wg].Enable();
+            nb[wg].Enable("recr");
         }
         neighbors1 = nbs;
         root1 = CreateBranches(neighbors1);
@@ -186,7 +186,7 @@ public class Path : MonoBehaviour
         Assert.IsFalse(start.IsNone());
         start.GetAndThen(s => {
             s.Direction = mainDirection;
-            s[wg].Enable();
+            s[wg].Enable("start");
             neighbors2.Add(s);
         });
 
@@ -198,7 +198,7 @@ public class Path : MonoBehaviour
             nbs = currentTile.GetNeighbors();
             foreach (var nb in nbs) {
                 if (nb.Direction == mainDirection) {
-                    nb[wg].Enable();
+                    nb[wg].Enable(mainDirection.ToString());
                     currentTile = nb[wg];
                     neighbors2.Add(nb);
                     found = true;
@@ -206,7 +206,11 @@ public class Path : MonoBehaviour
                 }
             }
             if (!found) {
-                nbs[0][wg].Enable();
+                if (nbs.Count == 0) {
+                    Debug.LogError("widen path error: og path consumed the wrong side of the first layer");
+                    return;
+                }
+                nbs[0][wg].Enable(nbs[0].Direction.ToString());
                 neighbors2.Add(nbs[0]);
                 currentTile = nbs[0][wg];
             }
@@ -343,16 +347,7 @@ public class Path : MonoBehaviour
             currentDirection = closestToTower.Direction;
 
             if (currentDirection != mainDirection) {
-                var range = closestToTower[wg].Location.CornersRange;
-                //Debug.Log("Range: "+range.a+", "+range.b);
-                range.a = Mathf.Abs(range.a);
-                range.b = Mathf.Abs(range.b);
-                
-                if (range.a > range.b) {
-                    SetAmount(range.a);
-                }else {
-                    SetAmount(range.b);
-                }
+                SetAmount(wg.GetLayerSurplus(closestToTower[wg].Layer));
             }
         }
 
@@ -418,7 +413,7 @@ public class Path : MonoBehaviour
         buffer.Remove(nb);
         return Message.IMPROPER_PLACEMENT;
     All_good:
-        nb[wg].Enable();
+        nb[wg].Enable(nb.Direction.ToString());
         neighbors1.Add(nb);
         buffer.Clear();
         return Message.ALL_GOOD;
@@ -473,7 +468,7 @@ public class Path : MonoBehaviour
 
         foreach (var nb in nbs) {
             if (nb.Direction == opp) {
-                nb[wg].Enable();
+                nb[wg].Enable("start");
                 neighbors.Insert(0, nb);
                 nbFound = new Option<Neighbor>(nb);
                 root.start = nb[wg];

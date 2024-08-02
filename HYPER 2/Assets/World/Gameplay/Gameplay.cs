@@ -42,13 +42,13 @@ public class Gameplay : MonoBehaviour
     public const int MiniTowerLvlUpHPBonus = 10;
 
     // Unlocks
-    public const int unlock2ndPath = 7;
-    public const int unlock3rdPath = 8;
-    public const int unlock4thPath = 9;
-    public const int unlock1stWidePath = 10;
-    public const int unlock2ndWidePath = 11;
-    public const int unlock3rdWidePath = 50;
-    public const int unlock4thWidePath = 60;
+    public const int unlock2ndPath = 2;
+    public const int unlock3rdPath = 3;
+    public const int unlock4thPath = 4;
+    public const int unlock1stWidePath = 5;
+    public const int unlock2ndWidePath = 6;
+    public const int unlock3rdWidePath = 7;
+    public const int unlock4thWidePath = 8;
 
     //Frequencies
     private const int bossFrequency = 35;
