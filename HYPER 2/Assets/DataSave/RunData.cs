@@ -18,7 +18,7 @@ public class RunData
     	__seed = val;
     }
 
-    [SerializeField] private int __money = 10;
+    [SerializeField] private int __money = 50;
     
     public int Money {
     	get { return __money; }

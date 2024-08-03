@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 205951162157024800}
+  smr: {fileID: 0}
   type: 5
   changeColor: 1
   color: {r: 1, g: 0.3431319, b: 0, a: 1}
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c580c88710778947b9c44b4640631c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mc: {fileID: 3233345435434670300}
+  mcs: []
   hitColor: {r: 1, g: 0.9509536, b: 0.3066038, a: 1}
   rate: 0.4
 --- !u!64 &6612031136879162840
@@ -149,7 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: 4399c9aeaf2a7bf4999df27ccb45aff6, type: 2}
+  holder:
+    value: {fileID: 0}
+    none: 1
+  height: 4
   hitVisual:
     value: {fileID: 2723066781449292359}
     none: 0
@@ -218,3 +222,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 101176154675680530}
+  template: {fileID: 11400000, guid: 4399c9aeaf2a7bf4999df27ccb45aff6, type: 2}

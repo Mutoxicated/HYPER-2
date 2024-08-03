@@ -200,6 +200,10 @@ public class Tile : MonoBehaviour, IComparable<Tile>
         mc.ChangeColorOverride(Color.Lerp(mc.Color, Color.white, MusicVisualization.T));
     }
 
+    public void Write(string text) {
+        textIndex.text += "\n"+text;
+    }
+
     private void Awake() {
         initPos = transform.position;
     }

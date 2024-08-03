@@ -7,10 +7,11 @@ public class Tower : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private Stats stats;
+    [SerializeField] private StatsTemplate template;
     [SerializeField] private DisplayTowerStatus dts;
 
     private void Awake() {
-        stats.CStart(player.Manager);
+        stats.CStart(player.Manager, template);
         stats.ConfigureOnDie(true, _ => {
             Die(_);
         });

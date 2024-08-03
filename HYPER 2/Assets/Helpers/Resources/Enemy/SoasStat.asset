@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee42aeab456334438a325b470586d17, type: 3}
   m_Name: SoasStat
   m_EditorClassIdentifier: 
-  difficulty: 3
+  difficulty: 1
   verticality: 2
+  type: 0

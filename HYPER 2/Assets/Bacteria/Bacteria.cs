@@ -26,6 +26,10 @@ public class Bacteria : MonoBehaviour
         get { return immune; }
     }
 
+    public Stats Stats {
+        get { return ImmuneSystem.Stats; }
+    }
+
     public Element Type {
         get { return @type; }
     }
@@ -37,6 +41,8 @@ public class Bacteria : MonoBehaviour
             emission.rateOverTimeMultiplier -= rateStep;
             if (population <= 0) {
                 onDeath.Invoke(this);
+                pooledObject.OnDeath();
+                population = 1;
             }
         });
         onPopulationIncrease = new UnityAction(() => {

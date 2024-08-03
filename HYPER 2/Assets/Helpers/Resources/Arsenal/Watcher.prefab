@@ -191,6 +191,7 @@ MonoBehaviour:
   holder:
     value: {fileID: 3710317631712574376}
     none: 0
+  height: 4
   template: {fileID: 11400000, guid: 834c6938e41407e40acc2c032d5a1674, type: 2}
   hitVisual:
     value: {fileID: 0}
@@ -347,7 +348,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rangeTransform: {fileID: 1149427791817245761}
-  outline: {fileID: 3803248166762379991}
+  outlines:
+  - {fileID: 3803248166762379991}
   range: {fileID: 2191144546360817015}
 --- !u!1 &3710317631712574376
 GameObject:
@@ -443,8 +445,10 @@ MonoBehaviour:
   arsenal: 3
   DOT: 0.05
   highlight: {fileID: 4084419775877179658}
-  hpbarAnchor: {fileID: 377357697047101538}
-  extrusion: 0.5
+  options:
+    hpbarAnchor: {fileID: 377357697047101538}
+    scale: {x: 1, y: 1}
+    extrusion: 0.4
   deathSound: {fileID: 5808170196854249300}
 --- !u!1 &6748846222919381372
 GameObject:

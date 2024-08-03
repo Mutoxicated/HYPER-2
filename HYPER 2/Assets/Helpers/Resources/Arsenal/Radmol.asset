@@ -32,6 +32,7 @@ MonoBehaviour:
   element: 2
   elementImmunities: 
   maxXp: 100
+  maxXpIncrememt: 20
   xpKillWorth: 15
   worth: 7
   unlockAt: 6

@@ -1,6 +1,14 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class HPBarOptions {
+    public Transform hpbarAnchor;
+    public Vector2 scale = Vector2.one;
+    public float extrusion = 0f;
+}
+
 
 public class HPBarPool : MonoBehaviour
 {
@@ -12,6 +20,10 @@ public class HPBarPool : MonoBehaviour
 
     public void DStart(GameObject playerGo) {
         player = playerGo;
+    }
+
+    public void GetHPBar(HPBarOptions options, Stats stats) {
+        GetHPBar(options.hpbarAnchor, options.extrusion, stats, Vector2.one);
     }
 
     public void GetHPBar(Transform parent, float extrusion, Stats stats) {

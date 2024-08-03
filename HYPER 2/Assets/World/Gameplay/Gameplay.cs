@@ -25,6 +25,9 @@ public class Gameplay : MonoBehaviour
     public int IntAsymT {
         get { return Mathf.CeilToInt(Mathf.Sqrt(LinearT)); }
     }
+    public int EnemyLvl {
+        get { return Mathf.FloorToInt(1+0.5f*LinearT*0.25f); }
+    }
 
     // Settings
     private int enemiesAmount = 1;
@@ -48,7 +51,7 @@ public class Gameplay : MonoBehaviour
     public const int unlock1stWidePath = 5;
     public const int unlock2ndWidePath = 6;
     public const int unlock3rdWidePath = 7;
-    public const int unlock4thWidePath = 8;
+    public const int unlock4thWidePath = 10;
 
     //Frequencies
     private const int bossFrequency = 35;

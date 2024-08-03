@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8227528743241566823}
   - component: {fileID: 5627295264489269305}
   - component: {fileID: 8420828998646058581}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3307815153221209897}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HPBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2934826810251244307}
   - component: {fileID: 7262023424889094647}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HPBarHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 5088809937907618509}
   - component: {fileID: 4370574196065407817}
   - component: {fileID: 755437088201855487}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 2875506532065445470}
   - component: {fileID: 2576092161529114424}
   - component: {fileID: 949481233038015147}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}

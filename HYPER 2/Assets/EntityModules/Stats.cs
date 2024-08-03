@@ -1,16 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
-using AYellowpaper;
-using Unity.VisualScripting;
 using System.Linq;
 
 public enum Element {
     WATER,
     FIRE,
     RADIATION,
-    AIR
+    AIR,
+    EARTH,
+    ELECTRICITY
 }
 
 public interface IStats : IDamageable {
@@ -26,10 +25,11 @@ public class Stats : MonoBehaviour, IStats
     }
 
     [SerializeField] private Option<GameObject> holder = Option<GameObject>.None();
-    [SerializeField] private StatsTemplate template;
+    [SerializeField] private float height = 4f;
     [SerializeField] private Option<HitVisual> hitVisual = Option<HitVisual>.None();
     [SerializeField] private Option<Range> range;
 
+    private StatsTemplate template;
     private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> val = new Dictionary<Stat, float>();
     private readonly Dictionary<Stat, float> incrs = new Dictionary<Stat, float>();
@@ -111,6 +111,16 @@ public class Stats : MonoBehaviour, IStats
         hp = get(Stat.MAX_HEALTH);
     }
 
+    private void LvlUpPopup() {
+        manager.GUI.PopupPool.Popup(
+            position: transform.position+Vector3.up*height, 
+            color: Color.cyan,
+            text: "Lvl Up!",
+            duration: 4,
+            dy: 0.3f
+        );
+    }
+
     private void PrepareValues() {
         onDie = new OnDie(_ => Destroy(holder.Get()));
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
@@ -140,17 +150,6 @@ public class Stats : MonoBehaviour, IStats
                 hitVisual.Get().OnHit(0.75f);
             return xp;
         });
-        if (StatSide == Side.PLAYER) {
-            onLvlUp = new OnLvl(() => {
-                manager.GUI.PopupPool.Popup(
-                    position: transform.position+Vector3.up*transform.localScale.y*4, 
-                    color: Color.cyan,
-                    text: "Lvl Up!",
-                    duration: 4,
-                    dy: 0.3f
-                );
-            });
-        }
         if (holder.IsNone()) {
             holder = new Option<GameObject>(gameObject);
         }
@@ -172,23 +171,25 @@ public class Stats : MonoBehaviour, IStats
         RestoreHP();
     }
 
-    public void CStart(Manager manager) {
+    public void CStart(Manager manager, StatsTemplate template) {
+        this.template = template;
         this.manager = manager;
         PrepareValues();
         range.GetAndThen(v => v.CStart());
     }
 
-    public void CStart(Manager manager, Stats other) {
+    public void CStart(Manager manager, StatsTemplate template, Stats other) {
+        this.template = template;
         this.manager = manager;
         PrepareValues();
         range.GetAndThen(v => v.CStart());
         Inherit(other);
     }
 
-    public void CStart(Manager manager, MTState state) {
+    public void CStart(Manager manager, StatsTemplate template, MTState state) {
+        this.template = template;
         this.manager = manager;
         PrepareValues();
-        mod = General.ListToDict(state.modkey, state.modVal);
         range.GetAndThen(v => v.CStart());
         xp = state.xp;
         lvl = state.lvl;
@@ -200,7 +201,7 @@ public class Stats : MonoBehaviour, IStats
     }
 
     private float get(Stat value) {
-        return Num.MinLimit(val[value]*modify(value), 0.05f);
+        return val[value]*Num.MinLimit(modify(value), 0.05f);
     }
 
     public void inc(Stat stat, float value) {
@@ -224,9 +225,11 @@ public class Stats : MonoBehaviour, IStats
         return false;
     }
 
-    public void LvlUp(bool restoreCompletely = false) {
+    public void LvlUp(bool restoreCompletely = false, bool showPopup = true) {
         if (onLvlUp != null)
             onLvlUp.Invoke();
+        if (showPopup & StatSide == Side.PLAYER & gameObject.name != "Tower")
+            LvlUpPopup();
         lvl++;
         if (restoreCompletely) {
             hp = this[Stat.MAX_HEALTH];
@@ -239,11 +242,11 @@ public class Stats : MonoBehaviour, IStats
         return template.maxXp+template.maxXpIncrememt*(lvl-1);
     }
 
-    public void IncXP(int xp) {
+    public void IncXP(int xp, bool showPopup = true) {
         this.xp += xp;
         while (this.xp >= MaxRequiredXP()) {
             this.xp -= MaxRequiredXP();
-            LvlUp();
+            LvlUp(showPopup: showPopup);
         }
     }
 
@@ -256,10 +259,6 @@ public class Stats : MonoBehaviour, IStats
             mod[k] *= other.mod[k];
         }
         inheriter = new Option<Stats>(other);
-    }
-
-    public void Heal(float amount) {
-        hp = Mathf.Clamp(hp+amount, 0, get(Stat.MAX_HEALTH));
     }
 
     public bool ImmuneTo(Element elm) {
@@ -354,6 +353,10 @@ public class Stats : MonoBehaviour, IStats
         if (onBeforeDeath != null)
             onBeforeDeath.Invoke(senderStats);
         onDie.Invoke(senderStats);
+    }
+
+    public void Heal(float amount) {
+        hp = Mathf.Clamp(hp+amount, 0, get(Stat.MAX_HEALTH));
     }
 
     public int Damage(Stats stats, float amount)

@@ -21,7 +21,6 @@ public class StatsEditor : Editor {
 
     void OnEnable()
     {
-
         EditorUtility.SetDirty((StatsTemplate)target);
         statsBase = serializedObject.FindProperty("statsBase");
         mods = serializedObject.FindProperty("modifiers");
@@ -37,14 +36,13 @@ public class StatsEditor : Editor {
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
         EditorGUILayout.BeginVertical();
         EditorGUILayout.PropertyField(statsBase);
         for (int i  = 0; i < Stt.EnumValues.Length; i++) {
             GUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(Stt.EnumValues[i].ToString());
             //EditorGUILayout.PropertyField(modifiers.GetArrayElementAtIndex(i));
-            if (i >= mods.arraySize) {
+            if (i > mods.arraySize-1) {
                 mods.InsertArrayElementAtIndex(i);
             }
             EditorGUILayout.PropertyField(mods.GetArrayElementAtIndex(i));
@@ -55,7 +53,7 @@ public class StatsEditor : Editor {
             GUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(Stt.EnumValues[i].ToString());
             //EditorGUILayout.PropertyField(modifiers.GetArrayElementAtIndex(i));
-            if (i >= incrs.arraySize) {
+            if (i > incrs.arraySize-1) {
                 incrs.InsertArrayElementAtIndex(i);
             }
             EditorGUILayout.PropertyField(incrs.GetArrayElementAtIndex(i));
@@ -76,6 +74,7 @@ public class StatsEditor : Editor {
         //EditorGUILayout.PropertyField(xpHitWorth);
         EditorGUILayout.PropertyField(unlockAt);
         serializedObject.ApplyModifiedProperties();
+        serializedObject.Update();
     }
 }
 #endif
@@ -91,7 +90,7 @@ public enum Stat {
     IMMUNITY
 }
 
-[CreateAssetMenu(fileName = "Stats Template", menuName = "Mutox/Stats Template", order = 1)]
+[CreateAssetMenu(fileName = "Stats Template", menuName = "Mutox/Stats Template", order = 1), Serializable]
 public class StatsTemplate : ScriptableObject {
     public StatsBase statsBase;
 

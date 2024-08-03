@@ -7,8 +7,6 @@ using static Stat;
 
 [Serializable]
 public class MTState {
-    public List<Stat> modkey = new List<Stat>();
-    public List<float> modVal = new List<float>();
     public Vector3 position;
     public float hp;
     public Resources.Arsenal arsenal;
@@ -17,8 +15,6 @@ public class MTState {
 
     public MTState(Dictionary<Stat, float> mod, Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
         (List<Stat>, List<float>) partition = General.DictToList(mod);
-        modkey = partition.Item1;
-        modVal = partition.Item2;
         position = pos;
         this.hp = hp;
         this.arsenal = arsenal;
@@ -34,8 +30,7 @@ public class MiniTower : MonoBehaviour
     [SerializeField] private Resources.Arsenal arsenal;
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
     [SerializeField] private Highlight highlight;
-    [SerializeField] private Transform hpbarAnchor;
-    [SerializeField, Range(0f, 1f)] private float extrusion = 0.5f;
+    [SerializeField] private HPBarOptions options;
     [SerializeField] private Sound deathSound;
 
     private World.ReportDeath<MiniTower> death;
@@ -80,16 +75,16 @@ public class MiniTower : MonoBehaviour
     }
 
     private void SetHPBar() {
-        stats.Manager.GUI.HPBP.GetHPBar(hpbarAnchor, extrusion, stats);
+        stats.Manager.GUI.HPBP.GetHPBar(options, stats);
     }
 
     public void CStart(Manager manager) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
-        stats.CStart(manager);
+        stats.CStart(manager, Resources.GetStatTemplate(arsenal));
         PrepareConfiguration();
         for (int i = 1; i < Save.rData[arsenal, true]; i++) {
-            stats.IncXP(stats.MaxRequiredXP());
+            stats.IncXP(stats.MaxRequiredXP(), false);
         }
         SetHPBar();
 
@@ -100,11 +95,8 @@ public class MiniTower : MonoBehaviour
     public void CStart(Manager manager, MTState state) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
-        stats.CStart(manager, state);
+        stats.CStart(manager, Resources.GetStatTemplate(arsenal), state);
         PrepareConfiguration();
-        for (int i = 1; i < Save.rData[arsenal, true]; i++) {
-            stats.IncXP(stats.MaxRequiredXP());
-        }
         SetHPBar();
 
         //transform.position = state.position;

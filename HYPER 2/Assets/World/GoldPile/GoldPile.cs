@@ -5,6 +5,7 @@ using UnityEngine;
 public class GoldPile : MonoBehaviour
 {
     [SerializeField] private Stats stats;
+    [SerializeField] private StatsTemplate template;
 
     private float yOffset = 4f;
     private Manager manager;
@@ -16,7 +17,7 @@ public class GoldPile : MonoBehaviour
     }
 
     public void CStart(Manager manager) {
-        stats.CStart(manager);
+        stats.CStart(manager, template);
         this.manager = manager;
         stats.ConfigureOnStatDamage(false, (_, _) => {
             return OnHit();

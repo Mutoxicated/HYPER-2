@@ -14,7 +14,8 @@ public class Resources : MonoBehaviour
         RADMOL,
         SECOND_MT,
         WATCHER,
-        BOOMER
+        BOOMER,
+        SKYSCRAPER
     }
 
     public enum Enemy {
@@ -22,7 +23,8 @@ public class Resources : MonoBehaviour
         PASATEMPO,
         PROWLER,
         SOAS,
-        UFO
+        UFO,
+        GUARDIAN
     }
 
     public enum Bullet {
@@ -40,6 +42,8 @@ public class Resources : MonoBehaviour
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
+    private static Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
+    private static Dictionary<Bullet, StatsTemplate> bulletStats;
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
     private static Dictionary<Enemy, GameObject> enemyPrefabs;
     private static Dictionary<Enemy, EnemyStats> enemyStats;
@@ -78,7 +82,7 @@ public class Resources : MonoBehaviour
             enemyPrefabs = new Dictionary<Enemy, GameObject>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Enemy");
             Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
-            Debug.Log("Uh "+gos.Length);
+            //Debug.Log("Uh "+gos.Length);
             for (int i = 0; i < gos.Length; i++) {
                 enemyPrefabs.Add((Enemy)i, gos[i]);
             } 
@@ -87,9 +91,18 @@ public class Resources : MonoBehaviour
             enemyStats = new Dictionary<Enemy, EnemyStats>();
             var gos = UnityEngine.Resources.LoadAll<EnemyStats>("Enemy");
             Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
-            Debug.Log("Uh "+gos.Length);
+            //Debug.Log("Uh "+gos.Length);
             for (int i = 0; i < gos.Length; i++) {
                 enemyStats.Add((Enemy)i, gos[i]);
+            } 
+        }
+        if (enemyStatTemplates == null) {
+            enemyStatTemplates = new Dictionary<Enemy, StatsTemplate>();
+            var gos = UnityEngine.Resources.LoadAll<StatsTemplate>("Enemy");
+            Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
+            //Debug.Log("Uh "+gos.Length);
+            for (int i = 0; i < gos.Length; i++) {
+                enemyStatTemplates.Add((Enemy)i, gos[i]);
             } 
         }
         if (bulletPrefabs == null) {
@@ -98,6 +111,14 @@ public class Resources : MonoBehaviour
             Assert.IsNotNull(gos, "Bullet folder in Helpers/Resources doesn't exist");
             for (int i = 0; i < gos.Length; i++) {
                 bulletPrefabs.Add((Bullet)i, gos[i]);
+            }
+        }
+        if (bulletStats == null) {
+            bulletStats = new Dictionary<Bullet, StatsTemplate>();
+            var gos = UnityEngine.Resources.LoadAll<StatsTemplate>("Bullet");
+            Assert.IsNotNull(gos, "Bullet folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                bulletStats.Add((Bullet)i, gos[i]);
             }
         }
         if (arsenalSprites == null) {
@@ -129,6 +150,10 @@ public class Resources : MonoBehaviour
         return bulletPrefabs[bullet];
     }
 
+    public static StatsTemplate GetBulletStats(Bullet bullet) {
+        return bulletStats[bullet];
+    }
+
     public static GameObject GetEnemy(Enemy enemy) {
         return enemyPrefabs[enemy];
     }
@@ -147,6 +172,10 @@ public class Resources : MonoBehaviour
 
     public static EnemyStats GetEnemyStats(Enemy enemy) {
         return enemyStats[enemy];
+    }
+
+        public static StatsTemplate GetEnemyStatTemplates(Enemy arsenal) {
+        return enemyStatTemplates[arsenal];
     }
     
     public static IEnumerator<KeyValuePair<Enemy, EnemyStats>> IterEnemyStats() {

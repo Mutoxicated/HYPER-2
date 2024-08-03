@@ -183,6 +183,7 @@ public class Path : MonoBehaviour
                 break;
             }
         }
+        neighbors1[0][wg].Write("D: "+sideDirection.ToString());
         Assert.IsFalse(start.IsNone());
         start.GetAndThen(s => {
             s.Direction = mainDirection;
@@ -347,7 +348,8 @@ public class Path : MonoBehaviour
             currentDirection = closestToTower.Direction;
 
             if (currentDirection != mainDirection) {
-                SetAmount(wg.GetLayerSurplus(closestToTower[wg].Layer));
+                closestToTower[wg].Write("LI: {"+closestToTower[wg].Location.CornersRange.a+", "+closestToTower[wg].Location.CornersRange.b+"}");
+                SetAmount(closestToTower[wg].Location.CornersRange.a, closestToTower[wg].Location.CornersRange.b);
             }
         }
 
@@ -376,7 +378,11 @@ public class Path : MonoBehaviour
         return Option<Neighbor>.None();
     }
 
-    private void SetAmount(int value) {
+    private void SetAmount(int a, int b) {
+        a = Mathf.Abs(a);
+        b = Mathf.Abs(b);
+
+        var value = a > b ? a : b;
         var min = 3;
 
         var max = Mathf.FloorToInt(value/2f)-1;

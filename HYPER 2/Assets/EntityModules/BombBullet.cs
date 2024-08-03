@@ -4,13 +4,14 @@ using static Stat;
 public class BombBullet : MonoBehaviour, IBulletConstruct {
     private const float expiration = 5f;
 
+    [SerializeField] private Resources.Bullet bulletType;
     [SerializeField] private Stats stats;
     [SerializeField] private Explosion explosion;
 
     private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
-        stats.CStart(manager);
+        stats.CStart(manager, Resources.GetBulletStats(bulletType));
         explosion.CStart();
         stats.Inherit(other);
         transform.rotation = direction;
@@ -18,7 +19,7 @@ public class BombBullet : MonoBehaviour, IBulletConstruct {
     }
 
     public void CStart(Manager manager, Quaternion direction) {
-        stats.CStart(manager);
+        stats.CStart(manager, Resources.GetBulletStats(bulletType));
         explosion.CStart();
         transform.rotation = direction;
         gameObject.SetActive(true);

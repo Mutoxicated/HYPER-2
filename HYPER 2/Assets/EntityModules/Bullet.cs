@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
     private const float expiration = 5f;
 
     [SerializeField] private Stats stats;
+    [SerializeField] private Resources.Bullet bulletType;
 
     private Vector3 scale;
 
@@ -21,7 +22,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
     private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
-        stats.CStart(manager, other);
+        stats.CStart(manager, Resources.GetBulletStats(bulletType), other);
         transform.rotation = direction;
         gameObject.SetActive(true);
     }

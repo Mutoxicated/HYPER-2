@@ -25,6 +25,9 @@ public class Damage : MonoBehaviour {
             damageable = new Option<IDamageable>(bacteria.ImmuneSystem.GetComponent<IDamageable>());
         }
         int xp = damageable.Get().BacteriaDamage(bacteria.Type, damage);
-        Player.IncrementXP(xp);
+        if (bacteria.Stats.StatSide == Stats.Side.PLAYER) {
+            bacteria.Stats.IncXP(xp/2);
+            Player.IncrementXP(xp);
+        }
     }
 }

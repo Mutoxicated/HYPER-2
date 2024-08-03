@@ -8,6 +8,7 @@ Shader "Mutox/HDR"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -20,20 +21,20 @@ Shader "Mutox/HDR"
             struct appdata
             {
                 float4 vertex : POSITION;
-                float4 color : COLOR;
+                float4 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                float4 color : COLOR;
+                float4 uv : TEXCOORD0;
             };
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.color = v.color;
+                o.uv = v.uv;
                 return o;
             }
 
@@ -41,7 +42,7 @@ Shader "Mutox/HDR"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return _Color*i.color;
+                return _Color;
             }
             ENDCG
         }

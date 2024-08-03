@@ -10,6 +10,8 @@ public delegate void Iter<E>(E t);
 public class Range : MonoBehaviour
 {
     [SerializeField] private Stats stats;
+    [SerializeField] private bool expand = true;
+    [SerializeField] private Stats.Side filter;
 
     private List<Stats> enemies = new List<Stats>();
 
@@ -28,10 +30,12 @@ public class Range : MonoBehaviour
     }
 
     public void CStart() {
-        stats.ConfigureOnLvlUp(false, UpdateSize);
         OnEnter = new OnEnemy(e => enemies.Add(e));
         OnExit = new OnEnemy(e => enemies.Remove(e));
-        UpdateSize();
+        if (expand){
+            stats.ConfigureOnLvlUp(false, UpdateSize);
+            UpdateSize();
+        }
         gameObject.SetActive(true);
     }
 
@@ -58,8 +62,7 @@ public class Range : MonoBehaviour
             enemies.RemoveAt(offset);
             return Target(offset);
         }
-        if ((enemies[offset].StatSide == Stats.Side.PLAYER & stats.StatSide == Stats.Side.PLAYER) |
-            (enemies[offset].StatSide == Stats.Side.ENEMY & stats.StatSide == Stats.Side.ENEMY)) {
+        if (enemies[offset].StatSide == filter) {
             return Target(offset+1);
         }
         return new Option<Stats>(enemies[offset]);

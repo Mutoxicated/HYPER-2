@@ -110,4 +110,8 @@ public class Selector : MonoBehaviour
     public void OnDeselect() {
         selected = Option<GameObject>.None();
     }
+
+    public void OnSelect(GameObject go) {
+        selected = new Option<GameObject>(go);
+    }
 }

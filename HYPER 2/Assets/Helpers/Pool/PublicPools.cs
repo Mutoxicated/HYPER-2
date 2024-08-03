@@ -7,6 +7,10 @@ public class PublicPools : MonoBehaviour
     private Dictionary<PoolID, ObjectPool> pools = new Dictionary<PoolID, ObjectPool>();
     [SerializeField] private List<ObjectPool> poolList = new List<ObjectPool>();
 
+    public ObjectPool this[PoolID id] {
+        get { return pools[id]; }
+    }
+
     public void DStart()
     {
         foreach (var pool in poolList) {
@@ -18,10 +22,6 @@ public class PublicPools : MonoBehaviour
         foreach (var poolname in pools.Keys){
             pools[poolname].ReattachAll();
         }
-    }
-
-    public ObjectPool Get(PoolID id) {
-        return pools[id];
     }
 
     public bool PoolsExists(PoolID ID)

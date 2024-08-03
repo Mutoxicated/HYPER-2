@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static PoolID;
-using Unity.VisualScripting;
-using System.Runtime.Serialization;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -33,7 +29,7 @@ public class OptionEditor : PropertyDrawer {
             //position.height += EditorGUIUtility.singleLineHeight;
             position.position = pos;
             EditorGUI.BeginProperty(position, label, property);
-            EditorGUI.PropertyField(position, value);
+            EditorGUI.PropertyField(position, value, true);
             EditorGUI.EndProperty();
         }
     }
@@ -388,6 +384,10 @@ namespace Helpers {
                 return "<color=#ffaa00>Fire";
             case Element.RADIATION:
                 return "<color=#00ff11>Radiation";
+            case Element.AIR:
+                return "<color=#aaaaaa>Air";
+            case Element.EARTH:
+                return "<color=#10ffaa>Earth";
             default:
                 return "Unknown";
             }
@@ -407,6 +407,8 @@ namespace Helpers {
                 return "Watcher";
             case Resources.Arsenal.BOOMER:
                 return "Boomer";
+            case Resources.Arsenal.SKYSCRAPER:
+                return "Skyscraper";
             default:
                 return "UNKNOWN";
             }
@@ -420,8 +422,10 @@ namespace Helpers {
                 return "WaterBacteria";
             case FireBacteria:
                 return "FireBacteria";
-            case NumPopup:
-                return "NumPopup";
+            case EarthBacteria:
+                return "EarthBacteria";
+            case RadiationBacteria:
+                return "RadiationBacteria";
             default: 
                 return "Unknown";
             } 
@@ -430,9 +434,13 @@ namespace Helpers {
         public static Option<ObjectPool> FromBT(Manager manager, Element bt) {
             switch (bt) {
             case Element.FIRE:
-                return new Option<ObjectPool>(manager.Pools.Get(FireBacteria));
+                return new Option<ObjectPool>(manager.Pools[FireBacteria]);
             case Element.WATER:
-                return new Option<ObjectPool>(manager.Pools.Get(WaterBacteria));
+                return new Option<ObjectPool>(manager.Pools[WaterBacteria]);
+            case Element.EARTH:
+                return new Option<ObjectPool>(manager.Pools[EarthBacteria]);
+            case Element.RADIATION:
+                return new Option<ObjectPool>(manager.Pools[RadiationBacteria]);
             default:
                 return Option<ObjectPool>.None();
             }
@@ -587,6 +595,24 @@ namespace Helpers {
         public static Option<Material> FindMaterial(Renderer r, MaterialType mt) {
             var name = MatType.Name(mt);
             foreach (Material m in r.materials) {
+                if (m.name.Contains(name)) {
+                    return new Option<Material>(m);
+                }
+            }
+            return Option<Material>.None();
+        }
+
+        public static Option<Material> FindMaterial(Renderer r, string name) {
+            foreach (Material m in r.materials) {
+                if (m.name.Contains(name)) {
+                    return new Option<Material>(m);
+                }
+            }
+            return Option<Material>.None();
+        }
+
+        public static Option<Material> FindSharedMaterial(Renderer r, string name) {
+            foreach (Material m in r.sharedMaterials) {
                 if (m.name.Contains(name)) {
                     return new Option<Material>(m);
                 }

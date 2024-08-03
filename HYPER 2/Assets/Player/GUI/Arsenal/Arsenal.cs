@@ -57,8 +57,9 @@ public class Arsenal : MonoBehaviour
     }
 
     public void OnResearch(ArsenalItem arsenalItem) {
+        bool success = researcher.ResearchItem(arsenalItem.Type);
+        if (!success) { return; }
         arsenalItem.SetResearched(true);
-        researcher.ResearchItem(arsenalItem.Type);
         ai.Enable(arsenalItem, false);
     }
 

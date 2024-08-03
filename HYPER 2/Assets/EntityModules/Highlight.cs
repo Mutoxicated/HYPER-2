@@ -6,13 +6,14 @@ public class Highlight : MonoBehaviour
 {
     [SerializeField] private Transform rangeTransform;
     [Tooltip("Have this component disabled")]
-    [SerializeField] private Outline outline;
+    [SerializeField] private List<Outline> outlines;
 
     [SerializeField] private MeshRenderer range;
 
     public void Enable() {
         enabled = true;
-        outline.enabled = true;
+        foreach (var ol in outlines)
+            ol.enabled = true;
         range.enabled = true;
     }
 
@@ -22,7 +23,8 @@ public class Highlight : MonoBehaviour
 
     public void Disable() {
         enabled = false;
-        outline.enabled = false;
+          foreach (var ol in outlines)
+            ol.enabled = false;
         range.enabled = false;
     }
 }

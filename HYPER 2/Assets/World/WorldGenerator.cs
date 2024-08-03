@@ -139,14 +139,14 @@ public class WorldGenerator : MonoBehaviour
     }
 
     public void Update() {
-        if (player.OnDebugRefresh) {
-            foreach (var path in paths) {
-                path.DestroyPath();
-            }
-            paths.Clear();
+        // if (player.OnDebugRefresh) {
+        //     foreach (var path in paths) {
+        //         path.DestroyPath();
+        //     }
+        //     paths.Clear();
 
-            CreatePaths();
-        }
+        //     CreatePaths();
+        // }
         foreach (var tile in tiles) {
             if (!tile.IsLit())
                 tile.UpdateColor();
@@ -269,7 +269,7 @@ public class WorldGenerator : MonoBehaviour
 
         int corner1Delta, corner2Delta;
         if (nth == 0) {
-            corner1Delta = GetFirstOfLayer(layer)-index-1;
+            corner1Delta = GetFirstOfLayer(layer)-index;
         }else {
             corner1Delta = GetLayerCorner(layer, nth)-index;
         }
@@ -498,6 +498,7 @@ public class WorldGenerator : MonoBehaviour
             for (int i = 0; i < Save.rData.PathsToWiden.Count; i++) {
                 var curr = Save.rData.PathsToWiden[i];
                 paths[curr].Widen();
+                counter++;
             }
             return;
         }

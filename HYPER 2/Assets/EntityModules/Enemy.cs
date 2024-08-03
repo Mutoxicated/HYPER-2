@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
 using static Stat;
@@ -10,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Resources.Enemy enemyType;
     [SerializeField] private AudioSource hitSFX;
     [Header("Settings")]
+    [SerializeField] private Option<HPBarOptions> options;
     [SerializeField] private bool followPath;
     
     private Branch currentBranch;
@@ -33,13 +32,15 @@ public class Enemy : MonoBehaviour
         // };
         this.main = main;
         this.death += death;
-        stats.CStart(manager);
+        stats.CStart(manager, Resources.GetEnemyStatTemplates(enemyType));
         PrepareConfiguration();
-        for (int i = 1; i < Num.MinLimit(Mathf.FloorToInt(stats.Manager.GP.Waves*0.4f), 1); i++) {
+        for (int i = 1; i < manager.GP.EnemyLvl; i++) {
             stats.IncXP(stats.MaxRequiredXP());
         }
-
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
+        options.GetAndThen(a => {
+            stats.Manager.GUI.HPBP.GetHPBar(a.hpbarAnchor, 0f, stats, a.scale);
+        });
 
         currentBranch = root;
         dir = Dir.ToVec(currentBranch.direction);
@@ -81,23 +82,5 @@ public class Enemy : MonoBehaviour
                 look = Quaternion.LookRotation(currentBranch.end.transform.position-currentBranch.start.transform.position);
             }
         }
-    }
-
-    public Stats.Side Side()
-    {
-        return stats.StatSide;
-    }
-
-    public GameObject Go()
-    {
-        return gameObject;
-    }
-
-    public bool IsNull() {
-        return this == null;
-    }
-
-    public ref World.ReportDeath<Enemy> GetReportDeath() {
-        return ref death;
     }
 }

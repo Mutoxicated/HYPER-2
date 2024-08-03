@@ -21,9 +21,13 @@ public class QuickInventory : MonoBehaviour
     [SerializeField] private int capacity = 3;
     [SerializeField] private List<QuickInventoryItem> items = new List<QuickInventoryItem>();
 
-    private List<QuickInventoryItem> Items {
+    public List<QuickInventoryItem> Items {
         get { return items; }
     }
+    public int Capacity {
+        get { return capacity; }
+    }
+
     private Option<QuickInventoryItem> selected = Option<QuickInventoryItem>.None();
     private float imageSize;
     private float length;
@@ -107,8 +111,6 @@ public class QuickInventory : MonoBehaviour
         }else if (Keyboard.current.digit4Key.wasPressedThisFrame) {
             UpdateSelectedWithIndex(1);
         }else if (Keyboard.current.digit5Key.wasPressedThisFrame) {
-            UpdateSelectedWithIndex(0);
-        }else if (Keyboard.current.digit6Key.wasPressedThisFrame) {
             UpdateSelectedWithIndex(0);
         }
     }

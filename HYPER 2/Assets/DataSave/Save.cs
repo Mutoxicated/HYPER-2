@@ -16,7 +16,7 @@ public interface IData {
 public class Save : MonoBehaviour
 {
     public static PlayerData pData = new PlayerData();
-    public static RunData rData = new RunData();
+    public static RunData rData;
 
     public static string Path(DataType dt)
     {
@@ -36,8 +36,6 @@ public class Save : MonoBehaviour
         if (File.Exists(Path(DataType.RUN)))
         {
             UpdateData(DataType.RUN);
-        }else {
-            CreateData(DataType.RUN);
         }
         
         if (File.Exists(Path(DataType.PLAYER)))

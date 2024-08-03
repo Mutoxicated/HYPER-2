@@ -48,7 +48,7 @@ class Triangle {
 public class AdvancedWire : MonoBehaviour
 {
     [SerializeField] private MeshFilter meshFilter;
-    [SerializeField, Range(0f,0.3f)] private float sensitivity = 0.1f;
+    [SerializeField, Range(0f,0.3f)] private float sensitivity = 0.025f;
 
     private Mesh mesh;
     private Color[] colors;
@@ -68,11 +68,11 @@ public class AdvancedWire : MonoBehaviour
         prebaked = false;
     }
 
-    [ContextMenu("Prebake (only for skinned mesh renderer)")]
+    [ContextMenu("Prebake")]
     private void Prebake() {
         triangleCommons.Clear();
-        if (GetMesh() != 1) {
-            Debug.LogWarning("Tried to prebake without a skinned mesh renderer");
+        if (GetMesh(true) == -1) {
+            Debug.LogWarning("Tried to prebake without a mesh renderer");
             return;
         }
 
@@ -125,13 +125,13 @@ public class AdvancedWire : MonoBehaviour
         triangleCommons.Clear();
     }
 
-    private int GetMesh() {
+    private int GetMesh(bool prebakeMode = false) {
         if (meshFilter != null) {
-            mesh = meshFilter.mesh;
+            mesh = prebakeMode ? meshFilter.sharedMesh : meshFilter.mesh;
             return 0;
         }
         if (TryGetComponent(out meshFilter)) {
-            mesh = meshFilter.mesh;
+            mesh = prebakeMode ? meshFilter.sharedMesh : meshFilter.mesh;
             return 0;
         }
 

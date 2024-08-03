@@ -51,6 +51,7 @@ public class SelectedArsenalInfo : MonoBehaviour
         this.mt = new Option<MiniTower>(mt);
         mt.Highlight();
         mt.GetReportDeath() += _ => Disable();
+        selector.OnSelect(mt.gameObject);
         stats = mt.Stats;
         gameObject.SetActive(true);
     }
@@ -96,8 +97,6 @@ public class SelectedArsenalInfo : MonoBehaviour
         Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.RestoreHPPrice));
         mt.Get().RestoreHP();
     }
-
-
 
     public void Destroy() {
         Player.SetMoneyRelative(mt.Get().Stats.Template.worth/2);

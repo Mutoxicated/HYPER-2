@@ -4,7 +4,7 @@ public class Seed : MonoBehaviour
 {
     public static System.Random random;
 
-    public void DStart()
+    public void SetSeed()
     {
         if (Save.rData._Seed == -1){
             Save.rData.SetSeed(Random.Range(0,999999999));
