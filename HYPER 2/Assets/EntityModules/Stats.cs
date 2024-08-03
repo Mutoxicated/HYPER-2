@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public enum Element {
     WATER,
@@ -10,6 +11,39 @@ public enum Element {
     AIR,
     EARTH,
     ELECTRICITY
+}
+
+public class TargetMessage {
+    private readonly int value = 0;
+    
+    private const int val = 2;
+
+    public static readonly TargetMessage OUT_OF_BOUNDS = new TargetMessage(Type.OUT_OF_BOUNDS);
+    public static readonly TargetMessage INVALID = new TargetMessage(Type.INVALID);
+    public static readonly TargetMessage VALID = new TargetMessage(Type.VALID);
+
+    public enum Type {
+        OUT_OF_BOUNDS,
+        INVALID,
+        VALID
+    }
+
+    public TargetMessage(Type v) {
+        value = (int)v;
+    }
+
+    public static implicit operator bool(TargetMessage msg) {
+        return msg.value == val;
+    }
+
+    public override bool Equals(object msg) {
+        return value.Equals(((TargetMessage)msg).value);
+    }
+    
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }
 
 public interface IStats : IDamageable {
@@ -208,11 +242,11 @@ public class Stats : MonoBehaviour, IStats
         mod[stat] += value;
     }
 
-    public bool TargetIsValid(int offset = 0) {
+    public TargetMessage TargetIsValid(int offset = 0) {
         if (range.IsNone()) {
-            return false;
+            return new TargetMessage(TargetMessage.Type.INVALID);
         }
-        return range.Get().Target(offset).IsSome();
+        return range.Get().TryTarget(offset);
     }
 
     public bool GetHit(float damage) {

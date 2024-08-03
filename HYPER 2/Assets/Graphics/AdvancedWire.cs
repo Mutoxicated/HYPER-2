@@ -145,6 +145,7 @@ public class AdvancedWire : MonoBehaviour
         return -1;
     }
 
+    [ContextMenu("Bake (runtime only)")]
     private void Bake() {
         triangleCommons.Clear();
         // Debug.Log("---- START ----");

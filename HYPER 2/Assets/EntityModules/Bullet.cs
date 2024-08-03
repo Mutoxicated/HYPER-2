@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Stat;
@@ -22,6 +23,9 @@ public class Bullet : MonoBehaviour, IBulletConstruct
     private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
+        if (other.StatSide == Stats.Side.ENEMY) {
+            gameObject.layer = EditorState.GetLayer(EditorLayer.ENEMY);
+        }
         stats.CStart(manager, Resources.GetBulletStats(bulletType), other);
         transform.rotation = direction;
         gameObject.SetActive(true);

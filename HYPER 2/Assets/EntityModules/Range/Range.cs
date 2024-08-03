@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Helpers;
 using UnityEngine;
 using static Stat;
+using static TargetMessage;
 
 public delegate bool Predicate<E>(E t);
 public delegate void Iter<E>(E t);
@@ -13,7 +14,7 @@ public class Range : MonoBehaviour
     [SerializeField] private bool expand = true;
     [SerializeField] private Stats.Side filter;
 
-    private List<Stats> enemies = new List<Stats>();
+    public List<Stats> enemies = new List<Stats>();
 
     public List<Stats> Enemies {
         get { return enemies; }
@@ -52,6 +53,20 @@ public class Range : MonoBehaviour
     public void OnTriggerExit(Collider collider) {
         var enemy = collider.gameObject.GetComponent<IStats>();
         OnExit.Invoke(enemy.Convert());
+    }
+
+    public TargetMessage TryTarget(int offset = 0) {
+        if (enemies.Count < offset+1) {
+            return OUT_OF_BOUNDS;
+        }
+        if (enemies[offset] == null || enemies[offset].gameObject == null) {
+            enemies.RemoveAt(offset);
+            return TryTarget(offset);
+        }
+        if (enemies[offset].StatSide == filter) {
+            return INVALID;
+        }
+        return VALID;
     }
 
     public Option<Stats> Target(int offset = 0) {

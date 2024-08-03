@@ -6,7 +6,7 @@ public class LookTo : MonoBehaviour
 {
     [SerializeField] private Stats stats;
     [SerializeField] private GameObject looker;
-    [SerializeField,Range(4f,15)] private float lerpSpeed;
+    [SerializeField,Range(4f,15f)] private float lerpSpeed;
 
     private Quaternion lookRotation;
 

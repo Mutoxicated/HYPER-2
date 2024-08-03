@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shoot : MonoBehaviour
+public interface IEnemyContainer {
+    List<GameObject> Enemies();
+}
+
+public class Shoot : MonoBehaviour, IEnemyContainer
 {
     [SerializeField] private Resources.Bullet bullet;
     [SerializeField] private Stats stats;
@@ -19,11 +23,16 @@ public class Shoot : MonoBehaviour
         shootInterval.AddEvent(shootBullet);
     }
 
-    private void shootBullet() {
+    public void shootBullet() {
         var targets = new GameObject[shootAmount];
         for (int i = 0; i < shootAmount; i++) {
-            if (!stats.TargetIsValid(i)) { continue; }
-            targets[i] =  stats.Target(i).Get().gameObject;
+            var msg = stats.TargetIsValid(i);
+            if (msg != TargetMessage.VALID) { 
+                if (msg != TargetMessage.OUT_OF_BOUNDS)
+                    i--; 
+                continue; 
+            }
+            targets[i] = stats.Target(i).Get().gameObject;
         }
 
         var shot = false;
@@ -36,7 +45,6 @@ public class Shoot : MonoBehaviour
         if (shot) {
             shootSFX.Play();
         }
-        enemies.Clear();
     }
     
     private GameObject Action(Vector3 postion, BulletConstructor bc) {
@@ -54,5 +62,10 @@ public class Shoot : MonoBehaviour
         
         bc(b);
         return b;
+    }
+
+    public List<GameObject> Enemies()
+    {
+        return enemies;
     }
 }

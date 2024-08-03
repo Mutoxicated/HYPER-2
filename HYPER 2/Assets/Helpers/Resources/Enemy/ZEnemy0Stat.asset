@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee42aeab456334438a325b470586d17, type: 3}
   m_Name: ZEnemy0Stat
   m_EditorClassIdentifier: 
-  difficulty: 3
-  verticality: 2
+  difficulty: 1
+  verticality: 1
+  type: 0

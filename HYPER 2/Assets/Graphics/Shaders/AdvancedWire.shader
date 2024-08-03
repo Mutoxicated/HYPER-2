@@ -52,7 +52,9 @@ Shader "Mutox/AdvancedWire"
             };
 
             float random(float2 normal) {
-                return frac(sin(dot(normal, float2(12.9898, 78.233))) * 43758.5453123);
+                float a = frac(sin(dot(normal, float2(12.9898, 78.233))) * 43758.5453123);
+                a = a < 0.01 ? 0.02 : a;
+                return a;
             }
 
             inline float invLerp(float a,float b,float v) {

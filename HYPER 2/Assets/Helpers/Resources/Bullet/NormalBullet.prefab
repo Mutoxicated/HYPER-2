@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &302140252168194961
 Transform:
   m_ObjectHideFlags: 0
@@ -99,8 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1cdaeed5a7786c42b71be8313c2fc7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  template: {fileID: 11400000, guid: 20bfe46f28387584e86140021ad13f4c, type: 2}
-  side: 0
+  holder:
+    value: {fileID: 0}
+    none: 1
+  height: 4
+  hitVisual:
+    value: {fileID: 0}
+    none: 1
   range:
     value: {fileID: 0}
     none: 1
@@ -117,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 3143230799931297311}
+  bulletType: 0
 --- !u!114 &1102397301875930974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +141,8 @@ MonoBehaviour:
   color: {r: 0, g: 1, b: 0.9457495, a: 1}
   changeQueue: 1
   queueMode: 3000
+  offset: 0
+  material: {fileID: 0}
 --- !u!136 &8500442256562736494
 CapsuleCollider:
   m_ObjectHideFlags: 0
