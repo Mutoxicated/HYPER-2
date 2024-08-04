@@ -2945,7 +2945,7 @@ MonoBehaviour:
   qi: {fileID: 4903153047961623505}
   tileSelectionMask:
     serializedVersion: 2
-    m_Bits: 2624
+    m_Bits: 2752
   selection: {fileID: 0}
   selectedArsenalInfo: {fileID: 4162367389924523030}
   onTowerPlacement: {fileID: 2302788315739933570}
@@ -3552,6 +3552,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2540544795148288734}
+  - component: {fileID: 4828511466855904580}
   m_Layer: 0
   m_Name: Death
   m_TagString: Untagged
@@ -3577,6 +3578,18 @@ Transform:
   m_Father: {fileID: 1559055529432424656}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4828511466855904580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4165403910168166852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd70b57b2854d947be279ce7ab6e185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4335160143945822640
 GameObject:
   m_ObjectHideFlags: 0
@@ -7453,7 +7466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8440fb80aae7a41b3736e7bbf52bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathUI: {fileID: 4165403910168166852}
+  deathScreen: {fileID: 4828511466855904580}
   playingUI: {fileID: 7976203235179622487}
   quickInventory: {fileID: 4903153047961623505}
   selector: {fileID: 5359182992232304534}

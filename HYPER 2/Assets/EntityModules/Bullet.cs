@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour, IBulletConstruct
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
         if (other.StatSide == Stats.Side.ENEMY) {
-            gameObject.layer = EditorState.GetLayer(EditorLayer.ENEMY);
+            Go.SetLayerRecursive(gameObject, EditorLayer.ENEMY_BULLET);
         }
         stats.CStart(manager, Resources.GetBulletStats(bulletType), other);
         transform.rotation = direction;

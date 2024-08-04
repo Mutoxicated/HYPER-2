@@ -22,6 +22,10 @@ public class Inventory : MonoBehaviour
         iitem.CStart(this, arsenalType);
         iitems.Add(arsenalType, iitem);
         sorter.AddItem(iitem.transform);
+        if (gameObject.activeInHierarchy) {
+            sorter.RevertItemScaling();
+            sorter.SortItems();
+        }
     }
 
     public void RemoveInventoryItem(Resources.Arsenal arsenalType) {

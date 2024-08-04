@@ -24,9 +24,9 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     private Vector3 initScale;
 
     public void Disable() {
-        obj = obj == null? transform : obj;
         enabled = false;
-        obj.localScale = initScale;
+        if (obj != null)
+            obj.localScale = initScale;
         text.GetAndThen(t => {
             t.color = Color.grey; 
         });

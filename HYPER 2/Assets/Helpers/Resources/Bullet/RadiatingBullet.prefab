@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6856514371646978792}
   - component: {fileID: 1102397301875930974}
   - component: {fileID: 8500442256562736494}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RadiatingBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 8951712424510583740}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0.69803923, g: 0.2683335, b: 0, a: 1}
@@ -133,6 +132,7 @@ GameObject:
   - component: {fileID: 1278299766410420061}
   - component: {fileID: 6759180159934604608}
   - component: {fileID: 5725322676787786087}
+  - component: {fileID: 4391549809265625023}
   - component: {fileID: 6422483667625648279}
   - component: {fileID: 1287294738151058555}
   - component: {fileID: 4605116146630272502}
@@ -212,6 +212,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &4391549809265625023
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680666174658093250}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!64 &6422483667625648279
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -220,7 +236,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2680666174658093250}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -274,7 +290,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 1, g: 0.22172387, b: 0, a: 1}
@@ -298,7 +313,6 @@ MonoBehaviour:
     value: {fileID: 3710317631712574376}
     none: 0
   height: 4
-  template: {fileID: 11400000, guid: 48af9652b53f0bb4984b6d9a7ced322b, type: 2}
   hitVisual:
     value: {fileID: 0}
     none: 1
@@ -345,7 +359,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 5161669399869190583}
-  - component: {fileID: 6709251826038295375}
   - component: {fileID: 6357530675397054155}
   m_Layer: 9
   m_Name: SecondMT
@@ -389,44 +402,8 @@ MonoBehaviour:
   stats: {fileID: 4680867590344725517}
   bt: 1
   vfx:
-    value: {fileID: 0}
-    none: 1
---- !u!114 &6709251826038295375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3710317631712574376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251d29018956e9b4c867a14ba25de56f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useUnscaledTime: 0
-  dontResetTime: 0
-  chance: 100
-  interval: 1
-  onInterval:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5161669399869190583}
-        m_TargetAssemblyTypeName: AoE, Assembly-CSharp
-        m_MethodName: IntervalDamage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  destroyUponEvent: 0
-  t: 0
-  time: 0
-  isPlaying: 0
-  stats: {fileID: 4680867590344725517}
+    value: {fileID: 5434881908682788599}
+    none: 0
 --- !u!114 &6357530675397054155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -538,6 +515,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01546812061d3d9409d0513d75ec8efa, type: 3}
+--- !u!114 &5434881908682788599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5583806548402710075, guid: 01546812061d3d9409d0513d75ec8efa, type: 3}
+  m_PrefabInstance: {fileID: 437199033219885260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f233eeb5cd79a48bfe3fb3c7f9ee43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8656708474058179023 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9093876272126044419, guid: 01546812061d3d9409d0513d75ec8efa, type: 3}

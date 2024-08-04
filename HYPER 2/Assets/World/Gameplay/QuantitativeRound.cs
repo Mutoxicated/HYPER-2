@@ -4,8 +4,10 @@ using System.Linq;
 using UnityEngine;
 
 public interface IRound {
-    Enemy Spawn(Branch root, Direction main, Vector3 pos, bool boss = false);
+    Enemy Spawn(Branch root, Direction main, Vector3 pos);
 }
+
+public delegate Enemy Spawn(Branch root, Direction main, Vector3 nbs);
 
 public class QuantitativeRound : MonoBehaviour, IRound
 {
@@ -15,7 +17,6 @@ public class QuantitativeRound : MonoBehaviour, IRound
     private float SpawnRate {
         get { return Seed.NextFloat(spawnRate.x, spawnRate.y); }
     }
-    private int spawns = 0;
     private int totalSpawns = 0;
     private List<Interval> spawnIntervals = new List<Interval>();
     
@@ -30,7 +31,7 @@ public class QuantitativeRound : MonoBehaviour, IRound
         //Debug.Log("Update On Spawn ("+totalSpawns+")");
     }
 
-    public Enemy Spawn(Branch root, Direction main, Vector3 pos, bool boss = false) {
+    public Enemy Spawn(Branch root, Direction main, Vector3 pos) {
         var enemy = gameplay.SpawnEnemy(pos, main, root);
         UpdateOnSpawn();
         return enemy;

@@ -42,7 +42,7 @@ public class TargetMessage {
     
     public override int GetHashCode()
     {
-        return base.GetHashCode();
+        return value.GetHashCode();
     }
 }
 

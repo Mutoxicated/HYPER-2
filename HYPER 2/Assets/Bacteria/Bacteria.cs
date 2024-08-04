@@ -11,6 +11,7 @@ public class Bacteria : MonoBehaviour
     [SerializeField] private PooledObject pooledObject;
     [SerializeField] private Element @type;
     [SerializeField] private float lifetime = 1f;
+    [SerializeField] private float lifetimeIncrement = 0.05f;
     [SerializeField] private ParticleSystem ps;
 
     public int population = 1;
@@ -20,7 +21,7 @@ public class Bacteria : MonoBehaviour
 
     private ImmuneSystem immune;
     public delegate void BacteriaDeath(Bacteria b);
-    private float time = 0f;
+    public float time = 0f;
 
     public ImmuneSystem ImmuneSystem {
         get { return immune; }
@@ -36,17 +37,19 @@ public class Bacteria : MonoBehaviour
 
     public void CStart(ImmuneSystem immune, BacteriaDeath onDeath) {
         onPopulationDecrease = new UnityAction(() => {
-            population--;
-            var emission = ps.emission;
-            emission.rateOverTimeMultiplier -= rateStep;
             if (population <= 0) {
                 onDeath.Invoke(this);
                 pooledObject.OnDeath();
-                population = 1;
+                return;
             }
+            population--;
+            lifetime -= lifetimeIncrement;
+            var emission = ps.emission;
+            emission.rateOverTimeMultiplier -= rateStep;
         });
         onPopulationIncrease = new UnityAction(() => {
             population++;
+            lifetime += lifetimeIncrement;
             var emission = ps.emission;
             emission.rateOverTimeMultiplier += rateStep;
         });

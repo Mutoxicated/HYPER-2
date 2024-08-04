@@ -546,6 +546,8 @@ GameObject:
   - component: {fileID: 568595620}
   - component: {fileID: 568595623}
   - component: {fileID: 568595624}
+  - component: {fileID: 568595626}
+  - component: {fileID: 568595625}
   m_Layer: 0
   m_Name: Gameplay
   m_TagString: Untagged
@@ -602,6 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantitativeRound: {fileID: 568595623}
   bossRound: {fileID: 568595624}
+  invasionRound: {fileID: 0}
   waitInterval: {fileID: 568595620}
 --- !u!4 &568595622
 Transform:
@@ -644,6 +647,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplay: {fileID: 568595621}
+--- !u!114 &568595625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568595619}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useUnscaledTime: 0
+  dontResetTime: 0
+  chance: 100
+  interval: 4
+  onInterval:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 568595626}
+        m_TargetAssemblyTypeName: InvasionRound, Assembly-CSharp
+        m_MethodName: SpawnUncommon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  destroyUponEvent: 0
+  t: 0
+  time: 0
+  isPlaying: 0
+--- !u!114 &568595626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568595619}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a196986705156d4ea847999f1e35504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameplay: {fileID: 568595621}
+  interval: {fileID: 568595625}
 --- !u!1 &604103282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,7 +1591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1643372763}
-  smr: {fileID: 0}
   type: 1
   changeColor: 0
   color: {r: 1, g: 1, b: 1, a: 1}
@@ -2820,10 +2871,6 @@ PrefabInstance:
     - target: {fileID: 6954566601433983008, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_Depth
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6954566601433983008, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 32735
       objectReference: {fileID: 0}
     - target: {fileID: 7478444468263295430, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_LocalRotation.w

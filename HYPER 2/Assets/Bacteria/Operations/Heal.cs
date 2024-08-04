@@ -10,7 +10,7 @@ public class Heal : MonoBehaviour
 
     private Option<IDamageable> damageable = Option<IDamageable>.None();
 
-    private void OnEnable() {
+    private void Start() {
         bacteria.onPopulationIncrease += () => {
             heal += step;
         };

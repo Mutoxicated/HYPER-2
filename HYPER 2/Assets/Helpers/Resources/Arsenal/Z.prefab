@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4299825289025443028}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0.69803923, g: 0.007052467, b: 0, a: 1}
@@ -136,6 +135,7 @@ GameObject:
   - component: {fileID: 1287294738151058555}
   - component: {fileID: 8432551664028541590}
   - component: {fileID: 4605116146630272502}
+  - component: {fileID: 3211884704290002565}
   - component: {fileID: 2800085206452779946}
   - component: {fileID: 8129897065465882931}
   - component: {fileID: 5046304748012178472}
@@ -276,7 +276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
@@ -284,6 +283,22 @@ MonoBehaviour:
   queueMode: 0
   offset: 0
   material: {fileID: 0}
+--- !u!54 &3211884704290002565
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680666174658093250}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &2800085206452779946
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -292,7 +307,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2680666174658093250}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -314,7 +329,6 @@ MonoBehaviour:
     value: {fileID: 3710317631712574376}
     none: 0
   height: 4
-  template: {fileID: 11400000, guid: 52047b60c0f2ec245ae232f9f9b7ea68, type: 2}
   hitVisual:
     value: {fileID: 0}
     none: 1
@@ -460,7 +474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: 3
   stats: {fileID: 8129897065465882931}
-  shootAmount: 2
+  shootAmount: 1
   shootInterval: {fileID: 618584182604336037}
   firePoint: {fileID: 8389519739633164073}
   shootSFX: {fileID: 1121769269391748071}
@@ -709,7 +723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5209622866948147674, guid: b1e963e6645c1404cb612a01dbaed077, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.431
+      value: 0.096
       objectReference: {fileID: 0}
     - target: {fileID: 5209622866948147674, guid: b1e963e6645c1404cb612a01dbaed077, type: 3}
       propertyPath: m_LocalPosition.z
@@ -746,6 +760,10 @@ PrefabInstance:
     - target: {fileID: 5892117079450576778, guid: b1e963e6645c1404cb612a01dbaed077, type: 3}
       propertyPath: m_Name
       value: Range
+      objectReference: {fileID: 0}
+    - target: {fileID: 5892117079450576778, guid: b1e963e6645c1404cb612a01dbaed077, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1e963e6645c1404cb612a01dbaed077, type: 3}

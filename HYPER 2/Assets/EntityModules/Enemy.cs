@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
         for (int i = 1; i < manager.GP.EnemyLvl; i++) {
             stats.IncXP(stats.MaxRequiredXP());
         }
-        transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*2.5f;
+        transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*3f;
         options.GetAndThen(a => {
             stats.Manager.GUI.HPBP.GetHPBar(a.hpbarAnchor, 0f, stats, a.scale);
         });

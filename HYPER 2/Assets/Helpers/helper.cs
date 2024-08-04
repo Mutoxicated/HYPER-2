@@ -284,6 +284,8 @@ namespace Helpers {
         OCCUPIED,
         ENTITY_DETECTION,
         ENVIRONMENT,
+        ENEMY_BULLET,
+        PLAYER_BULLET,
     }
 
     public static class EditorState {
@@ -297,7 +299,9 @@ namespace Helpers {
             {EditorLayer.ENEMY, "Enemy"},
             {EditorLayer.OCCUPIED, "Occupied"},
             {EditorLayer.ENTITY_DETECTION, "EntityDetection"},
-            {EditorLayer.UI, "UI"}
+            {EditorLayer.UI, "UI"},
+            {EditorLayer.ENEMY_BULLET, "EnemyBullet"},
+            {EditorLayer.PLAYER_BULLET, "PlayerBullet"},
         };
 
         public static LayerMask GetLayer(EditorLayer et) {

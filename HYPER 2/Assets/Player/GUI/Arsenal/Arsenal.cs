@@ -32,6 +32,10 @@ public class Arsenal : MonoBehaviour
                 ai.Unlock();
                 ai.Enable(aitem, false);
                 inventory.NewInventoryItem(aitem.Type);
+                if (gameObject.activeInHierarchy) {
+                    Disable();
+                    Enable();
+                }
             }
         };
         ai.DStart();

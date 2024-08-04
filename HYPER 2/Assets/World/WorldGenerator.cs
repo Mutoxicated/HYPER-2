@@ -112,6 +112,9 @@ public class WorldGenerator : MonoBehaviour
     public List<Path> Paths {
         get { return paths; }
     }
+    public Path RandomPath {
+        get { return paths[Seed.IntRange(0, paths.Count-1)]; }
+    }
     private int lastRandomCorner;
 
     public float TileSize {
@@ -127,7 +130,7 @@ public class WorldGenerator : MonoBehaviour
     }
 
     public void DStart(World world, Player player) {
-        gp.DStart(player, player.Manager);
+        gp.DStart(player.Manager);
         this.player = player;
         this.world = world;
         towerSize = world.TowerPlatform.transform.localScale.x*0.5f;

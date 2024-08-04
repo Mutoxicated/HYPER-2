@@ -51,7 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledObject: {fileID: 4542359521629043190}
   type: 4
-  lifetime: 1
+  lifetime: 8
+  lifetimeIncrement: 0.01
   ps: {fileID: 224420990770183751}
   population: 1
 --- !u!114 &6494858702705562123
@@ -69,7 +70,7 @@ MonoBehaviour:
   useUnscaledTime: 0
   dontResetTime: 0
   chance: 100
-  interval: 1
+  interval: 0.7
   onInterval:
     m_PersistentCalls:
       m_Calls:
@@ -102,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bacteria: {fileID: 9005338510352385297}
-  heal: 0.5
+  heal: 0.75
   step: 0.025
 --- !u!199 &4103766433199806872
 ParticleSystemRenderer:

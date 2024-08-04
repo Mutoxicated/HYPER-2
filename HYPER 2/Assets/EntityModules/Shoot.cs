@@ -25,14 +25,17 @@ public class Shoot : MonoBehaviour, IEnemyContainer
 
     public void shootBullet() {
         var targets = new GameObject[shootAmount];
-        for (int i = 0; i < shootAmount; i++) {
-            var msg = stats.TargetIsValid(i);
-            if (msg != TargetMessage.VALID) { 
-                if (msg != TargetMessage.OUT_OF_BOUNDS)
-                    i--; 
-                continue; 
+        int filled = 0;
+        int offset = 0;
+        while (filled < shootAmount) {
+            var msg = stats.TargetIsValid(offset);
+            if (msg == TargetMessage.VALID) {
+                targets[filled] = stats.Target(offset).Get().gameObject;
+                filled++;
+            }else if (msg == TargetMessage.OUT_OF_BOUNDS) {
+                break;
             }
-            targets[i] = stats.Target(i).Get().gameObject;
+            offset++;
         }
 
         var shot = false;

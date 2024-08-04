@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 308900478833666701}
   - component: {fileID: 2954293069303513892}
   m_Layer: 6
-  m_Name: Cube
+  m_Name: Coll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,7 +384,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 6767629978508940344}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 0.007277552, b: 0.509434, a: 1}

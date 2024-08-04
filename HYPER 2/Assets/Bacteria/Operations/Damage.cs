@@ -7,7 +7,7 @@ public class Damage : MonoBehaviour {
 
     private Option<IDamageable> damageable = Option<IDamageable>.None();
 
-    private void OnEnable() {
+    private void Start() {
         bacteria.onPopulationIncrease += () => {
             damage += step;
         };

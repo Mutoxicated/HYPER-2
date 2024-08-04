@@ -1,3 +1,4 @@
+using Helpers;
 using UnityEngine;
 using static Stat;
 
@@ -11,6 +12,9 @@ public class BombBullet : MonoBehaviour, IBulletConstruct {
     private float t;
 
     public void CStart(Manager manager, Quaternion direction, Stats other) {
+        if (other.StatSide == Stats.Side.ENEMY) {
+            Go.SetLayerRecursive(gameObject, EditorLayer.ENEMY_BULLET);
+        }
         stats.CStart(manager, Resources.GetBulletStats(bulletType));
         explosion.CStart();
         stats.Inherit(other);

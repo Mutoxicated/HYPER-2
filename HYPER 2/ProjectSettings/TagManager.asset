@@ -20,8 +20,8 @@ TagManager:
   - Occupied
   - EntityDetection
   - Environment
-  - 
-  - 
+  - EnemyBullet
+  - PlayerBullet
   - 
   - 
   - 

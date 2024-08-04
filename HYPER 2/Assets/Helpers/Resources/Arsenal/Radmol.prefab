@@ -114,7 +114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 6962839112393779409}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0, g: 1, b: 0.0323627, a: 1}
@@ -220,7 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 332821827330092755}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 0.6981132, b: 0.01979675, a: 1}
@@ -258,6 +256,7 @@ GameObject:
   - component: {fileID: 1287294738151058555}
   - component: {fileID: 6746099647377570459}
   - component: {fileID: 4605116146630272502}
+  - component: {fileID: 6588373301556509373}
   - component: {fileID: 4660504420662126132}
   - component: {fileID: 3980582084413211112}
   - component: {fileID: 1535664006101290409}
@@ -398,7 +397,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0, g: 0.6132076, b: 0.05407005, a: 1}
@@ -406,6 +404,22 @@ MonoBehaviour:
   queueMode: 0
   offset: 0
   material: {fileID: 0}
+--- !u!54 &6588373301556509373
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680666174658093250}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!64 &4660504420662126132
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -414,7 +428,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2680666174658093250}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -449,7 +463,6 @@ MonoBehaviour:
     value: {fileID: 3710317631712574376}
     none: 0
   height: 4
-  template: {fileID: 11400000, guid: 36ee8df6896929d49b0c714afe8b2956, type: 2}
   hitVisual:
     value: {fileID: 0}
     none: 1

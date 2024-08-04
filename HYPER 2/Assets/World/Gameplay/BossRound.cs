@@ -29,12 +29,9 @@ public class BossRound : MonoBehaviour, IRound
         //Debug.Log("Update On Spawn ("+totalSpawns+")");
     }
 
-    public Enemy Spawn(Branch root, Direction main, Vector3 pos, bool boss = false) {
-        var enemy = boss ? gameplay.SpawnBoss(pos, main, root) : gameplay.SpawnEnemy(pos, main, root);
-        if (boss)
-            this.boss = enemy;
-        else
-            UpdateOnSpawn();
+    public Enemy Spawn(Branch root, Direction main, Vector3 pos) {
+        var enemy = gameplay.SpawnEnemy(pos, main, root);
+        UpdateOnSpawn();
         return enemy;
     }
 
@@ -48,7 +45,9 @@ public class BossRound : MonoBehaviour, IRound
         foreach (var path in gameplay.World.WG.Paths) {
             spawnIntervals.Concat(path.StartSpawning(this));
         }
-        gameplay.World.WG.Paths[Seed.IntRange(0, gameplay.World.WG.Paths.Count-1)].SpawnBoss();
+        boss = gameplay.World.WG.RandomPath.CustomSpawn((r, m, p) => {
+            return SpawnBoss(r, m, p);
+        });
         foreach (var spawnInterval in spawnIntervals) {
             spawnInterval.ChangeInterval(SpawnRate);
         }

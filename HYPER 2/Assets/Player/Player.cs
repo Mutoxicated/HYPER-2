@@ -133,13 +133,13 @@ public class Player : MonoBehaviour
     }
 
     public static float MaxXPRequired() {
-        return Save.rData.Lvl*15f;
+        return Save.rData.Lvl*10f;
     }
 
     public void DeadMode() {
         manager.GP.gameObject.SetActive(false);
         dead = true;
-        UIMode(true);
+        UIMode(false);
         gui.DeadUI();
         musicPlayer.Pause();
     }

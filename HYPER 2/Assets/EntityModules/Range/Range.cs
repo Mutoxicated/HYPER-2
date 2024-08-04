@@ -63,10 +63,17 @@ public class Range : MonoBehaviour
             enemies.RemoveAt(offset);
             return TryTarget(offset);
         }
-        if (enemies[offset].StatSide == filter) {
+        if (Filter(enemies[offset]).IsNone()) {
             return INVALID;
         }
         return VALID;
+    }
+
+    public Option<Stats> Filter(Stats s) {
+        if (s.StatSide == filter) {
+            return Option<Stats>.None();
+        }
+        return new Option<Stats>(s);
     }
 
     public Option<Stats> Target(int offset = 0) {

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4667402301191870854}
   - component: {fileID: 1102397301875930974}
   - component: {fileID: 8162407773326859769}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,6 +185,10 @@ PrefabInstance:
     - target: {fileID: 1289728050025735526, guid: aeb4bccede10c804487585a140881a93, type: 3}
       propertyPath: m_Name
       value: explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1289728050025735526, guid: aeb4bccede10c804487585a140881a93, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1289728050025735526, guid: aeb4bccede10c804487585a140881a93, type: 3}
       propertyPath: m_IsActive

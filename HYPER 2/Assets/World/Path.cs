@@ -283,8 +283,8 @@ public class Path : MonoBehaviour
         spawnInterval2.Disable();
     }
 
-    public void SpawnBoss() {
-        round.Spawn(root1, mainDirection, neighbors1[0][wg].transform.position+Vector3.up*1.5f, true);
+    public Enemy CustomSpawn(Spawn spawn) {
+        return spawn(root1, mainDirection, (Seed.Chance(50) ? neighbors1 : neighbors2)[0][wg].transform.position+Vector3.up*1.5f);
     }
 
     public void IntervalSpawnEnemy() {
@@ -383,9 +383,10 @@ public class Path : MonoBehaviour
         b = Mathf.Abs(b);
 
         var value = a > b ? a : b;
+        var lesserValue = a > b ? b : a;
         var min = 3;
 
-        var max = Mathf.FloorToInt(value/2f)-1;
+        var max = Mathf.FloorToInt(value/2f)-lesserValue;
         if (max > 6) {
             max = 6;
         }

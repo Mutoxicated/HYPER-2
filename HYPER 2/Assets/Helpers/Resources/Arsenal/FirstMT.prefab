@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1278299766410420061}
   - component: {fileID: 6759180159934604608}
   - component: {fileID: 5725322676787786087}
+  - component: {fileID: 2262190036663512867}
   - component: {fileID: 4639587325831078526}
   - component: {fileID: 1287294738151058555}
   - component: {fileID: 4605116146630272502}
@@ -90,6 +91,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &2262190036663512867
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680666174658093250}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!65 &4639587325831078526
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -98,7 +115,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2680666174658093250}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -151,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 5725322676787786087}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 1, b: 0.94670725, a: 1}
@@ -175,7 +191,6 @@ MonoBehaviour:
     value: {fileID: 3710317631712574376}
     none: 0
   height: 4
-  template: {fileID: 11400000, guid: 85613ce15ea0ba54dbd6da4bc9f179ba, type: 2}
   hitVisual:
     value: {fileID: 0}
     none: 1
@@ -310,7 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 7534240743865636171}
-  smr: {fileID: 0}
   type: 1
   changeColor: 1
   color: {r: 0, g: 0.4941563, b: 0.8584906, a: 1}

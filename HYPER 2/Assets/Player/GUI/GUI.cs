@@ -3,7 +3,7 @@ using UnityEngine;
 public class GUI : MonoBehaviour
 {
     [Header("Death UI")]
-    [SerializeField] private GameObject deathUI;
+    [SerializeField] private DeathScreen deathScreen;
 
     [Header("Playing UI")]
     [SerializeField] private GameObject playingUI;
@@ -86,7 +86,7 @@ public class GUI : MonoBehaviour
     }
 
     public void DeadUI() {
-        deathUI.SetActive(true);
+        deathScreen.Enable();
         playingUI.SetActive(false);
     }
 
