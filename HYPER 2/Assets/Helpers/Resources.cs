@@ -15,7 +15,8 @@ public class Resources : MonoBehaviour
         SECOND_MT,
         WATCHER,
         BOOMER,
-        SKYSCRAPER
+        SKYSCRAPER,
+        HEALINATOR
     }
 
     public enum Enemy {

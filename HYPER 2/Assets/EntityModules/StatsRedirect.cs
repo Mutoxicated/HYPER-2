@@ -18,8 +18,8 @@ public class StatsRedirect : MonoBehaviour, IStats
         this.stats.Die(stats);
     }
 
-    public void Heal(float amount) {
-        stats.Heal(amount);
+    public void Heal(float amount, bool show = false) {
+        stats.Heal(amount, show);
     }
 
     public int Damage(Stats stats, float amount)

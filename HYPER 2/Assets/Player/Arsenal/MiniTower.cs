@@ -26,14 +26,15 @@ public class MTState {
 public class MiniTower : MonoBehaviour
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private Interval DOTInterval;
     [SerializeField] private Resources.Arsenal arsenal;
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
+    [SerializeField] private float dotInterval = 0.2f;
     [SerializeField] private Highlight highlight;
     [SerializeField] private HPBarOptions options;
     [SerializeField] private Sound deathSound;
 
     private World.ReportDeath<MiniTower> death;
+    private float time;
 
     public Stats Stats {
         get { return stats; }
@@ -89,7 +90,6 @@ public class MiniTower : MonoBehaviour
         SetHPBar();
 
         gameObject.SetActive(true);
-        DOTInterval.Enable();
     }
 
     public void CStart(Manager manager, MTState state) {
@@ -102,7 +102,14 @@ public class MiniTower : MonoBehaviour
         //transform.position = state.position;
 
         gameObject.SetActive(true);
-        DOTInterval.Enable();
+    }
+
+    private void Update() {
+        time += Time.deltaTime;
+        if (time >= dotInterval) {
+            time = 0f;
+            DOTIntervalDamage();
+        }
     }
 
     public void DOTIntervalDamage() {

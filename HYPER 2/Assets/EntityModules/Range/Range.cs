@@ -46,6 +46,8 @@ public class Range : MonoBehaviour
             return;
         }else if (enemy.Convert() == stats) {
             return;
+        }else if (Filter(enemy.Convert()).IsNone()) {
+            return;
         }
         OnEnter.Invoke(enemy.Convert());
     }
@@ -62,9 +64,6 @@ public class Range : MonoBehaviour
         if (enemies[offset] == null || enemies[offset].gameObject == null) {
             enemies.RemoveAt(offset);
             return TryTarget(offset);
-        }
-        if (Filter(enemies[offset]).IsNone()) {
-            return INVALID;
         }
         return VALID;
     }

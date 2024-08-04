@@ -8,6 +8,7 @@ public class AoE : MonoBehaviour
     [SerializeField] private Element bt;
     [SerializeField] private Option<AoEVFX> vfx;
 
+    private float time = 0f;
     private Range range;
 
     private void Start() {
@@ -19,12 +20,20 @@ public class AoE : MonoBehaviour
         );
         range = stats.Range.Get();
         vfx.GetAndThen(v => v.CStart());
-        range.OnEnter += Infect;
         //range.OnEnter += ApplyEffect;
     }
 
-    public void Infect(Stats s) {
-        if (range.Filter(s).IsSome())
+    private void IntervalInfect() {
+        range.Foreach(s => {
             s.gameObject.GetComponent<IInfectable>()?.Infect(bt);
+        });
+    }
+
+    private void Update() {
+        time += Time.deltaTime;
+        if (time >= stats[RATE]) {
+            time = 0f;
+            IntervalInfect();
+        }
     }
 }

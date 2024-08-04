@@ -392,6 +392,8 @@ namespace Helpers {
                 return "<color=#aaaaaa>Air";
             case Element.EARTH:
                 return "<color=#10ffaa>Earth";
+            case Element.ELECTRICITY:
+                return "<color=#ffff00Electricity";
             default:
                 return "Unknown";
             }
@@ -402,7 +404,7 @@ namespace Helpers {
         public static string ToName(Resources.Arsenal arsenal) {
             switch (arsenal) {
             case Resources.Arsenal.FIRST_MT:
-                return "ICY T.X.";
+                return "Icy T.X.";
             case Resources.Arsenal.RADMOL:
                 return "Radmole";
             case Resources.Arsenal.SECOND_MT:
@@ -413,6 +415,8 @@ namespace Helpers {
                 return "Boomer";
             case Resources.Arsenal.SKYSCRAPER:
                 return "Skyscraper";
+            case Resources.Arsenal.HEALINATOR:
+                return "Healinator 3000";
             default:
                 return "UNKNOWN";
             }

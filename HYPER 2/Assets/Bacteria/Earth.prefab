@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7075635291434394781}
   - component: {fileID: 9005338510352385297}
-  - component: {fileID: 6494858702705562123}
   - component: {fileID: 7268417603528404891}
   - component: {fileID: 4103766433199806872}
   - component: {fileID: 224420990770183751}
@@ -55,41 +54,7 @@ MonoBehaviour:
   lifetimeIncrement: 0.01
   ps: {fileID: 224420990770183751}
   population: 1
---- !u!114 &6494858702705562123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6755047083676967257}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useUnscaledTime: 0
-  dontResetTime: 0
-  chance: 100
-  interval: 0.7
-  onInterval:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7268417603528404891}
-        m_TargetAssemblyTypeName: Heal, Assembly-CSharp
-        m_MethodName: IntervalHeal
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  destroyUponEvent: 0
-  t: 0
   time: 0
-  isPlaying: 0
 --- !u!114 &7268417603528404891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bacteria: {fileID: 9005338510352385297}
-  heal: 0.75
+  interval: 1
+  heal: 0.1
   step: 0.025
 --- !u!199 &4103766433199806872
 ParticleSystemRenderer:

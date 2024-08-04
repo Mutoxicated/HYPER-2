@@ -1,7 +1,7 @@
 public interface IDamageable
 {
     void Die(Option<Stats> stats);
-    void Heal(float amount);
+    void Heal(float amount, bool show = false);
     int Damage(Stats stats, float amount); // returns xp
     int BacteriaDamage(Element bt, float amount); 
     int ExplosionDamage(Explosion.Strength strength, float additive); 

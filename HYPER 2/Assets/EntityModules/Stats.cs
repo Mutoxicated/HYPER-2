@@ -231,7 +231,7 @@ public class Stats : MonoBehaviour, IStats
     }
 
     public float modify(Stat value) {
-        return mod[value]+incrs[value]*lvl;
+        return mod[value]+incrs[value]*(lvl-1);
     }
 
     private float get(Stat value) {
@@ -389,7 +389,15 @@ public class Stats : MonoBehaviour, IStats
         onDie.Invoke(senderStats);
     }
 
-    public void Heal(float amount) {
+    public void Heal(float amount, bool show = false) {
+        if (show)
+            manager.GUI.PopupPool.Popup(
+                 position: transform.position+Vector3.up*height, 
+            color: Color.green,
+            text: "+"+amount,
+            duration: 1,
+            dy: 0.5f
+        );
         hp = Mathf.Clamp(hp+amount, 0, get(Stat.MAX_HEALTH));
     }
 

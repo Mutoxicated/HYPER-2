@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 1278299766410420061}
   - component: {fileID: 6759180159934604608}
   - component: {fileID: 5725322676787786087}
-  - component: {fileID: 1287294738151058555}
   - component: {fileID: 8432551664028541590}
   - component: {fileID: 4605116146630272502}
   - component: {fileID: 3211884704290002565}
@@ -213,41 +212,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1287294738151058555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2680666174658093250}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c14357b45243b44a999ffd81ff80fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useUnscaledTime: 0
-  dontResetTime: 0
-  chance: 100
-  interval: 0.2
-  onInterval:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6357530675397054155}
-        m_TargetAssemblyTypeName: MiniTower, Assembly-CSharp
-        m_MethodName: DOTIntervalDamage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  destroyUponEvent: 0
-  t: 0
-  time: 0
-  isPlaying: 0
 --- !u!114 &8432551664028541590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,9 +382,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 8129897065465882931}
-  DOTInterval: {fileID: 1287294738151058555}
   arsenal: 4
-  DOT: 0.05
+  DOT: 0.02
+  dotInterval: 0.2
   highlight: {fileID: 6702793013746190651}
   options:
     hpbarAnchor: {fileID: 4009478294241304967}
