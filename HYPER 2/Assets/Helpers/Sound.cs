@@ -9,6 +9,7 @@ public class Sound : MonoBehaviour
     public void Play() {
         transform.parent = null;
         gameObject.SetActive(true);
+        sound.volume = Save.pData.SFXVolume;
         sound.Play();
     }
 

@@ -37,6 +37,7 @@ public class MusicPlayer : MonoBehaviour
     private void Update() {
         if (!songs[index].isPlaying) {
             index = Num.Wrap(index++, 0, songs.Count-1);
+            songs[index].volume = Save.pData.MusicVolume;
             songs[index].Play();
         }
 

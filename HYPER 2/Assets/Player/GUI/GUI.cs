@@ -16,7 +16,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private GameObject disabableUI;
 
     [Header("Menu UI")]
-    [SerializeField] private GameObject menuUI;
+    [SerializeField] private PauseMenuManager menuUI;
 
     public Color UIColor {
         get { return Save.pData.UIColor; }
@@ -33,6 +33,7 @@ public class GUI : MonoBehaviour
 
     public void DStart(Player player) {
         this.player = player;
+        menuUI.DStart(player.Manager.SM, player.Graphix);
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
         arsenal.DStart(player);

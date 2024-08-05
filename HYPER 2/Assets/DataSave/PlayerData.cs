@@ -4,24 +4,14 @@ using UnityEngine;
 [Serializable]
 public class PlayerData
 {
-    //MACRO_START
-    [SerializeField] private float __sensX = 0.1f;
+    [SerializeField] private float __sens = 0.1f;
     
-    public float SensX {
-    	get { return __sensX; }
+    public float Sens {
+    	get { return __sens; }
     }
     
-    public void SetSensX(float val) {
-    	__sensX = val;
-    }
-    [SerializeField] private float __sensY = 0.1f;
-    
-    public float SensY {
-    	get { return __sensY; }
-    }
-    
-    public void SetSensY(float val) {
-    	__sensY = val;
+    public void SetSens(float val) {
+    	__sens = val;
     }
     [SerializeField] private float __fov = 70f;
     
@@ -50,12 +40,8 @@ public class PlayerData
     	get { return __scanlineSettings; }
     }
     
-    public void SetScanLineSize(float val) {
-    	__scanlineSettings.lineSize = val;
-    }
-
-    public void SetScanlineModulo(int val) {
-    	__scanlineSettings.modulo = val;
+    public void SetScalineSettings(ScalineSettings val) {
+    	__scanlineSettings = val;
     }
 
     [SerializeField] private ChromaAbbSettings __chromaAbbSettings = new ChromaAbbSettings();
@@ -64,12 +50,8 @@ public class PlayerData
     	get { return __chromaAbbSettings; }
     }
     
-    public void SetChromaAbbActive(bool val) {
-    	__chromaAbbSettings.active = val;
-    }
-
-    public void SetChromaAbbIntensity(float val) {
-    	__chromaAbbSettings.intensity = val;
+    public void SetChromaAbb(ChromaAbbSettings val) {
+    	__chromaAbbSettings = val;
     }
 
     [SerializeField] private BloomSettings __bloomSettings = new BloomSettings();
@@ -78,12 +60,8 @@ public class PlayerData
     	get { return __bloomSettings; }
     }
     
-    public void SetBloomActive(bool val) {
-    	__bloomSettings.active = val;
-    }
-    
-    public void SetBloomIntensity(float val) {
-    	__bloomSettings.intensity = val;
+    public void SetBloomSettings(BloomSettings val) {
+    	__bloomSettings = val;
     }
 
     [SerializeField] private VignetteSettings __vignetteSettings = new VignetteSettings();
@@ -92,24 +70,38 @@ public class PlayerData
     	get { return __vignetteSettings; }
     }
     
-    public void SetVignetteActive(bool val) {
-    	__vignetteSettings.active = val;
+    public void SetVignetteSettings(VignetteSettings val) {
+    	__vignetteSettings = val;
     }
-    
-    public void SetVignetteIntensity(float val) {
-    	__vignetteSettings.intensity = val;
-    }
+    // SOUND
+    [SerializeField] private float __masterVolume = 1f;
 
-    public void SetVignetteSmoothness(float val) {
-    	__vignetteSettings.intensity = val;
+    public float MasterVolume {
+        get { return __masterVolume; }
     }
 
-    //MACRO_END
+    public void SetMasterVolume(float val) {
+        __masterVolume = val;
+    }
 
-    public PlayerData(float sensX, float sensY, float fov) {
-        __sensX = sensX;
-        __sensY = sensY;
-        __fov = fov;
+    [SerializeField] private float __musicVolume = 1f;
+
+    public float MusicVolume {
+        get { return __musicVolume; }
+    }
+
+    public void SetMusicVolume(float val) {
+        __musicVolume = val;
+    }
+
+    [SerializeField] private float __sfxVolume = 1f;
+
+    public float SFXVolume {
+        get { return __sfxVolume; }
+    }
+
+    public void SetSFXVolume(float val) {
+        __sfxVolume = val;
     }
 
     public PlayerData() {}

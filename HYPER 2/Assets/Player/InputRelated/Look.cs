@@ -34,8 +34,8 @@ public class Look : MonoBehaviour
 
         moveVector = look.ReadValue<Vector2>();
 
-        rotationX -= moveVector.y * Time.fixedDeltaTime * (Save.pData.SensY * 100f);
-        rotationY += moveVector.x * Time.fixedDeltaTime * (Save.pData.SensX * 100f);
+        rotationX -= moveVector.y * Time.fixedDeltaTime * (Save.pData.Sens * 100f);
+        rotationY += moveVector.x * Time.fixedDeltaTime * (Save.pData.Sens * 100f);
         //clamp it so that cam cant freely move
         rotationX = Mathf.Clamp(rotationX, -xRotationLimit, xRotationLimit);
         lookRotation = Quaternion.Euler(rotationX, rotationY, 0f);

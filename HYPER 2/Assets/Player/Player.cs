@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PostProcessVolume ppv;
     [SerializeField] private CameraShake camShake;
     [SerializeField] private MusicPlayer musicPlayer;
+    [SerializeField] private PlayerGraphics graphix;
     private Transform camRoot;
 
     private InputAction debugRefresh;
@@ -46,6 +47,10 @@ public class Player : MonoBehaviour
 
     public UnityEngine.InputSystem.PlayerInput Input {
         get { return input; }
+    }
+
+    public PlayerGraphics Graphix {
+        get { return graphix; }
     }
 
     public Manager Manager {
@@ -200,6 +205,8 @@ public class Player : MonoBehaviour
         camRoot = cam.transform.parent;
         cam.fieldOfView = Save.pData.Fov;
         mainCam.fieldOfView = Save.pData.Fov;
+
+        graphix.DStart();
 
         this.manager = manager;
 

@@ -8,9 +8,11 @@ public class Manager : MonoBehaviour
     [SerializeField] private Resources resources;
     [SerializeField] private World world;
     [SerializeField] private Player player;
+    [SerializeField] private SoundManager sm;
     [SerializeField] private Tester tester;
 
     public void Awake() {
+        sm.DStart();
         pps.DStart();
         resources.DStart();
         player.DStart(this);
@@ -42,5 +44,9 @@ public class Manager : MonoBehaviour
 
     public Gameplay GP {
         get { return world.GP; }
+    }
+
+    public SoundManager SM {
+        get { return sm; }
     }
 }

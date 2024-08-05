@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
-[SerializeField]
+[Serializable]
 public class ScalineSettings {
     public bool active = true;
     public float lineSize = 1f;
     public int modulo = 2;
 
     public ScalineSettings() {}
+    public ScalineSettings(bool active, float lineSize, int modulo) {
+        this.active = active;
+        this.lineSize = lineSize;
+        this.modulo = modulo;
+    }
 }
 
 public class Scanline : MonoBehaviour
@@ -17,11 +24,16 @@ public class Scanline : MonoBehaviour
 
     private Material material;
 
-	public void Start() {
+	public void DStart() {
         if (!Save.pData.ScanlineSettings.active) { enabled = false; }
         material = new Material(shader);
 		UpdateMaterialProperties();
 	}
+
+    public void Refresh() {
+        enabled = Save.pData.ScanlineSettings.active;
+        UpdateMaterialProperties();
+    }
 
     private void UpdateMaterialProperties() {
         material.SetFloat("_LineSize", Save.pData.ScanlineSettings.lineSize);
@@ -32,7 +44,7 @@ public class Scanline : MonoBehaviour
         Graphics.Blit(inTexture, outTexture, material);
 	}
 
-    public void OnValidate() {
+    private void OnValidate() {
         if (material == null) return;
         UpdateMaterialProperties();
     }

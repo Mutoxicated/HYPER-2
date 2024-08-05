@@ -23,6 +23,12 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
 
     private Vector3 initScale;
 
+    public void SetTextColor(Color color) {
+        text.GetAndThen(t => {
+            t.color = color; 
+        });
+    }
+
     public void Disable() {
         enabled = false;
         if (obj != null)
@@ -39,7 +45,7 @@ public class Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         });
     }
 
-    private void Start() {
+    public void Start() {
         text.GetAndThen(t => {
             color = new Option<Color>(t.color);
         });

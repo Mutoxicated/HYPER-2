@@ -29,6 +29,7 @@ public class SoundCollection : MonoBehaviour
     }
 
     public static void Play(Audio audio) {
+        audios[audio].volume = Save.pData.SFXVolume;
         audios[audio].Play();
     }
 }
