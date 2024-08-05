@@ -2765,6 +2765,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2879844348241484139, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 5116079300459478813}
+    - target: {fileID: 2879844348241484139, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: gui
       value: 
       objectReference: {fileID: 301292992882584375}
@@ -2787,6 +2791,10 @@ PrefabInstance:
     - target: {fileID: 5116079301421470314, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_Depth
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116079301421470314, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: field of view
+      value: 95.1
       objectReference: {fileID: 0}
     - target: {fileID: 5116079301421470314, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -2872,6 +2880,10 @@ PrefabInstance:
       propertyPath: m_Depth
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6954566601433983008, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+      propertyPath: field of view
+      value: 95.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7478444468263295430, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -2908,6 +2920,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82186cdccc598b940b857d0b93231cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &5116079300459478813 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6954566601433983008, guid: a2cf95f3279b6db41b5eeed8449d67ba, type: 3}
+  m_PrefabInstance: {fileID: 5116079300459478809}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6926726712386323112
 GameObject:
   m_ObjectHideFlags: 0

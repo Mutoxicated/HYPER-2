@@ -567,6 +567,10 @@ namespace Helpers {
 
             return v;
         }
+
+        public static Vector3 FromVec2(Vector2 v, float z) {
+            return new Vector3(v.x, v.y, z);
+        }
     }
 
     public static class Vec2 {

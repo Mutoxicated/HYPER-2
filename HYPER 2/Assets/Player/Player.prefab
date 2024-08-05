@@ -269,6 +269,7 @@ MonoBehaviour:
   movement: {fileID: 1080319219865831810}
   gui: {fileID: 0}
   cam: {fileID: 5116079301421470314}
+  mainCam: {fileID: 5116079301421470314}
   camShake: {fileID: 643583587844315304}
   musicPlayer: {fileID: 0}
 --- !u!114 &1080319219865831810

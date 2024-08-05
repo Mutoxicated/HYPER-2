@@ -50,7 +50,7 @@ public class Selector : MonoBehaviour
             selection.Disable();
             return;
         }
-        ray = player.Cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        ray = player.MainCam.ScreenPointToRay(Vec3.FromVec2(Mouse.current.position.ReadValue(), 1f));
         //Debug.Log(ray.direction);
         stored = Physics.Raycast(ray, out hit, Mathf.Infinity, tileSelectionMask, QueryTriggerInteraction.Collide);
         if (!stored | input.IsPointerOverGameObject(Mouse.current.deviceId)) {

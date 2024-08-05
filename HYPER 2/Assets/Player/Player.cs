@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.PostProcessing;
 
 public enum Asker {
     ARSENAL,
@@ -17,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Movement movement;
     [SerializeField] private GUI gui;
     [SerializeField] private Camera cam;
+    [SerializeField] private Camera mainCam;
+    [SerializeField] private PostProcessVolume ppv;
     [SerializeField] private CameraShake camShake;
     [SerializeField] private MusicPlayer musicPlayer;
     private Transform camRoot;
@@ -59,6 +62,10 @@ public class Player : MonoBehaviour
 
     public Camera Cam {
         get { return cam; }
+    }
+
+    public Camera MainCam {
+        get { return mainCam; }
     }
 
     public InputAction FindAction(string name) {
@@ -191,6 +198,8 @@ public class Player : MonoBehaviour
         PlayingMode();
 
         camRoot = cam.transform.parent;
+        cam.fieldOfView = Save.pData.Fov;
+        mainCam.fieldOfView = Save.pData.Fov;
 
         this.manager = manager;
 

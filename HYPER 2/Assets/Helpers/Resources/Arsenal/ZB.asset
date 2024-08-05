@@ -14,25 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statsBase: {fileID: 11400000, guid: 67704fdc349c0af41ae9232210002ed8, type: 2}
   modifiers:
-  - 2
+  - 0.4
   - 1
+  - 0.11
+  - 1.2
+  - 5
   - 1
-  - 2
-  - 1.5
-  - 0.7
-  - 1
+  - 0.5
   incrementers:
-  - 0.02
   - 0
-  - 0.01
-  - 0.035
-  - -0.01
+  - 0
+  - 0
+  - 0.025
+  - -0.006
   - -0.02
   - -0.01
-  element: 0
+  element: 4
   elementImmunities: 
-  maxXp: 130
+  maxXp: 1
   maxXpIncrememt: 20
   xpKillWorth: 15
-  worth: 14
-  unlockAt: 33
+  worth: 11
+  unlockAt: 27

@@ -34,5 +34,5 @@ MonoBehaviour:
   maxXp: 130
   maxXpIncrememt: 20
   xpKillWorth: 15
-  worth: 14
+  worth: 13
   unlockAt: 33

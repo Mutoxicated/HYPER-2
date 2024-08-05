@@ -2,22 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SerializeField]
+public class ScalineSettings {
+    public bool active = true;
+    public float lineSize = 1f;
+    public int modulo = 2;
+
+    public ScalineSettings() {}
+}
+
 public class Scanline : MonoBehaviour
 {
     [SerializeField] private Shader shader;
-    [Range(0.001f, 10.0f)] public float lineSize = 1.0f;
-    public int modulo = 2;
 
     private Material material;
 
 	public void Start() {
+        if (!Save.pData.ScanlineSettings.active) { enabled = false; }
         material = new Material(shader);
 		UpdateMaterialProperties();
 	}
 
     private void UpdateMaterialProperties() {
-        		material.SetFloat("_LineSize", lineSize);
-        material.SetInt("_Modulo", modulo);
+        material.SetFloat("_LineSize", Save.pData.ScanlineSettings.lineSize);
+        material.SetInt("_Modulo", Save.pData.ScanlineSettings.modulo);
     }
 
 	public void OnRenderImage(RenderTexture inTexture, RenderTexture outTexture) {

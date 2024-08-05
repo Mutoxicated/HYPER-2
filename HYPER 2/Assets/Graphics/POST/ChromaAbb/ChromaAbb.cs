@@ -2,20 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SerializeField]
+public class ChromaAbbSettings {
+    public bool active = true;
+    public float intensity = 0.5f;
+
+    public ChromaAbbSettings() {}
+}
+
+
 public class ChromaAbb : MonoBehaviour
 {
     [SerializeField] private Shader shader;
-	[Range(0.0f, 1.0f)] public float chromaticAberration = 1.0f;
 
     private Material material;
 
 	public void Start() {
+        if (!Save.pData.ChromaAbbSettings.active) { enabled = false; }
         material = new Material(shader);
         UpdateMaterialProperties();
 	}
 
     private void UpdateMaterialProperties() {
-		material.SetFloat("_ChromaticAberration", 0.01f * chromaticAberration);
+		material.SetFloat("_ChromaticAberration", 0.0025f * Save.pData.ChromaAbbSettings.intensity);
     }
 
 	public void OnRenderImage(RenderTexture inTexture, RenderTexture outTexture) {
