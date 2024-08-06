@@ -60,7 +60,7 @@ public class QuickInventory : MonoBehaviour
 
     public void DStart(Player player){
         this.player = player;
-        imageSize = items[0].transform.localScale.x*0.1f+spacing;
+        imageSize = items[0].transform.localScale.x*0.2f+spacing;
         
         Sort();
         edit.position = items[capacity-1].transform.position+Vector3.left*imageSize;

@@ -215,4 +215,11 @@ public class Player : MonoBehaviour
 
         gameObject.SetActive(true);
     }
+
+    public void Refresh() {
+        graphix.Refresh();
+        manager.SM.Refresh();
+        cam.fieldOfView = Save.pData.Fov;
+        mainCam.fieldOfView = Save.pData.Fov;
+    }
 }

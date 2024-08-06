@@ -33,7 +33,7 @@ public class GUI : MonoBehaviour
 
     public void DStart(Player player) {
         this.player = player;
-        menuUI.DStart(player.Manager.SM, player.Graphix);
+        menuUI.DStart(player);
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
         arsenal.DStart(player);
