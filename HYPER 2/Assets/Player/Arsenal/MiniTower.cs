@@ -81,7 +81,15 @@ public class MiniTower : MonoBehaviour
         stats.Manager.GUI.HPBP.GetHPBar(options, stats);
     }
 
-    public void CStart(Manager manager) {
+    public void ConfigureTile(Tile tile) {
+        death += m => { 
+            if (tile != null) 
+                tile.Deoccupy();
+        };
+        tile.Occupy(gameObject);
+    }
+
+    public void CStart(Manager manager, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager, Resources.GetStatTemplate(arsenal));
@@ -90,16 +98,18 @@ public class MiniTower : MonoBehaviour
             stats.IncXP(stats.MaxRequiredXP(), false);
         }
         SetHPBar();
+        ConfigureTile(tile);
 
         gameObject.SetActive(true);
     }
 
-    public void CStart(Manager manager, MTState state) {
+    public void CStart(Manager manager, MTState state, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
         stats.CStart(manager, Resources.GetStatTemplate(arsenal), state);
         PrepareConfiguration();
         SetHPBar();
+        ConfigureTile(tile);
 
         //transform.position = state.position;
 

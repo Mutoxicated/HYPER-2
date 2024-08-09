@@ -78,8 +78,7 @@ public class Selector : MonoBehaviour
                     }
                     Player.SetMoneyRelative(-template.worth);
                     onTowerPlacement.Play();
-                    var instance = manager.World.InstantiateMiniTower(storedGo.transform.parent.position, a, mt => { mt.CStart(manager); });
-                    storedGo.transform.parent.GetComponent<Tile>().Occupy(instance.gameObject);
+                    var instance = manager.World.InstantiateMiniTower(storedGo.transform.parent.position, a, mt => { mt.CStart(manager, storedGo.transform.parent.GetComponent<Tile>()); });
                     selected = new Option<GameObject>(instance.gameObject);
                     selectedArsenalInfo.Enable(instance);
                 });

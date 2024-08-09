@@ -125,14 +125,9 @@ public class World : MonoBehaviour
         foreach (var state in Save.rData.MTs) {
             RaycastHit info;
             Physics.Raycast(state.position+Vector3.up*3f, Vector3.down, out info, Mathf.Infinity);
-            var mt = InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state));
-            Assert.IsNotNull(info.collider, "IN NO CASE SHOULD THIS EVER BE NULL, THERE SHOULD ALWAYS BE A TILE BELOW THE TOWER");
             var tile = info.collider.transform.parent.GetComponent<Tile>();
-            mt.GetReportDeath() += m => { 
-                if (tile != null) 
-                    tile.Deoccupy();
-            };
-            tile.Occupy(mt.gameObject);
+            var mt = InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state, tile));
+            Assert.IsNotNull(info.collider, "IN NO CASE SHOULD THIS EVER BE NULL, THERE SHOULD ALWAYS BE A TILE BELOW THE TOWER");
         }
 
         Save.rData.MTs.Clear();
