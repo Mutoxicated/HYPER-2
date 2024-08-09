@@ -106,17 +106,17 @@ MonoBehaviour:
     m_Bits: 8
   stopNaNPropagation: 0
   finalBlitToCameraTarget: 0
-  antialiasingMode: 0
+  antialiasingMode: 2
   temporalAntialiasing:
     jitterSpread: 0.75
     sharpness: 0.25
     stationaryBlending: 0.95
     motionBlending: 0.85
   subpixelMorphologicalAntialiasing:
-    quality: 2
+    quality: 1
   fastApproximateAntialiasing:
     fastMode: 0
-    keepAlpha: 0
+    keepAlpha: 1
   fog:
     enabled: 1
     excludeSkybox: 1
@@ -178,7 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 974b1c66ae67abd4b9053cdeebf0d8ec, type: 3}
-  chromaticAberration: 0.137
 --- !u!114 &9048282189423877439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,5 +191,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: ddeea974de6cc7b4f8b62e681456efee, type: 3}
-  lineSize: 1.15
-  modulo: 2

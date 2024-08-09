@@ -400,9 +400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 3132699088074353899}
-  DOTInterval: {fileID: 1287294738151058555}
   arsenal: 0
-  DOT: 0.048
+  DOT: 1
+  dotInterval: 0.05
   highlight: {fileID: 4919237192308479548}
   options:
     hpbarAnchor: {fileID: 1278299766410420061}

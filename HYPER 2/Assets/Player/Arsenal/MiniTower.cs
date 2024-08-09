@@ -13,8 +13,7 @@ public class MTState {
     public int lvl = 1;
     public int xp = 0;
 
-    public MTState(Dictionary<Stat, float> mod, Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
-        (List<Stat>, List<float>) partition = General.DictToList(mod);
+    public MTState(Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
         position = pos;
         this.hp = hp;
         this.arsenal = arsenal;
@@ -27,6 +26,9 @@ public class MiniTower : MonoBehaviour
 {
     [SerializeField] private Stats stats;
     [SerializeField] private Resources.Arsenal arsenal;
+    // [SerializeField] private float tetherRange = 3f;
+    // [SerializeField] private float tetherRangeInc = 0.1f;
+    // [SerializeField] private Transform tetherPoint;
     [SerializeField, Range(0.01f, 1f)] private float DOT = .1f;
     [SerializeField] private float dotInterval = 0.2f;
     [SerializeField] private Highlight highlight;
@@ -57,7 +59,7 @@ public class MiniTower : MonoBehaviour
     }
 
     private void StoreMTState(RunData r) {
-        r.AddMTState(new MTState(Stats.Mod, transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
+        r.AddMTState(new MTState(transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
     }
 
     public void PrepareConfiguration() {

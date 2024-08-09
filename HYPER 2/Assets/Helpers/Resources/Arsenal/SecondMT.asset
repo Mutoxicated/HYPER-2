@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatsFields
   statsBase: {fileID: 11400000, guid: 67704fdc349c0af41ae9232210002ed8, type: 2}
   modifiers:
-  - 0.7
+  - 0.75
   - 1
   - 1
   - 0.6
