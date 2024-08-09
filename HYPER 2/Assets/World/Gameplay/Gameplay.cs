@@ -42,15 +42,15 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-    public const int RestoreHPCost = 4;
+    public const int RestoreHPCost = 2;
     public const int MiniTowerLvlUpHPBonus = 10;
     public const int BossPaycheck = 20;
 
     // Unlocks
     public const int unlock2ndPath = 6;
-    public const int unlock3rdPath = 10;
-    public const int unlock4thPath = 18;
-    public const int unlock1stWidePath = 24;
+    public const int unlock3rdPath = 14;
+    public const int unlock4thPath = 20;
+    public const int unlock1stWidePath = 25;
     public const int unlock2ndWidePath = 34;
     public const int unlock3rdWidePath = 43;
     public const int unlock4thWidePath = 51;
@@ -145,6 +145,11 @@ public class Gameplay : MonoBehaviour
         }
     }
 
+    private void NextPath() {
+        manager.GUI.PushNotif("<color=#ff0000>A new path has emerged...");
+        world.WG.CreateNextPath();
+    }
+
     public Enemy SpawnBoss(Vector3 pos, Direction main, Branch root) {
         var diff = Mathf.Clamp(Random.Range(BossDiff-1, BossDiff+1), 1, maxDiff);
         return world.InstantiateEnemy(enemyData[BOSS][diff][Seed.IntRange(0, enemyData[BOSS][diff].Count)], pos, (r, e) => {
@@ -171,7 +176,7 @@ public class Gameplay : MonoBehaviour
 
     public void EndWave() {
         Debug.Log("Wave ended ("+Waves+")");
-        Save.rData.IncLinearTime(amount: 0.06f);
+        Save.rData.IncLinearTime(amount: 0.05f);
         Save.rData.IncrementWaves();
         waitInterval.Enable();
         if (Waves % expandFrequency == 0 & Waves >= expandFrequency) {
@@ -184,13 +189,13 @@ public class Gameplay : MonoBehaviour
 
         switch (Waves) {
             case unlock2ndPath:
-                world.WG.CreateNextPath();
+                NextPath();
                 break;
             case unlock3rdPath:
-                world.WG.CreateNextPath();
+                NextPath();
                 break;
             case unlock4thPath:
-                world.WG.CreateNextPath();
+                NextPath();
                 break;
             case unlock1stWidePath:
                 world.WG.WidenNextPath();

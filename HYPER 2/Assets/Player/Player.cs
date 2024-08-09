@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
         dead = true;
         UIMode(false);
         gui.DeadUI();
-        musicPlayer.Pause();
+        musicPlayer.Enable();
     }
 
     public void UIMode(bool freezeTime) {
@@ -162,7 +162,8 @@ public class Player : MonoBehaviour
         player.Disable();
         debug.Disable();
         ui.Enable();
-        musicPlayer.Pause();
+        if (freezeTime)
+            musicPlayer.Disable();
     }
 
     public void PlayingMode() {
@@ -170,7 +171,7 @@ public class Player : MonoBehaviour
         player.Enable();
         debug.Enable();
         ui.Disable();
-        musicPlayer.Resume();
+        musicPlayer.Enable();
     }
 
     public void ShakeCamera(Vector3 caller, float strength = 1f) {
@@ -212,11 +213,13 @@ public class Player : MonoBehaviour
 
         movement.DStart();
         gui.DStart(this);
+        musicPlayer.DStart();
 
         gameObject.SetActive(true);
     }
 
     public void Refresh() {
+        musicPlayer.Refresh();
         graphix.Refresh();
         manager.SM.Refresh();
         cam.fieldOfView = Save.pData.Fov;

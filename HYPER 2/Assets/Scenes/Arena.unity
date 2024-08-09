@@ -913,7 +913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &777256971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2649,6 +2649,10 @@ PrefabInstance:
       propertyPath: towerStats
       value: 
       objectReference: {fileID: 2270164303187945445}
+    - target: {fileID: 6548597371438998476, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -38.99997
+      objectReference: {fileID: 0}
     - target: {fileID: 6978081049711193512, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 3

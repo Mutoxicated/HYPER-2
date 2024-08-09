@@ -20,7 +20,9 @@ public class AoE : MonoBehaviour
         );
         range = stats.Range.Get();
         vfx.GetAndThen(v => v.CStart());
-        //range.OnEnter += ApplyEffect;
+        range.OnEnter += e => {
+            e.gameObject.GetComponent<IInfectable>()?.Infect(bt);
+        };
     }
 
     private void IntervalInfect() {

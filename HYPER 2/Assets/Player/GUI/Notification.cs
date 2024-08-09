@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Notification : MonoBehaviour
 {
     [SerializeField] private Transform notifTransform;
-
+    [SerializeField] private TMP_Text msg;
     [SerializeField] private float duration = 2.5f;
-    [SerializeField] private float endScaleX = 2f;
     [SerializeField] private AnimationCurve scaleModifier;
+
+    private List<string> messages = new List<string>();
 
     private float time = 0f;
     // private float timeInterval = 0f;
@@ -29,8 +31,12 @@ public class Notification : MonoBehaviour
         initScale = notifTransform.localScale;
     }
 
-    public void Enable() {
-        gameObject.SetActive(true);
+    public void Enable(string msg) {
+        messages.Add(msg);
+        if (messages.Count == 1) {
+            this.msg.text = msg;
+            gameObject.SetActive(true);
+        }
     }
 
     private void Disable() {
@@ -41,10 +47,16 @@ public class Notification : MonoBehaviour
     private void Update() {
         time += Time.deltaTime;
 
-        notifTransform.localScale = initScale+Vector3.right*endScaleX*scaleModifier.Evaluate(time);
+        notifTransform.localScale = new Vector3(initScale.x, initScale.y*scaleModifier.Evaluate(time), initScale.z);
 
         if (time >= duration) {
-            Disable();
+            messages.RemoveAt(0);
+            if (messages.Count == 0)
+                Disable();
+            else {
+                time = 0f;
+                msg.text = messages[0];
+            }
         }
     }
 }

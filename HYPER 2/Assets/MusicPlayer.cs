@@ -20,23 +20,31 @@ public class MusicPlayer : MonoBehaviour
     private float room = 0.05f;
     private float time = 0.07f;
 
-    private void Awake() {
-        songs[index].Play();
+    private float musicT;
+    private bool disabled = false;
+
+    public void Refresh() {
+        songs[index].volume = Save.pData.MusicVolume;
     }
 
-    public void Pause() {
+    public void Disable() {
+        disabled = true;
         songs[index].Pause();
     }
 
-    public void Resume() {
+    public void Enable() {
+        disabled = false;
         songs[index].UnPause();
     }
 
-    private float musicT;
+    public void DStart() {
+        songs[index].Play();
+    }
 
     private void Update() {
+        if (disabled) { return; }
         if (!songs[index].isPlaying) {
-            index = Num.Wrap(index++, 0, songs.Count-1);
+            index = Num.Wrap(++index, 0, songs.Count-1);
             songs[index].volume = Save.pData.MusicVolume;
             songs[index].Play();
         }

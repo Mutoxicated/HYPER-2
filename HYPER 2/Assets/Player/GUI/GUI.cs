@@ -14,6 +14,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private PopupPool popupPool;
     [SerializeField] private HPBarPool hpbp;
     [SerializeField] private GameObject disabableUI;
+    [SerializeField] private Notification notification;
 
     [Header("Menu UI")]
     [SerializeField] private PauseMenuManager menuUI;
@@ -33,6 +34,7 @@ public class GUI : MonoBehaviour
 
     public void DStart(Player player) {
         this.player = player;
+        notification.CStart();
         menuUI.DStart(player);
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
@@ -89,6 +91,10 @@ public class GUI : MonoBehaviour
     public void DeadUI() {
         deathScreen.Enable();
         playingUI.SetActive(false);
+    }
+
+    public void PushNotif(string msg) {
+        notification.Enable(msg);
     }
 
     private void Update() {

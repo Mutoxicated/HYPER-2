@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Damage : MonoBehaviour {
@@ -6,7 +7,7 @@ public class Damage : MonoBehaviour {
     [SerializeField] private float damage;
     [SerializeField] private float step;
 
-    private Option<IDamageable> damageable = Option<IDamageable>.None();
+    private Option<IStats> stats = Option<IStats>.None();
     private float time = 0f;
 
     private void Start() {
@@ -28,14 +29,15 @@ public class Damage : MonoBehaviour {
 
 
     public void OnDisable() {
-        damageable = Option<IDamageable>.None();
+        stats = Option<IStats>.None();
     }
 
     public void IntervalDamage() {
-        if (damageable.IsNone()) {
-            damageable = new Option<IDamageable>(bacteria.ImmuneSystem.GetComponent<IDamageable>());
+        if (stats.IsNone()) {
+            stats = new Option<IStats>(bacteria.ImmuneSystem.GetComponent<IStats>());
         }
-        int xp = damageable.Get().BacteriaDamage(bacteria.Type, damage);
+        var converted = stats.Get().Convert();
+        int xp = stats.Get().BacteriaDamage(bacteria.Type, damage*Mathf.InverseLerp(converted[Stat.MAX_HEALTH], 0, converted.HP));
         if (bacteria.Stats.StatSide == Stats.Side.PLAYER) {
             bacteria.Stats.IncXP(xp/2);
             Player.IncrementXP(xp);

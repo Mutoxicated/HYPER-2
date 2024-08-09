@@ -12,7 +12,6 @@ public class Arsenal : MonoBehaviour
     [SerializeField] private List<ArsenalItem> aitems;
     [SerializeField] private ItemSorter sorter;
     [SerializeField] private ArsenalInfo ai;
-    [SerializeField] private Notification notif;
     [SerializeField] private Researcher researcher;
 
     public Inventory Inventory {
@@ -24,11 +23,10 @@ public class Arsenal : MonoBehaviour
     }
 
     public void DStart(Player player) {
-        notif.CStart();
         player.onLvlUp += lvl => {
             foreach (var aitem in aitems) {
                 if (aitem.Template.unlockAt != lvl) { continue; }
-                notif.Enable();
+                player.GUI.PushNotif("New minitower unlocked!");
                 ai.Unlock();
                 ai.Enable(aitem, false);
                 inventory.NewInventoryItem(aitem.Type);
