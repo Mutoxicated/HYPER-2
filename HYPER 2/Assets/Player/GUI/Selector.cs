@@ -71,7 +71,7 @@ public class Selector : MonoBehaviour
             UpdateSelection();
             if (player.OnLeftClick) {
                 qi.GetSelectedArsenal().GetAndThen(a => {
-                    var template = Resources.GetStatTemplate(a);
+                    var template = Resources.GetMTInfo(a);
                     if (Player.Money < template.worth) {
                         onDenyTowerPlacement.Play();
                         return;

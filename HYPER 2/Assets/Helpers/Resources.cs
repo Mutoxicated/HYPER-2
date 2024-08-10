@@ -43,6 +43,7 @@ public class Resources : MonoBehaviour
 
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
+    private static Dictionary<Arsenal, MinitowerInfo> mtInfo;
     private static Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
     private static Dictionary<Bullet, StatsTemplate> bulletStats;
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
@@ -94,7 +95,7 @@ public class Resources : MonoBehaviour
             Assert.IsNotNull(gos, "Enemy folder in Helpers/Resources doesn't exist");
             //Debug.Log("Uh "+gos.Length);
             for (int i = 0; i < gos.Length; i++) {
-                enemyStats.Add((Enemy)i, gos[i]);
+                enemyStats.Add((Enemy)i,  gos[i]);
             } 
         }
         if (enemyStatTemplates == null) {
@@ -138,6 +139,14 @@ public class Resources : MonoBehaviour
                 arsenalStats.Add((Arsenal)i, gos[i]);
             }
         }
+        if (mtInfo == null) {
+            mtInfo = new Dictionary<Arsenal, MinitowerInfo>();
+            var gos = UnityEngine.Resources.LoadAll<MinitowerInfo>("Arsenal");
+            Assert.IsNotNull(gos, "Arsenal folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                mtInfo.Add((Arsenal)i, gos[i]);
+            }
+        }
         if (self == null) {
             self = this;
         }
@@ -169,6 +178,10 @@ public class Resources : MonoBehaviour
 
     public static StatsTemplate GetStatTemplate(Arsenal arsenal) {
         return arsenalStats[arsenal];
+    }
+
+    public static MinitowerInfo GetMTInfo(Arsenal arsenal) {
+        return mtInfo[arsenal];
     }
 
     public static EnemyStats GetEnemyStats(Enemy enemy) {

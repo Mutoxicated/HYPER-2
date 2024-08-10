@@ -29,6 +29,7 @@ public class ArsenalInfo : MonoBehaviour
     private string ufmtWorth;
     private string ufmtResearchLvl;
 
+    private MinitowerInfo mtInfo;
     private StatsTemplate current;
     private Option<ArsenalItem> locked = Option<ArsenalItem>.None();
     private ArsenalItem currentItem;
@@ -52,6 +53,7 @@ public class ArsenalInfo : MonoBehaviour
         }
 
         currentItem = aitem;
+        mtInfo = aitem.MTInfo;
         current = aitem.Template;
         if (aitem.Locked) {
             researchBar.transform.parent.gameObject.SetActive(false);
@@ -59,7 +61,7 @@ public class ArsenalInfo : MonoBehaviour
             research.gameObject.SetActive(false);
             stopResearch.gameObject.SetActive(false);
             arsenalName.text = "???";
-            arsenalElement.text = "Unlock at lvl "+current.unlockAt;
+            arsenalElement.text = "Unlock at lvl "+mtInfo.unlockAt;
             for (int i = 0; i < arsenalStats.Count; i++) {
                 arsenalStats[i].text = "";
             }
@@ -72,7 +74,7 @@ public class ArsenalInfo : MonoBehaviour
         for (int i = 0; i < arsenalStats.Count; i++) {
             arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+Mathf.RoundToInt(current.statsBase.values[i]*current.modifiers[i]));
         }
-        arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+current.worth);
+        arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+mtInfo.worth);
         if (aitem.BeingResearched) {
             researchBar.transform.parent.gameObject.SetActive(true);
             researchLvl.gameObject.SetActive(true);

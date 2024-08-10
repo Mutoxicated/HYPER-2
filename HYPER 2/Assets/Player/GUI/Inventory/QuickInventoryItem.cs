@@ -52,7 +52,7 @@ public class QuickInventoryItem : MonoBehaviour, IPointerClickHandler
             cost.gameObject.SetActive(false);
             image.sprite = Resources.Empty;
         }else {
-            cost.text = Resources.GetStatTemplate(arsenalType.Get()).worth+"*";
+            cost.text = Resources.GetMTInfo(arsenalType.Get()).worth+"*";
             cost.gameObject.SetActive(true);
             image.sprite = Resources.GetArsenalSprite(arsenalType.Get());
         }

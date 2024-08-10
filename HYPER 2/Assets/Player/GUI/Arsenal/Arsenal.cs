@@ -25,7 +25,7 @@ public class Arsenal : MonoBehaviour
     public void DStart(Player player) {
         player.onLvlUp += lvl => {
             foreach (var aitem in aitems) {
-                if (aitem.Template.unlockAt != lvl) { continue; }
+                if (aitem.MTInfo.unlockAt != lvl) { continue; }
                 player.GUI.PushNotif("New minitower unlocked!");
                 ai.Unlock();
                 ai.Enable(aitem, false);

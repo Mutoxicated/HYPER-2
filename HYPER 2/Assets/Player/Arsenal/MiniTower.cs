@@ -38,6 +38,12 @@ public class MiniTower : MonoBehaviour
     private World.ReportDeath<MiniTower> death;
     private float time;
 
+    private MinitowerInfo mtInfo;
+
+    public MinitowerInfo MTInfo {
+        get { return mtInfo; }
+    }
+    
     public Stats Stats {
         get { return stats; }
     }
@@ -92,6 +98,7 @@ public class MiniTower : MonoBehaviour
     public void CStart(Manager manager, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
+        mtInfo = Resources.GetMTInfo(arsenal);
         stats.CStart(manager, Resources.GetStatTemplate(arsenal));
         PrepareConfiguration();
         for (int i = 1; i < Save.rData[arsenal, true]; i++) {
@@ -106,6 +113,7 @@ public class MiniTower : MonoBehaviour
     public void CStart(Manager manager, MTState state, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
+        mtInfo = Resources.GetMTInfo(arsenal);
         stats.CStart(manager, Resources.GetStatTemplate(arsenal), state);
         PrepareConfiguration();
         SetHPBar();

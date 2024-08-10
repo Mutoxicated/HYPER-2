@@ -15,8 +15,13 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Image internalImage;
     [SerializeField] private Text itemName;
 
+    private MinitowerInfo mtInfo;
     private StatsTemplate template;
     private bool selected;
+
+    public MinitowerInfo MTInfo {
+        get { return mtInfo; }
+    }
 
     public StatsTemplate Template {
         get { return template; }
@@ -59,11 +64,12 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void CStart(ArsenalInfo ai, Resources.Arsenal arsenalType) {
         type = arsenalType;
+        mtInfo = Resources.GetMTInfo(Type);
         template = Resources.GetStatTemplate(Type);
         if (Save.rData[arsenalType, 0]) {
             SetResearched(true);
         }
-        if (Save.rData.Lvl >= template.unlockAt) {
+        if (Save.rData.Lvl >= mtInfo.unlockAt) {
             ai.Arsenal.Inventory.NewInventoryItem(arsenalType);
         }
         this.ai = ai;
@@ -77,7 +83,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void UpdateLockState() {
-        if (Save.rData.Lvl >= Template.unlockAt) {
+        if (Save.rData.Lvl >= mtInfo.unlockAt) {
             locked = false;
             internalImage.sprite = Resources.GetArsenalSprite(type);
         }else {
@@ -108,9 +114,9 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public int CompareTo(ArsenalItem other)
     {
-        if (Template.unlockAt > other.Template.unlockAt) {
+        if (mtInfo.unlockAt > other.mtInfo.unlockAt) {
             return 1;
-        }else if (Template.unlockAt < other.Template.unlockAt) {
+        }else if (mtInfo.unlockAt < other.mtInfo.unlockAt) {
             return -1;
         }
 

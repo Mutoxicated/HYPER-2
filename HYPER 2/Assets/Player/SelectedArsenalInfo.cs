@@ -99,7 +99,7 @@ public class SelectedArsenalInfo : MonoBehaviour
     }
 
     public void Destroy() {
-        Player.SetMoneyRelative(mt.Get().Stats.Template.worth/2);
+        Player.SetMoneyRelative(mt.Get().MTInfo.worth/2);
         selector.Delete();
         mt = Option<MiniTower>.None();
     }

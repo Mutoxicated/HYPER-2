@@ -13,10 +13,8 @@ public class StatsEditor : Editor {
     SerializedProperty incrs;
     SerializedProperty element;
     SerializedProperty elementImmunities;
-    SerializedProperty worth;
     SerializedProperty xpKillWorth;
     //SerializedProperty xpHitWorth;
-    SerializedProperty unlockAt;
     SerializedProperty maxXp;
 
     void OnEnable()
@@ -26,10 +24,8 @@ public class StatsEditor : Editor {
         mods = serializedObject.FindProperty("modifiers");
         incrs = serializedObject.FindProperty("incrementers");
         element = serializedObject.FindProperty("element");
-        worth = serializedObject.FindProperty("worth");
         xpKillWorth = serializedObject.FindProperty("xpKillWorth");
         //xpHitWorth = serializedObject.FindProperty("xpHitWorth");
-        unlockAt = serializedObject.FindProperty("unlockAt");
         elementImmunities = serializedObject.FindProperty("elementImmunities");
         maxXp = serializedObject.FindProperty("maxXp");
     }
@@ -69,10 +65,8 @@ public class StatsEditor : Editor {
         //     }
         // }
         EditorGUILayout.PropertyField(maxXp);
-        EditorGUILayout.PropertyField(worth);
         EditorGUILayout.PropertyField(xpKillWorth);
         //EditorGUILayout.PropertyField(xpHitWorth);
-        EditorGUILayout.PropertyField(unlockAt);
         serializedObject.ApplyModifiedProperties();
         serializedObject.Update();
     }
@@ -106,6 +100,4 @@ public class StatsTemplate : ScriptableObject {
     public int maxXp = 100;
     public int maxXpIncrememt = 20;
     public int xpKillWorth = 15;
-    public int worth = 1;
-    public int unlockAt = 1;
 }
