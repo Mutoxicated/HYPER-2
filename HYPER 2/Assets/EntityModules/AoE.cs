@@ -5,7 +5,6 @@ using static Stat;
 public class AoE : MonoBehaviour
 {
     [SerializeField] private Stats stats;
-    [SerializeField] private Element bt;
     [SerializeField] private Option<AoEVFX> vfx;
 
     private float time = 0f;
@@ -18,22 +17,28 @@ public class AoE : MonoBehaviour
                 return; 
             }
         );
+        stats.Infector.TryGetOr(() => { 
+                Debug.LogError("AoE Component requires stats to have an infector to work"); 
+                enabled = false; 
+                return; 
+            }
+        );
         range = stats.Range.Get();
         vfx.GetAndThen(v => v.CStart());
         range.OnEnter += e => {
-            e.gameObject.GetComponent<IInfectable>()?.Infect(bt);
+            stats.Infector.Get().Infect(e.gameObject);
         };
     }
 
     private void IntervalInfect() {
         range.Foreach(s => {
-            s.gameObject.GetComponent<IInfectable>()?.Infect(bt);
+            stats.Infector.Get().Infect(s.gameObject);
         });
     }
 
     private void Update() {
         time += Time.deltaTime;
-        if (time >= stats[RATE]) {
+        if (time >= stats.get2(RATE)) {
             time = 0f;
             IntervalInfect();
         }

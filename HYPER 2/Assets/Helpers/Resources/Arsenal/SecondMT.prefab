@@ -319,6 +319,9 @@ MonoBehaviour:
   range:
     value: {fileID: 7481886185779306423}
     none: 0
+  infector:
+    value: {fileID: 6281448810093295795}
+    none: 0
 --- !u!114 &6946438472562378662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,6 +363,7 @@ GameObject:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 5161669399869190583}
   - component: {fileID: 6357530675397054155}
+  - component: {fileID: 6281448810093295795}
   m_Layer: 9
   m_Name: SecondMT
   m_TagString: Untagged
@@ -400,7 +404,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 4680867590344725517}
-  bt: 1
   vfx:
     value: {fileID: 5434881908682788599}
     none: 0
@@ -426,6 +429,26 @@ MonoBehaviour:
     scale: {x: 1, y: 1}
     extrusion: 0.4
   deathSound: {fileID: 4572574436130010742}
+  shoot:
+    value: {fileID: 0}
+    none: 1
+  aoe:
+    value: {fileID: 5161669399869190583}
+    none: 0
+--- !u!114 &6281448810093295795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68dc864d02b96944eba9131736b8af8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 4680867590344725517}
+  bacteria: 01000000
 --- !u!1001 &437199033219885260
 PrefabInstance:
   m_ObjectHideFlags: 0

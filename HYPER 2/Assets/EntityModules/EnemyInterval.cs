@@ -5,5 +5,5 @@ using UnityEngine;
 public class EnemyInterval : Interval
 {
     [SerializeField] private Stats stats;
-    public override float Rate => base.Rate*stats[Stat.RATE];
+    public override float Rate => base.Rate*stats.get2(Stat.RATE);
 }

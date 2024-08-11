@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6856514371646978792}
   - component: {fileID: 1102397301875930974}
   - component: {fileID: 8500442256562736494}
+  - component: {fileID: 928145364615675044}
   m_Layer: 15
   m_Name: NormalBullet
   m_TagString: Untagged
@@ -109,6 +110,9 @@ MonoBehaviour:
   range:
     value: {fileID: 0}
     none: 1
+  infector:
+    value: {fileID: 928145364615675044}
+    none: 0
 --- !u!114 &6856514371646978792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +161,17 @@ CapsuleCollider:
   m_Height: 0.019999998
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.01}
+--- !u!114 &928145364615675044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302140252168194963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68dc864d02b96944eba9131736b8af8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 3143230799931297311}
+  bacteria: 

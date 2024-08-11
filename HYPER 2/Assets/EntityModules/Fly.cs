@@ -39,9 +39,9 @@ public class Fly : MonoBehaviour
             delta -= 1;
             delta = Mathf.Abs(delta);
             if (delta > 0.55f) {
-                accel += accelRate*stats.Mod[RATE] * Time.deltaTime;
+                accel += accelRate*stats.get2(RATE) * Time.deltaTime;
             }else {
-               accel -= accelRate*stats.Mod[RATE] * Time.deltaTime;
+               accel -= accelRate*stats.get2(RATE) * Time.deltaTime;
                 if (accel < 1) {
                     accel = 1;
                 }

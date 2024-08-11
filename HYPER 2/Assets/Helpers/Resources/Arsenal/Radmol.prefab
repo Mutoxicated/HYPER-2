@@ -469,6 +469,9 @@ MonoBehaviour:
   range:
     value: {fileID: 4642719723575789599}
     none: 0
+  infector:
+    value: {fileID: 1224967015579423069}
+    none: 0
 --- !u!114 &8619943859075998309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,6 +499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7802898864057010206}
   - component: {fileID: 4299960412280213781}
+  - component: {fileID: 1224967015579423069}
   m_Layer: 9
   m_Name: Radmol
   m_TagString: Untagged
@@ -547,6 +551,26 @@ MonoBehaviour:
     scale: {x: 1, y: 1}
     extrusion: 0.4
   deathSound: {fileID: 1475223347903707501}
+  shoot:
+    value: {fileID: 3541066081156120108}
+    none: 0
+  aoe:
+    value: {fileID: 0}
+    none: 1
+--- !u!114 &1224967015579423069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710317631712574376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68dc864d02b96944eba9131736b8af8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 1535664006101290409}
+  bacteria: 
 --- !u!1 &7449173768195002225
 GameObject:
   m_ObjectHideFlags: 0

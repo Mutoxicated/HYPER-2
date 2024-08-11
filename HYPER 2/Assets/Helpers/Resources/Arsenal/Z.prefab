@@ -391,6 +391,12 @@ MonoBehaviour:
     scale: {x: 1, y: 1}
     extrusion: 0.5
   deathSound: {fileID: 2468219224981742662}
+  shoot:
+    value: {fileID: 4394082652632126094}
+    none: 0
+  aoe:
+    value: {fileID: 0}
+    none: 1
 --- !u!1 &6748846222919381372
 GameObject:
   m_ObjectHideFlags: 0

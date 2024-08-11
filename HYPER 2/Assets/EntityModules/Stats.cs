@@ -62,6 +62,7 @@ public class Stats : MonoBehaviour, IStats
     [SerializeField] private float height = 4f;
     [SerializeField] private Option<HitVisual> hitVisual = Option<HitVisual>.None();
     [SerializeField] private Option<Range> range;
+    [SerializeField] private Option<Infector> infector;
 
     private StatsTemplate template;
     private Dictionary<Stat, float> mod = new Dictionary<Stat, float>();
@@ -135,6 +136,10 @@ public class Stats : MonoBehaviour, IStats
 
     public List<Element> StatElmImmunities {
         get { return template.elementImmunities; }
+    }
+
+    public Option<Infector> Infector {
+        get { return infector; }
     }
 
     public Option<Range> Range {
@@ -230,12 +235,27 @@ public class Stats : MonoBehaviour, IStats
         hp = state.hp;
     }
 
+    private float incr;
+    public float modify2(Stat value) {
+        incr = incrs[value]*0.5f*(lvl-1);
+        return mod[value]-Mathf.InverseLerp(1, 0, incr)*incr;
+    }
+
     public float modify(Stat value) {
         return mod[value]+incrs[value]*(lvl-1);
     }
 
     private float get(Stat value) {
         return val[value]*Num.MinLimit(modify(value), 0.05f);
+    }
+
+    /// <summary>
+    /// Only call this on RATE, ARMOR and IMMUNITY
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public float get2(Stat value) {
+        return val[value]*Num.MinLimit(modify2(value), 0.05f);
     }
 
     public void inc(Stat stat, float value) {
@@ -292,6 +312,11 @@ public class Stats : MonoBehaviour, IStats
         foreach (var k in mod.Keys.ToArray()) {
             mod[k] *= other.mod[k];
         }
+        infector.GetAndThen(i => {
+            other.Infector.GetAndThen(i2 => {
+                i.Inherit(i2);
+            });
+        });
         inheriter = new Option<Stats>(other);
     }
 

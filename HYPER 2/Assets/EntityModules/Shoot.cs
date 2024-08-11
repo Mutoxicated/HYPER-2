@@ -23,6 +23,10 @@ public class Shoot : MonoBehaviour, IEnemyContainer
         shootInterval.AddEvent(shootBullet);
     }
 
+    public void ChangeBullet(Resources.Bullet bullet) {
+        this.bullet = bullet;
+    }
+
     public void shootBullet() {
         var targets = new GameObject[shootAmount];
         int filled = 0;

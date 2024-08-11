@@ -35,6 +35,21 @@ public class Resources : MonoBehaviour
         BOOM
     }
 
+    public enum MTUpgradeType {
+        MORE_HEALTH,
+        MORE_SPEED,
+        MORE_DAMAGE,
+        MORE_RANGE,
+        MORE_RATE,
+        MORE_ARMOR,
+        MORE_IMMUNITY,
+        MORE_CHANCE,
+        MORE_AMOUNT,
+        INFECT_WATER,
+        INFECT_FIRE,
+        INFECT_RADIATION
+    }
+
     public enum Misc {
         Line
     }
@@ -44,6 +59,7 @@ public class Resources : MonoBehaviour
     private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
     private static Dictionary<Arsenal, MinitowerInfo> mtInfo;
+    private static Dictionary<MTUpgradeType, MTUpgrade> mtUpgrades;
     private static Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
     private static Dictionary<Bullet, StatsTemplate> bulletStats;
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
@@ -147,6 +163,14 @@ public class Resources : MonoBehaviour
                 mtInfo.Add((Arsenal)i, gos[i]);
             }
         }
+         if (mtUpgrades == null) {
+            mtUpgrades = new Dictionary<MTUpgradeType, MTUpgrade>();
+            var gos = UnityEngine.Resources.LoadAll<MTUpgrade>("MTUpgrades");
+            Assert.IsNotNull(gos, "MTUpgrades folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                mtUpgrades.Add((MTUpgradeType)i, gos[i]);
+            }
+        }
         if (self == null) {
             self = this;
         }
@@ -182,6 +206,10 @@ public class Resources : MonoBehaviour
 
     public static MinitowerInfo GetMTInfo(Arsenal arsenal) {
         return mtInfo[arsenal];
+    }
+
+    public static MTUpgrade GetMTInfo(MTUpgradeType arsenal) {
+        return mtUpgrades[arsenal];
     }
 
     public static EnemyStats GetEnemyStats(Enemy enemy) {

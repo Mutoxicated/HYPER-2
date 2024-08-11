@@ -22,7 +22,7 @@ public class HealOp : MonoBehaviour
     private void Update() {
         time += Time.deltaTime;
 
-        if (time >= stats[Stat.RATE]) {
+        if (time >= stats.get2(Stat.RATE)) {
             time = 0f;
             stats.Range.Get().Foreach(s => {
                 s.Heal(stats[Stat.DAMAGE], true);

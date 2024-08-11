@@ -35,6 +35,18 @@ public class MiniTower : MonoBehaviour
     [SerializeField] private HPBarOptions options;
     [SerializeField] private Sound deathSound;
 
+    [Header("Components")]
+    [SerializeField] private Option<Shoot> shoot = Option<Shoot>.None();
+    [SerializeField] private Option<AoE> aoe = Option<AoE>.None();
+
+    public Option<Shoot> Shoot {
+        get { return shoot; }
+    }
+
+    public Option<AoE> AOE {
+        get { return aoe; }
+    }
+
     private World.ReportDeath<MiniTower> death;
     private float time;
 
