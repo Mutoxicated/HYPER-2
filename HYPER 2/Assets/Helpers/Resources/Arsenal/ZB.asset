@@ -21,6 +21,8 @@ MonoBehaviour:
   - 5
   - 1
   - 0.5
+  - 1
+  - 1
   incrementers:
   - 0
   - 0
@@ -29,6 +31,8 @@ MonoBehaviour:
   - 0.012
   - 0.04
   - 0.02
+  - 0
+  - 0
   element: 4
   elementImmunities: 
   maxXp: 1

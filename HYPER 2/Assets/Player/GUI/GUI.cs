@@ -11,6 +11,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private Selector selector;
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
+    [SerializeField] private Laboratory laboratory;
     [SerializeField] private PopupPool popupPool;
     [SerializeField] private HPBarPool hpbp;
     [SerializeField] private GameObject disabableUI;
@@ -32,6 +33,8 @@ public class GUI : MonoBehaviour
 
     private Player player;
 
+    private Option<IActivation> currentlyOpen = Option<IActivation>.None();
+
     public void DStart(Player player) {
         this.player = player;
         notification.CStart();
@@ -44,38 +47,23 @@ public class GUI : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public bool ArsenalActive() {
-        return arsenal.gameObject.activeInHierarchy;
-    }
-
-    public void OpenArsenal() {
-        if (inventory.gameObject.activeInHierarchy) {
-            CloseInventory();
-        }
-        arsenal.Enable();
+    public void OpenActivation(IActivation activation) {
+        CloseActivation();
+        activation.Enable();
         UIMode(false);
+        currentlyOpen = new Option<IActivation>(activation);
     }
 
-    public void CloseArsenal() {
-        arsenal.Disable();
-        PlayingMode();
+    public bool CurrentlyOpen() {
+        return currentlyOpen.IsSome();
     }
 
-    public bool InventoryActive() {
-        return inventory.gameObject.activeInHierarchy;
-    }
-
-    public void OpenInventory() {
-        if (arsenal.gameObject.activeInHierarchy) {
-            CloseArsenal();
-        }
-        inventory.Enable();
-        UIMode(false);
-    }
-
-    public void CloseInventory() {
-        inventory.Disable();
-        PlayingMode();
+    public void CloseActivation() {
+        currentlyOpen.GetAndThen(c => {
+            c.Disable();    
+            PlayingMode();
+            currentlyOpen = Option<IActivation>.None();
+        });
     }
 
     public void UIMode(bool freezeTime) {
@@ -103,19 +91,22 @@ public class GUI : MonoBehaviour
         }
         if (player.OnToggleArsenal) {
             if (!arsenal.gameObject.activeInHierarchy)
-                OpenArsenal();
-            else CloseArsenal();
+                OpenActivation(arsenal);
+            else CloseActivation();
         }
         if (player.OnToggleInventory) {
             if (!inventory.gameObject.activeInHierarchy)
-                OpenInventory();
-            else CloseInventory();
+                OpenActivation(inventory);
+            else CloseActivation();
+        }
+        if (player.OnToggleLab) {
+            if (!laboratory.gameObject.activeInHierarchy)
+                OpenActivation(inventory);
+            else CloseActivation();
         }
         if (player.OnQuit) {
-            if (InventoryActive()) {
-                CloseInventory();
-            }else if (ArsenalActive()) {
-                CloseArsenal();
+            if (CurrentlyOpen()) {
+                CloseActivation();
             }else {
                 menuUI.gameObject.SetActive(!menuUI.gameObject.activeInHierarchy);
                 playingUI.gameObject.SetActive(!playingUI.gameObject.activeInHierarchy);

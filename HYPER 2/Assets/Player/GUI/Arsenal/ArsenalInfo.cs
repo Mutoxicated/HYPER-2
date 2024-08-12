@@ -75,7 +75,7 @@ public class ArsenalInfo : MonoBehaviour
             arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+Mathf.RoundToInt(current.statsBase.values[i]*current.modifiers[i]));
         }
         arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+mtInfo.worth);
-        if (aitem.BeingResearched) {
+        if (Save.rData[aitem.Type, 0]) {
             researchBar.transform.parent.gameObject.SetActive(true);
             researchLvl.gameObject.SetActive(true);
             research.gameObject.SetActive(false);

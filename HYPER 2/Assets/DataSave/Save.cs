@@ -77,6 +77,7 @@ public class Save : MonoBehaviour
 
         if (dt == DataType.RUN) {
             rData = JsonUtility.FromJson<RunData>(json);
+            rData.InitArsenalLists();
         }else {
             pData = JsonUtility.FromJson<PlayerData>(json);
         }

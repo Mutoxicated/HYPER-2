@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Helpers;
+using Unity.VisualScripting;
 using UnityEngine;
 using static Resources.Arsenal;
 
@@ -169,6 +170,25 @@ public class RunData
         get { return pathsToWiden; }
     }
 
+    public void InitArsenalLists() {
+        var enumValues = Enum.GetValues(typeof(Resources.Arsenal)).ConvertTo<Resources.Arsenal[]>();
+
+        for (int i = 0; i < enumValues.Length; i++) {
+            if (researchProgressKeys.Count-1 < i) {
+                researchProgressKeys.Add(enumValues[i]);
+            }
+            if (researchProgressValues.Count-1 < i) {
+                researchProgressValues.Add(1);
+            }
+            if (currentlyResearchingValues.Count-1 < i) {
+                currentlyResearchingValues.Add((false, 0f));
+            }
+            if (powerups.Count-1 < i) {
+                powerups.Add(new List<Powerup>());
+            }
+        }
+    }
+
     [SerializeField] private List<Resources.Arsenal> researchProgressKeys = new List<Resources.Arsenal>() {
         BOOMER,
         FIRST_MT,
@@ -197,9 +217,15 @@ public class RunData
         get { return researchProgressKeys; }
     }
 
-    public int  CurrentlyResearchingCount {
+    public int CurrentlyResearchingCount {
         get { 
             return currentlyResearchingValues.Count;
+        }
+    }
+
+    public List<(bool, float)> CurrentlyResearching {
+        get { 
+            return currentlyResearchingValues;
         }
     }
 
@@ -258,11 +284,37 @@ public class RunData
             }
         }
     }
-}
 
-[Serializable]
-public class PathState 
-{
-    public Branch root1;
-    public Branch root2;
+    [SerializeField] private List<List<Powerup>> powerups = new List<List<Powerup>>();
+
+    public List<Powerup> this[Resources.Arsenal arsnl, float _] {
+        get {
+            for (int i = 0; i < researchProgressKeys.Count; i++) {
+                if (arsnl == researchProgressKeys[i]) {
+                    return powerups[i];
+                }
+            }
+            return new List<Powerup>();
+        }
+    }
+
+    public List<List<Powerup>> Powerups {
+        get { return powerups; }
+    }
+
+    public void AddPowerup(Resources.Arsenal arsnl, Powerup powerup) {
+        for (int i = 0; i < researchProgressKeys.Count; i++) {
+            if (arsnl == researchProgressKeys[i]) {
+                powerups[i].Add(powerup);
+            }
+        }
+    }
+
+    public void RemovePowerup(Resources.Arsenal arsnl, int index) {
+        for (int i = 0; i < researchProgressKeys.Count; i++) {
+            if (arsnl == researchProgressKeys[i]) {
+                powerups[i].RemoveAt(index);
+            }
+        }
+    }
 }

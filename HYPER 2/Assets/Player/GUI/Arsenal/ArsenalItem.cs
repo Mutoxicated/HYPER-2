@@ -27,19 +27,10 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         get { return template; }
     }
 
-    public bool BeingResearched {
-        get { return beingResearched; }
-    }
-
     private bool locked;
 
     public bool Locked {
         get { return locked; }
-    }
-
-    public void SetResearched(bool value) {
-        beingResearched = value;
-        SetImageColor();
     }
 
     public Resources.Arsenal Type {
@@ -66,9 +57,6 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         type = arsenalType;
         mtInfo = Resources.GetMTInfo(Type);
         template = Resources.GetStatTemplate(Type);
-        if (Save.rData[arsenalType, 0]) {
-            SetResearched(true);
-        }
         if (Save.rData.Lvl >= mtInfo.unlockAt) {
             ai.Arsenal.Inventory.NewInventoryItem(arsenalType);
         }
@@ -93,7 +81,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void SetImageColor() {
-        if (beingResearched) {
+        if (Save.rData[type, 0]) {
             image.color = Color.cyan;
         }else if (!locked) {
             image.color = Color.white;

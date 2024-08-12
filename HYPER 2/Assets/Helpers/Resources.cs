@@ -35,6 +35,7 @@ public class Resources : MonoBehaviour
         BOOM
     }
 
+    [Serializable]
     public enum MTUpgradeType {
         MORE_HEALTH,
         MORE_SPEED,

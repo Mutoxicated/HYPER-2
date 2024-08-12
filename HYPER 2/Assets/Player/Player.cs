@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private InputAction disableUIButton;
     private InputAction tabButton;
     private InputAction inventoryButton;
+    private InputAction labButton;
     private InputAction quitButton;
 
     private InputActionMap player;
@@ -107,6 +108,10 @@ public class Player : MonoBehaviour
 
     public bool OnToggleInventory {
         get { return inventoryButton.WasPerformedThisFrame(); }
+    }
+
+    public bool OnToggleLab {
+        get { return labButton.WasPerformedThisFrame(); }
     }
 
     public bool OnQuit {
@@ -198,6 +203,7 @@ public class Player : MonoBehaviour
         common = input.actions.FindActionMap("Common", true);
         tabButton = common.FindAction("ToggleArsenal");
         inventoryButton = common.FindAction("ToggleInventory");
+        labButton = common.FindAction("LabButton");
         quitButton = common.FindAction("Quit");
         common.Enable();
 

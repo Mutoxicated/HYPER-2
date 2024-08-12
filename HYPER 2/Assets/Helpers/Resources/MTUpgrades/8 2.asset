@@ -18,7 +18,7 @@ MonoBehaviour:
     none: 1
   mtStatModifier:
     value:
-      stats: 07000000
+      stats: 08000000
       incrementers:
       - 0.3
     none: 0

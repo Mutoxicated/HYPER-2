@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Arsenal : MonoBehaviour
+public class Arsenal : MonoBehaviour, IActivation
 {
     [SerializeField] private Inventory inventory;
     [SerializeField] private GameObject arsenalItemPrefab;
@@ -61,13 +61,13 @@ public class Arsenal : MonoBehaviour
     public void OnResearch(ArsenalItem arsenalItem) {
         bool success = researcher.ResearchItem(arsenalItem.Type);
         if (!success) { return; }
-        arsenalItem.SetResearched(true);
+        arsenalItem.SetImageColor();
         ai.Enable(arsenalItem, false);
     }
 
     public void OnStopResearch(ArsenalItem arsenalItem) {
-        arsenalItem.SetResearched(false);
         researcher.StopResearchingItem(arsenalItem.Type);
+        arsenalItem.SetImageColor();
         ai.Enable(arsenalItem, false);
     }
 
