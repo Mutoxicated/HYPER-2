@@ -61,6 +61,7 @@ public class Resources : MonoBehaviour
     private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
     private static Dictionary<Arsenal, MinitowerInfo> mtInfo;
     private static Dictionary<MTUpgradeType, MTUpgrade> mtUpgrades;
+    private static Dictionary<MTUpgradeType, Sprite> mtUpgradeSprites;
     private static Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
     private static Dictionary<Bullet, StatsTemplate> bulletStats;
     private static Dictionary<Arsenal, Sprite> arsenalSprites;
@@ -164,12 +165,20 @@ public class Resources : MonoBehaviour
                 mtInfo.Add((Arsenal)i, gos[i]);
             }
         }
-         if (mtUpgrades == null) {
+        if (mtUpgrades == null) {
             mtUpgrades = new Dictionary<MTUpgradeType, MTUpgrade>();
             var gos = UnityEngine.Resources.LoadAll<MTUpgrade>("MTUpgrades");
             Assert.IsNotNull(gos, "MTUpgrades folder in Helpers/Resources doesn't exist");
             for (int i = 0; i < gos.Length; i++) {
                 mtUpgrades.Add((MTUpgradeType)i, gos[i]);
+            }
+        }
+        if (mtUpgradeSprites == null) {
+            mtUpgradeSprites = new Dictionary<MTUpgradeType, Sprite>();
+            var gos = UnityEngine.Resources.LoadAll<Sprite>("MTUpgrades");
+            Assert.IsNotNull(gos, "MTUpgrades folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                mtUpgradeSprites.Add((MTUpgradeType)i, gos[i]);
             }
         }
         if (self == null) {
@@ -209,8 +218,12 @@ public class Resources : MonoBehaviour
         return mtInfo[arsenal];
     }
 
-    public static MTUpgrade GetMTInfo(MTUpgradeType arsenal) {
+    public static MTUpgrade GetMTUpgrade(MTUpgradeType arsenal) {
         return mtUpgrades[arsenal];
+    }
+
+    public static Sprite GetMTUpgradeSprite(MTUpgradeType arsenal) {
+        return mtUpgradeSprites[arsenal];
     }
 
     public static EnemyStats GetEnemyStats(Enemy enemy) {

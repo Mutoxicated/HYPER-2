@@ -30,6 +30,9 @@ public class Researcher : MonoBehaviour
             if (Save.rData[curr] >= Resources.GetStatTemplate(curr).maxXp) {
                 Save.rData[curr] = 0f;
                 Save.rData[curr, true]++;
+                var info = Resources.GetMTInfo(curr);
+                if (info.upgradable)
+                    Save.rData.AddPowerup(curr, new Powerup(curr, info));
             }
         }
     }

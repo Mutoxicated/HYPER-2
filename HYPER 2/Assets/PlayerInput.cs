@@ -992,6 +992,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LabButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""54e73a94-5be1-4174-92aa-8eb8afba8a2f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1025,6 +1034,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aef65b9e-19fc-4ab2-88a8-04fd66b3b525"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""LabButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1126,6 +1146,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Common_ToggleArsenal = m_Common.FindAction("ToggleArsenal", throwIfNotFound: true);
         m_Common_ToggleInventory = m_Common.FindAction("ToggleInventory", throwIfNotFound: true);
         m_Common_Quit = m_Common.FindAction("Quit", throwIfNotFound: true);
+        m_Common_LabButton = m_Common.FindAction("LabButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1431,6 +1452,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Common_ToggleArsenal;
     private readonly InputAction m_Common_ToggleInventory;
     private readonly InputAction m_Common_Quit;
+    private readonly InputAction m_Common_LabButton;
     public struct CommonActions
     {
         private @PlayerInput m_Wrapper;
@@ -1438,6 +1460,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @ToggleArsenal => m_Wrapper.m_Common_ToggleArsenal;
         public InputAction @ToggleInventory => m_Wrapper.m_Common_ToggleInventory;
         public InputAction @Quit => m_Wrapper.m_Common_Quit;
+        public InputAction @LabButton => m_Wrapper.m_Common_LabButton;
         public InputActionMap Get() { return m_Wrapper.m_Common; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1456,6 +1479,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Quit.started -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
                 @Quit.performed -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
                 @Quit.canceled -= m_Wrapper.m_CommonActionsCallbackInterface.OnQuit;
+                @LabButton.started -= m_Wrapper.m_CommonActionsCallbackInterface.OnLabButton;
+                @LabButton.performed -= m_Wrapper.m_CommonActionsCallbackInterface.OnLabButton;
+                @LabButton.canceled -= m_Wrapper.m_CommonActionsCallbackInterface.OnLabButton;
             }
             m_Wrapper.m_CommonActionsCallbackInterface = instance;
             if (instance != null)
@@ -1469,6 +1495,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Quit.started += instance.OnQuit;
                 @Quit.performed += instance.OnQuit;
                 @Quit.canceled += instance.OnQuit;
+                @LabButton.started += instance.OnLabButton;
+                @LabButton.performed += instance.OnLabButton;
+                @LabButton.canceled += instance.OnLabButton;
             }
         }
     }
@@ -1553,5 +1582,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnToggleArsenal(InputAction.CallbackContext context);
         void OnToggleInventory(InputAction.CallbackContext context);
         void OnQuit(InputAction.CallbackContext context);
+        void OnLabButton(InputAction.CallbackContext context);
     }
 }

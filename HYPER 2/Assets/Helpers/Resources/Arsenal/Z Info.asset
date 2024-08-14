@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worth: 9
   unlockAt: 23
+  upgradable: 1
+  availableUpgrades: 0600000002000000030000000100000000000000

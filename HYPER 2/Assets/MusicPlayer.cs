@@ -57,9 +57,9 @@ public class MusicPlayer : MonoBehaviour
         }
         avg /= samples.Length;
         t = Mathf.InverseLerp(-1f, 1f, avg);
-        newT = Mathf.Lerp(newT, 0f, Time.deltaTime*0.8f);    
+        newT = Mathf.Lerp(newT, 0f, Time.deltaTime*1.5f);    
 
-        musicT = Mathf.Lerp(musicT, Mathf.InverseLerp(0f, 1f, t-newT), Time.deltaTime*25f);
+        musicT = Mathf.Lerp(musicT, Mathf.InverseLerp(0f, 0.8f, t-newT), Time.deltaTime*25f);
         MusicVisualization.SetT(musicT);
         avg = 0f;
         if (time >= room){

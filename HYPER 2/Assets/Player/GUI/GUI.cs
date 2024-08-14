@@ -43,8 +43,29 @@ public class GUI : MonoBehaviour
         quickInventory.DStart(player);
         arsenal.DStart(player);
         inventory.DStart();
+        laboratory.DStart();
         popupPool.DStart(player.gameObject);
         gameObject.SetActive(true);
+    }
+
+    public void Toggle(int type) {
+        switch (type) {
+        case 0:
+            ToggleActivation(arsenal);
+            break;
+        case 1:
+            ToggleActivation(inventory);
+            break;
+        case 2:
+            ToggleActivation(laboratory);
+            break;
+        }
+    }
+
+    public void ToggleActivation(IActivation activation) {
+        if (!activation.State())
+            OpenActivation(activation);
+        else CloseActivation();
     }
 
     public void OpenActivation(IActivation activation) {
@@ -90,19 +111,13 @@ public class GUI : MonoBehaviour
             disabableUI.SetActive(!disabableUI.activeInHierarchy);
         }
         if (player.OnToggleArsenal) {
-            if (!arsenal.gameObject.activeInHierarchy)
-                OpenActivation(arsenal);
-            else CloseActivation();
+            ToggleActivation(arsenal);
         }
         if (player.OnToggleInventory) {
-            if (!inventory.gameObject.activeInHierarchy)
-                OpenActivation(inventory);
-            else CloseActivation();
+            ToggleActivation(inventory);
         }
         if (player.OnToggleLab) {
-            if (!laboratory.gameObject.activeInHierarchy)
-                OpenActivation(inventory);
-            else CloseActivation();
+            ToggleActivation(laboratory);
         }
         if (player.OnQuit) {
             if (CurrentlyOpen()) {

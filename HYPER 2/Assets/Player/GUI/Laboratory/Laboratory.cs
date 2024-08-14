@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Laboratory : MonoBehaviour, IActivation
 {
     [SerializeField] private GameObject labItemPrefab;
+    [SerializeField] private Transform container;
     [SerializeField] private Transform anchor;
+    [SerializeField] private TMP_Text noItems;
 
     private List<LabItem> labItems = new List<LabItem>();
 
@@ -18,33 +21,51 @@ public class Laboratory : MonoBehaviour, IActivation
         var enumValues = Enum.GetValues(typeof(Resources.Arsenal)).ConvertTo<Resources.Arsenal[]>();
 
         for (int i = 0; i < enumValues.Length; i++) {
-            var instance = Instantiate(labItemPrefab);
+            var instance = Instantiate(labItemPrefab, container);
             var labItem = instance.GetComponent<LabItem>();
             labItems.Add(labItem);
             labItem.CStart(enumValues[i], this, i);
         }
-        yInc = labItems[0].ImageSizeY*1.1f;
+        yInc = labItems[0].ImageSizeY*60.1f;
     }
 
     public void Enable() {
         currentlyResearchedLabItems.Clear();
         for (int i = 0; i < Save.rData.CurrentlyResearchingCount; i++) {
-            if (Save.rData.CurrentlyResearching[i].Item1) {
+            if (Save.rData.CurrentlyResearching[i].active) {
+                labItems[i].Enable();
                 currentlyResearchedLabItems.Add(labItems[i]);
             }
         }
+        noItems.gameObject.SetActive(currentlyResearchedLabItems.Count == 0);
 
         Sort();
+        gameObject.SetActive(true);
     }
 
     public void Disable() {
+        foreach (var li in currentlyResearchedLabItems) {
+            li.Disable();
+        }
         gameObject.SetActive(false);
     }
 
     private void Sort() {
-        Vector3 rightDown = new Vector3(1, -1);
+        Vector3 rightDown = new Vector3(0.8f, -1, 0);
+        Vector3 alteredPos;
         for (int i = 0; i < currentlyResearchedLabItems.Count; i++) {
-            currentlyResearchedLabItems[i].transform.position = anchor.position+rightDown*yInc*0.5f+Vector3.down*yInc*i;
+            currentlyResearchedLabItems[i].transform.position = anchor.position;
+            alteredPos = currentlyResearchedLabItems[i].transform.localPosition;
+
+            alteredPos += rightDown*yInc*0.5f;
+            alteredPos += Vector3.down*yInc*2f*i;
+
+            currentlyResearchedLabItems[i].transform.localPosition = alteredPos;
         }
+    }
+
+    public bool State()
+    {
+        return gameObject.activeInHierarchy;
     }
 }

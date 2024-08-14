@@ -8,6 +8,10 @@ using static Resources.Arsenal;
 [Serializable]
 public class RunData
 {
+    public RunData() {
+        InitArsenalLists();
+    }
+
     //MACRO_START
     [SerializeField] private int __seed = -1;
     
@@ -181,20 +185,18 @@ public class RunData
                 researchProgressValues.Add(1);
             }
             if (currentlyResearchingValues.Count-1 < i) {
-                currentlyResearchingValues.Add((false, 0f));
+                currentlyResearchingValues.Add(new ResearchItem());
             }
-            if (powerups.Count-1 < i) {
-                powerups.Add(new List<Powerup>());
+            if (pendingPowerups.Count-1 < i) {
+                pendingPowerups.Add(new Powerups());
+            }
+            if (takenUpgrades.Count-1 < i) {
+                takenUpgrades.Add(new Upgrades());
             }
         }
     }
 
     [SerializeField] private List<Resources.Arsenal> researchProgressKeys = new List<Resources.Arsenal>() {
-        BOOMER,
-        FIRST_MT,
-        SECOND_MT,
-        WATCHER,
-        RADMOL,
     };
 
     [SerializeField] private List<int> researchProgressValues = new List<int>() {
@@ -205,12 +207,8 @@ public class RunData
         1,
     };
 
-    [SerializeField] private List<(bool, float)> currentlyResearchingValues = new List<(bool, float)>() {
-        (false, 0f),
-        (false, 0f),
-        (false, 0f),
-        (false, 0f),
-        (false, 0f),
+    [SerializeField] private List<ResearchItem> currentlyResearchingValues = new List<ResearchItem>() {
+
     };
 
     public List<Resources.Arsenal> CurrentlyResearchingKeys {
@@ -223,7 +221,7 @@ public class RunData
         }
     }
 
-    public List<(bool, float)> CurrentlyResearching {
+    public List<ResearchItem> CurrentlyResearching {
         get { 
             return currentlyResearchingValues;
         }
@@ -251,7 +249,7 @@ public class RunData
         get {
             for (int i = 0; i < researchProgressKeys.Count; i++) {
                 if (arsnl == researchProgressKeys[i]) {
-                    return currentlyResearchingValues[i].Item2;
+                    return currentlyResearchingValues[i].progress;
                 }
             }
             return -1f;
@@ -259,7 +257,7 @@ public class RunData
         set {
             for (int i = 0; i < researchProgressKeys.Count; i++) {
                 if (arsnl == researchProgressKeys[i]) {
-                    currentlyResearchingValues[i] = (currentlyResearchingValues[i].Item1, value);
+                    currentlyResearchingValues[i].progress = value;
                 }
             }
         }
@@ -269,7 +267,7 @@ public class RunData
         get {
             for (int i = 0; i < researchProgressKeys.Count; i++) {
                 if (arsnl == researchProgressKeys[i]) {
-                    return currentlyResearchingValues[i].Item1;
+                    return currentlyResearchingValues[i].active;
                 }
             }
             return false;
@@ -279,33 +277,51 @@ public class RunData
     public void SetCurrentlyResearched(Resources.Arsenal arsnl, bool activated) {
         for (int i = 0; i < researchProgressKeys.Count; i++) {
             if (arsnl == researchProgressKeys[i]) {
-                currentlyResearchingValues[i] = (activated, currentlyResearchingValues[i].Item2);
+                currentlyResearchingValues[i].active = activated;
                 break;
             }
         }
     }
 
-    [SerializeField] private List<List<Powerup>> powerups = new List<List<Powerup>>();
+    [SerializeField] private List<Upgrades> takenUpgrades = new List<Upgrades>();
+    public void AddTakenUpgrade(Resources.Arsenal arsnl, Resources.MTUpgradeType powerup) {
+        for (int i = 0; i < researchProgressKeys.Count; i++) {
+            if (arsnl == researchProgressKeys[i]) {
+                takenUpgrades[i].self.Add(powerup);
+            }
+        }
+    }
+
+    public List<Resources.MTUpgradeType> GetTakenUpgrades(Resources.Arsenal arsnl) {
+        for (int i = 0; i < researchProgressKeys.Count; i++) {
+            if (arsnl == researchProgressKeys[i]) {
+                return takenUpgrades[i].self;
+            }
+        }
+        return new List<Resources.MTUpgradeType>();
+    }
+
+    [SerializeField] private List<Powerups> pendingPowerups = new List<Powerups>();
 
     public List<Powerup> this[Resources.Arsenal arsnl, float _] {
         get {
             for (int i = 0; i < researchProgressKeys.Count; i++) {
                 if (arsnl == researchProgressKeys[i]) {
-                    return powerups[i];
+                    return pendingPowerups[i].self;
                 }
             }
             return new List<Powerup>();
         }
     }
 
-    public List<List<Powerup>> Powerups {
-        get { return powerups; }
+    public List<Powerups> Powerups {
+        get { return pendingPowerups; }
     }
 
     public void AddPowerup(Resources.Arsenal arsnl, Powerup powerup) {
         for (int i = 0; i < researchProgressKeys.Count; i++) {
             if (arsnl == researchProgressKeys[i]) {
-                powerups[i].Add(powerup);
+                pendingPowerups[i].self.Add(powerup);
             }
         }
     }
@@ -313,8 +329,32 @@ public class RunData
     public void RemovePowerup(Resources.Arsenal arsnl, int index) {
         for (int i = 0; i < researchProgressKeys.Count; i++) {
             if (arsnl == researchProgressKeys[i]) {
-                powerups[i].RemoveAt(index);
+                pendingPowerups[i].self.RemoveAt(index);
             }
         }
     }
+}
+
+[Serializable]
+public class Powerups {
+    public List<Powerup> self = new List<Powerup>();
+
+    public Powerups() {
+        self = new List<Powerup>();
+    }
+}
+
+[Serializable]
+public class Upgrades {
+    public List<Resources.MTUpgradeType> self = new List<Resources.MTUpgradeType>();
+
+    public Upgrades() {
+        self = new List<Resources.MTUpgradeType>();
+    }
+}
+
+[Serializable]
+public class ResearchItem {
+    public bool active = false;
+    public float progress = 0f;
 }

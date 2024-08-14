@@ -99,4 +99,9 @@ public class Arsenal : MonoBehaviour, IActivation
         }
         gameObject.SetActive(false);
     }
+
+    public bool State()
+    {
+        return gameObject.activeInHierarchy;
+    }
 }

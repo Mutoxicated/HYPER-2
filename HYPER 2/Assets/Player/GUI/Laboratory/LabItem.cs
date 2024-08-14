@@ -7,7 +7,7 @@ public class LabItem : MonoBehaviour {
     [SerializeField] private Image image;
     [SerializeField] private Image progressBar;
     [SerializeField] private TMP_Text lvl;
-    [SerializeField] private Upgrade upgrade;
+    [SerializeField] private PowerupMono powerup;
 
     private Resources.Arsenal arsenalType;
     private StatsTemplate template;
@@ -24,11 +24,18 @@ public class LabItem : MonoBehaviour {
         this.arsenalType = arsenalType;
         image.sprite = Resources.GetArsenalSprite(arsenalType);
         ufmtLvl = lvl.text;
-        upgrade.CStart(arsenalType, index);
+        powerup.CStart(arsenalType, index);
     }
 
     public void Enable() {
+        Update();
+        powerup.Enable();
         gameObject.SetActive(true);
+    }
+
+    public void Disable() {
+        powerup.Disable();
+        gameObject.SetActive(false);
     }
 
     private void Update() {

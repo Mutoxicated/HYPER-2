@@ -12,6 +12,6 @@ public static class MusicVisualization
     }
 
     public static void SetT(float t) {
-        MusicVisualization.t = Mathf.Clamp01(t);
+        MusicVisualization.t = /*Mathf.Pow(*/Mathf.Clamp01(t)/*, 2)*/;
     }
 }

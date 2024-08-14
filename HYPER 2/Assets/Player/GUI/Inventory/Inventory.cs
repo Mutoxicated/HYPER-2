@@ -47,4 +47,9 @@ public class Inventory : MonoBehaviour, IActivation
         sorter.RevertItemScaling();
         gameObject.SetActive(false);
     }
+
+    public bool State()
+    {
+        return gameObject.activeInHierarchy;
+    }
 }
