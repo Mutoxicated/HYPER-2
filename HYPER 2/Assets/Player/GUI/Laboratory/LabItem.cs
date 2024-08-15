@@ -18,13 +18,13 @@ public class LabItem : MonoBehaviour {
         get { return image.transform.localScale.y; }
     }
 
-    public void CStart(Resources.Arsenal arsenalType, Laboratory lab, int index) {
+    public void CStart(PowerupPopup popup, Resources.Arsenal arsenalType, Laboratory lab, int index) {
         this.lab = lab;
         template = Resources.GetStatTemplate(arsenalType);
         this.arsenalType = arsenalType;
         image.sprite = Resources.GetArsenalSprite(arsenalType);
         ufmtLvl = lvl.text;
-        powerup.CStart(arsenalType, index);
+        powerup.CStart(popup, arsenalType, index);
     }
 
     public void Enable() {

@@ -14,8 +14,10 @@ public class PowerupMono : MonoBehaviour
     private int index;
 
     private int count;
+    private PowerupPopup popup;
 
-    public void CStart(Resources.Arsenal arsenalType, int index) {
+    public void CStart(PowerupPopup popup, Resources.Arsenal arsenalType, int index) {
+        this.popup = popup;
         this.arsenalType = arsenalType;
         ufmtPowerupsCount = upgradesCount.text;
         this.index = index;
@@ -32,6 +34,10 @@ public class PowerupMono : MonoBehaviour
 
     public void Disable() {
         innerHolder.SetActive(false);
+    }
+
+    public void Popup() {
+        popup.Enable(index, arsenalType);
     }
 
     private void Update() {

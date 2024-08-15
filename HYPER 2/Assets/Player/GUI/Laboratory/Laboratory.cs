@@ -17,14 +17,20 @@ public class Laboratory : MonoBehaviour, IActivation
     private List<LabItem> currentlyResearchedLabItems = new List<LabItem>();
     private float yInc;
 
-    public void DStart() {
+    private PowerupPopup popup;
+    private GUI gui;
+
+    public void DStart(GUI gui, PowerupPopup popup) {
+        this.popup = popup;
+        this.gui = gui;
+
         var enumValues = Enum.GetValues(typeof(Resources.Arsenal)).ConvertTo<Resources.Arsenal[]>();
 
         for (int i = 0; i < enumValues.Length; i++) {
             var instance = Instantiate(labItemPrefab, container);
             var labItem = instance.GetComponent<LabItem>();
             labItems.Add(labItem);
-            labItem.CStart(enumValues[i], this, i);
+            labItem.CStart(popup, enumValues[i], this, i);
         }
         yInc = labItems[0].ImageSizeY*60.1f;
     }
@@ -67,5 +73,15 @@ public class Laboratory : MonoBehaviour, IActivation
     public bool State()
     {
         return gameObject.activeInHierarchy;
+    }
+
+    public void Update() {
+        if (gui.Player.OnToggleLab) {
+            if (popup.gameObject.activeInHierarchy) {
+                popup.Disable();
+            }else {
+                gui.ToggleActivation(this);
+            }
+        }
     }
 }

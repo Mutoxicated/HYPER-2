@@ -12,8 +12,10 @@ public class MTState {
     public Resources.Arsenal arsenal;
     public int lvl = 1;
     public int xp = 0;
+    public List<Resources.MTUpgradeType> upgrades = new List<Resources.MTUpgradeType>();
 
-    public MTState(Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
+    public MTState(List<Resources.MTUpgradeType> upgrades, Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
+        this.upgrades = upgrades;
         position = pos;
         this.hp = hp;
         this.arsenal = arsenal;
@@ -50,6 +52,7 @@ public class MiniTower : MonoBehaviour
     private World.ReportDeath<MiniTower> death;
     private float time;
 
+    private List<Resources.MTUpgradeType> upgrades = new List<Resources.MTUpgradeType>();
     private MinitowerInfo mtInfo;
 
     public MinitowerInfo MTInfo {
@@ -77,7 +80,7 @@ public class MiniTower : MonoBehaviour
     }
 
     private void StoreMTState(RunData r) {
-        r.AddMTState(new MTState(transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
+        r.AddMTState(new MTState(upgrades, transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
     }
 
     public void PrepareConfiguration() {
@@ -107,6 +110,14 @@ public class MiniTower : MonoBehaviour
         tile.Occupy(gameObject);
     }
 
+    private void ApplyUpgrades() {
+        var upgrades = Save.rData.GetTakenUpgrades(arsenal);
+        for (int i = 0; i < upgrades.Count; i++) {
+            this.upgrades.Add(upgrades[i]);
+            Resources.GetMTUpgrade(upgrades[i]).Action(this);
+        }
+    }
+
     public void CStart(Manager manager, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
         PublicEvent.onSaveRun += StoreMTState;
@@ -118,6 +129,7 @@ public class MiniTower : MonoBehaviour
         }
         SetHPBar();
         ConfigureTile(tile);
+        ApplyUpgrades();
 
         gameObject.SetActive(true);
     }
@@ -130,6 +142,10 @@ public class MiniTower : MonoBehaviour
         PrepareConfiguration();
         SetHPBar();
         ConfigureTile(tile);
+        upgrades = state.upgrades;
+        for (int i = 0; i < upgrades.Count; i++) {
+            Resources.GetMTUpgrade(upgrades[i]).Action(this);
+        }
 
         //transform.position = state.position;
 

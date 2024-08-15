@@ -55,19 +55,19 @@ public class Resources : MonoBehaviour
         Line
     }
 
-    private static Dictionary<Misc, GameObject> miscs;
+    private Dictionary<Misc, GameObject> miscs;
 
-    private static Dictionary<Arsenal, GameObject> arsenalPrefabs;
-    private static Dictionary<Arsenal, StatsTemplate> arsenalStats;
-    private static Dictionary<Arsenal, MinitowerInfo> mtInfo;
-    private static Dictionary<MTUpgradeType, MTUpgrade> mtUpgrades;
-    private static Dictionary<MTUpgradeType, Sprite> mtUpgradeSprites;
-    private static Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
-    private static Dictionary<Bullet, StatsTemplate> bulletStats;
-    private static Dictionary<Arsenal, Sprite> arsenalSprites;
-    private static Dictionary<Enemy, GameObject> enemyPrefabs;
-    private static Dictionary<Enemy, EnemyStats> enemyStats;
-    private static Dictionary<Bullet, GameObject> bulletPrefabs;
+    private Dictionary<Arsenal, GameObject> arsenalPrefabs;
+    private Dictionary<Arsenal, StatsTemplate> arsenalStats;
+    private Dictionary<Arsenal, MinitowerInfo> mtInfo;
+    private Dictionary<MTUpgradeType, MTUpgrade> mtUpgrades;
+    private Dictionary<MTUpgradeType, Sprite> mtUpgradeSprites;
+    private Dictionary<Enemy, StatsTemplate> enemyStatTemplates;
+    private Dictionary<Bullet, StatsTemplate> bulletStats;
+    private Dictionary<Arsenal, Sprite> arsenalSprites;
+    private Dictionary<Enemy, GameObject> enemyPrefabs;
+    private Dictionary<Enemy, EnemyStats> enemyStats;
+    private Dictionary<Bullet, GameObject> bulletPrefabs;
 
     [SerializeField] private Sprite empty;
     [SerializeField] private Sprite locked;
@@ -81,6 +81,7 @@ public class Resources : MonoBehaviour
     }
 
     public void DStart() {
+        self = this;
         if (miscs == null) {
             miscs = new Dictionary<Misc, GameObject>();
             var gos = UnityEngine.Resources.LoadAll<GameObject>("Misc");
@@ -181,60 +182,57 @@ public class Resources : MonoBehaviour
                 mtUpgradeSprites.Add((MTUpgradeType)i, gos[i]);
             }
         }
-        if (self == null) {
-            self = this;
-        }
     }
 
     public static GameObject GetMisc(Misc misc) {
-        return miscs[misc];
+        return self.miscs[misc];
     }
 
     public static GameObject GetBullet(Bullet bullet) {
-        return bulletPrefabs[bullet];
+        return self.bulletPrefabs[bullet];
     }
 
     public static StatsTemplate GetBulletStats(Bullet bullet) {
-        return bulletStats[bullet];
+        return self.bulletStats[bullet];
     }
 
     public static GameObject GetEnemy(Enemy enemy) {
-        return enemyPrefabs[enemy];
+        return self.enemyPrefabs[enemy];
     }
 
     public static GameObject GetArsenal(Arsenal arsenal) {
-        return arsenalPrefabs[arsenal];
+        return self.arsenalPrefabs[arsenal];
     }
 
     public static Sprite GetArsenalSprite(Arsenal arsenal) {
-        return arsenalSprites[arsenal];
+        return self.arsenalSprites[arsenal];
     }
 
     public static StatsTemplate GetStatTemplate(Arsenal arsenal) {
-        return arsenalStats[arsenal];
+        return self.arsenalStats[arsenal];
     }
 
     public static MinitowerInfo GetMTInfo(Arsenal arsenal) {
-        return mtInfo[arsenal];
+        return self.mtInfo[arsenal];
     }
 
     public static MTUpgrade GetMTUpgrade(MTUpgradeType arsenal) {
-        return mtUpgrades[arsenal];
+        return self.mtUpgrades[arsenal];
     }
 
     public static Sprite GetMTUpgradeSprite(MTUpgradeType arsenal) {
-        return mtUpgradeSprites[arsenal];
+        return self.mtUpgradeSprites[arsenal];
     }
 
     public static EnemyStats GetEnemyStats(Enemy enemy) {
-        return enemyStats[enemy];
+        return self.enemyStats[enemy];
     }
 
         public static StatsTemplate GetEnemyStatTemplates(Enemy arsenal) {
-        return enemyStatTemplates[arsenal];
+        return self.enemyStatTemplates[arsenal];
     }
     
     public static IEnumerator<KeyValuePair<Enemy, EnemyStats>> IterEnemyStats() {
-        return enemyStats.GetEnumerator();
+        return self.enemyStats.GetEnumerator();
     }
 }

@@ -472,7 +472,26 @@ namespace Helpers {
         }
     }
 
+    public static class Rarity {
+        public static string FromPerc(int percentage) {
+            if (Num.Range(percentage, 0, 35)) {
+                return "<color=#ffffff>Common";
+            }else if (Num.Range(percentage, 36, 60)) {
+                return "<color=#00ff00>Uncommon";
+            }else if (Num.Range(percentage, 61, 85)) {
+                return "<color=#aa00ff>Epic";
+            }else if (Num.Range(percentage, 86, 100)) {
+                return "<color=#ffaa00>Legendary";
+            }else {
+                return "ERROR";
+            }
+        }
+    }
+
     public static class Num {
+        public static bool Range(int value, int min, int max) {
+            return value >= min && value <= max;
+        }
         public static int Wrap(int value, int min, int max) {
             var length = max-min+1;
             while (value > max) {

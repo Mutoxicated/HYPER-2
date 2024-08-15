@@ -12,6 +12,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
     [SerializeField] private Laboratory laboratory;
+    [SerializeField] private PowerupPopup popup;
     [SerializeField] private PopupPool popupPool;
     [SerializeField] private HPBarPool hpbp;
     [SerializeField] private GameObject disabableUI;
@@ -31,6 +32,10 @@ public class GUI : MonoBehaviour
         get { return hpbp; }
     }
 
+    public Player Player {
+        get { return player; }
+    }
+
     private Player player;
 
     private Option<IActivation> currentlyOpen = Option<IActivation>.None();
@@ -43,7 +48,8 @@ public class GUI : MonoBehaviour
         quickInventory.DStart(player);
         arsenal.DStart(player);
         inventory.DStart();
-        laboratory.DStart();
+        popup.DStart();
+        laboratory.DStart(this, popup);
         popupPool.DStart(player.gameObject);
         gameObject.SetActive(true);
     }
@@ -116,7 +122,7 @@ public class GUI : MonoBehaviour
         if (player.OnToggleInventory) {
             ToggleActivation(inventory);
         }
-        if (player.OnToggleLab) {
+        if (player.OnToggleLab && !laboratory.gameObject.activeInHierarchy) {
             ToggleActivation(laboratory);
         }
         if (player.OnQuit) {

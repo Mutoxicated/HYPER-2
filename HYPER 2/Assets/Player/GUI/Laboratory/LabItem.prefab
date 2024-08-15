@@ -588,7 +588,7 @@ MonoBehaviour:
   image: {fileID: 2920603172136362963}
   progressBar: {fileID: 717296629658765621}
   lvl: {fileID: 5779656537101113309}
-  upgrade: {fileID: 7465204841722113095}
+  powerup: {fileID: 7465204841722113095}
 --- !u!1 &6817854570262048107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,18 +1050,18 @@ PrefabInstance:
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1254667601420803931}
+      objectReference: {fileID: 7465204841722113095}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StopResearching
+      value: Popup
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: LabItem, Assembly-CSharp
+      value: PowerupMono, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6480082483562110934, guid: f22c0a5b653929342b15d23c5b73e9c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

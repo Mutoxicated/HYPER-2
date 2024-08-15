@@ -23,7 +23,7 @@ public class MTUpgrade : ScriptableObject
     public void Action(MiniTower mt) {
         mtStatModifier.GetAndThen(sm => {
             for (int i = 0; i < sm.stats.Count; i++) {
-                mt.Stats.inc(sm.stats[i], -sm.incrementers[i]);
+                mt.Stats.inc(sm.stats[i], sm.incrementers[i]);
             }
         });
         bacteria.GetAndThen(bc => {
@@ -37,6 +37,7 @@ public class MTUpgrade : ScriptableObject
         var desc = new StringBuilder();
 
         var success = bacteria.GetAndThen(bs => {
+            desc.Append("\n");
             desc.Append("Infect: ");
 
             for (int i = 0; i < bs.Count; i++) {
@@ -48,12 +49,16 @@ public class MTUpgrade : ScriptableObject
         }).Successful();
 
         mtStatModifier.GetAndThen(sm => {
+            desc.Append("\n");
             if (success) {
                 desc.Append("\n");
             }
 
             for (int i = 0; i < sm.stats.Count; i++) {
-                desc.AppendFormat("{0}:{1}{2}\n", sm.stats[i].ToString(), "<color=#00ff00>+", sm.incrementers[i]);
+                desc.AppendFormat("{0}:{1}{2}", sm.stats[i].ToString(), "<color=#00ff00>+", sm.incrementers[i]);
+                if (i != sm.stats.Count-1) {
+                    desc.Append("\n");
+                } 
             }
         });
 

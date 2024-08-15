@@ -85,6 +85,7 @@ public class Stats : MonoBehaviour, IStats
     public delegate int OnStatDamage(Stats stats, float amount);
     public delegate int OnBacteriaDamage(Element elm, float amount);
     public delegate int OnExplosionDamage(Explosion.Strength strength, float additive);
+    public delegate void OnStatChange();
 
     public OnDie onDie;
     public OnDie onBeforeDeath;
@@ -92,6 +93,7 @@ public class Stats : MonoBehaviour, IStats
     public OnBacteriaDamage onBacteriaDamage;
     public OnExplosionDamage onExplosionDamage;
     public OnLvl onLvlUp;
+    public Dictionary<Stat, OnStatChange> statChangeCallbacks = new Dictionary<Stat, OnStatChange>();
 
     public Option<GameObject> Holder {
         get { return holder; }
@@ -260,6 +262,9 @@ public class Stats : MonoBehaviour, IStats
 
     public void inc(Stat stat, float value) {
         mod[stat] += value;
+        if (statChangeCallbacks.ContainsKey(stat)) {
+            statChangeCallbacks[stat]();
+        }
     }
 
     public TargetMessage TargetIsValid(int offset = 0) {
@@ -322,6 +327,14 @@ public class Stats : MonoBehaviour, IStats
 
     public bool ImmuneTo(Element elm) {
         return StatElmImmunities.Contains(elm);
+    }
+
+    public void AddStatChangeCallback(Stat stat, OnStatChange cb) {
+        if (statChangeCallbacks.ContainsKey(stat)) {
+            statChangeCallbacks[stat] += cb;
+        }else {
+            statChangeCallbacks.Add(stat, cb);
+        }
     }
 
     public void ConfigureOnLvlUp(bool reset = false, params OnLvl[] calbacks) {

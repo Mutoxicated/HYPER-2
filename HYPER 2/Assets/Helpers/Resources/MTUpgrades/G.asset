@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc8b43e58ca5e8948b1829f77b1075f4, type: 3}
-  m_Name: 8
+  m_Name: G
   m_EditorClassIdentifier: 
-  stackable: 0
-  bacteria:
-    value: 00000000
-    none: 0
+  bulletChanger:
+    value: 0
+    none: 1
   mtStatModifier:
     value:
-      stats: 06000000
+      stats: 05000000
       incrementers:
       - 0.3
-    none: 1
+    none: 0

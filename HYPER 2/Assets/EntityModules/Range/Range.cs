@@ -33,6 +33,9 @@ public class Range : MonoBehaviour
     public void CStart() {
         OnEnter = new OnEnemy(e => enemies.Add(e));
         OnExit = new OnEnemy(e => enemies.Remove(e));
+        stats.AddStatChangeCallback(RANGE, () => {
+            UpdateSize();
+        });
         if (expand){
             stats.ConfigureOnLvlUp(false, UpdateSize);
             UpdateSize();
