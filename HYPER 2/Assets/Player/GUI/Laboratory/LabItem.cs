@@ -29,7 +29,6 @@ public class LabItem : MonoBehaviour {
 
     public void Enable() {
         Update();
-        powerup.Enable();
         gameObject.SetActive(true);
     }
 

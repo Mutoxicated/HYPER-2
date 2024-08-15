@@ -40,7 +40,7 @@ public class Selector : MonoBehaviour
 
         RaycastHit hit;
         Physics.Raycast(towerPos+Vector3.up, Vector3.down, out hit, Mathf.Infinity);
-        hit.collider.transform.parent.GetComponent<Tile>().Deoccupy();
+        hit.collider.GetComponent<Tile>()?.Deoccupy();
     }
 
     private GameObject storedGo;

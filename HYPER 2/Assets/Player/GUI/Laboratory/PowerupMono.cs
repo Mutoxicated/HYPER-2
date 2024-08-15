@@ -23,15 +23,6 @@ public class PowerupMono : MonoBehaviour
         this.index = index;
     }
 
-    public void Enable() {
-        count = Save.rData.Powerups[index].self.Count;
-        if (count == 0) {
-            Disable();
-            return;
-        }
-        innerHolder.SetActive(true);
-    }
-
     public void Disable() {
         innerHolder.SetActive(false);
     }
@@ -42,8 +33,10 @@ public class PowerupMono : MonoBehaviour
 
     private void Update() {
         count = Save.rData.Powerups[index].self.Count;
-        if (count == 0) {
+        if (count == 0 && innerHolder.activeInHierarchy) {
             Disable();
+        }else if (count != 0 && !innerHolder.activeInHierarchy) {
+            innerHolder.SetActive(true);
         }
         upgradesCount.text = String.Format(ufmtPowerupsCount, count);
     }
