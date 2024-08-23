@@ -333,6 +333,16 @@ public class RunData
             }
         }
     }
+
+    private int __researchSlots = 2;
+
+    public int ReseachSlots {
+        get { return __researchSlots; }
+    }
+
+    public void IncResearchSlots() {
+        __researchSlots++;
+    }
 }
 
 [Serializable]

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Laboratory : MonoBehaviour, IActivation
 {
@@ -11,11 +12,14 @@ public class Laboratory : MonoBehaviour, IActivation
     [SerializeField] private Transform container;
     [SerializeField] private Transform anchor;
     [SerializeField] private TMP_Text noItems;
+    [SerializeField] private TMP_Text researchSlotCost;
+    [SerializeField] private TMP_Text slots;
 
     private List<LabItem> labItems = new List<LabItem>();
 
     private List<LabItem> currentlyResearchedLabItems = new List<LabItem>();
     private float yInc;
+    private string ufmtSlots;
 
     private PowerupPopup popup;
     private GUI gui;
@@ -33,6 +37,8 @@ public class Laboratory : MonoBehaviour, IActivation
             labItem.CStart(popup, enumValues[i], this, i);
         }
         yInc = labItems[0].ImageSizeY*60.1f;
+        researchSlotCost.text = Gameplay.ResearchSlotCost+"*";
+        ufmtSlots = slots.text;
     }
 
     public void Enable() {
@@ -76,6 +82,7 @@ public class Laboratory : MonoBehaviour, IActivation
     }
 
     public void Update() {
+        slots.text = String.Format(ufmtSlots, Save.rData.ReseachSlots);
         if (gui.Player.OnToggleLab) {
             if (popup.gameObject.activeInHierarchy) {
                 popup.Disable();
@@ -83,5 +90,13 @@ public class Laboratory : MonoBehaviour, IActivation
                 gui.ToggleActivation(this);
             }
         }
+    }
+
+    public void BuyResearchSlot() {
+        if (Save.rData.Money < Gameplay.ResearchSlotCost) {
+            return;
+        } 
+        Player.SetMoneyRelative(-Gameplay.ResearchSlotCost);
+        Save.rData.IncResearchSlots();
     }
 }

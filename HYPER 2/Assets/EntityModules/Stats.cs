@@ -164,6 +164,9 @@ public class Stats : MonoBehaviour, IStats
 
     private void PrepareValues() {
         onDie = new OnDie(_ => Destroy(holder.Get()));
+        onLvlUp = new OnLvl(() => {
+            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
+        });
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
             bool killed = GetHit(amount);
             int xp = killed ? template.xpKillWorth/2 : 0;
@@ -290,11 +293,6 @@ public class Stats : MonoBehaviour, IStats
         if (showPopup & StatSide == Side.PLAYER & gameObject.name != "Tower")
             LvlUpPopup();
         lvl++;
-        if (restoreCompletely) {
-            hp = this[Stat.MAX_HEALTH];
-        }else {
-            Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
-        }
     }
 
     public int MaxRequiredXP() {

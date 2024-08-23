@@ -14,7 +14,7 @@ public class Researcher : MonoBehaviour
         foreach (var item in Save.rData.CurrentlyResearchingKeys) {
             if (Save.rData[item, 0]) {
                 count++;
-                if (count >= 2)
+                if (count >= Save.rData.ReseachSlots)
                     return false;
             }
         }
@@ -26,7 +26,7 @@ public class Researcher : MonoBehaviour
         if (Save.rData == null) { enabled = false; return; }
         foreach (var curr in Save.rData.CurrentlyResearchingKeys) {
             if (!Save.rData[curr, 0]) { continue; }
-            Save.rData[curr] += Time.deltaTime*10f;
+            Save.rData[curr] += Time.deltaTime*1.2f;
             if (Save.rData[curr] >= Resources.GetStatTemplate(curr).maxXp) {
                 Save.rData[curr] = 0f;
                 Save.rData[curr, true]++;

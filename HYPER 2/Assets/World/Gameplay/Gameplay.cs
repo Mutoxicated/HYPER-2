@@ -42,6 +42,8 @@ public class Gameplay : MonoBehaviour
         }
     }
 
+    public const int ResearchSlotCost = 10;
+    public const int TowerLvlUpHPBonus = 20;
     public const int RestoreHPCost = 2;
     public const int MiniTowerLvlUpHPBonus = 10;
     public const int BossPaycheck = 20;

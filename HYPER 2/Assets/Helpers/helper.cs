@@ -417,6 +417,8 @@ namespace Helpers {
                 return "Skyscraper";
             case Resources.Arsenal.HEALINATOR:
                 return "Healinator 3000";
+            case Resources.Arsenal.KEEPER:
+                return "Caretaker";
             default:
                 return "UNKNOWN";
             }

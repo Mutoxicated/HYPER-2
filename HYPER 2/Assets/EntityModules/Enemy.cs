@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
         this.main = main;
         this.death += death;
         stats.CStart(manager, Resources.GetEnemyStatTemplates(enemyType));
+        stats.ConfigureOnLvlUp(true, () => {});
         PrepareConfiguration();
         for (int i = 1; i < manager.GP.EnemyLvl; i++) {
             stats.IncXP(stats.MaxRequiredXP());
