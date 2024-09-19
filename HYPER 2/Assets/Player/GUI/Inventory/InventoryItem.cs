@@ -50,8 +50,14 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         transform.position = Camera.main.ScreenToWorldPoint(mousePos);
     }
 
+    private void OnDisable() {
+        if (updatePos)
+            OnPointerUp();
+        if (hovering)
+            OnPointerExit();
+    }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData _ = null)
     {
         //Debug.Log("drag");
         inv.currentlyDragged = new Option<InventoryItem>(this);
@@ -62,7 +68,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         updatePos = true;
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData  _ = null)
     {
         inv.QuickInventory.CheckCDs();
         inv.currentlyDragged =  Option<InventoryItem>.None();
@@ -75,7 +81,7 @@ public class InventoryItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         hovering = true;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData _ = null)
     {
         hovering = false;
     }

@@ -168,7 +168,7 @@ public class Stats : MonoBehaviour, IStats
             Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(lvl*0.25f, 1));
         });
         onBacteriaDamage = new OnBacteriaDamage((elm, amount) => {
-            bool killed = GetHit(amount);
+            bool killed = GetHit(Option<Stats>.None(), amount);
             int xp = killed ? template.xpKillWorth/2 : 0;
             if (template.statsBase.side == Side.ENEMY  & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
@@ -177,7 +177,7 @@ public class Stats : MonoBehaviour, IStats
             return xp;
         });
         onExplosionDamage = new OnExplosionDamage((strength, amount) => {
-            bool killed = GetHit((amount+(int)strength)*get(Stat.ARMOR));
+            bool killed = GetHit(Option<Stats>.None(), (amount+(int)strength)*get(Stat.ARMOR));
             int xp = killed ? template.xpKillWorth : 0;
             if (template.statsBase.side == Side.ENEMY  & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
@@ -186,7 +186,7 @@ public class Stats : MonoBehaviour, IStats
             return xp;
         });
         onStatDamage = new OnStatDamage((stats, amount) => {
-            bool killed = GetHit(amount*get(Stat.ARMOR));
+            bool killed = GetHit(new Option<Stats>(stats), amount*get(Stat.ARMOR));
             int xp = killed ? template.xpKillWorth : 0;
             if (template.statsBase.side == Side.ENEMY & xp > 0)
                 manager.GUI.PopupPool.Popup(transform.position+Vector3.up, Color.cyan, "+"+xp);
@@ -277,11 +277,11 @@ public class Stats : MonoBehaviour, IStats
         return range.Get().TryTarget(offset);
     }
 
-    public bool GetHit(float damage) {
+    public bool GetHit(Option<Stats> stats, float damage) {
         if (hp <= 0) { return false; }
         hp -= damage;
         if (hp <= 0) {
-            Die(Option<Stats>.None());
+            Die(stats);
             return true;
         }
         return false;

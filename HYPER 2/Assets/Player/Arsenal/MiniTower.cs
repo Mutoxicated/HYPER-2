@@ -85,15 +85,15 @@ public class MiniTower : MonoBehaviour
 
     public void PrepareConfiguration() {
         stats.ConfigureOnStatDamage(true, (s, d) => {
-            bool killed = stats.GetHit(d);
+            bool killed = stats.GetHit(new Option<Stats>(s), d);
             return killed ? stats.Template.xpKillWorth : 0;
         });
         stats.ConfigureOnExplosionDamage(true, (str, d) => {
-            bool killed = stats.GetHit(d+(int)str);
+            bool killed = stats.GetHit(Option<Stats>.None(), d+(int)str);
             return killed ? stats.Template.xpKillWorth : 0;
         });
         stats.ConfigureOnBacteriaDamage(true, (elm, d) => {
-            bool killed = stats.GetHit(d);
+            bool killed = stats.GetHit(Option<Stats>.None(), d);
             return killed ? stats.Template.xpKillWorth : 0;
         });
     }

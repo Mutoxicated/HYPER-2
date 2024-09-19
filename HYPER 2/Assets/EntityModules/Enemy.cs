@@ -22,6 +22,11 @@ public class Enemy : MonoBehaviour
 
     private void PrepareConfiguration() {
         stats.ConfigureOnDie(false, s => {
+            s.GetAndThen(sts => {
+                if (sts.StatSide == Stats.Side.PLAYER) {
+                    Player.SetMoneyRelative(1);
+                }
+            });
             death.Invoke(this);
         });
     }

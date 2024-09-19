@@ -15,3 +15,4 @@ MonoBehaviour:
   difficulty: 3
   verticality: 2
   type: 0
+  startChance: 5

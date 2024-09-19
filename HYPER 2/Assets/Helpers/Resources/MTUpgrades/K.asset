@@ -20,5 +20,5 @@ MonoBehaviour:
     value:
       stats: 06000000
       incrementers:
-      - 0.3
+      - 0.1
     none: 1

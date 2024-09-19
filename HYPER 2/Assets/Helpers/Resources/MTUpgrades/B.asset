@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8b43e58ca5e8948b1829f77b1075f4, type: 3}
   m_Name: B
   m_EditorClassIdentifier: 
-  bulletChanger:
-    value: 0
+  stackable: 1
+  bacteria:
+    value: 
     none: 1
   mtStatModifier:
     value:
       stats: 01000000
       incrementers:
-      - 0.3
+      - 0.1
     none: 0

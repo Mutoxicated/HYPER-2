@@ -56,7 +56,7 @@ public class RunData
     	__lvl = val;
     }
     //MACRO_END
-    [SerializeField] private float __linearT = 0.5f;
+    [SerializeField] private float __linearT = 0.65f;
 
     public float LinearTime {
         get { return __linearT; }
@@ -342,6 +342,67 @@ public class RunData
 
     public void IncResearchSlots() {
         __researchSlots++;
+    }
+
+    // ENEMY CHANCE EVALUATOR RELATED
+    [SerializeField] private List<Resources.Enemy> enemyKeys = new List<Resources.Enemy>();
+    [SerializeField] private List<float> enemyChanceTimes = new List<float>();
+    [SerializeField] private List<float> enemyChanceSteps = new List<float>();
+
+    public List<Resources.Enemy> EnemyKeys {
+        get { return enemyKeys; }
+    }
+
+    public void IncEnemyChanceTime(int index) {
+        if (index > enemyChanceTimes.Count-1) {
+            return;
+        }
+        enemyChanceTimes[index] += enemyChanceSteps[index];
+    }
+
+    public void LoopEnemyChanceTime(int index) {
+        if (index > enemyChanceTimes.Count-1) {
+            return;
+        }
+        enemyChanceTimes[index] -= 360;
+    }
+
+    public Option<float> GetEnemyChanceTime(int index) {
+        if (index > enemyChanceTimes.Count-1) {
+            return Option<float>.None();
+        }
+        return new Option<float>(enemyChanceTimes[index]);
+    }
+
+    public Option<float> GetEnemyChanceStep(int index) {
+        if (index > enemyChanceTimes.Count-1) {
+            return Option<float>.None();
+        }
+        return new Option<float>(enemyChanceSteps[index]);
+    }
+
+    public Option<float> GetEnemyChanceTime(Resources.Enemy enemy) {
+        for (int i = 0; i < enemyChanceTimes.Count; i++) {
+            if (enemyKeys[i] == enemy) {
+                return new Option<float>(enemyChanceTimes[i]);
+            }
+        }
+        return Option<float>.None();
+    }
+
+    public Option<float> GetEnemyChanceStep(Resources.Enemy enemy) {
+        for (int i = 0; i < enemyChanceSteps.Count; i++) {
+            if (enemyKeys[i] == enemy) {
+                return new Option<float>(enemyChanceSteps[i]);
+            }
+        }
+        return Option<float>.None();
+    }
+
+    public void AddEnemyChance(Resources.Enemy enemy, float step) {
+        enemyKeys.Add(enemy);
+        enemyChanceTimes.Add(0);
+        enemyChanceSteps.Add(step);
     }
 }
 

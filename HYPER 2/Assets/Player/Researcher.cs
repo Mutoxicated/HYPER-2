@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Researcher : MonoBehaviour
 {
+    [SerializeField] private GameObject notify;
+
     public void StopResearchingItem(Resources.Arsenal arsenal) {
         Save.rData.SetCurrentlyResearched(arsenal, false);
     }
@@ -26,8 +28,8 @@ public class Researcher : MonoBehaviour
         if (Save.rData == null) { enabled = false; return; }
         foreach (var curr in Save.rData.CurrentlyResearchingKeys) {
             if (!Save.rData[curr, 0]) { continue; }
-            Save.rData[curr] += Time.deltaTime*1.2f;
-            if (Save.rData[curr] >= Resources.GetStatTemplate(curr).maxXp) {
+            Save.rData[curr] += Time.deltaTime*1.3f;
+            if (Save.rData[curr] >= Resources.GetStatTemplate(curr).maxXp+Gameplay.ResearchXPStep*(Save.rData[curr, true]-1)) {
                 Save.rData[curr] = 0f;
                 Save.rData[curr, true]++;
                 var info = Resources.GetMTInfo(curr);
@@ -35,5 +37,12 @@ public class Researcher : MonoBehaviour
                     Save.rData.AddPowerup(curr, new Powerup(curr, info));
             }
         }
+        foreach (var pows in Save.rData.Powerups) {
+            if (pows.self.Count != 0) {
+                notify.SetActive(true);
+                return;
+            }
+        }
+        notify.SetActive(false);
     }
 }

@@ -22,7 +22,7 @@ public class PublicEvent : MonoBehaviour
         saveRun.Invoke(Save.rData);
     }
 
-    public void ClearAll() {
+    public static void ClearAll() {
         onSaveRun = new OnSaveRun(r => {});
     }
 }

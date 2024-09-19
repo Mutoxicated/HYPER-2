@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Helpers;
 using UnityEngine;
 using static EnemyType;
@@ -33,7 +34,7 @@ public class Gameplay : MonoBehaviour
     // Settings
     private int enemiesAmount = 1;
     public int EnemiesAmount {
-        get { return Mathf.CeilToInt(enemiesAmount*Waves); }
+        get { return Mathf.CeilToInt(enemiesAmount*Waves)+4*(Save.rData.Paths.Count-1); }
     }
 
     public int RestoreHPPrice {
@@ -42,6 +43,7 @@ public class Gameplay : MonoBehaviour
         }
     }
 
+    public const int ResearchXPStep = 15;
     public const int ResearchSlotCost = 10;
     public const int TowerLvlUpHPBonus = 20;
     public const int RestoreHPCost = 2;
@@ -63,12 +65,15 @@ public class Gameplay : MonoBehaviour
     private const int goldPileFrequency = 50;
     private const int expandFrequency = 25;
 
+    [SerializeField] private EnemyChanceEvaluator ece;
     [SerializeField] private QuantitativeRound quantitativeRound;
     [SerializeField] private BossRound bossRound;
     [SerializeField] private InvasionRound invasionRound;
     [SerializeField] private Interval waitInterval;
 
-    private Dictionary<EnemyType, Dictionary<int, List<Resources.Enemy>>> enemyData = new Dictionary<EnemyType, Dictionary<int, List<Resources.Enemy>>>();
+    public static Dictionary<EnemyType, Dictionary<int, List<Resources.Enemy>>> enemyData = new Dictionary<EnemyType, Dictionary<int, List<Resources.Enemy>>>();
+
+    private Vector2Int minMaxEnemyRange;
 
     // Dependencies
     private Manager manager;
@@ -103,11 +108,13 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-    private int maxDiff;
+    public static int maxDiff;
     public void DStart(Manager manager) {
         self = this;
         this.manager = manager;
         world = manager.World;
+
+        enemyData.Clear();
 
         var iter = Resources.IterEnemyStats();
         using (iter) {
@@ -124,19 +131,72 @@ public class Gameplay : MonoBehaviour
             }
         }
 
+        SetMinMaxEnemyRange(0, 0);
+        ece.GiveEnemyRange(minMaxEnemyRange);
+
         waitInterval.Enable();
     }
 
-    public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {
-        var diff = Mathf.Clamp(Random.Range(IntLinearT-3, IntLinearT+1), 1, maxDiff);
-        return world.InstantiateEnemy(enemyData[COMMON][diff][Seed.IntRange(0, enemyData[COMMON][diff].Count)], pos, (r, e) => {
+    public void SetMinMaxEnemyRange(int dMin, int dMax) {
+        minMaxEnemyRange.x = IntLinearT-4+dMin;
+        minMaxEnemyRange.y = IntLinearT+dMax;
+    }
+
+    public List<(Resources.Enemy enemy, int chance)> GetEnemyContestants() {
+        List<(Resources.Enemy, int)> enemies = new List<(Resources.Enemy, int)>();
+
+        var clampedMinDiff = Mathf.Clamp(minMaxEnemyRange.x, 1, maxDiff);
+        var clampedMaxDiff = Mathf.Clamp(minMaxEnemyRange.y, 1, maxDiff);
+
+        int middle = Mathf.RoundToInt((float)clampedMinDiff+(float)clampedMaxDiff/2f);
+
+        var maxAngle = Mathf.PI;
+        var angleStep = maxAngle/middle;
+
+        // grab from 1/3 to 1/1.5 of the enemies from each difficulty bracket
+        for (int i = clampedMinDiff; i <= clampedMaxDiff; i++) {
+            float a = General.Remap(-1, 1, 0, 1, Mathf.Sin(270*Mathf.Deg2Rad+i*angleStep));
+            
+            float enemiesLength = (float)enemyData[COMMON][i].Count;
+            int enemiesToGet = Mathf.CeilToInt(Mathf.Lerp(Mathf.CeilToInt(enemiesLength/3f), Mathf.CeilToInt(enemiesLength/1.5f), a));
+
+            enemies.AddRange(General.RandomCollectTuple(enemyData[COMMON][i], enemiesToGet, v => ece.GetEnemyChance(v)));
+        }
+
+        return enemies;
+    }
+
+    public Resources.Enemy ChooseEnemy() {
+        var enemies = GetEnemyContestants();
+        var chanceLocations = new List<(int min, int max)>();
+
+        int max = 0;
+        foreach (var value in enemies) {
+            int previousMax = max;
+            max += value.chance;
+            chanceLocations.Add((previousMax, max));
+        }
+        
+        int random = Random.Range(0, max);
+
+        int index = 0;
+        for (int i = 0; i < enemies.Count; i++) {
+            if (random > chanceLocations[i].min && random <= chanceLocations[i].max) {
+                index = i;
+                break;
+            }
+        }
+        return enemies[Mathf.Clamp(index, 0, enemies.Count-1)].enemy;
+    }
+
+    public Enemy SpawnEnemy(Vector3 pos, Direction main, Branch root) {  
+        return world.InstantiateEnemy(ChooseEnemy(), pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });
     }
 
     public Enemy SpawnUncommon(Vector3 pos, Direction main, Branch root) {
-        var diff = Mathf.Clamp(Random.Range(IntLinearT-3, IntLinearT+1), 1, maxDiff);
-        return world.InstantiateEnemy(enemyData[COMMON][diff][Seed.IntRange(0, enemyData[COMMON][diff].Count)], pos, (r, e) => {
+        return world.InstantiateEnemy(ChooseEnemy(), pos, (r, e) => {
             e.CStart(manager, r, root, main);
         });
     }
@@ -213,5 +273,8 @@ public class Gameplay : MonoBehaviour
                 break;
         }
         PublicEvent.SaveRun();
+        ece.UpdateTime();
+        SetMinMaxEnemyRange(0, 0);
+        ece.GiveEnemyRange(minMaxEnemyRange);
     }
 }

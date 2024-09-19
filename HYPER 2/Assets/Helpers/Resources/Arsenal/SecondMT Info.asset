@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SecondMT Info
   m_EditorClassIdentifier: 
   worth: 6
-  unlockAt: 2
+  unlockAt: 7
   upgradable: 1
   availableUpgrades: 0500000000000000030000000800000004000000

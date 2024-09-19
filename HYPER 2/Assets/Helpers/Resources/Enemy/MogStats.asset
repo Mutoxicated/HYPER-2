@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficulty: 2
   verticality: 1
+  type: 0
+  startChance: 10

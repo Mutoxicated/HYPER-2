@@ -21,6 +21,8 @@ MonoBehaviour:
   - 2
   - 1
   - 1
+  - 1
+  - 1
   incrementers:
   - 0.01
   - 0
@@ -29,10 +31,10 @@ MonoBehaviour:
   - 0
   - -0.01
   - 0
+  - 0
+  - 0
   element: 0
   elementImmunities: 0100000000000000
   maxXp: 75
   maxXpIncrememt: 20
   xpKillWorth: 35
-  worth: 1
-  unlockAt: 1

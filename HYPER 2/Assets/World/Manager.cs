@@ -12,6 +12,7 @@ public class Manager : MonoBehaviour
     [SerializeField] private Tester tester;
 
     public void Awake() {
+        PublicEvent.ClearAll();
         sm.DStart();
         pps.DStart();
         resources.DStart();

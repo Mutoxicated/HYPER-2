@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ZC Info
   m_EditorClassIdentifier: 
   worth: 4
-  unlockAt: 4
+  unlockAt: 3
   upgradable: 1
   availableUpgrades: 05000000010000000200000003000000

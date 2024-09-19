@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Radmol Info
   m_EditorClassIdentifier: 
   worth: 7
-  unlockAt: 8
+  unlockAt: 13
   upgradable: 1
   availableUpgrades: 0400000002000000070000000b000000

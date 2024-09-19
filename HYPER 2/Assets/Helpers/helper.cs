@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static PoolID;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -184,6 +186,13 @@ public class Option<T> {
     public static Option<T> None() {
         return new Option<T>();
     }
+
+    public new string ToString() {
+        if (IsNone()) {
+            return "None";
+        }
+        return "Some("+value.ToString()+")";
+    }
 }
 
 [Serializable]
@@ -332,6 +341,51 @@ namespace Helpers {
             }
 
             return (list1, list2);
+        }
+
+        public static float Remap(float a, float b, float a2, float b2, float v) {
+            float tValue = Mathf.InverseLerp(a, b, v);
+            return Mathf.Lerp(a2, b2, tValue);
+        }
+
+        public static List<T> RandomCollect<T>(List<T> list, int amount) {
+            amount = Mathf.Clamp(amount, 0, list.Count);
+
+            if (amount == 0) {
+                return new List<T>();
+            }
+
+            var collection = new List<T>();
+            var copiedList = list.ToList();
+
+            for (int i = 1; i <= amount; i++) {
+                int random = UnityEngine.Random.Range(0, copiedList.Count);
+                collection.Add(copiedList[random]);
+                copiedList.RemoveAt(random);
+            }
+
+            return collection;
+        }
+
+        public delegate E ProduceFrom<T, E>(T value);
+
+        public static List<(T,E)> RandomCollectTuple<T,E>(List<T> list, int amount, ProduceFrom<T, E> produce) {
+            amount = Mathf.Clamp(amount, 0, list.Count);
+
+            if (amount == 0) {
+                return new List<(T, E)>();
+            }
+
+            var collection = new List<(T, E)>();
+            var copiedList = list.ToList();
+
+            for (int i = 1; i <= amount; i++) {
+                int random = UnityEngine.Random.Range(0, copiedList.Count);
+                collection.Add((copiedList[random], produce(copiedList[random])));
+                copiedList.RemoveAt(random);
+            }
+
+            return collection;
         }
     }
 

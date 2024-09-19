@@ -81,15 +81,22 @@ public class QuickInventory : MonoBehaviour
     }
 
     public void UpdateQI(int index, Resources.Arsenal arsenal) {
+        Debug.Log("Updating QI ---------------");
+        Debug.Log("Arsenal: "+arsenal.ToString()+", Index: "+index);
+        Debug.Log("Initiating for loop");
         for (int i = 0; i < capacity; i++) {
+            Debug.Log(i+": ");
             if (i == index) {
+                Debug.Log("This is the index, previous arsenal: "+items[index].ArsenalType.ToString());
                 items[index].SetArsenal(new Option<Resources.Arsenal>(arsenal));
                 continue;
             }
             if (items[i].ArsenalType.IsNone()) {
+                Debug.Log("Empty");
                 continue;
             }
             if (items[i].ArsenalType.Get() == arsenal) {
+                Debug.Log("This one has the arsenal, removing it.");
                 items[i].SetArsenal(Option<Resources.Arsenal>.None());
             }
         }

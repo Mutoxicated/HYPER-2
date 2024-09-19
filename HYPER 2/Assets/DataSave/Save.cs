@@ -8,11 +8,6 @@ public enum DataType {
     PLAYER
 }
 
-public interface IData {
-    DataType Type(); 
-    string Path();
-}
-
 public class Save : MonoBehaviour
 {
     public static PlayerData pData = new PlayerData();

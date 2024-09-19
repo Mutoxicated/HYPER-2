@@ -45,11 +45,16 @@ public class Range : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider) {
         var enemy = collider.gameObject.GetComponent<IStats>();
+        if (enemy == null) {
+            return;
+        }
         if (enemy.Convert() == null) {
             return;
-        }else if (enemy.Convert() == stats) {
+        }
+        if (enemy.Convert() == stats) {
             return;
-        }else if (Filter(enemy.Convert()).IsNone()) {
+        }
+        if (Filter(enemy.Convert()).IsNone()) {
             return;
         }
         OnEnter.Invoke(enemy.Convert());
