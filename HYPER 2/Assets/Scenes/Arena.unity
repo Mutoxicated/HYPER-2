@@ -177,7 +177,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f3836f11a6f811438fb0a70b7a74986, type: 2}
+  - {fileID: 2100000, guid: 7f59a427669b9cd4383095fccf472f35, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1677,7 +1677,7 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   changeQueue: 1
   queueMode: 3000
-  offset: 1
+  offset: 2
   material: {fileID: 0}
 --- !u!23 &1643372763
 MeshRenderer:
@@ -1699,7 +1699,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f3836f11a6f811438fb0a70b7a74986, type: 2}
+  - {fileID: 2100000, guid: 7f59a427669b9cd4383095fccf472f35, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2041,6 +2041,17 @@ MonoBehaviour:
   toRotation: {x: 0.25877964, y: -0.0045170155, z: 0.016857728, w: 0.9657787}
   randomRotation: 0
   local: 0
+--- !u!114 &1868245417 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2056057316558286243, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+  m_PrefabInstance: {fileID: 301292992882584374}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ac9fe8663ed3642920a4f214a73da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1906026084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,6 +2261,17 @@ Transform:
   m_Father: {fileID: 320700044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2103832998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4547951838870343426, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+  m_PrefabInstance: {fileID: 301292992882584374}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ac9fe8663ed3642920a4f214a73da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2120919451
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,6 +2609,10 @@ PrefabInstance:
       propertyPath: popupPool
       value: 
       objectReference: {fileID: 460088814}
+    - target: {fileID: 2831942113468562283, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: ece
+      value: 
+      objectReference: {fileID: 568595627}
     - target: {fileID: 2973963980492170954, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2607,6 +2633,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -801
       objectReference: {fileID: 0}
+    - target: {fileID: 4192969970852433652, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1334546281}
+    - target: {fileID: 4192969970852433652, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: tField
+      value: 
+      objectReference: {fileID: 1868245417}
+    - target: {fileID: 4192969970852433652, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
+      propertyPath: enemyLvl
+      value: 
+      objectReference: {fileID: 2103832998}
     - target: {fileID: 4725507883386641023, guid: bc00bd10febdfec44b0795b5ff83b0c2, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

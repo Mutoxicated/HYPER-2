@@ -946,6 +946,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Panel"",
+                    ""type"": ""Button"",
+                    ""id"": ""47644f5c-5877-4b30-872b-fcf1f0a73416"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -957,6 +966,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""DRef"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67e56450-15e7-4884-89d6-78b2cd032351"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Panel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1141,6 +1161,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_DRef = m_Debug.FindAction("DRef", throwIfNotFound: true);
+        m_Debug_Panel = m_Debug.FindAction("Panel", throwIfNotFound: true);
         // Common
         m_Common = asset.FindActionMap("Common", throwIfNotFound: true);
         m_Common_ToggleArsenal = m_Common.FindAction("ToggleArsenal", throwIfNotFound: true);
@@ -1417,11 +1438,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Debug;
     private IDebugActions m_DebugActionsCallbackInterface;
     private readonly InputAction m_Debug_DRef;
+    private readonly InputAction m_Debug_Panel;
     public struct DebugActions
     {
         private @PlayerInput m_Wrapper;
         public DebugActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @DRef => m_Wrapper.m_Debug_DRef;
+        public InputAction @Panel => m_Wrapper.m_Debug_Panel;
         public InputActionMap Get() { return m_Wrapper.m_Debug; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1434,6 +1457,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @DRef.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnDRef;
                 @DRef.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnDRef;
                 @DRef.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnDRef;
+                @Panel.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnPanel;
+                @Panel.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnPanel;
+                @Panel.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnPanel;
             }
             m_Wrapper.m_DebugActionsCallbackInterface = instance;
             if (instance != null)
@@ -1441,6 +1467,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @DRef.started += instance.OnDRef;
                 @DRef.performed += instance.OnDRef;
                 @DRef.canceled += instance.OnDRef;
+                @Panel.started += instance.OnPanel;
+                @Panel.performed += instance.OnPanel;
+                @Panel.canceled += instance.OnPanel;
             }
         }
     }
@@ -1576,6 +1605,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IDebugActions
     {
         void OnDRef(InputAction.CallbackContext context);
+        void OnPanel(InputAction.CallbackContext context);
     }
     public interface ICommonActions
     {

@@ -22,11 +22,11 @@ public class Enemy : MonoBehaviour
 
     private void PrepareConfiguration() {
         stats.ConfigureOnDie(false, s => {
-            s.GetAndThen(sts => {
-                if (sts.StatSide == Stats.Side.PLAYER) {
-                    Player.SetMoneyRelative(1);
-                }
-            });
+            // s.GetAndThen(sts => {
+            //     if (sts.StatSide == Stats.Side.PLAYER) {
+            //         Player.SetMoneyRelative(1);
+            //     }
+            // });
             death.Invoke(this);
         });
     }
@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
         stats.CStart(manager, Resources.GetEnemyStatTemplates(enemyType));
         stats.ConfigureOnLvlUp(true, () => {});
         PrepareConfiguration();
-        for (int i = 1; i < manager.GP.EnemyLvl; i++) {
+        for (int i = 1; i < Gameplay.EnemyLvl; i++) {
             stats.IncXP(stats.MaxRequiredXP());
         }
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*3f;

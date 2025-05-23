@@ -14,7 +14,7 @@ public class Tower : MonoBehaviour
     private void Awake() {
         stats.CStart(player.Manager, template);
         stats.ConfigureOnLvlUp(true, () => {
-            stats.Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(stats.LVL*0.25f, 1));
+            stats.Heal(Gameplay.MiniTowerLvlUpHPBonus*Num.MinLimit(stats.LVL*0.75f, 1));
         });
         stats.ConfigureOnDie(true, _ => {
             Die(_);

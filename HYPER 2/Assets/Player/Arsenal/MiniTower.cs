@@ -161,7 +161,7 @@ public class MiniTower : MonoBehaviour
     }
 
     public void DOTIntervalDamage() {
-        stats.Damage(stats, DOT);
+        //stats.Damage(stats, DOT);
     }
 
     public void RestoreHP() {

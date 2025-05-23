@@ -3,6 +3,7 @@ Shader "Mutox/AdvancedWire"
     Properties
     {
         [HDR] [MainColor] _WireframeColor("Wireframe color", color) = (1.0, 1.0, 1.0, 1.0)
+        [HDR] _BaseColor("Base Color", color) = (0.0, 0.0, 0.0, 1.0)
         _WireframeAliasing("Wireframe aliasing", float) = 1.5
         _Intact("Intact Range", float) = 0
         _MinDist("Min Distane", float) = 200
@@ -13,14 +14,12 @@ Shader "Mutox/AdvancedWire"
 
         SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest"}
         LOD 100
 
         Pass {
             Cull [_Cull]
             ZWrite On
-            Lighting Off
-            Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM
             #pragma vertex vert
@@ -59,6 +58,10 @@ Shader "Mutox/AdvancedWire"
 
             inline float invLerp(float a,float b,float v) {
                 return (v-a)/(b-a);
+            }
+
+            inline float lerp(float4 a, float4 b, float t) {
+                return a+(b-a)*t;
             }
 
             float _Intact;
@@ -102,6 +105,7 @@ Shader "Mutox/AdvancedWire"
             }
 
             fixed4 _WireframeColor;
+            float4 _BaseColor;
             float _WireframeAliasing;
 
             fixed4 frag(g2f i) : SV_Target {
@@ -112,7 +116,9 @@ Shader "Mutox/AdvancedWire"
                 // Use the coordinate closest to the edge.
                 float alpha = 1 - min(aliased.x, min(aliased.y, aliased.z));
 
-                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
+                float4 wfColor = fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
+
+                return lerp(_BaseColor, wfColor, alpha);
             }
             ENDCG
             }

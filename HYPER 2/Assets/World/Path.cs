@@ -284,14 +284,14 @@ public class Path : MonoBehaviour
     }
 
     public Enemy CustomSpawn(Spawn spawn) {
-        return spawn(root1, mainDirection, (Seed.Chance(50) ? neighbors1 : neighbors2)[0][wg].transform.position+Vector3.up*1.5f);
+        return spawn(root1, mainDirection, (Seed.Chance(50) || neighbors2.Count == 0 ? neighbors1 : neighbors2)[0][wg].transform.position+Vector3.up*1.5f);
     }
 
     public void IntervalSpawnEnemy() {
-        round.Spawn(root1, mainDirection, neighbors1[0][wg].transform.position+Vector3.up*1.5f);
+        round.Spawn(root1, mainDirection, neighbors1[0][wg].transform.position+Vector3.up);
     }
     public void IntervalSpawnEnemy2() {
-        round.Spawn(root2, mainDirection, neighbors2[0][wg].transform.position+Vector3.up*1.5f);
+        round.Spawn(root2, mainDirection, neighbors2[0][wg].transform.position+Vector3.up);
     }
 
     private void extend() {

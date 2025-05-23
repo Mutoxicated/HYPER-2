@@ -59,3 +59,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
+  expand: 1
+  filter: 0
+  enemies: []

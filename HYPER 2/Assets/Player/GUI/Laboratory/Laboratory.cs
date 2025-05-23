@@ -95,7 +95,10 @@ public class Laboratory : MonoBehaviour, IActivation
     public void BuyResearchSlot() {
         if (Save.rData.Money < Gameplay.ResearchSlotCost) {
             return;
-        } 
+        }
+        if (Save.rData.ReseachSlots >= Gameplay.ResearchSlotLimit) {
+            return;
+        }
         Player.SetMoneyRelative(-Gameplay.ResearchSlotCost);
         Save.rData.IncResearchSlots();
     }

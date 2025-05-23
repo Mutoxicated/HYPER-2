@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ProwlerStat
   m_EditorClassIdentifier: 
   difficulty: 1
-  verticality: 1
+  verticality: 2
   type: 0
   startChance: 50

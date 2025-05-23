@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4917559963100804362}
-  smr: {fileID: 0}
   type: 3
   changeColor: 1
   color: {r: 0, g: 0.3301887, b: 0.020215625, a: 0.24705882}
@@ -154,6 +153,7 @@ MonoBehaviour:
   stats: {fileID: 7483121074402370019}
   expand: 0
   filter: 0
+  enemies: []
 --- !u!1 &976861918877378662
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +218,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
   - {fileID: 2100000, guid: a3895f20793742245ba5c52f28bafcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -269,7 +268,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1050863701909819647}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -356,7 +354,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
   - {fileID: 2100000, guid: a3895f20793742245ba5c52f28bafcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -407,7 +404,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 3752510526571051686}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -478,7 +474,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
   - {fileID: 2100000, guid: a3895f20793742245ba5c52f28bafcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -529,7 +524,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 4189758874385625951}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0.3962264, g: 0, b: 0, a: 1}
@@ -616,13 +610,15 @@ MonoBehaviour:
     value: {fileID: 0}
     none: 1
   height: 4
-  template: {fileID: 11400000, guid: 5dff51667b9b9894a850438b4580c1d4, type: 2}
   hitVisual:
     value: {fileID: 2206449522765130306}
     none: 0
   range:
     value: {fileID: 642520021583622009}
     none: 0
+  infector:
+    value: {fileID: 0}
+    none: 1
 --- !u!114 &8026403155563357703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +706,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 7483121074402370019}
-  bt: 4
   vfx:
     value: {fileID: 0}
     none: 1
@@ -813,7 +808,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
   - {fileID: 2100000, guid: a3895f20793742245ba5c52f28bafcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -864,7 +858,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 2359422171724077079}
-  smr: {fileID: 0}
   type: 2
   changeColor: 1
   color: {r: 0.6037736, g: 0, b: 0, a: 1}

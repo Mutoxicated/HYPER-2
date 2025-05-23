@@ -3,6 +3,7 @@ Shader "Mutox/SimpleWire"
     Properties
     {
         [HDR] [MainColor] _WireframeColor("Wireframe color", color) = (1.0, 1.0, 1.0, 1.0)
+        [HDR] _BaseColor("Base Color", color) = (0.0, 0.0, 0.0, 1.0)
         _WireframeAliasing("Wireframe aliasing", float) = 1.5
         _Intact("Intact Range", float) = 0
         _MinDist("Min Distane", float) = 200
@@ -13,14 +14,13 @@ Shader "Mutox/SimpleWire"
 
         SubShader
     {
-        Tags {"RenderType" = "Transparent" "Queue" = "Transparent"}
+        Tags {"RenderType" = "Opaque" "Queue" = "AlphaTest"}
         LOD 100
 
         Pass {
             Cull [_Cull]
-            ZWrite Off
-            Lighting Off
-            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite On
+            ZTest LEqual
 
             CGPROGRAM
             #pragma vertex vert
@@ -58,6 +58,10 @@ Shader "Mutox/SimpleWire"
 
             inline float invLerp(float a,float b,float v) {
                 return (v-a)/(b-a);
+            }
+
+            inline float lerp(float a, float b, float4 t) {
+                return a+(b-a)*t;
             }
 
             float _MaxDist;
@@ -115,6 +119,7 @@ Shader "Mutox/SimpleWire"
             }
 
             fixed4 _WireframeColor;
+            float4 _BaseColor;
             float _WireframeAliasing;
 
             fixed4 frag(g2f i) : SV_Target {
@@ -125,7 +130,14 @@ Shader "Mutox/SimpleWire"
                 // Use the coordinate closest to the edge.
                 float alpha = 1 - min(aliased.x, min(aliased.y, aliased.z));
 
-                return fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
+                float4 wfColor = fixed4(_WireframeColor.r, _WireframeColor.g, _WireframeColor.b, _WireframeColor.a*clamp(alpha*abs(_Intact-1),0,1)) * i.camDistLinear;
+
+                return float4(
+                    lerp(_BaseColor.r, wfColor.r, alpha),
+                    lerp(_BaseColor.g, wfColor.g, alpha),
+                    lerp(_BaseColor.b, wfColor.b, alpha),
+                    lerp(_BaseColor.a, wfColor.a, alpha)
+                );
             }
             ENDCG
         }

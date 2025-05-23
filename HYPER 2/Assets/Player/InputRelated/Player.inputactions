@@ -924,6 +924,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Panel",
+                    "type": "Button",
+                    "id": "47644f5c-5877-4b30-872b-fcf1f0a73416",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -935,6 +944,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "DRef",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67e56450-15e7-4884-89d6-78b2cd032351",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Panel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

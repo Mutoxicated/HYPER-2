@@ -21,7 +21,11 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  - 1
+  - 1
   incrementers:
+  - 0.1
+  - 0.1
   - 0.1
   - 0.1
   - 0.1
@@ -34,5 +38,3 @@ MonoBehaviour:
   maxXp: 100
   maxXpIncrememt: 20
   xpKillWorth: 15
-  worth: 1
-  unlockAt: 1

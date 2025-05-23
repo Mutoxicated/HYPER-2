@@ -11,24 +11,24 @@ public class Gameplay : MonoBehaviour
     private static Gameplay self;
 
     // Difficulty
-    public int Waves {
+    public static int Waves {
         get { return Save.rData.Waves; }
     }
-    public float LinearT {
+    public static float LinearT {
         get { return Save.rData.LinearTime*2f; }
     }
-    public int IntLinearT {
+    public static int IntLinearT {
         get { return Mathf.FloorToInt(LinearT); }
     }
 
-    public float AsymT {
+    public static float AsymT {
         get { return Mathf.Sqrt(LinearT); }
     }
-    public int IntAsymT {
+    public static int IntAsymT {
         get { return Mathf.CeilToInt(Mathf.Sqrt(LinearT)); }
     }
-    public int EnemyLvl {
-        get { return Mathf.FloorToInt(1+0.5f*LinearT*0.25f); }
+    public static int EnemyLvl {
+        get { return Mathf.FloorToInt(LinearT*1.5f); }
     }
 
     // Settings
@@ -45,6 +45,7 @@ public class Gameplay : MonoBehaviour
 
     public const int ResearchXPStep = 15;
     public const int ResearchSlotCost = 10;
+    public const int ResearchSlotLimit = 5;
     public const int TowerLvlUpHPBonus = 20;
     public const int RestoreHPCost = 2;
     public const int MiniTowerLvlUpHPBonus = 10;
@@ -61,7 +62,7 @@ public class Gameplay : MonoBehaviour
 
     //Frequencies
     private const int uncommonFrequency = 15;
-    private const int bossFrequency = 35;
+    private const int bossFrequency = 30;
     private const int goldPileFrequency = 50;
     private const int expandFrequency = 25;
 
@@ -83,7 +84,7 @@ public class Gameplay : MonoBehaviour
     }
 
     public static int MoneyEarned(int lvl) {
-        return Mathf.CeilToInt(Mathf.Sqrt(lvl)*2);
+        return Mathf.CeilToInt(Mathf.Sqrt(lvl)*2f);
     }
 
     public void GenerationUnlockLogic(Doer doer) {
@@ -133,6 +134,7 @@ public class Gameplay : MonoBehaviour
 
         SetMinMaxEnemyRange(0, 0);
         ece.GiveEnemyRange(minMaxEnemyRange);
+        ece.UpdateTime();
 
         waitInterval.Enable();
     }

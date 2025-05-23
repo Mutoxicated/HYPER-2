@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     private Transform camRoot;
 
     private InputAction debugRefresh;
+    private InputAction debugPanel;
     private InputAction middleButton;
     private InputAction leftButton;
     private InputAction deleteButton;
@@ -84,6 +85,10 @@ public class Player : MonoBehaviour
 
     public bool OnDebugRefresh {
         get { return debugRefresh.WasPerformedThisFrame(); }
+    }
+
+    public bool OnDebugPanel {
+        get { return debugPanel.WasPerformedThisFrame(); }
     }
 
     public bool OnMiddleButton {
@@ -195,10 +200,11 @@ public class Player : MonoBehaviour
 
         debug = input.actions.FindActionMap("Debug", true);
         debug.Enable();
+        debugPanel = debug.FindAction("Panel");
+        debugRefresh = debug.FindAction("DRef");
 
         ui = input.actions.FindActionMap("UI", true);
         uiDeleteButton = ui.FindAction("Delete");
-        debugRefresh = input.actions.FindAction("DRef");
 
         common = input.actions.FindActionMap("Common", true);
         tabButton = common.FindAction("ToggleArsenal");

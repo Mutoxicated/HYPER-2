@@ -43,7 +43,7 @@ public class BossRound : MonoBehaviour, IRound
         //weirdSpawnFrequency = Seed.IntRange((int)weirdSpawnFrequencyRange.x, (int)weirdSpawnFrequencyRange.y);
         spawnIntervals.Clear();
         foreach (var path in gameplay.World.WG.Paths) {
-            spawnIntervals.Concat(path.StartSpawning(this));
+            spawnIntervals.AddRange(path.StartSpawning(this));
         }
         boss = gameplay.World.WG.RandomPath.CustomSpawn((r, m, p) => {
             return SpawnBoss(r, m, p);
@@ -58,13 +58,13 @@ public class BossRound : MonoBehaviour, IRound
         time += Time.deltaTime;
         //Debug.Log("Enemies Amount: "+gameplay.enemiesAmount);
 
-        if (totalSpawns >= gameplay.EnemiesAmount & boss == null) {
+        if (totalSpawns >= gameplay.EnemiesAmount) {
             if (spawnIntervals[0].enabled) {
                 foreach (var path in gameplay.World.WG.Paths) {
                     path.StopSpawning();
                 }
             }
-            if (gameplay.World.Enemies.Count == 0) {
+            if (boss == null && gameplay.World.Enemies.Count == 0) {
                 enabled = false;
                 totalSpawns = 0;
                 time = 0f;

@@ -29,11 +29,16 @@ public class Resources : MonoBehaviour
         GUARDIAN
     }
 
+    public enum EnemyTower {
+        WAFFER = 0
+    }
+
     public enum Bullet {
         NORMAL = 0,
         RADIATING,
         WIND,
-        BOOM
+        BOOM,
+        ENEMY_NORMAL
     }
 
     [Serializable]
@@ -69,6 +74,8 @@ public class Resources : MonoBehaviour
     private Dictionary<Enemy, GameObject> enemyPrefabs;
     private Dictionary<Enemy, EnemyStats> enemyStats;
     private Dictionary<Bullet, GameObject> bulletPrefabs;
+    private Dictionary<EnemyTower, GameObject> enemyTowerPrefabs;
+    private Dictionary<EnemyTower, StatsTemplate> enemyTowerStats;
 
     [SerializeField] private Sprite empty;
     [SerializeField] private Sprite locked;
@@ -183,6 +190,30 @@ public class Resources : MonoBehaviour
                 mtUpgradeSprites.Add((MTUpgradeType)i, gos[i]);
             }
         }
+        if (enemyTowerPrefabs == null) {
+            enemyTowerPrefabs = new Dictionary<EnemyTower, GameObject>();
+            var gos = UnityEngine.Resources.LoadAll<GameObject>("EnemyTower");
+            Assert.IsNotNull(gos, "EnemyTower folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                enemyTowerPrefabs.Add((EnemyTower)i, gos[i]);
+            }
+        }
+        if (enemyTowerStats == null) {
+            enemyTowerStats = new Dictionary<EnemyTower, StatsTemplate>();
+            var gos = UnityEngine.Resources.LoadAll<StatsTemplate>("EnemyTower");
+            Assert.IsNotNull(gos, "EnemyTower folder in Helpers/Resources doesn't exist");
+            for (int i = 0; i < gos.Length; i++) {
+                enemyTowerStats.Add((EnemyTower)i, gos[i]);
+            }
+        }
+    }
+
+    public static GameObject GetEnemyTowerPrefab(EnemyTower et) {
+        return self.enemyTowerPrefabs[et];
+    }
+
+    public static StatsTemplate GetEnemyTowerStats(EnemyTower et) {
+        return self.enemyTowerStats[et];
     }
 
     public static GameObject GetMisc(Misc misc) {

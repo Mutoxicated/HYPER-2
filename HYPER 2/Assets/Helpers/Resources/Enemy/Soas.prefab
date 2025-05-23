@@ -63,6 +63,9 @@ MonoBehaviour:
   range:
     value: {fileID: 0}
     none: 1
+  infector:
+    value: {fileID: 0}
+    none: 1
 --- !u!114 &8813299966052488670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +224,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77ae0337afc8be84da2e72e0ede4c942, type: 2}
   - {fileID: 2100000, guid: a3895f20793742245ba5c52f28bafcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -328,6 +330,7 @@ MonoBehaviour:
   _renderer: {fileID: 0}
   duration: 1.5
   randomness: 0.1
+  minIntact: 0.01
 --- !u!1 &3539824130882968046
 GameObject:
   m_ObjectHideFlags: 0
