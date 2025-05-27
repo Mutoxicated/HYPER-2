@@ -11,6 +11,7 @@ public class LabItem : MonoBehaviour {
 
     private Resources.Arsenal arsenalType;
     private StatsTemplate template;
+    private Researcher researcher;
     private Laboratory lab;
     private string ufmtLvl;
 
@@ -18,7 +19,8 @@ public class LabItem : MonoBehaviour {
         get { return image.transform.localScale.y; }
     }
 
-    public void CStart(PowerupPopup popup, Resources.Arsenal arsenalType, Laboratory lab, int index) {
+    public void CStart(Researcher researcher, PowerupPopup popup, Resources.Arsenal arsenalType, Laboratory lab, int index) {
+        this.researcher = researcher;
         this.lab = lab;
         template = Resources.GetStatTemplate(arsenalType);
         this.arsenalType = arsenalType;
@@ -38,12 +40,12 @@ public class LabItem : MonoBehaviour {
     }
 
     private void Update() {
-        progressBar.fillAmount = Save.rData[arsenalType]/template.maxXp;
-        lvl.text = String.Format(ufmtLvl, Save.rData[arsenalType, false]);
+        progressBar.fillAmount = researcher.GetResearchValue(arsenalType)/template.maxXp;
+        lvl.text = String.Format(ufmtLvl, researcher.GetResearchLvl(arsenalType));
     }
 
     public void StopResearching() {
-        Save.rData.SetCurrentlyResearched(arsenalType, false);
+        researcher.StopResearchingItem(arsenalType);
         lab.Disable();
         lab.Enable();
     }

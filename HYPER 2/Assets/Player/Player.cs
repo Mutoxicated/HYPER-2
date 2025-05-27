@@ -130,28 +130,42 @@ public class Player : MonoBehaviour
         get { return gui; }
     }
 
-    public static int Money {
-        get { return Save.rData.Money; }
+    public int Money {
+        get { return money; }
     }
     
     public void AddLvlUpListener(LvlUp fn) {
         onLvlUp += fn;
     }
 
-    public static void IncrementXP(float val) {
-        float newXP = Save.rData.XP+val;
-        while (newXP >= MaxXPRequired()) {
+    private float XP;
+    public float CurrentXP
+    {
+        get { return XP; }
+    }
+    private int lvl;
+    public int Lvl
+    {
+        get { return lvl; }
+    }
+    private int money;
+
+    public void IncrementXP(float val)
+    {
+        float newXP = XP + val;
+        while (newXP >= MaxXPRequired())
+        {
             newXP -= MaxXPRequired();
-            Save.rData.SetLvl(Save.rData.Lvl+1);
+            lvl++;
             self.towerStats.LvlUp(true);
-            Save.rData.SetMoneyRelative(Gameplay.MoneyEarned(Save.rData.Lvl));
-            self.onLvlUp.Invoke(Save.rData.Lvl);
+            money += Gameplay.MoneyEarned(lvl);
+            self.onLvlUp.Invoke(lvl);
         }
-        Save.rData.SetXP(newXP);
+        XP = newXP;
     }
 
-    public static void SetMoneyRelative(int val) {
-        Save.rData.SetMoneyRelative(val);
+    public void SetMoneyRelative(int val) {
+        money += val;
     }
 
     public static float MaxXPRequired() {
@@ -190,6 +204,15 @@ public class Player : MonoBehaviour
 
     public void DStart(Manager manager) {
         self = this;
+        money = Save.rData.Money;
+        lvl = Save.rData.Lvl;
+        XP = Save.rData.XP;
+        PublicEvent.onSaveRun += _ =>
+        {
+            Save.rData.SetMoney(money);
+            Save.rData.SetLvl(lvl);
+            Save.rData.SetXP(XP);
+        };
         input = GetComponent<UnityEngine.InputSystem.PlayerInput>();
 
         player = input.actions.FindActionMap("Player", true);

@@ -50,7 +50,7 @@ public class BombBullet : MonoBehaviour, IBulletConstruct {
         int? xp = damageable?.Damage(stats, stats[DAMAGE]);
         stats.Inheriter.GetAndThen(s => {
             if (s.StatSide == Stats.Side.PLAYER) {
-                Player.IncrementXP(xp ?? 0);
+                Player.self.IncrementXP(xp ?? 0);
                 s.IncXP(xp ?? 0);
             }
         });

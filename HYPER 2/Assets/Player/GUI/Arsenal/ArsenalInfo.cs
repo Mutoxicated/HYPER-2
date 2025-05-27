@@ -23,6 +23,8 @@ public class ArsenalInfo : MonoBehaviour
         get { return arsenal; }
     }
 
+    private Researcher researcher;
+
     private string ufmtName;
     private string ufmtElement;
     private List<string> ufmtStats = new List<string>();
@@ -34,7 +36,8 @@ public class ArsenalInfo : MonoBehaviour
     private Option<ArsenalItem> locked = Option<ArsenalItem>.None();
     private ArsenalItem currentItem;
 
-    public void DStart() {
+    public void DStart(Researcher researcher) {
+        this.researcher = researcher;
         ufmtName = arsenalName.text;
         ufmtElement = arsenalElement.text;
         for (int i = 0; i < arsenalStats.Count; i++) {
@@ -75,7 +78,7 @@ public class ArsenalInfo : MonoBehaviour
             arsenalStats[i].text = String.Format(ufmtStats[i], "<color=#eeeeee>"+Mathf.RoundToInt(current.statsBase.values[i]*current.modifiers[i]));
         }
         arsenalWorth.text = String.Format(ufmtWorth, "<color=#ee9a00>"+mtInfo.worth);
-        if (Save.rData[aitem.Type, 0]) {
+        if (arsenal.Keys[(int)aitem.Type].researchActive) {
             researchBar.transform.parent.gameObject.SetActive(true);
             researchLvl.gameObject.SetActive(true);
             research.gameObject.SetActive(false);
@@ -110,7 +113,7 @@ public class ArsenalInfo : MonoBehaviour
         arsenal.OnResearch(currentItem);
     }
 
-      public void OnStopResearch() {
+    public void OnStopResearch() {
         arsenal.OnStopResearch(currentItem);
     }
 
@@ -132,8 +135,8 @@ public class ArsenalInfo : MonoBehaviour
     }
 
     public void Update() {
-        var filled = Num.MinLimit(Save.rData[currentItem.Type], 0f);
+        var filled = Num.MinLimit(researcher.GetResearchValue(currentItem.Type), 0f);
         researchBar.fillAmount = filled/currentItem.Template.maxXp;
-        researchLvl.text = String.Format(ufmtResearchLvl, Save.rData[currentItem.Type, true]);
+        researchLvl.text = String.Format(ufmtResearchLvl, researcher.GetResearchLvl(currentItem.Type));
     }
 }

@@ -14,37 +14,72 @@ public class Arsenal : MonoBehaviour, IActivation
     [SerializeField] private ArsenalInfo ai;
     [SerializeField] private Researcher researcher;
 
-    public Inventory Inventory {
-        get { return inventory;}
+    private List<ArsenalKey> arsenalKeys = new List<ArsenalKey>();
+    public List<ArsenalKey> Keys
+    {
+        get { return arsenalKeys; }
+    } 
+
+    public Researcher Researcher
+    {
+        get { return researcher; }
+    }
+    public Inventory Inventory
+    {
+        get { return inventory; }
     }
 
-    public List<ArsenalItem> AItems {
-        get { return aitems; }
+    public ArsenalInfo AI {
+        get { return ai; }
     }
 
-    public void DStart(Player player) {
-        player.onLvlUp += lvl => {
-            foreach (var aitem in aitems) {
+    public void DStart(PowerupManager pm, Player player)
+    {
+        player.onLvlUp += lvl =>
+        {
+            foreach (var aitem in aitems)
+            {
                 if (aitem.MTInfo.unlockAt != lvl) { continue; }
                 player.GUI.PushNotif("New minitower unlocked!");
+                arsenalKeys[(int)aitem.Type].unlocked = true;
                 ai.Unlock();
                 ai.Enable(aitem, false);
                 inventory.NewInventoryItem(aitem.Type);
-                if (gameObject.activeInHierarchy) {
+
+                if (gameObject.activeInHierarchy)
+                {
                     Disable();
                     Enable();
                 }
             }
         };
-        ai.DStart();
+
+        researcher.DStart(this, pm);
+        ai.DStart(researcher);
+
+        arsenalKeys = Save.rData.ArsenalKeys;
+        PublicEvent.onSaveRun += _ =>
+        {
+            Save.rData.ArsenalKeys = arsenalKeys;
+        };
+
         var enumVals = Enum.GetValues(typeof(Resources.Arsenal)) as Resources.Arsenal[];
-        foreach (var arsenal in enumVals) {
+        for (int i = 0; i < enumVals.Length; i++)
+        {
+            var arsenal = enumVals[i];
             var aitem = Instantiate(arsenalItemPrefab, arsenalItems).GetComponent<ArsenalItem>();
-            aitem.CStart(ai, arsenal);
+            if (i+1 > arsenalKeys.Count)
+            {
+                arsenalKeys.Add(new ArsenalKey(enumVals[i], false, false));
+                pm.InitializeArsenalTypeData(arsenal);
+                researcher.InitializeArsenalTypeData(aitem.Type);
+            }
+            aitem.CStart(this, arsenal);
             aitems.Add(aitem);
         }
         aitems.Sort();
-        foreach (var aitem in aitems) {
+        foreach (var aitem in aitems)
+        {
             sorter.AddItem(aitem.transform);
         }
         sorter.PrepareValues();

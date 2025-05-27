@@ -5,7 +5,6 @@ using UnityEngine;
 [Serializable]
 public class HPBarOptions {
     public Transform hpbarAnchor;
-    public Vector2 scale = Vector2.one;
     public float extrusion = 0f;
 }
 
@@ -23,24 +22,20 @@ public class HPBarPool : MonoBehaviour
     }
 
     public void GetHPBar(HPBarOptions options, Stats stats) {
-        GetHPBar(options.hpbarAnchor, options.extrusion, stats, Vector2.one);
+        GetHPBar(options.hpbarAnchor, options.extrusion, stats);
     }
 
     public void GetHPBar(Transform parent, float extrusion, Stats stats) {
-        GetHPBar(parent, extrusion, stats, Vector2.one);
-    }
-
-    public void GetHPBar(Transform parent, float extrusion, Stats stats, Vector2 scale) {
         if (inactives.Count == 0) {
             var instance = Instantiate(prefab, transform).GetComponent<HPBar>();
             actives.Add(instance);
             instance.CStart(this, player);
-            instance.Enable(parent, extrusion, stats, scale);
+            instance.Enable(parent, extrusion, stats);
         }else {
             var bar = inactives[0];
             inactives.Remove(bar);
             actives.Add(bar);
-            bar.Enable(parent, extrusion, stats, scale);
+            bar.Enable(parent, extrusion, stats);
         }
     }
 

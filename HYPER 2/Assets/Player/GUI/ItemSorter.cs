@@ -28,7 +28,7 @@ public class ItemSorter : MonoBehaviour
     private int recursionCount = 0;
 
     private Vector3 alteredPos;
-    private Vector3 initScale;
+    private Vector3 initScale = Vector3.negativeInfinity;
 
     #if UNITY_EDITOR 
     private bool exectuteInEditMode = false;
@@ -82,13 +82,11 @@ public class ItemSorter : MonoBehaviour
     }
     #endif
 
-    private void Enable(){
+    public void Enable(){
         #if UNITY_EDITOR 
             if (!exectuteInEditMode) { return; }
             executed = true;
         #endif
-        if (items.Count == 0)
-            return;
         PrepareValues();
 
         //Debug.Log("HeightAvail: "+heightAvailable+", WidthAvail: "+widthAvailable);
@@ -131,6 +129,11 @@ public class ItemSorter : MonoBehaviour
     }
 
     public void SortItems(){
+        if (items.Count == 0) { return;  }
+        if (initScale == Vector3.negativeInfinity)
+        {
+            PrepareValues();
+        }
         int currentline = 1;
         int currentColumn = 1;
         for (int i = 0; i < items.Count; i++){
@@ -157,6 +160,10 @@ public class ItemSorter : MonoBehaviour
 
     public void PrepareValues(){
         Debug.Log("Preparing values");
+
+        if (items.Count == 0) {
+            return;
+        }
 
         initScale = items[0].localScale;
         heightAvailable = Frame[1].localPosition.y-Frame[0].localPosition.y;

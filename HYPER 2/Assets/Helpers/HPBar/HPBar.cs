@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,11 +33,12 @@ public class HPBar : MonoBehaviour
         playerGo = player;
     }
 
-    public void Enable(Transform trans, float extrusion, Stats stats, Vector2 scale) {
+    public void Enable(Transform trans, float extrusion, Stats stats) {
         this.stats = stats;
+        float modScale = stats.Mod[Stat.MAX_HEALTH];
         maxScale = initScale;
-        maxScale.x *= scale.x;
-        maxScale.y *= scale.y;
+        maxScale.x *= Mathf.Sqrt(modScale);
+        maxScale.x *= Mathf.Sqrt(Mathf.Sqrt(modScale));
         inner.localPosition = Vector3.forward*extrusion;
         this.trans = trans;
         gameObject.SetActive(true);

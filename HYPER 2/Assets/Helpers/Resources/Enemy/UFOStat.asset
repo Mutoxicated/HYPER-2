@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: UFOStat
   m_EditorClassIdentifier: 
   difficulty: 5
-  verticality: 5
+  verticality: 4
   type: 2
   startChance: 50

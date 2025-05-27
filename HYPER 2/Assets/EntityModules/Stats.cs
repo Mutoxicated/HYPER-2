@@ -100,7 +100,6 @@ public class Stats : MonoBehaviour, IStats
     }
 
     public Dictionary<Stat, float> Mod {
-        set { mod = value; }
         get { return mod; }
     }
 
@@ -108,7 +107,8 @@ public class Stats : MonoBehaviour, IStats
         get { return hp; }
     }
 
-    public int XP {
+    public int XP
+    {
         get { return xp; }
     }
 
@@ -123,8 +123,9 @@ public class Stats : MonoBehaviour, IStats
     public StatsTemplate Template {
         get { return template; }
     }
-
-    public Option<Stats> Target(int offset = 0) {
+    
+    public Option<Stats> Target(int offset = 0)
+    {
         return range.Get().Target(offset);
     }
 
@@ -242,7 +243,7 @@ public class Stats : MonoBehaviour, IStats
 
     private float incr;
     public float modify2(Stat value) {
-        incr = incrs[value]*0.5f*(lvl-1);
+        incr = incrs[value]*(lvl-1);
         return mod[value]-Mathf.InverseLerp(1, 0, incr)*incr;
     }
 

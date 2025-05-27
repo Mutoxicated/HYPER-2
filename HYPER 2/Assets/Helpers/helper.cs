@@ -294,11 +294,11 @@ namespace Helpers {
         ENTITY_DETECTION,
         ENVIRONMENT,
         ENEMY_BULLET,
-        PLAYER_BULLET,
+        PLAYER_BULLET
     }
 
     public static class EditorState {
-        private static Dictionary<EditorLayer, string> Layers = new Dictionary<EditorLayer, string>() {
+        public static Dictionary<EditorLayer, string> Layers = new Dictionary<EditorLayer, string>() {
             {EditorLayer.DEFAULT, "Default"},
             {EditorLayer.POST, "Post"},
             {EditorLayer.INTERACTABLE_ONE, "Interactable1"},
@@ -389,11 +389,27 @@ namespace Helpers {
         }
     }
 
-    public static class Stt {
+    public static class Enemy
+    {
+        private static Resources.Enemy[] enemyValues = Enum.GetValues(typeof(Resources.Enemy)) as Resources.Enemy[];
+        public static Resources.Enemy[] EnumValues
+        {
+            get { return enemyValues; }
+        }
+    }
+
+    public static class Stt
+    {
         private static Stat[] enumValues = Enum.GetValues(typeof(Stat)) as Stat[];
-        public static Stat[] EnumValues {
+        public static Stat[] EnumValues
+        {
             get { return enumValues; }
-        } 
+        }
+
+        public static int ToIndex(Stat stat)
+        {
+            return (int)stat;
+        }
     }
 
     public static class Dir {

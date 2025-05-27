@@ -15,9 +15,13 @@ public class PowerupPopup : MonoBehaviour
     private Resources.Arsenal arsenalType;
     private int index;
 
-    public void DStart() {
+    private PowerupManager pm;
+
+    public void DStart(PowerupManager pm) {
+        this.pm = pm;
         ufmtDescription = description.text;
-        foreach (var upgrade in upgrades) {
+        foreach (var upgrade in upgrades)
+        {
             upgrade.CStart(this);
         }
     }
@@ -37,7 +41,7 @@ public class PowerupPopup : MonoBehaviour
     }
 
     public void UpgradeTaken(Resources.MTUpgradeType upgradeType) {
-        Save.rData.AddTakenUpgrade(arsenalType, upgradeType);
+        pm.AddUpgrade(arsenalType, upgradeType);
         Save.rData.Powerups[index].self.RemoveAt(0);
         Disable();
     }

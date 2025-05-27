@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private SoundManager sm;
 
     private void Start() {
+        PublicEvent.ClearAll();
         save.DStart();
         sm.DStart();
         graphix.DStart();

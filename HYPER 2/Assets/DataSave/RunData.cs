@@ -8,401 +8,216 @@ using static Resources.Arsenal;
 [Serializable]
 public class RunData
 {
-    public RunData() {
-        InitArsenalLists();
-    }
 
     //MACRO_START
     [SerializeField] private int __seed = -1;
-    
-    public int _Seed {
-    	get { return __seed; }
+
+    public int _Seed
+    {
+        get { return __seed; }
     }
-    
-    public void SetSeed(int val) {
-    	__seed = val;
+
+    public void SetSeed(int val)
+    {
+        __seed = val;
     }
 
     [SerializeField] private int __money = 10;
-    
-    public int Money {
-    	get { return __money; }
-    }
-    
-    public void SetMoney(int val) {
-    	__money = val;
+
+    public int Money
+    {
+        get { return __money; }
     }
 
-    public void SetMoneyRelative(int val) {
-        __money += val;
+    public void SetMoney(int val)
+    {
+        __money = val;
     }
+
     [SerializeField] private float __xp = 0;
-    
-    public float XP {
-    	get { return __xp; }
+
+    public float XP
+    {
+        get { return __xp; }
     }
-    
-    public void SetXP(float val) {
-    	__xp = val;
+
+    public void SetXP(float val)
+    {
+        __xp = val;
     }
 
     [SerializeField] private int __lvl = 1;
-    
-    public int Lvl {
-    	get { return __lvl; }
+
+    public int Lvl
+    {
+        get { return __lvl; }
     }
-    
-    public void SetLvl(int val) {
-    	__lvl = val;
+
+    public void SetLvl(int val)
+    {
+        __lvl = val;
     }
     //MACRO_END
     [SerializeField] private float __linearT = 0.65f;
 
-    public float LinearTime {
+    public float LinearTime
+    {
         get { return __linearT; }
     }
-    
-    public void IncLinearTime(float amount) {
+
+    public void IncLinearTime(float amount)
+    {
         __linearT += amount;
     }
 
-    // [SerializeField] private int __runTimeSeconds = 0;
-
-    // public int RunTimeSecs {
-    //     get { return __runTimeSeconds; }
-    // }
-    
-    // public void IncRunTime() {
-    //     __runTimeSeconds++;
-    // }
-
     [SerializeField] private int __waves = 1;
 
-    public int Waves {
+    public int Waves
+    {
         get { return __waves; }
     }
 
-    public void SetWaves(int waves) {
+    public void SetWaves(int waves)
+    {
         __waves = waves;
     }
 
-    public void IncrementWaves() {
+    public void IncrementWaves()
+    {
         __waves++;
     }
 
-    [SerializeField] private List<Option<Resources.Arsenal>> quickInventoryArsenals = new List<Option<Resources.Arsenal>>() {
-        new Option<Resources.Arsenal>(FIRST_MT)
+    [SerializeField]
+    private List<Option<Resources.Arsenal>> quickInventoryArsenals = new List<Option<Resources.Arsenal>>() {
+        new Option<Resources.Arsenal>(FIRST_MT),
+        Option<Resources.Arsenal>.None(),
+        Option<Resources.Arsenal>.None(),
+        Option<Resources.Arsenal>.None(),
+        Option<Resources.Arsenal>.None()
     };
 
-    public void UpdateQIACapacity(int capacity) {
-        quickInventoryArsenals.Capacity = capacity;
-        for (int i = 0; i <= capacity; i++) {
-            if (quickInventoryArsenals.Count < i) {
-                quickInventoryArsenals.Add(Option<Resources.Arsenal>.None());
-            }
-        }
-    }
-
-    public void UpdateQIAIndex(int index, Resources.Arsenal arsenal) {
-        quickInventoryArsenals[index] = new Option<Resources.Arsenal>(arsenal);
-    }
-
-    public List<Option<Resources.Arsenal>> QIAs {
+    public List<Option<Resources.Arsenal>> QIAs
+    {
+        set { quickInventoryArsenals = value; }
         get { return quickInventoryArsenals; }
     }
 
     [SerializeField] private int selectedIndex = 0;
 
-    public int SelectedIndex {
+    public int SelectedIndex
+    {
         get { return selectedIndex; }
     }
 
-    public void SetSelectedIndex(int index) {
+    public void SetSelectedIndex(int index)
+    {
         selectedIndex = index;
     }
 
-    // [SerializeField] private List<Resources.Arsenal> researchedArsenals = new List<Resources.Arsenal>() {
-    //     FIRST_MT
-    // };
-
-    // public void AddResearchedArsenal(Resources.Arsenal arsenal) {
-    //     boughtArsenals.Add(arsenal);
-    // }
-
-    // public void RemoveResearchedArsenal(Resources.Arsenal arsenal) {
-    //     boughtArsenals.Remove(arsenal);
-    // }
-
-    // public List<Resources.Arsenal> ResearchedArsenals {
-    //     get { return researchedArsenals; }
-    // }
-
     [SerializeField] private List<MTState> mts = new List<MTState>();
 
-    public void AddMTState(MTState state) {
-        mts.Add(state);
-    }
-
-    public List<MTState> MTs {
+    public List<MTState> MTs
+    {
+        set { mts = value; }
         get { return mts; }
     }
 
     [SerializeField] private int firstCorner = 0;
-    public int FirstCorner {
+    public int FirstCorner
+    {
         get { return firstCorner; }
     }
-    public void RandomizeCorner() {
+    public void RandomizeCorner()
+    {
         firstCorner = Seed.IntRange(1, 5);
     }
 
-    [SerializeField] private List<PathAlt> paths = new  List<PathAlt>();
-    [SerializeField] private List<int> pathsToWiden = new List<int>();
+    [SerializeField] private List<PathAlt> paths = new List<PathAlt>();
+    [SerializeField] private List<int> widenedPaths = new List<int>();
 
-    public void AddPath(List<Neighbor> nbs) {
-        paths.Add(new PathAlt(nbs));
-    }
-
-    public void AddPathToWiden(int index) {
-        pathsToWiden.Add(index);
-    }
-
-    public List<PathAlt> Paths {
+    public List<PathAlt> Paths
+    {
+        set { paths = value; }
         get { return paths; }
     }
 
-    public List<int> PathsToWiden {
-        get { return pathsToWiden; }
+    public List<int> WidenedPaths
+    {
+        set { widenedPaths = value; }
+        get { return widenedPaths; }
     }
 
-    public void InitArsenalLists() {
-        var enumValues = Enum.GetValues(typeof(Resources.Arsenal)).ConvertTo<Resources.Arsenal[]>();
-
-        for (int i = 0; i < enumValues.Length; i++) {
-            if (researchProgressKeys.Count-1 < i) {
-                researchProgressKeys.Add(enumValues[i]);
-            }
-            if (researchProgressValues.Count-1 < i) {
-                researchProgressValues.Add(1);
-            }
-            if (currentlyResearchingValues.Count-1 < i) {
-                currentlyResearchingValues.Add(new ResearchItem());
-            }
-            if (pendingPowerups.Count-1 < i) {
-                pendingPowerups.Add(new Powerups());
-            }
-            if (takenUpgrades.Count-1 < i) {
-                takenUpgrades.Add(new Upgrades());
-            }
-        }
-    }
-
-    [SerializeField] private List<Resources.Arsenal> researchProgressKeys = new List<Resources.Arsenal>() {
+    [SerializeField] private List<ArsenalKey> arsenalKeys = new List<ArsenalKey>()
+    {
+        new ArsenalKey(FIRST_MT, false, true)
     };
 
-    [SerializeField] private List<int> researchProgressValues = new List<int>() {
-        1,
-        1,
-        1,
-        1,
-        1,
+    public List<ArsenalKey> ArsenalKeys
+    {
+        set { arsenalKeys = value; }
+        get { return arsenalKeys; }
+    }
+    [SerializeField] private List<int> researchLvls = new List<int>()
+    {
+        1
+    };
+    public List<int> ResearchLvls
+    {
+        set { researchLvls = value; }
+        get { return researchLvls; }
+    }
+
+    [SerializeField] private List<float> researchProgressValues = new List<float>()
+    {
+        0f
     };
 
-    [SerializeField] private List<ResearchItem> currentlyResearchingValues = new List<ResearchItem>() {
+    public List<float> ResearchProgressValues
+    {
+        set { researchProgressValues = value; }
+        get { return researchProgressValues; }
+    }
 
+    [SerializeField] private List<Upgrades> takenUpgrades = new List<Upgrades>()
+    {
+        new Upgrades()
+    };
+    public List<Upgrades> TakenUpgrades
+    {
+        set { takenUpgrades = value; }
+        get { return takenUpgrades; }
+    }
+
+    [SerializeField] private List<Powerups> pendingPowerups = new List<Powerups>()
+    {
+        new Powerups()
     };
 
-    public List<Resources.Arsenal> CurrentlyResearchingKeys {
-        get { return researchProgressKeys; }
-    }
-
-    public int CurrentlyResearchingCount {
-        get { 
-            return currentlyResearchingValues.Count;
-        }
-    }
-
-    public List<ResearchItem> CurrentlyResearching {
-        get { 
-            return currentlyResearchingValues;
-        }
-    }
-
-    public int this[Resources.Arsenal arsnl, bool lvl] {
-        get {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    return researchProgressValues[i];
-                }
-            }
-            return 0;
-        }
-        set {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    researchProgressValues[i] = value;
-                }
-            }
-        }
-    }
-
-    public float this[Resources.Arsenal arsnl] {
-        get {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    return currentlyResearchingValues[i].progress;
-                }
-            }
-            return -1f;
-        }
-        set {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    currentlyResearchingValues[i].progress = value;
-                }
-            }
-        }
-    }
-
-    public bool this[Resources.Arsenal arsnl, int _] {
-        get {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    return currentlyResearchingValues[i].active;
-                }
-            }
-            return false;
-        }
-    }
-
-    public void SetCurrentlyResearched(Resources.Arsenal arsnl, bool activated) {
-        for (int i = 0; i < researchProgressKeys.Count; i++) {
-            if (arsnl == researchProgressKeys[i]) {
-                currentlyResearchingValues[i].active = activated;
-                break;
-            }
-        }
-    }
-
-    [SerializeField] private List<Upgrades> takenUpgrades = new List<Upgrades>();
-    public void AddTakenUpgrade(Resources.Arsenal arsnl, Resources.MTUpgradeType powerup) {
-        for (int i = 0; i < researchProgressKeys.Count; i++) {
-            if (arsnl == researchProgressKeys[i]) {
-                takenUpgrades[i].self.Add(powerup);
-            }
-        }
-    }
-
-    public List<Resources.MTUpgradeType> GetTakenUpgrades(Resources.Arsenal arsnl) {
-        for (int i = 0; i < researchProgressKeys.Count; i++) {
-            if (arsnl == researchProgressKeys[i]) {
-                return takenUpgrades[i].self;
-            }
-        }
-        return new List<Resources.MTUpgradeType>();
-    }
-
-    [SerializeField] private List<Powerups> pendingPowerups = new List<Powerups>();
-
-    public List<Powerup> this[Resources.Arsenal arsnl, float _] {
-        get {
-            for (int i = 0; i < researchProgressKeys.Count; i++) {
-                if (arsnl == researchProgressKeys[i]) {
-                    return pendingPowerups[i].self;
-                }
-            }
-            return new List<Powerup>();
-        }
-    }
-
-    public List<Powerups> Powerups {
+    public List<Powerups> Powerups
+    {
+        set { pendingPowerups = value; }
         get { return pendingPowerups; }
     }
 
-    public void AddPowerup(Resources.Arsenal arsnl, Powerup powerup) {
-        for (int i = 0; i < researchProgressKeys.Count; i++) {
-            if (arsnl == researchProgressKeys[i]) {
-                pendingPowerups[i].self.Add(powerup);
-            }
-        }
-    }
+    [SerializeField] private int __researchSlots = 2;
 
-    public void RemovePowerup(Resources.Arsenal arsnl, int index) {
-        for (int i = 0; i < researchProgressKeys.Count; i++) {
-            if (arsnl == researchProgressKeys[i]) {
-                pendingPowerups[i].self.RemoveAt(index);
-            }
-        }
-    }
-
-    private int __researchSlots = 2;
-
-    public int ReseachSlots {
+    public int ReseachSlots
+    {
+        set { __researchSlots = value; }
         get { return __researchSlots; }
     }
 
-    public void IncResearchSlots() {
-        __researchSlots++;
-    }
-
     // ENEMY CHANCE EVALUATOR RELATED
-    [SerializeField] private List<Resources.Enemy> enemyKeys = new List<Resources.Enemy>();
     [SerializeField] private List<float> enemyChanceTimes = new List<float>();
+    public List<float> EnemyChanceTimes
+    {
+        set { enemyChanceTimes = value; }
+        get { return enemyChanceTimes; }
+    }
     [SerializeField] private List<float> enemyChanceSteps = new List<float>();
-
-    public List<Resources.Enemy> EnemyKeys {
-        get { return enemyKeys; }
-    }
-
-    public void IncEnemyChanceTime(int index) {
-        if (index > enemyChanceTimes.Count-1) {
-            return;
-        }
-        enemyChanceTimes[index] += enemyChanceSteps[index];
-    }
-
-    public void LoopEnemyChanceTime(int index) {
-        if (index > enemyChanceTimes.Count-1) {
-            return;
-        }
-        enemyChanceTimes[index] -= 360;
-    }
-
-    public Option<float> GetEnemyChanceTime(int index) {
-        if (index > enemyChanceTimes.Count-1) {
-            return Option<float>.None();
-        }
-        return new Option<float>(enemyChanceTimes[index]);
-    }
-
-    public Option<float> GetEnemyChanceStep(int index) {
-        if (index > enemyChanceTimes.Count-1) {
-            return Option<float>.None();
-        }
-        return new Option<float>(enemyChanceSteps[index]);
-    }
-
-    public Option<float> GetEnemyChanceTime(Resources.Enemy enemy) {
-        for (int i = 0; i < enemyChanceTimes.Count; i++) {
-            if (enemyKeys[i] == enemy) {
-                return new Option<float>(enemyChanceTimes[i]);
-            }
-        }
-        return Option<float>.None();
-    }
-
-    public Option<float> GetEnemyChanceStep(Resources.Enemy enemy) {
-        for (int i = 0; i < enemyChanceSteps.Count; i++) {
-            if (enemyKeys[i] == enemy) {
-                return new Option<float>(enemyChanceSteps[i]);
-            }
-        }
-        return Option<float>.None();
-    }
-
-    public void AddEnemyChance(Resources.Enemy enemy, float step) {
-        enemyKeys.Add(enemy);
-        enemyChanceTimes.Add(0);
-        enemyChanceSteps.Add(step);
+    public List<float> EnemyChanceSteps {
+        set { enemyChanceSteps = value; }
+        get { return enemyChanceSteps; }
     }
 }
 
@@ -425,7 +240,16 @@ public class Upgrades {
 }
 
 [Serializable]
-public class ResearchItem {
-    public bool active = false;
-    public float progress = 0f;
+public class ArsenalKey
+{
+    public Resources.Arsenal type;
+    public bool researchActive = false;
+    public bool unlocked = false;
+
+    public ArsenalKey(Resources.Arsenal type, bool active, bool unlocked)
+    {
+        this.type = type;
+        this.researchActive = active;
+        this.unlocked = unlocked;
+    }
 }

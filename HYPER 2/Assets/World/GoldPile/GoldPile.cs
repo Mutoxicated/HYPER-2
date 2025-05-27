@@ -12,7 +12,7 @@ public class GoldPile : MonoBehaviour
 
     public int OnHit() {
         manager.GUI.PopupPool.Popup(transform.position+Vector3.up*yOffset, Color.yellow, "+1");
-        Player.SetMoneyRelative(1);
+        Player.self.SetMoneyRelative(1);
         return 0;
     }
 

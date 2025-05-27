@@ -72,11 +72,11 @@ public class Selector : MonoBehaviour
             if (player.OnLeftClick) {
                 qi.GetSelectedArsenal().GetAndThen(a => {
                     var template = Resources.GetMTInfo(a);
-                    if (Player.Money < template.worth) {
+                    if (Player.self.Money < template.worth) {
                         onDenyTowerPlacement.Play();
                         return;
                     }
-                    Player.SetMoneyRelative(-template.worth);
+                    Player.self.SetMoneyRelative(-template.worth);
                     onTowerPlacement.Play();
                     var instance = manager.World.InstantiateMiniTower(storedGo.transform.parent.position, a, mt => { mt.CStart(manager, storedGo.transform.parent.GetComponent<Tile>()); });
                     selected = new Option<GameObject>(instance.gameObject);

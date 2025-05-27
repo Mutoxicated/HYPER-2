@@ -133,6 +133,7 @@ public class Gameplay : MonoBehaviour
         }
 
         SetMinMaxEnemyRange(0, 0);
+        ece.CStart();
         ece.GiveEnemyRange(minMaxEnemyRange);
         ece.UpdateTime();
 
@@ -228,7 +229,7 @@ public class Gameplay : MonoBehaviour
     public void IntervalStartWave() {
         Debug.Log("start");
         if (FrequencyCheck(Waves, bossFrequency)) {
-            Player.SetMoneyRelative(BossPaycheck*BossDiff);
+            Player.self.SetMoneyRelative(BossPaycheck*BossDiff);
             bossRound.Enable();
         }else if (Waves > bossFrequency && Waves % uncommonFrequency == 0) {
             invasionRound.Enable();
@@ -238,20 +239,24 @@ public class Gameplay : MonoBehaviour
         waitInterval.Disable();
     }
 
-    public void EndWave() {
-        Debug.Log("Wave ended ("+Waves+")");
+    public void EndWave()
+    {
+        Debug.Log("Wave ended (" + Waves + ")");
         Save.rData.IncLinearTime(amount: 0.05f);
         Save.rData.IncrementWaves();
         waitInterval.Enable();
-        if (Waves % expandFrequency == 0 & Waves >= expandFrequency) {
+        if (Waves % expandFrequency == 0 & Waves >= expandFrequency)
+        {
             World.WG.Expand(5);
         }
-   
-        if (Waves % goldPileFrequency == 0 & Waves >= goldPileFrequency) {
+
+        if (Waves % goldPileFrequency == 0 & Waves >= goldPileFrequency)
+        {
             World.WG.NewGoldPile();
         }
 
-        switch (Waves) {
+        switch (Waves)
+        {
             case unlock2ndPath:
                 NextPath();
                 break;
@@ -274,9 +279,10 @@ public class Gameplay : MonoBehaviour
                 world.WG.WidenNextPath();
                 break;
         }
-        PublicEvent.SaveRun();
         ece.UpdateTime();
         SetMinMaxEnemyRange(0, 0);
         ece.GiveEnemyRange(minMaxEnemyRange);
+        
+        PublicEvent.SaveRun();
     }
 }

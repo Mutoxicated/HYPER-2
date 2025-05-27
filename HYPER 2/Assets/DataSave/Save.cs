@@ -36,8 +36,6 @@ public class Save : MonoBehaviour
         if (File.Exists(Path(DataType.PLAYER)))
         {
             UpdateData(DataType.PLAYER);
-        }else {
-            CreateData(DataType.PLAYER);
         }
     }
 
@@ -72,7 +70,6 @@ public class Save : MonoBehaviour
 
         if (dt == DataType.RUN) {
             rData = JsonUtility.FromJson<RunData>(json);
-            rData.InitArsenalLists();
         }else {
             pData = JsonUtility.FromJson<PlayerData>(json);
         }

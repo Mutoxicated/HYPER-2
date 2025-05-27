@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 6132190789300334389}
-  smr: {fileID: 0}
   type: 5
   changeColor: 1
   color: {r: 1, g: 0, b: 0, a: 1}
@@ -208,11 +207,14 @@ MonoBehaviour:
   holder:
     value: {fileID: 0}
     none: 1
-  template: {fileID: 11400000, guid: 26cc5b1768bc8ab4fb68ba5a8d18bf09, type: 2}
+  height: 4
   hitVisual:
     value: {fileID: 4089195765754699109}
     none: 0
   range:
+    value: {fileID: 0}
+    none: 1
+  infector:
     value: {fileID: 0}
     none: 1
 --- !u!114 &8026403155563357703
@@ -230,6 +232,12 @@ MonoBehaviour:
   stats: {fileID: 7483121074402370019}
   enemyType: 2
   hitSFX: {fileID: 5126550029506714795}
+  options:
+    value:
+      hpbarAnchor: {fileID: 0}
+      scale: {x: 1, y: 1}
+      extrusion: 0
+    none: 1
   followPath: 1
 --- !u!114 &7654643070103954848
 MonoBehaviour:

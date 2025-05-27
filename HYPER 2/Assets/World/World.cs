@@ -43,6 +43,8 @@ public class World : MonoBehaviour
         get { return WG.GP; }
     }
 
+    private List<MTState> mTStates = new List<MTState>();
+
     public delegate void EnemyConstructor(ReportDeath<Enemy> death, Enemy enemy);
 
     public Enemy InstantiateEnemy(Resources.Enemy enemyType, Vector3 pos, EnemyConstructor es) {
@@ -56,6 +58,9 @@ public class World : MonoBehaviour
     public MiniTower InstantiateMiniTower(Vector3 position, Resources.Arsenal arsenal, MiniTowerConstructor constructor) {
         var tower = Instantiate(Resources.GetArsenal(arsenal), position, Quaternion.identity).GetComponent<MiniTower>();
         constructor(tower);
+        mTStates.Add(tower.State());
+        var index = mTStates.Count - 1;
+        tower.AddOnDeath(_ => mTStates.RemoveAt(index));
         return tower;
     }
 
@@ -124,13 +129,21 @@ public class World : MonoBehaviour
         
         foreach (var state in Save.rData.MTs) {
             RaycastHit info;
-            Physics.Raycast(state.position+Vector3.up*4f, Vector3.down, out info, Mathf.Infinity);
+            Physics.Raycast(state.position+Vector3.up*4f, Vector3.down, out info, Mathf.Infinity, LayerMask.GetMask(new string[1] { EditorState.Layers[EditorLayer.INTERACTABLE_ONE] }), QueryTriggerInteraction.Collide);
             var tile = info.collider.transform.parent.GetComponent<Tile>();
+            if (tile == null)
+            {
+                Assert.IsNotNull(info.collider, "collider game object was not of a tile");
+                continue;
+            }
             var mt = InstantiateMiniTower(state.position, state.arsenal, t => t.CStart(player.Manager, state, tile));
-            Assert.IsNotNull(info.collider, "IN NO CASE SHOULD THIS EVER BE NULL, THERE SHOULD ALWAYS BE A TILE BELOW THE TOWER");
         }
 
-        Save.rData.MTs.Clear();
+        PublicEvent.onSaveRun += _ =>
+        {
+            Save.rData.MTs = mTStates;
+        };
+
         UpdateRadius();
         //Debug.Log(borderRadius);
     }

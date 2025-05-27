@@ -151,41 +151,49 @@ public class Path : MonoBehaviour
 
         extend();
 
-        Save.rData.AddPath(neighbors1);
-        index = Save.rData.Paths.Count-1;
+        wg.PathData.Add(new PathAlt(neighbors1));
+        index = wg.PathData.Count-1;
     }
 
-    public void CStart(Manager manager, List<Neighbor> nbs) {
+    public void CStart(Manager manager, List<Neighbor> nbs)
+    {
         world = manager.World;
         wg = world.WG;
         GetMainDirFromLocation(nbs[0][wg].Location);
-        perpendicular = (Direction)Num.Wrap((int)mainDirection+1, 0, 3);
-        perpendicular2 = (Direction)Num.Wrap((int)mainDirection+3, 0, 3);
+        perpendicular = (Direction)Num.Wrap((int)mainDirection + 1, 0, 3);
+        perpendicular2 = (Direction)Num.Wrap((int)mainDirection + 3, 0, 3);
         CalculateCornerToIndexDist(nbs[0][wg]);
-        foreach (var nb in nbs) {
+        foreach (var nb in nbs)
+        {
             nb[wg].Enable("recr");
         }
         neighbors1 = nbs;
         root1 = CreateBranches(neighbors1);
+        wg.PathData.Add(new PathAlt(nbs));
+        index = wg.PathData.Count-1;
     }
 
-    public void Widen() {
-        var sideDirection =  Mathf.Abs(neighbors1[0][wg].Location.CornersRange.a) < Mathf.Abs(neighbors1[0][wg].Location.CornersRange.b) ? perpendicular : perpendicular2; 
+    public void Widen()
+    {
+        var sideDirection = Mathf.Abs(neighbors1[0][wg].Location.CornersRange.a) < Mathf.Abs(neighbors1[0][wg].Location.CornersRange.b) ? perpendicular : perpendicular2;
         // if (neighbors1[1].Direction == Direction.UP | neighbors1[1].Direction == Direction.DOWN) {
         //     sideDirection = sideDirection == perpendicular2 ? perpendicular : perpendicular2;
         // }
 
         Option<Neighbor> start = Option<Neighbor>.None();
         var nbs = neighbors1[0][wg].GetNeighbors();
-        foreach (var nb in nbs) {
-            if (nb.Direction == sideDirection) {
+        foreach (var nb in nbs)
+        {
+            if (nb.Direction == sideDirection)
+            {
                 start = new Option<Neighbor>(nb);
                 break;
             }
         }
-        neighbors1[0][wg].Write("D: "+sideDirection.ToString());
+        neighbors1[0][wg].Write("D: " + sideDirection.ToString());
         Assert.IsFalse(start.IsNone());
-        start.GetAndThen(s => {
+        start.GetAndThen(s =>
+        {
             s.Direction = mainDirection;
             s[wg].Enable("start");
             neighbors2.Add(s);
@@ -193,12 +201,15 @@ public class Path : MonoBehaviour
 
         //var color = new Color(1f,0f,1f);
 
-        var currentTile = neighbors2[neighbors2.Count-1][wg];
+        var currentTile = neighbors2[neighbors2.Count - 1][wg];
         var found = false;
-        while (validForExtending(currentTile)) {
+        while (validForExtending(currentTile))
+        {
             nbs = currentTile.GetNeighbors();
-            foreach (var nb in nbs) {
-                if (nb.Direction == mainDirection) {
+            foreach (var nb in nbs)
+            {
+                if (nb.Direction == mainDirection)
+                {
                     nb[wg].Enable(mainDirection.ToString());
                     currentTile = nb[wg];
                     neighbors2.Add(nb);
@@ -206,8 +217,10 @@ public class Path : MonoBehaviour
                     break;
                 }
             }
-            if (!found) {
-                if (nbs.Count == 0) {
+            if (!found)
+            {
+                if (nbs.Count == 0)
+                {
                     Debug.LogError("widen path error: og path consumed the wrong side of the first layer");
                     return;
                 }
@@ -219,6 +232,7 @@ public class Path : MonoBehaviour
         }
 
         root2 = CreateBranches(neighbors2);
+        wg.WidenedPaths.Add(index);
     }
 
     private Branch CreateBranches(List<Neighbor> neighbors) {

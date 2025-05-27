@@ -7924,6 +7924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3673033732852521373}
   - component: {fileID: 2367708331760593724}
+  - component: {fileID: 3607595778826714674}
   m_Layer: 5
   m_Name: Laboratory
   m_TagString: Untagged
@@ -7964,12 +7965,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b02d98e6d410ca4d829d854c7379bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerupManager: {fileID: 3607595778826714674}
   labItemPrefab: {fileID: 6660680299076741748, guid: c28e27d5d2652ac43b2c533833faf2be, type: 3}
   container: {fileID: 6730019348301880383}
   anchor: {fileID: 4641007017515955683}
   noItems: {fileID: 8691280694129539326}
   researchSlotCost: {fileID: 6649948029821890832}
   slots: {fileID: 815456363730524034}
+--- !u!114 &3607595778826714674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8423692124038104442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 233bec02610ea9f4f841984a743aeb11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8532332670148609951
 GameObject:
   m_ObjectHideFlags: 0
@@ -8478,6 +8492,7 @@ MonoBehaviour:
   arsenal: {fileID: 7353899073240870942}
   inventory: {fileID: 2343712014062760952}
   laboratory: {fileID: 2367708331760593724}
+  powerupManager: {fileID: 3607595778826714674}
   popup: {fileID: 5734393270406697548}
   popupPool: {fileID: 0}
   hpbp: {fileID: 0}

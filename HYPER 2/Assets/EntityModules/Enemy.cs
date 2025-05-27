@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
         }
         transform.position += Vector3.up*(Resources.GetEnemyStats(enemyType).verticality-1)*3f;
         options.GetAndThen(a => {
-            stats.Manager.GUI.HPBP.GetHPBar(a.hpbarAnchor, 0f, stats, a.scale);
+            stats.Manager.GUI.HPBP.GetHPBar(a.hpbarAnchor, a.extrusion, stats);
         });
 
         currentBranch = root;

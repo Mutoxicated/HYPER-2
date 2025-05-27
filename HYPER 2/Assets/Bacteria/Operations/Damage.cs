@@ -40,7 +40,7 @@ public class Damage : MonoBehaviour {
         int xp = stats.Get().BacteriaDamage(bacteria.Type, damage*Mathf.InverseLerp(converted[Stat.MAX_HEALTH], 0, converted.HP));
         if (bacteria.Stats.StatSide == Stats.Side.PLAYER) {
             bacteria.Stats.IncXP(xp/2);
-            Player.IncrementXP(xp);
+            Player.self.IncrementXP(xp);
         }
     }
 }

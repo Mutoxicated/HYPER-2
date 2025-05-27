@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Laboratory : MonoBehaviour, IActivation
 {
+    [SerializeField] private PowerupManager powerupManager;
     [SerializeField] private GameObject labItemPrefab;
     [SerializeField] private Transform container;
     [SerializeField] private Transform anchor;
@@ -21,12 +22,16 @@ public class Laboratory : MonoBehaviour, IActivation
     private float yInc;
     private string ufmtSlots;
 
+    private Arsenal arsenal;
+    private Researcher researcher;
     private PowerupPopup popup;
     private GUI gui;
 
-    public void DStart(GUI gui, PowerupPopup popup) {
+    public void DStart(Arsenal arsenal, GUI gui, PowerupPopup popup, Researcher researcher) {
+        this.researcher = researcher;
         this.popup = popup;
         this.gui = gui;
+        this.arsenal = arsenal;
 
         var enumValues = Enum.GetValues(typeof(Resources.Arsenal)).ConvertTo<Resources.Arsenal[]>();
 
@@ -34,7 +39,7 @@ public class Laboratory : MonoBehaviour, IActivation
             var instance = Instantiate(labItemPrefab, container);
             var labItem = instance.GetComponent<LabItem>();
             labItems.Add(labItem);
-            labItem.CStart(popup, enumValues[i], this, i);
+            labItem.CStart(researcher, popup, enumValues[i], this, i);
         }
         yInc = labItems[0].ImageSizeY*60.1f;
         researchSlotCost.text = Gameplay.ResearchSlotCost+"*";
@@ -43,8 +48,8 @@ public class Laboratory : MonoBehaviour, IActivation
 
     public void Enable() {
         currentlyResearchedLabItems.Clear();
-        for (int i = 0; i < Save.rData.CurrentlyResearchingCount; i++) {
-            if (Save.rData.CurrentlyResearching[i].active) {
+        for (int i = 0; i < arsenal.Keys.Count; i++) {
+            if (arsenal.Keys[i].researchActive) {
                 labItems[i].Enable();
                 currentlyResearchedLabItems.Add(labItems[i]);
             }
@@ -99,7 +104,7 @@ public class Laboratory : MonoBehaviour, IActivation
         if (Save.rData.ReseachSlots >= Gameplay.ResearchSlotLimit) {
             return;
         }
-        Player.SetMoneyRelative(-Gameplay.ResearchSlotCost);
-        Save.rData.IncResearchSlots();
+        Player.self.SetMoneyRelative(-Gameplay.ResearchSlotCost);
+        researcher.IncResearchSlots();
     }
 }

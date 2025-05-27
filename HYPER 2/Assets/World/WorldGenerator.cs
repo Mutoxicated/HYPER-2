@@ -112,12 +112,23 @@ public class WorldGenerator : MonoBehaviour
     public List<Path> Paths {
         get { return paths; }
     }
+    
     public Path RandomPath {
         get { return paths[Seed.IntRange(0, paths.Count-1)]; }
     }
     private int lastRandomCorner;
+    
+    private List<PathAlt> pathData = new List<PathAlt>();
+    public List<PathAlt> PathData {
+        get { return pathData; }
+    }
+    private List<int> widenedPaths = new List<int>();
+    public List<int> WidenedPaths {
+        get { return widenedPaths; }
+    }
 
-    public float TileSize {
+    public float TileSize
+    {
         get { return tileSize; }
     }
 
@@ -129,16 +140,23 @@ public class WorldGenerator : MonoBehaviour
         return multiplier*tileSize*4-tileSize*2;
     }
 
-    public void DStart(World world, Player player) {
+    public void DStart(World world, Player player)
+    {
         gp.DStart(player.Manager);
         this.player = player;
         this.world = world;
-        towerSize = world.TowerPlatform.transform.localScale.x*0.5f;
-        tileSize = tilePrefab.transform.GetChild(0).transform.localScale.x*0.5f;
+        towerSize = world.TowerPlatform.transform.localScale.x * 0.5f;
+        tileSize = tilePrefab.transform.GetChild(0).transform.localScale.x * 0.5f;
 
         Layer();
 
         gp.GenerationUnlockLogic(CreatePaths);
+
+        PublicEvent.onSaveRun += _ =>
+        {
+            Save.rData.Paths = pathData;
+            Save.rData.WidenedPaths = widenedPaths;
+        };
     }
 
     public void Update() {
@@ -498,8 +516,8 @@ public class WorldGenerator : MonoBehaviour
                 var path = InstantiatePath(i, (p, _) => { p.CStart(player.Manager, Save.rData.Paths[i].self); }); 
                 path.RepositionPath();
             }
-            for (int i = 0; i < Save.rData.PathsToWiden.Count; i++) {
-                var curr = Save.rData.PathsToWiden[i];
+            for (int i = 0; i < Save.rData.WidenedPaths.Count; i++) {
+                var curr = Save.rData.WidenedPaths[i];
                 paths[curr].Widen();
                 counter++;
             }
@@ -581,10 +599,8 @@ public class WorldGenerator : MonoBehaviour
     }
 
     int counter = 0;
-
     public void WidenNextPath() {
         paths[counter].Widen();
-        Save.rData.AddPathToWiden(counter);
         counter++;
     }
 

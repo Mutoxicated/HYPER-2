@@ -8,10 +8,9 @@ public class Powerup {
     public List<Resources.MTUpgradeType> upgrades = new List<Resources.MTUpgradeType>();
     public List<int> rarities = new List<int>();
 
-    public Powerup(Resources.Arsenal arsenalType, MinitowerInfo info) {
+    public Powerup(Resources.Arsenal arsenalType, MinitowerInfo info, List<Resources.MTUpgradeType> takenUpgrades) {
         var availableUpgrades = info.availableUpgrades.ToList();
 
-        var takenUpgrades = Save.rData.GetTakenUpgrades(arsenalType);
         for (int i = 0; i < takenUpgrades.Count; i++) {
             for (int j = 0; j < availableUpgrades.Count; j++) {
                 if (takenUpgrades[i] == availableUpgrades[j] && !Resources.GetMTUpgrade(takenUpgrades[i]).stackable) {

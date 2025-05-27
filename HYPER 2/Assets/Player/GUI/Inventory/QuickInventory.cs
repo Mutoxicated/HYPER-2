@@ -45,10 +45,8 @@ public class QuickInventory : MonoBehaviour
         selected = item;
         selected.GetAndThen(i => {
             selectedImage.position = i.transform.position;
-            Save.rData.SetSelectedIndex(i.Index);
         }).Else(() => {
             selectedImage.position = new Vector3(5700,0,0);
-            Save.rData.SetSelectedIndex(-1);
         });
     }
 
@@ -70,12 +68,28 @@ public class QuickInventory : MonoBehaviour
             UpdateSelectedWithIndex(Save.rData.SelectedIndex);
         }
 
-        Save.rData.UpdateQIACapacity(capacity);
         int index = 0;
         foreach (var qia in Save.rData.QIAs.ToArray()) {
             items[index].SetArsenal(qia);
             index++;
         }
+
+        PublicEvent.onSaveRun += _ =>
+        {
+            var qias = new List<Option<Resources.Arsenal>>();
+            foreach (var item in items)
+            {
+                qias.Add(item.ArsenalType);
+            }
+            Save.rData.QIAs = qias;
+            selected.GetAndThen(qi =>
+            {
+                Save.rData.SetSelectedIndex(qi.Index);
+            }).Else(() =>
+            {
+                Save.rData.SetSelectedIndex(-1);
+            });
+        };
      
         gameObject.SetActive(true);
     }

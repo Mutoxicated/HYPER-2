@@ -50,7 +50,7 @@ public class SelectedArsenalInfo : MonoBehaviour
         }
         this.mt = new Option<MiniTower>(mt);
         mt.Highlight();
-        mt.GetReportDeath() += _ => Disable();
+        mt.AddOnDeath(_ => Disable());
         selector.OnSelect(mt.gameObject);
         stats = mt.Stats;
         gameObject.SetActive(true);
@@ -83,7 +83,7 @@ public class SelectedArsenalInfo : MonoBehaviour
         if (!gameObject.scene.isLoaded) { return; }
         mt.GetAndThen(m => {
             m.Dehighlight(); 
-            m.GetReportDeath() -= _ => Disable();
+            m.AddOnDeath(_ => Disable());
         });
         selector.OnDeselect();
         gameObject.SetActive(false);
@@ -94,12 +94,12 @@ public class SelectedArsenalInfo : MonoBehaviour
         if (Save.rData.Money < Mathf.RoundToInt(gamePlay.RestoreHPPrice)) {
             return;
         }
-        Player.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.RestoreHPPrice));
+        Player.self.SetMoneyRelative(-Mathf.RoundToInt(gamePlay.RestoreHPPrice));
         mt.Get().RestoreHP();
     }
 
     public void Destroy() {
-        Player.SetMoneyRelative(mt.Get().MTInfo.worth/2);
+        Player.self.SetMoneyRelative(mt.Get().MTInfo.worth/2);
         selector.Delete();
         mt = Option<MiniTower>.None();
     }

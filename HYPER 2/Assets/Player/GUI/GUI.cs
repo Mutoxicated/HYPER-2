@@ -12,6 +12,7 @@ public class GUI : MonoBehaviour
     [SerializeField] private Arsenal arsenal;
     [SerializeField] private Inventory inventory;
     [SerializeField] private Laboratory laboratory;
+    [SerializeField] private PowerupManager powerupManager;
     [SerializeField] private PowerupPopup popup;
     [SerializeField] private PopupPool popupPool;
     [SerializeField] private HPBarPool hpbp;
@@ -46,10 +47,11 @@ public class GUI : MonoBehaviour
         menuUI.DStart(player);
         selector.DStart(player, player.Manager);
         quickInventory.DStart(player);
-        arsenal.DStart(player);
-        inventory.DStart();
-        popup.DStart();
-        laboratory.DStart(this, popup);
+        powerupManager.DStart();
+        arsenal.DStart(powerupManager, player);
+        inventory.DStart(arsenal);
+        popup.DStart(powerupManager);
+        laboratory.DStart(arsenal, this, popup, arsenal.Researcher);
         popupPool.DStart(player.gameObject);
         gameObject.SetActive(true);
     }

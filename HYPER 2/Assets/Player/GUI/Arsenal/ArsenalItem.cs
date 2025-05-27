@@ -15,6 +15,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private Image internalImage;
     [SerializeField] private Text itemName;
 
+    private Arsenal arsenal;
     private MinitowerInfo mtInfo;
     private StatsTemplate template;
     private bool selected;
@@ -53,14 +54,13 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             ai.Disable();
     }
 
-    public void CStart(ArsenalInfo ai, Resources.Arsenal arsenalType) {
+    public void CStart(Arsenal arsenal, Resources.Arsenal arsenalType)
+    {
         type = arsenalType;
         mtInfo = Resources.GetMTInfo(Type);
         template = Resources.GetStatTemplate(Type);
-        if (Save.rData.Lvl >= mtInfo.unlockAt) {
-            ai.Arsenal.Inventory.NewInventoryItem(arsenalType);
-        }
-        this.ai = ai;
+        ai = arsenal.AI;
+        this.arsenal = arsenal;
     }
 
     public void Enable() {
@@ -81,7 +81,7 @@ public class ArsenalItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public void SetImageColor() {
-        if (Save.rData[type, 0]) {
+        if (arsenal.Keys[(int)type].researchActive) {
             image.color = Color.cyan;
         }else if (!locked) {
             image.color = Color.white;

@@ -79,8 +79,8 @@ public class MiniTower : MonoBehaviour
         highlight.Disable();
     }
 
-    private void StoreMTState(RunData r) {
-        r.AddMTState(new MTState(upgrades, transform.position, stats.HP, arsenal, stats.LVL, stats.XP));
+    public MTState State() {
+        return new MTState(upgrades, transform.position, stats.HP, arsenal, stats.LVL, stats.XP);
     }
 
     public void PrepareConfiguration() {
@@ -111,7 +111,7 @@ public class MiniTower : MonoBehaviour
     }
 
     private void ApplyUpgrades() {
-        var upgrades = Save.rData.GetTakenUpgrades(arsenal);
+        var upgrades = Save.rData.TakenUpgrades[(int)arsenal].self;
         for (int i = 0; i < upgrades.Count; i++) {
             this.upgrades.Add(upgrades[i]);
             Resources.GetMTUpgrade(upgrades[i]).Action(this);
@@ -120,11 +120,10 @@ public class MiniTower : MonoBehaviour
 
     public void CStart(Manager manager, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
-        PublicEvent.onSaveRun += StoreMTState;
         mtInfo = Resources.GetMTInfo(arsenal);
         stats.CStart(manager, Resources.GetStatTemplate(arsenal));
         PrepareConfiguration();
-        for (int i = 1; i < Save.rData[arsenal, true]; i++) {
+        for (int i = 1; i < Save.rData.ResearchLvls[(int)arsenal]; i++) {
             stats.IncXP(stats.MaxRequiredXP(), false);
         }
         SetHPBar();
@@ -136,7 +135,6 @@ public class MiniTower : MonoBehaviour
 
     public void CStart(Manager manager, MTState state, Tile tile) {
         death = new World.ReportDeath<MiniTower>(_ => {});
-        PublicEvent.onSaveRun += StoreMTState;
         mtInfo = Resources.GetMTInfo(arsenal);
         stats.CStart(manager, Resources.GetStatTemplate(arsenal), state);
         PrepareConfiguration();
@@ -169,14 +167,13 @@ public class MiniTower : MonoBehaviour
     }
 
     public void OnDisable() {
-        Dehighlight();
-        PublicEvent.onSaveRun -= StoreMTState;
-        death.Invoke(this);
         if (!gameObject.scene.isLoaded) { return; }
+        Dehighlight();
+        death.Invoke(this);
         deathSound.Play();
     }
 
-    public ref World.ReportDeath<MiniTower> GetReportDeath() {
-        return ref death;
+    public void AddOnDeath(World.ReportDeath<MiniTower> onDeath) {
+        death += onDeath;
     }
 }

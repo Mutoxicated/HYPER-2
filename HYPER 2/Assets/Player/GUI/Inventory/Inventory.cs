@@ -28,13 +28,15 @@ public class Inventory : MonoBehaviour, IActivation
         }
     }
 
-    public void RemoveInventoryItem(Resources.Arsenal arsenalType) {
-        sorter.RemoveItem(iitems[arsenalType].transform);
-        Destroy(iitems[arsenalType].gameObject);
-        iitems.Remove(arsenalType);
-    }
-
-    public void DStart() {
+    public void DStart(Arsenal arsenal)
+    {
+        foreach (var key in arsenal.Keys)
+        {
+            if (key.unlocked)
+            {
+                NewInventoryItem(key.type);
+            }
+        }
         sorter.PrepareValues();
     }
 

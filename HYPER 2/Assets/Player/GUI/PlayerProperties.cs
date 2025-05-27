@@ -18,13 +18,13 @@ public class PlayerProperties : MonoBehaviour
     }
 
     private void Update() {
-        money.text = String.Format(moneyString, Save.rData.Money);
-        lvl.text = String.Format(lvlString, Save.rData.Lvl);
-        if (Save.rData.XP == 0) {
+        money.text = String.Format(moneyString, Player.self.Money);
+        lvl.text = String.Format(lvlString, Player.self.Lvl);
+        if (Player.self.CurrentXP == 0) {
             xpBar.fillAmount = 0f;
             return;
         }
         //Debug.Log(Save.rData.XP);
-        xpBar.fillAmount = Save.rData.XP/Player.MaxXPRequired();
+        xpBar.fillAmount = Player.self.CurrentXP/Player.MaxXPRequired();
     }
 }
