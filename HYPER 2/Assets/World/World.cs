@@ -43,8 +43,6 @@ public class World : MonoBehaviour
         get { return WG.GP; }
     }
 
-    private List<MTState> mTStates = new List<MTState>();
-
     public delegate void EnemyConstructor(ReportDeath<Enemy> death, Enemy enemy);
 
     public Enemy InstantiateEnemy(Resources.Enemy enemyType, Vector3 pos, EnemyConstructor es) {
@@ -58,9 +56,9 @@ public class World : MonoBehaviour
     public MiniTower InstantiateMiniTower(Vector3 position, Resources.Arsenal arsenal, MiniTowerConstructor constructor) {
         var tower = Instantiate(Resources.GetArsenal(arsenal), position, Quaternion.identity).GetComponent<MiniTower>();
         constructor(tower);
-        mTStates.Add(tower.State());
-        var index = mTStates.Count - 1;
-        tower.AddOnDeath(_ => mTStates.RemoveAt(index));
+        mts.Add(tower);
+        var index = mts.Count - 1;
+        tower.AddOnDeath(_ => mts.RemoveAt(index));
         return tower;
     }
 
@@ -141,7 +139,12 @@ public class World : MonoBehaviour
 
         PublicEvent.onSaveRun += _ =>
         {
-            Save.rData.MTs = mTStates;
+            var mtStates = new List<MTState>();
+            foreach (var mt in mts)
+            {
+                mtStates.Add(mt.State());
+            }
+            Save.rData.MTs = mtStates;
         };
 
         UpdateRadius();

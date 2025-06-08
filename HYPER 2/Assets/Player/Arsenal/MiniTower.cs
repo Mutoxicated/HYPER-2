@@ -6,7 +6,8 @@ using UnityEngine;
 using static Stat;
 
 [Serializable]
-public class MTState {
+public class MTState
+{
     public Vector3 position;
     public float hp;
     public Resources.Arsenal arsenal;
@@ -14,7 +15,8 @@ public class MTState {
     public int xp = 0;
     public List<Resources.MTUpgradeType> upgrades = new List<Resources.MTUpgradeType>();
 
-    public MTState(List<Resources.MTUpgradeType> upgrades, Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp) {
+    public MTState(List<Resources.MTUpgradeType> upgrades, Vector3 pos, float hp, Resources.Arsenal arsenal, int lvl, int xp)
+    {
         this.upgrades = upgrades;
         position = pos;
         this.hp = hp;

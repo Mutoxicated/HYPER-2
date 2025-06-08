@@ -49,6 +49,38 @@ public class MaterialChanger : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
+    [ContextMenu("Precolor")]
+    private void Precolor()
+    {
+        Option<Material> res = Option<Material>.None();
+        if (_renderer != null) {
+            res = Rdr.FindMaterial(_renderer, @type);
+        }
+        if (res.IsNone()) {
+            Debug.LogError("Couldn't find a material of type "+@type, _renderer);
+            return;
+        }
+        material = res.Get();
+
+        material.color = color;
+    }
+
+    [ContextMenu("Reset values")]
+    private void ResetValues()
+    {
+        Option<Material> res = Option<Material>.None();
+        if (_renderer != null) {
+            res = Rdr.FindMaterial(_renderer, @type);
+        }
+        if (res.IsNone()) {
+            Debug.LogError("Couldn't find a material of type "+@type, _renderer);
+            return;
+        }
+        material = res.Get();
+
+        material.color = Color.white;
+    }
+
     void Awake()
     {
         _renderer = _renderer == null ? GetComponent<Renderer>() : _renderer; 

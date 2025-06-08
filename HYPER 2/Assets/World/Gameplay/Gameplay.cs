@@ -99,16 +99,6 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-    private void FillDict(EnemyStats es, Resources.Enemy enemy) {
-        if (!enemyData[es.type].ContainsKey(es.difficulty)) {
-            enemyData[es.type].Add(es.difficulty, new List<Resources.Enemy>() {
-                enemy
-            });
-        }else {
-            enemyData[es.type][es.difficulty].Add(enemy);
-        }
-    }
-
     public static int maxDiff;
     public void DStart(Manager manager) {
         self = this;
@@ -128,7 +118,13 @@ public class Gameplay : MonoBehaviour
                 if (!enemyData.ContainsKey(es.type)) {
                     enemyData.Add(es.type, new Dictionary<int, List<Resources.Enemy>>());
                 }
-                FillDict(es, iter.Current.Key);
+                if (!enemyData[es.type].ContainsKey(es.difficulty)) {
+                    enemyData[es.type].Add(es.difficulty, new List<Resources.Enemy>() {
+                        iter.Current.Key
+                    });
+                }else {
+                    enemyData[es.type][es.difficulty].Add(iter.Current.Key);
+                }
             }
         }
 
